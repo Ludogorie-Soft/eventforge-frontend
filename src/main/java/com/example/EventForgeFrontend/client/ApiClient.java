@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "api-client" ,url = "http://localhost:8080")
+@FeignClient(name = "api-client" ,url = "http://localhost:8081")
 public interface ApiClient {
     @PostMapping("/authenticate")
     public String getTokenForAuthenticatedUser(@RequestBody JWTAuthenticationRequest authRequest);
