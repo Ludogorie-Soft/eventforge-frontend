@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
 
 <head>
     <title>Eventforge</title>
@@ -62,8 +63,17 @@
                 <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
                         <li class="active"><a href="/index" class="nav-link">Начало</a></li>
+                        <li sec:authorize="isAnonymous()">
                         <li><a href="/registerOrganisation" class="nav-link">Регистрирай се</a></li>
+                        </li>
+                        <li sec:authorize="isAnonymous()">
                         <li><a href="/login" class="nav-link">Впиши се</a></li>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form class="form-inline" th:action="@{/logout}" method="post">
+                                <button class="btn btn-link nav-link" type="submit">Изход</button>
+                            </form>
+                        </li>
                         <li><a href="gallery.html" class="nav-link">Еднократни активности</a></li>
                         <li><a href="pricing.html" class="nav-link">Продължителни активности</a></li>
                         <li><a href="about.html" class="nav-link">Организации</a></li>
