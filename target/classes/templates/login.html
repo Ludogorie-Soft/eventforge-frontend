@@ -130,7 +130,12 @@
                          <div class="col-md-6 offset-md-3">
                             <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Влез">
                         </div>
-                    <div class="form-group row">
+                    <div th:if="${errorMessage}" id="errorMessage">
+                        <p th:text="${errorMessage}" style="color: red;"></p>
+                    </div>
+
+                    <div class="form-
+                    group row">
                             <div class="col-md-12 text-center">
                                 <a href="/forgottenPassword" class="forgot-password-link">Забравена парола?</a>
                             </div>

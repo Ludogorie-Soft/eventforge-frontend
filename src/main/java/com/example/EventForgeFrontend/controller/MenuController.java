@@ -1,8 +1,10 @@
-package com.example.EventForgeFrontend;
+package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.ApiClient;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
+import feign.Headers;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -32,7 +34,7 @@ public class MenuController {
         ResponseEntity<String> register = apiClient.registerOrganisation(request);
         String result = register.getBody();
         model.addAttribute("result", result);
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/login")
@@ -42,9 +44,11 @@ public class MenuController {
     }
 
     @PostMapping("/submitLogin")
-    public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest) {
-        apiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
-        return "/index";
+    public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest , HttpSession session , Model model) {
+       String token= apiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
+       session.setAttribute("token",token);
+       model.addAttribute("t" , token);
+        return "index";
     }
 
     @GetMapping("/forgottenPassword")
@@ -52,7 +56,9 @@ public class MenuController {
         return "/forgottenPassword";
     }
     @PostMapping("/logout")
-    public String logout(){
-        return "/index";
+    public String logout( Model model){
+      ResponseEntity<String> index =  apiClient.logout();
+      model.addAttribute("logout" ,index.getBody());
+        return "redirect:/index";
     }
 }
