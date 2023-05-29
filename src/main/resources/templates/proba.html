@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<h2>Test</h2>
+<!-- Display a welcome message if the token is present -->
+<div th:if="${t}">
+    <h2>Welcome!</h2>
+</div>
+
+<!-- Display login form if the token is not present -->
+<div th:unless="${t}">
+    <h2>Login</h2>
+    <!-- Your login form code here -->
+</div>
+
+</body>
+</html>

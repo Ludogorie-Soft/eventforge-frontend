@@ -60,7 +60,7 @@
             <div class="menu-wrap d-flex align-items-center">
                 <span class="d-inline-block d-lg-none"><a href="#" class="text-black site-menu-toggle js-menu-toggle py-5"><span class="icon-menu h3 text-black"></span></a></span>
                 <!-- Logged-in user navigation -->
-                <nav th:if="${session.token}" class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
+                <nav  class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
                     <h1>You are logged in.</h1>
                     <h2 th:text="${t}"></h2>
 
@@ -68,8 +68,8 @@
                         <!-- Add your logged-in user navigation links here -->
                         <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
                         <li><a href="/profile" class="nav-link">Profile</a></li>
-                        <form class="form-inline" th:action="@{/logout}" method="post">
-                            <button class="btn btn-link nav-link" type="submit">Изход</button>
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit">Logout</button>
                         </form>
                     </ul>
                 </nav>

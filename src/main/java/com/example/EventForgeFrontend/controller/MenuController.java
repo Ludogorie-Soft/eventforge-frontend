@@ -1,15 +1,15 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.ApiClient;
+import com.example.EventForgeFrontend.dto.AuthenticationResponse;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
-import feign.Headers;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class MenuController {
 
     private final ApiClient apiClient;
+    private HttpHeaders headers;
+
+    private String token;
 
     @GetMapping("/index")
     public String index() {
@@ -30,10 +33,8 @@ public class MenuController {
     }
 
     @PostMapping("/submit")
-    public String register(RegistrationRequest request, Model model) {
-        ResponseEntity<String> register = apiClient.registerOrganisation(request);
-        String result = register.getBody();
-        model.addAttribute("result", result);
+    public String register(RegistrationRequest request) {
+        ResponseEntity<AuthenticationResponse> register = apiClient.register(request);
         return "index";
     }
 
@@ -44,21 +45,36 @@ public class MenuController {
     }
 
     @PostMapping("/submitLogin")
-    public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest , HttpSession session , Model model) {
-       String token= apiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
-       session.setAttribute("token",token);
-       model.addAttribute("t" , token);
-        return "index";
+    public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest) {
+        ResponseEntity<String> tokenResponse = apiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
+        headers = tokenResponse.getHeaders();
+        token = tokenResponse.getBody();
+
+        return "redirect:/index";
     }
 
     @GetMapping("/forgottenPassword")
     public String forgottenPassword() {
         return "/forgottenPassword";
     }
+//    @PostMapping("/logout")
+//    public String logout( Model model , HttpSession session){
+//      ResponseEntity<String> index =  apiClient.logout();
+//      model.addAttribute("logout" ,index.getBody());
+//      session.removeAttribute("token");
+//
+//        return "redirect:/index";
+//    }
+
     @PostMapping("/logout")
-    public String logout( Model model){
-      ResponseEntity<String> index =  apiClient.logout();
-      model.addAttribute("logout" ,index.getBody());
-        return "redirect:/index";
+    public String logout() {
+        apiClient.logout("Bearer " + token);// Pass the token to the logout endpoint in the backend API
+        return "redirect:/login";  //
+    }
+
+    @GetMapping("/proba")
+    public String proba() {
+        String proba = apiClient.proba("Bearer " + token);
+        return "proba";
     }
 }
