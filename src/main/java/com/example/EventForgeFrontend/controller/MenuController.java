@@ -49,14 +49,14 @@ public class MenuController {
         ResponseEntity<String> tokenResponse = apiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
         headers = tokenResponse.getHeaders();
         token = tokenResponse.getBody();
-
-        return "redirect:/index";
+        return "redirect:/organisationProfile";
     }
 
     @GetMapping("/forgottenPassword")
     public String forgottenPassword() {
         return "/forgottenPassword";
     }
+
 //    @PostMapping("/logout")
 //    public String logout( Model model , HttpSession session){
 //      ResponseEntity<String> index =  apiClient.logout();
@@ -76,5 +76,9 @@ public class MenuController {
     public String proba() {
         String proba = apiClient.proba("Bearer " + token);
         return "proba";
+    }
+    @GetMapping("/organisationProfile")
+    public String organisationProfile() {
+        return "organisationProfile";
     }
 }
