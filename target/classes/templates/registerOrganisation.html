@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <title>Eventforge</title>
   <meta charset="utf-8">
@@ -115,116 +115,125 @@
     </div>
     <div class="row justify-content-center">
       <div class="col-lg-8 mb-5" >
-        <form action="#" method="post">
+
+        <form action="#" th:action="@{/submit}" th:object="${request}" method="post">
           <div class="form-group row">
             <div class="col-md-12">
-              <input type="text" class="form-control" placeholder="Име на организацията" required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <input type="password" class="form-control" placeholder="Парола за регистрация ">
-            </div>
-          </div>
-          <label>Лого на организацията:</label>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <input type="file" name="image" class="form-control-file">
-            </div>
-          </div>
-          <label>Корица на организацията:</label>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <input type="file" name="image" class="form-control-file">
+              <input type="text" th:field="*{name}" class="form-control" placeholder="Име на организацията" required>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
-              <input type="text" class="form-control" placeholder="Логация на организацията(ако има такава)">
+              <input type="password" th:field="*{password}" class="form-control" placeholder="Парола за регистрация ">
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
-              <input type="text" class="form-control" placeholder="Булстат ">
+              <input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Парола за регистрация ">
             </div>
           </div>
+<!--          <label>Лого на организацията:</label>-->
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <input type="file" name="image" class="form-control-file">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <label>Корица на организацията:</label>-->
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <input type="file" name="image" class="form-control-file">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <input type="text" class="form-control" placeholder="Логация на организацията(ако има такава)">-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="form-group row">
             <div class="col-md-12">
-              <input type="text" class="form-control" placeholder="Уеб сайт на организацията">
+              <input type="text" th:field="*{bullstat}" class="form-control" placeholder="Булстат ">
             </div>
           </div>
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <input type="text" class="form-control" placeholder="Уеб сайт на организацията">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <input type="text" class="form-control" placeholder="Линк към фейсбук страница" required>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <input type="text" class="form-control" placeholder="Лице за контакт - име и фамилия" required>-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="form-group row">
             <div class="col-md-12">
-              <input type="text" class="form-control" placeholder="Линк към фейсбук страница" required>
+              <input type="text" th:field="*{email}" class="form-control" placeholder="Лице за контакт - електронна поща" required>
             </div>
           </div>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <input type="text" class="form-control" placeholder="Лице за контакт - име и фамилия" required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <input type="text" class="form-control" placeholder="Лице за контакт - електронна поща" required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <input type="text" class="form-control" placeholder="Лице за контакт - телефон" required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <textarea type="text" class="form-control" placeholder="Възможност за дарение. Линк към страница с информация за дарения. Или директно посочете тук банкова сметка с данни за дарение."></textarea>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <textarea name="" id="" class="form-control" placeholder="Мисия на организацията" cols="30" rows="10"></textarea>
-            </div>
-          </div>
-          <div class="form-group row"><div class="col-md-12">
-            <label>Отбележете категориите, които съответстват на приоритетите на организацията.:</label>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Здравеопазване"> Здравеопазване</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Образование"> Образование</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Спорт"> Спорт</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Защита на човешките права"> Защита на човешките права</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Работа с младежи"> Работа с младежи</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Околна среда"> Околна среда</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Проблеми на жените"> Проблеми на жените</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Социални услуги"> Социални услуги</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Развитие на местни общности"> Развитие на местни общности</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Социално предприятие"> Социално предприятие</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Друго"> Друго</label>
-            </div>
-          </div>
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <input type="text" class="form-control" placeholder="Лице за контакт - телефон" required>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <textarea type="text" class="form-control" placeholder="Възможност за дарение. Линк към страница с информация за дарения. Или директно посочете тук банкова сметка с данни за дарение."></textarea>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <textarea name="" id="" th:field="*{purposeOfOrganisation}" class="form-control" placeholder="Мисия на организацията" cols="30" rows="10"></textarea>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="form-group row"><div class="col-md-12">-->
+<!--            <label>Отбележете категориите, които съответстват на приоритетите на организацията.:</label>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Здравеопазване"> Здравеопазване</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Образование"> Образование</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Спорт"> Спорт</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Защита на човешките права"> Защита на човешките права</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Работа с младежи"> Работа с младежи</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Околна среда"> Околна среда</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Проблеми на жените"> Проблеми на жените</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Социални услуги"> Социални услуги</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Развитие на местни общности"> Развитие на местни общности</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Социално предприятие"> Социално предприятие</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Друго"> Друго</label>-->
+<!--            </div>-->
+<!--          </div>-->
             <div class="col-md-6 offset-md-3">
               <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Регистрирай организацията">
             </div>
+          <div>
+            Result: <span th:text="${result}"></span>
           </div>
-          <div class="form-group row">
-          </div>
+<!--          </div>-->
+<!--          <div class="form-group row">-->
+<!--          </div>-->
         </form>
       </div>
     </div>

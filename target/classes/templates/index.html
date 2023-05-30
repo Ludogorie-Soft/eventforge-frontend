@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
 
 <head>
     <title>Eventforge</title>
@@ -58,17 +59,35 @@
         <div class="container">
             <div class="menu-wrap d-flex align-items-center">
                 <span class="d-inline-block d-lg-none"><a href="#" class="text-black site-menu-toggle js-menu-toggle py-5"><span class="icon-menu h3 text-black"></span></a></span>
+                <!-- Logged-in user navigation -->
+                <nav  class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
+                    <h1>You are logged in.</h1>
+                    <h2 th:text="${t}"></h2>
 
-                <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
-                    <ul class="site-menu main-menu js-clone-nav mr-auto ">
-                        <li class="active"><a href="/index" class="nav-link">Начало</a></li>
-                        <li><a href="/registerOrganisation" class="nav-link">Регистрирай се</a></li>
-                        <li><a href="/login" class="nav-link">Впиши се</a></li>
-                        <li><a href="gallery.html" class="nav-link">Еднократни активности</a></li>
-                        <li><a href="pricing.html" class="nav-link">Продължителни активности</a></li>
-                        <li><a href="about.html" class="nav-link">Организации</a></li>
+                    <ul class="site-menu main-menu js-clone-nav mr-auto">
+                        <!-- Add your logged-in user navigation links here -->
+                        <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+                        <li><a href="/profile" class="nav-link">Profile</a></li>
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit">Logout</button>
+                        </form>
                     </ul>
                 </nav>
+
+                <!-- Anonymous user navigation -->
+                <nav th:unless="${session.token}" class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
+                    <h1>You are not logged in.</h1>
+                        <!-- Add your anonymous user navigation links here -->
+                        <li><a href="/home" class="nav-link">Home</a></li>
+                        <li><a href="/login" class="nav-link">Login</a></li>
+                        <li><a href="/registerOrganisation" class="nav-link">Register</a></li>
+                    </ul>
+                </nav>
+
+
+
+
+
 
                 <div class="top-social ml-auto">
                     <a href="#"><span class="icon-facebook text-teal"></span></a>

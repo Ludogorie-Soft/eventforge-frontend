@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>Eventforge</title>
@@ -116,21 +116,26 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-8 mb-5" >
-                <form action="#" method="post">
+                <form method="post" th:action="@{/submitLogin}" th:object="${login}" >
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" class="form-control" placeholder="Име на организацията" required>
+                            <input type="email" th:field="*{userName}" class="form-control" placeholder="Email" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="password" class="form-control" placeholder="Парола">
+                            <input type="password" th:field="*{password}" class="form-control" placeholder="Парола">
                         </div>
                     </div>
                          <div class="col-md-6 offset-md-3">
                             <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Влез">
                         </div>
-                    <div class="form-group row">
+                    <div th:if="${errorMessage}" id="errorMessage">
+                        <p th:text="${errorMessage}" style="color: red;"></p>
+                    </div>
+
+                    <div class="form-
+                    group row">
                             <div class="col-md-12 text-center">
                                 <a href="/forgottenPassword" class="forgot-password-link">Забравена парола?</a>
                             </div>
@@ -142,6 +147,7 @@
 </div>
 
 </div>
+
 
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/jquery-migrate-3.0.0.js"></script>
