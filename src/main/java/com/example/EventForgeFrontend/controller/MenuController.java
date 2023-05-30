@@ -1,9 +1,11 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.ApiClient;
+import com.example.EventForgeFrontend.session.SessionManager;
 import com.example.EventForgeFrontend.dto.AuthenticationResponse;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class MenuController {
 
     private final ApiClient apiClient;
+
+    private final SessionManager sessionManager;
     private HttpHeaders headers;
 
     private String token;
@@ -45,13 +49,17 @@ public class MenuController {
     }
 
     @PostMapping("/submitLogin")
-    public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest) {
+    public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest, HttpServletRequest request) {
         ResponseEntity<String> tokenResponse = apiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
-        headers = tokenResponse.getHeaders();
-        token = tokenResponse.getBody();
+         headers = tokenResponse.getHeaders();
+        String token = tokenResponse.getBody();
+
+        // Set the session token in the current session
+        sessionManager.setSessionToken(request, token);
 
         return "redirect:/index";
     }
+
 
     @GetMapping("/forgottenPassword")
     public String forgottenPassword() {
@@ -67,14 +75,19 @@ public class MenuController {
 //    }
 
     @PostMapping("/logout")
-    public String logout() {
-        apiClient.logout("Bearer " + token);// Pass the token to the logout endpoint in the backend API
+    public String logout(HttpServletRequest request) {
+         token = (String) request.getSession().getAttribute("sessionToken");
+        String authorizationHeader = "Bearer " + token;
+        apiClient.logout(authorizationHeader);
+        sessionManager.invalidateSession(request);// Pass the token to the logout endpoint in the backend API
         return "redirect:/login";  //
     }
 
     @GetMapping("/proba")
-    public String proba() {
-        String proba = apiClient.proba("Bearer " + token);
+    public String proba(HttpServletRequest request) {
+         token = (String) request.getSession().getAttribute("sessionToken");
+        String authorizationHeader = "Bearer " + token;
+        String proba = apiClient.proba(authorizationHeader);
         return "proba";
     }
 }
