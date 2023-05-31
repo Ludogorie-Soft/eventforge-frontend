@@ -3,6 +3,7 @@ package com.example.EventForgeFrontend.controller;
 import com.example.EventForgeFrontend.client.ApiClient;
 import com.example.EventForgeFrontend.dto.AuthenticationResponse;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
+import com.example.EventForgeFrontend.dto.Organisation;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -10,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
