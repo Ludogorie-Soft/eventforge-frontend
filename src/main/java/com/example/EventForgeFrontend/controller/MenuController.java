@@ -15,6 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
+
 @Controller
 @RequiredArgsConstructor
 public class MenuController {
@@ -35,7 +39,9 @@ public class MenuController {
 
     @GetMapping("/registerOrganisation")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("request", new RegistrationRequest());
+        Set<String> priorityCategories= authenticationApiClient.registrationForm().getBody();
+        model.addAttribute("request", new RegistrationRequest() );
+        model.addAttribute("priorityCategories" , priorityCategories);
         return "registerOrganisation";
     }
 
