@@ -1,6 +1,7 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.ApiClient;
+import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.session.SessionManager;
 import com.example.EventForgeFrontend.dto.AuthenticationResponse;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
@@ -20,6 +21,8 @@ public class MenuController {
 
     private final ApiClient apiClient;
 
+    private final AuthenticationApiClient authenticationApiClient;
+
     private final SessionManager sessionManager;
     private HttpHeaders headers;
 
@@ -38,7 +41,7 @@ public class MenuController {
 
     @PostMapping("/submit")
     public String register(RegistrationRequest request) {
-        ResponseEntity<AuthenticationResponse> register = apiClient.register(request);
+        ResponseEntity<AuthenticationResponse> register = authenticationApiClient.register(request);
         return "index";
     }
 
@@ -50,7 +53,7 @@ public class MenuController {
 
     @PostMapping("/submitLogin")
     public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest, HttpServletRequest request) {
-        ResponseEntity<String> tokenResponse = apiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
+        ResponseEntity<String> tokenResponse = authenticationApiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
          headers = tokenResponse.getHeaders();
         String token = tokenResponse.getBody();
 
@@ -78,7 +81,7 @@ public class MenuController {
     public String logout(HttpServletRequest request) {
          token = (String) request.getSession().getAttribute("sessionToken");
         String authorizationHeader = "Bearer " + token;
-        apiClient.logout(authorizationHeader);
+        authenticationApiClient.logout(authorizationHeader);
         sessionManager.invalidateSession(request);// Pass the token to the logout endpoint in the backend API
         return "redirect:/login";  //
     }
