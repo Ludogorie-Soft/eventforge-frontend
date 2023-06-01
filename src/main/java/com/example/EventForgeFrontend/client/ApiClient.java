@@ -17,6 +17,5 @@ import java.util.Collection;
 @FeignClient(name = "api-client" ,url = "http://localhost:8081")
 public interface ApiClient {
 
-    @GetMapping("/proba")
-    public String proba(@RequestHeader("Authorization") String authorization);
+    ;
 }

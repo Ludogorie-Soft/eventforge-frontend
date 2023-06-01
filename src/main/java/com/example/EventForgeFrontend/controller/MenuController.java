@@ -2,6 +2,8 @@ package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.ApiClient;
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
+import com.example.EventForgeFrontend.client.OrganisationClient;
+import com.example.EventForgeFrontend.dto.OrganisationRequest;
 import com.example.EventForgeFrontend.session.SessionManager;
 import com.example.EventForgeFrontend.dto.AuthenticationResponse;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -29,6 +32,8 @@ public class MenuController {
 
     private final SessionManager sessionManager;
     private HttpHeaders headers;
+
+    private final OrganisationClient organisationClient;
 
     private String token;
 
@@ -96,7 +101,19 @@ public class MenuController {
     public String proba(HttpServletRequest request) {
          token = (String) request.getSession().getAttribute("sessionToken");
         String authorizationHeader = "Bearer " + token;
-        String proba = apiClient.proba(authorizationHeader);
+        String proba = organisationClient.proba(authorizationHeader);
         return "proba";
+    }
+
+    @GetMapping("/update-profile")
+    public String updateOrgProfile(Model model){
+        model.addAttribute("updateRequest" , new OrganisationRequest());
+        return "organisationProfile";
+    }
+
+    @PostMapping("submit-update")
+    public String updateProfile(OrganisationRequest request){
+        organisationClient.updateOrganisation(request);
+        return "index";
     }
 }
