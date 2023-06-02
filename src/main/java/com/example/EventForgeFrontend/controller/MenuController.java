@@ -16,6 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+
+import java.util.Objects;
 import java.util.Set;
 
 @Controller
@@ -44,7 +47,7 @@ public class MenuController {
 
     @GetMapping("/registerOrganisation")
     public String showRegistrationForm(Model model) {
-        Set<String> priorityCategories= authenticationApiClient.registrationForm().getBody();
+        Set<String> priorityCategories= authenticationApiClient.getAllPriorityCategories().getBody();
         model.addAttribute("request", new RegistrationRequest() );
         model.addAttribute("priorityCategories" , priorityCategories);
         return "registerOrganisation";
@@ -64,9 +67,8 @@ public class MenuController {
 
     @PostMapping("/submitLogin")
     public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest, HttpServletRequest request) {
-        ResponseEntity<String> tokenResponse = authenticationApiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
-         headers = tokenResponse.getHeaders();
-        String token = tokenResponse.getBody();
+        ResponseEntity<AuthenticationResponse> authenticationResponse = authenticationApiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
+        String token = Objects.requireNonNull(authenticationResponse.getBody()).getAccessToken();
 
         // Set the session token in the current session
         sessionManager.setSessionToken(request, token);
@@ -91,8 +93,7 @@ public class MenuController {
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
         String token = (String) request.getSession().getAttribute("sessionToken");
-        String authorizationHeader = "Bearer " + token;
-        authenticationApiClient.logout(authorizationHeader);
+        authenticationApiClient.logout(token);
         sessionManager.invalidateSession(request);
         return "redirect:/login";
     }
@@ -100,8 +101,7 @@ public class MenuController {
     @GetMapping("/proba")
     public String proba(HttpServletRequest request , Model model) {
         String token = (String) request.getSession().getAttribute("sessionToken");
-        String authorizationHeader = "Bearer " + token;
-        ResponseEntity<String> proba = organisationClient.proba(authorizationHeader);
+        ResponseEntity<String> proba = organisationClient.proba(token);
         model.addAttribute("email" , proba.getBody());
         return "proba";
     }

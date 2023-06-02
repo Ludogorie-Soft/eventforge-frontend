@@ -42,6 +42,8 @@
 
     <header class="site-navbar site-navbar-target" role="banner">
 
+
+
         <div class="container mb-3">
             <div class="d-flex align-items-center">
                 <div class="site-logo mr-auto">
@@ -67,6 +69,9 @@
 
                 <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
+                        <form th:action="@{/logout}" method="post">
+                            <input type="submit" value="Logout">
+                        </form>
                         <li class="active"><a href="/index" class="nav-link">Начало</a></li>
                         <li><a href="/registerOrganisation" class="nav-link">Регистрирай се</a></li>
                         <li><a href="/login" class="nav-link">Впиши се</a></li>

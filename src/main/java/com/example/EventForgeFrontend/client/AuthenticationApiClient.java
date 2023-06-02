@@ -20,10 +20,10 @@ public interface AuthenticationApiClient {
 
     @JsonIgnore
     Collection<String> attributeNames = new ArrayList<>();
-    @GetMapping("/registration")
-    public ResponseEntity<Set<String>>registrationForm();
+    @GetMapping("/getAllPriorityCategories")
+    public ResponseEntity<Set<String>>getAllPriorityCategories();
     @PostMapping("/authenticate")
-    public ResponseEntity<String> getTokenForAuthenticatedUser(@RequestBody JWTAuthenticationRequest authRequest);
+    public ResponseEntity<AuthenticationResponse> getTokenForAuthenticatedUser(@RequestBody JWTAuthenticationRequest authRequest);
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegistrationRequest request

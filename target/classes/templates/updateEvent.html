@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Create event</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/eventForm.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style type="text/css">
+      body {
+        margin-top: 20px;
+        background: #f8f8f8
+      }
+    </style>
+</head>
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+
+<div class="site-wrap" id="home-section">
+
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close mt-3">
+        <span class="icon-close2 js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+  <header class="site-navbar site-navbar-target" role="banner">
+
+    <div class="container mb-3">
+      <div class="d-flex align-items-center">
+        <div class="site-logo mr-auto">
+          <a href="index.html">Eventforge<span class="text-primary"></span></a>
+        </div>
+        <div class="site-quick-contact d-none d-lg-flex ml-auto ">
+          <div class="d-flex site-info align-items-center mr-5">
+            <span class="block-icon mr-3"><span class="icon-map-marker text-yellow"></span></span>
+            <span>Varna<br> Bulgaria</span>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <div class="menu-wrap d-flex align-items-center">
+        <span class="d-inline-block d-lg-none"><a href="#" class="text-black site-menu-toggle js-menu-toggle py-5"><span class="icon-menu h3 text-black"></span></a></span>
+
+
+
+        <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
+          <ul class="site-menu main-menu js-clone-nav mr-auto ">
+            <li class="active"><a href="/index" class="nav-link">Начало</a></li>
+            <li><a href="gallery.html" class="nav-link">Еднократни активности</a></li>
+            <li><a href="pricing.html" class="nav-link">Продължително активности</a></li>
+            <li><a href="about.html" class="nav-link">Организации</a></li>
+          </ul>
+        </nav>
+
+        <div class="top-social ml-auto">
+          <a href="#"><span class="icon-facebook text-teal"></span></a>
+          <a href="#"><span class="icon-twitter text-success"></span></a>
+          <a href="#"><span class="icon-linkedin text-yellow"></span></a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="ftco-blocks-cover-1">
+
+    <div class="site-section-cover overlay">
+      <div class="container">
+        <div class="row align-items-center ">
+          <div class="col-md-5 mt-5 pt-5">
+            <span class="text-cursive h5 text-red">Добре дошли в нашия уебсайт</span>
+            <h1 class="mb-3 font-weight-bold text-teal">Eventforge</h1>
+          </div>
+          <div class="col-md-5 ml-auto align-self-end">
+            <img src="images/img_2.png" alt="Image" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="formbold-main-wrapper">
+    <div class="formbold-form-wrapper">
+      <form action="https://formbold.com/s/FORM_ID" method="POST">
+        <div class="formbold-mb-5">
+          <label class="formbold-form-label"> Кой организира събитието? </label>
+          <input type="text" placeholder="Организатор на събитието" class="formbold-form-input" required/>
+        </div>
+        <div class="formbold-mb-5">
+          <label class="formbold-form-label"> Име на събитието </label>
+          <input type="text" placeholder="Име на събитието" class="formbold-form-input" required/>
+        </div>
+        <div class="formbold-mb-5">
+          <label class="formbold-form-label"> Дата </label>
+          <input type="date" class="formbold-form-input"/>
+        </div>
+        <div class="flex flex-wrap formbold--mx-3">
+          <div class="w-full sm:w-half formbold-px-3">
+            <div class="formbold-mb-5">
+              <label value="time" class="formbold-form-label"> Начален час на събитието </label>
+              <input type="time" class="formbold-form-input" required/>
+            </div>
+          </div>
+          <div class="w-full sm:w-half formbold-px-3">
+            <div class="formbold-mb-5">
+              <label value="time" class="formbold-form-label"> Краен час на събитието </label>
+              <input type="time" class="formbold-form-input" required/>
+            </div>
+          </div>
+        </div>
+        <div class="formbold-mb-5">
+          <label class="formbold-form-label"> Адрес или линк на събитието </label>
+          <input type="text" placeholder="Адрес на събитието или линк" class="formbold-form-input" required/>
+        </div>
+        <div class="formbold-mb-5">
+          <label class="formbold-form-label">Подробно описание на събитието</label>
+          <textarea placeholder="Подробно описание на събитието" class="formbold-form-input" style="width: 550px; height: 150px;" required></textarea>
+        </div>
+        <div class="formbold-mb-5">
+          <label class="formbold-form-label">Цена за вход събитието (ако е безплатно въведете 0)</label>
+          <input type="number" step="0.01" placeholder="Цена за вход на събитието" class="formbold-form-input" required />
+        </div>
+        <div class="formbold-mb-5">
+          <label class="formbold-form-label">Посочете за коя възрастова група е подходящо събитието</label>
+          <input type="text" step="1" placeholder="Посочете за коя възрастова група е подходящо събитието" class="formbold-form-input" />
+        </div>
+        <div class="formbold-mb-5">
+          <label class="formbold-form-label">Регулярно събитие ли е?</label>
+          <input type="radio" name="option" value="option1" id="option1" >
+          <label value="Да" class="formbold-form-input">Да</label>
+          <input type="radio" name="option" value="option2" id="option2">
+          <label value="Не" class="formbold-form-input">Не</label>
+        </div>
+        <div>
+          <button class="formbold-btn">Актуализирай събитие</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
