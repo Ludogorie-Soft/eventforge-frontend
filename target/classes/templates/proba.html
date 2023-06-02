@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,6 +7,7 @@
 </head>
 <body>
 <h2>Test</h2>
+<h1>Email: <span th:text="${email}"></span></h1>
 <!-- Display a welcome message if the token is present -->
 <div th:if="${t}">
     <h2>Welcome!</h2>

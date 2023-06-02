@@ -14,11 +14,5 @@ import java.util.UUID;
 @FeignClient(name = "api-client" ,url = "http://localhost:8081")
 public interface ApiClient {
 
-    @GetMapping("/proba")
-    public String proba(@RequestHeader("Authorization") String authorization);
 
-    @PostMapping
-    public String updateOrganisation(UUID id, OrganisationRequest organisationRequest);
-    @GetMapping(path = "{organisationId}")
-    public ResponseEntity<OrganisationResponse> getOrganisation(UUID uuid);
 }

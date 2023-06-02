@@ -2,7 +2,6 @@ package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.ApiClient;
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
-import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.client.OrganisationClient;
 import com.example.EventForgeFrontend.dto.OrganisationRequest;
 import com.example.EventForgeFrontend.session.SessionManager;
@@ -24,19 +23,15 @@ import java.util.Set;
 public class MenuController {
 
     private final ApiClient apiClient;
-
-
     private final SessionManager sessionManager;
     private HttpHeaders headers;
     private final AuthenticationApiClient authenticationApiClient;
-
-
     private final OrganisationClient organisationClient;
 
 
     @GetMapping("/index")
     public String index() {
-        return "/index";
+        return "index";
     }
     @GetMapping("/createEvent")
     public String createEvent() {
