@@ -40,6 +40,10 @@ public class MenuController {
     public String createEvent() {
         return "/createEvent";
     }
+    @GetMapping("/updateEvent")
+    public String updateEvent() {
+        return "/updateEvent";
+    }
 
     @GetMapping("/registerOrganisation")
     public String showRegistrationForm(Model model) {
