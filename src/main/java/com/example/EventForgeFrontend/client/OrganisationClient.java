@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name = "organisation-client" , url ="http://localhost:8081/organisation")
 public interface OrganisationClient {
     @GetMapping("/proba")
-    public String proba(@RequestHeader("Authorization") String authorization);
+    public ResponseEntity<String> proba(@RequestHeader("Authorization") String authorization);
 
     @PutMapping("/update-account")
     public ResponseEntity<String> updateOrganisation(@Valid @RequestBody OrganisationRequest organisationRequest);

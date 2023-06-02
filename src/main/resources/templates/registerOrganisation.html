@@ -132,18 +132,18 @@
               <input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Парола за регистрация ">
             </div>
           </div>
-          <label>Лого на организацията:</label>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <input type="file" name="logo" th:field="*{logo}" class="form-control-file">
-            </div>
-          </div>
-          <label>Корица на организацията:</label>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <input type="file" name="background" th:field="*{backgroundCover}" class="form-control-file">
-            </div>
-          </div>
+<!--          <label>Лого на организацията:</label>-->
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <input type="file" name="logo" th:field="*{logo}" class="form-control-file">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <label>Корица на организацията:</label>-->
+<!--          <div class="form-group row">-->
+<!--            <div class="col-md-12">-->
+<!--              <input type="file" name="background" th:field="*{backgroundCover}" class="form-control-file">-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" class="form-control" th:field="*{address}" placeholder="Логация на организацията(ако има такава)">
@@ -189,41 +189,41 @@
               <textarea name="" id="" th:field="*{purposeOfOrganisation}" class="form-control" placeholder="Мисия на организацията" cols="30" rows="10"></textarea>
             </div>
           </div>
-          <div class="form-group row"><div class="col-md-12">
-            <label>Отбележете категориите, които съответстват на приоритетите на организацията.:</label>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Здравеопазване"> Здравеопазване</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Образование"> Образование</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Спорт"> Спорт</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Защита на човешките права"> Защита на човешките права</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Работа с младежи"> Работа с младежи</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Околна среда"> Околна среда</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Проблеми на жените"> Проблеми на жените</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Социални услуги"> Социални услуги</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Развитие на местни общности"> Развитие на местни общности</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Социално предприятие"> Социално предприятие</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="Друго"> Друго</label>
-            </div>
+<!--          <div class="form-group row"><div class="col-md-12">-->
+<!--            <label>Отбележете категориите, които съответстват на приоритетите на организацията.:</label>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Здравеопазване"> Здравеопазване</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Образование"> Образование</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Спорт"> Спорт</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Защита на човешките права"> Защита на човешките права</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Работа с младежи"> Работа с младежи</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Околна среда"> Околна среда</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Проблеми на жените"> Проблеми на жените</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Социални услуги"> Социални услуги</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Развитие на местни общности"> Развитие на местни общности</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Социално предприятие"> Социално предприятие</label>-->
+<!--            </div>-->
+<!--            <div class="checkbox">-->
+<!--              <label><input type="checkbox" value="Друго"> Друго</label>-->
+<!--            </div>-->
 
               <div th:each="category : ${priorityCategories}">
                 <label>

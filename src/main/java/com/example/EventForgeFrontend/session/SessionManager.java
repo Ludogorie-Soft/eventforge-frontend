@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class SessionManager {
 
     public void setSessionToken(HttpServletRequest request, String sessionToken) {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(true);
         session.setAttribute("sessionToken", sessionToken);
     }
 

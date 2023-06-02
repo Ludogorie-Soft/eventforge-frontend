@@ -90,18 +90,19 @@ public class MenuController {
 
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
-         token = (String) request.getSession().getAttribute("sessionToken");
+        String token = (String) request.getSession().getAttribute("sessionToken");
         String authorizationHeader = "Bearer " + token;
         authenticationApiClient.logout(authorizationHeader);
-        sessionManager.invalidateSession(request);// Pass the token to the logout endpoint in the backend API
-        return "redirect:/login";  //
+        sessionManager.invalidateSession(request);
+        return "redirect:/login";
     }
 
     @GetMapping("/proba")
-    public String proba(HttpServletRequest request) {
-         token = (String) request.getSession().getAttribute("sessionToken");
+    public String proba(HttpServletRequest request , Model model) {
+        String token = (String) request.getSession().getAttribute("sessionToken");
         String authorizationHeader = "Bearer " + token;
-        String proba = organisationClient.proba(authorizationHeader);
+        ResponseEntity<String> proba = organisationClient.proba(authorizationHeader);
+        model.addAttribute("email" , proba.getBody());
         return "proba";
     }
 
