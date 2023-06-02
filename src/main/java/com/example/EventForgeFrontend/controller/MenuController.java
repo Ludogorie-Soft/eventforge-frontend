@@ -2,6 +2,7 @@ package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.ApiClient;
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
+import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.client.OrganisationClient;
 import com.example.EventForgeFrontend.dto.OrganisationRequest;
 import com.example.EventForgeFrontend.session.SessionManager;
@@ -16,10 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -28,18 +25,26 @@ public class MenuController {
 
     private final ApiClient apiClient;
 
-    private final AuthenticationApiClient authenticationApiClient;
 
     private final SessionManager sessionManager;
     private HttpHeaders headers;
+    private final AuthenticationApiClient authenticationApiClient;
+
 
     private final OrganisationClient organisationClient;
 
-    private String token;
 
     @GetMapping("/index")
     public String index() {
         return "/index";
+    }
+    @GetMapping("/createEvent")
+    public String createEvent() {
+        return "/createEvent";
+    }
+    @GetMapping("/updateEvent")
+    public String updateEvent() {
+        return "/updateEvent";
     }
 
     @GetMapping("/registerOrganisation")
