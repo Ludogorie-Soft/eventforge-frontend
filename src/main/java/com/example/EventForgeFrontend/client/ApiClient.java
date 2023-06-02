@@ -13,16 +13,7 @@ import java.util.UUID;
 
 @FeignClient(name = "api-client" ,url = "http://localhost:8081")
 public interface ApiClient {
-    @JsonIgnore
-    Collection<String> attributeNames = new ArrayList<>();
-    @PostMapping("/authenticate")
-    public ResponseEntity<String> getTokenForAuthenticatedUser(@RequestBody JWTAuthenticationRequest authRequest);
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegistrationRequest request
-    );
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorization);
+
     @GetMapping("/proba")
     public String proba(@RequestHeader("Authorization") String authorization);
 

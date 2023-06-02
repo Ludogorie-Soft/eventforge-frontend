@@ -1,26 +1,33 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.ApiClient;
+import com.example.EventForgeFrontend.client.AuthenticationApiClient;
+import com.example.EventForgeFrontend.session.SessionManager;
 import com.example.EventForgeFrontend.dto.AuthenticationResponse;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
-import com.example.EventForgeFrontend.dto.Organisation;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.UUID;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
 public class MenuController {
 
     private final ApiClient apiClient;
+
+    private final AuthenticationApiClient authenticationApiClient;
+
+    private final SessionManager sessionManager;
     private HttpHeaders headers;
 
     private String token;
@@ -29,16 +36,22 @@ public class MenuController {
     public String index() {
         return "/index";
     }
+    @GetMapping("/createEvent")
+    public String createEvent() {
+        return "/createEvent";
+    }
 
     @GetMapping("/registerOrganisation")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("request", new RegistrationRequest());
+        Set<String> priorityCategories= authenticationApiClient.registrationForm().getBody();
+        model.addAttribute("request", new RegistrationRequest() );
+        model.addAttribute("priorityCategories" , priorityCategories);
         return "registerOrganisation";
     }
 
     @PostMapping("/submit")
     public String register(RegistrationRequest request) {
-        ResponseEntity<AuthenticationResponse> register = apiClient.register(request);
+        ResponseEntity<AuthenticationResponse> register = authenticationApiClient.register(request);
         return "index";
     }
 
@@ -49,18 +62,22 @@ public class MenuController {
     }
 
     @PostMapping("/submitLogin")
-    public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest) {
-        ResponseEntity<String> tokenResponse = apiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
-        headers = tokenResponse.getHeaders();
-        token = tokenResponse.getBody();
-        return "redirect:/organisationProfile";
+    public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest, HttpServletRequest request) {
+        ResponseEntity<String> tokenResponse = authenticationApiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
+         headers = tokenResponse.getHeaders();
+        String token = tokenResponse.getBody();
+
+        // Set the session token in the current session
+        sessionManager.setSessionToken(request, token);
+
+        return "redirect:/index";
     }
+
 
     @GetMapping("/forgottenPassword")
     public String forgottenPassword() {
         return "/forgottenPassword";
     }
-
 //    @PostMapping("/logout")
 //    public String logout( Model model , HttpSession session){
 //      ResponseEntity<String> index =  apiClient.logout();
@@ -71,18 +88,19 @@ public class MenuController {
 //    }
 
     @PostMapping("/logout")
-    public String logout() {
-        apiClient.logout("Bearer " + token);// Pass the token to the logout endpoint in the backend API
+    public String logout(HttpServletRequest request) {
+         token = (String) request.getSession().getAttribute("sessionToken");
+        String authorizationHeader = "Bearer " + token;
+        authenticationApiClient.logout(authorizationHeader);
+        sessionManager.invalidateSession(request);// Pass the token to the logout endpoint in the backend API
         return "redirect:/login";  //
     }
 
     @GetMapping("/proba")
-    public String proba() {
-        String proba = apiClient.proba("Bearer " + token);
+    public String proba(HttpServletRequest request) {
+         token = (String) request.getSession().getAttribute("sessionToken");
+        String authorizationHeader = "Bearer " + token;
+        String proba = apiClient.proba(authorizationHeader);
         return "proba";
-    }
-    @GetMapping("/organisationProfile")
-    public String organisationProfile() {
-        return "organisationProfile";
     }
 }
