@@ -9,16 +9,22 @@ public class SessionManager {
 
     private static String storeSessionToken;
 
-    public void setSessionToken(HttpServletRequest request, String sessionToken) {
+    private static String storeSessionUserRole;
+
+    public void setSessionToken(HttpServletRequest request, String sessionToken , String userRole) {
         String token = "Bearer "+sessionToken;
         storeSessionToken = token;
+        storeSessionUserRole = userRole;
+
         HttpSession session = request.getSession(true);
         session.setAttribute("sessionToken", token);
+        session.setAttribute("sessionUserRole" , userRole);
     }
 
     private void resetSession(HttpServletRequest request){
         HttpSession session = request.getSession(true);
         session.setAttribute("sessionToken" , storeSessionToken);
+        session.setAttribute("sessionUserRole" , storeSessionUserRole);
     }
 
     public void invalidateSession(HttpServletRequest request ){
@@ -26,6 +32,7 @@ public class SessionManager {
         if(session!= null){
             session.invalidate();
             storeSessionToken = null;
+            storeSessionUserRole = null;
         }
     }
 

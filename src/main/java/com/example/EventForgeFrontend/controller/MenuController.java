@@ -10,7 +10,6 @@ import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +26,6 @@ public class MenuController {
 
     private final ApiClient apiClient;
     private final SessionManager sessionManager;
-    private HttpHeaders headers;
     private final AuthenticationApiClient authenticationApiClient;
     private final OrganisationClient organisationClient;
 
@@ -54,9 +52,10 @@ public class MenuController {
     }
 
     @PostMapping("/submit")
-    public String register(RegistrationRequest request) {
-        ResponseEntity<AuthenticationResponse> register = authenticationApiClient.register(request);
-        return "index";
+    public String register(RegistrationRequest request , Model model ) {
+        ResponseEntity<String> register = authenticationApiClient.register(request);
+        model.addAttribute("successfulRegistration" , register.getBody());
+        return "redirect:/index";
     }
 
     @GetMapping("/login")
@@ -69,9 +68,10 @@ public class MenuController {
     public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest, HttpServletRequest request) {
         ResponseEntity<AuthenticationResponse> authenticationResponse = authenticationApiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
         String token = Objects.requireNonNull(authenticationResponse.getBody()).getAccessToken();
+        String userRole = authenticationResponse.getBody().getUserRole();
 
         // Set the session token in the current session
-        sessionManager.setSessionToken(request, token);
+        sessionManager.setSessionToken(request, token , userRole);
 
         return "redirect:/index";
     }

@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class OrganisationResponse {
-    private UUID id;
+    private Long id;
     private String name;
     private String bullstat;
     private String email;

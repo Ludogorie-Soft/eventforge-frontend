@@ -1,6 +1,10 @@
-package com.example.EventForgeFrontend.exception;
+package com.example.EventForgeFrontend.exception.exceptionhandler;
 
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
+import com.example.EventForgeFrontend.exception.AccessDeniedException;
+import com.example.EventForgeFrontend.exception.CustomValidationErrorException;
+import com.example.EventForgeFrontend.exception.EmailAlreadyExistsException;
+import com.example.EventForgeFrontend.exception.TokenExpiredException;
 import com.example.EventForgeFrontend.session.SessionManager;
 import feign.FeignException;
 import feign.codec.ErrorDecoder;
@@ -24,7 +28,6 @@ public class GlobalExceptionHandler {
 
     @Autowired
     private AuthenticationApiClient authenticationApiClient;
-
 
 
     @ExceptionHandler(EmailAlreadyExistsException.class)

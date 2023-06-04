@@ -166,12 +166,12 @@
           </div>
           <div class="form-group row">
             <div class="col-md-12">
-              <input type="text" class="form-control" th:field="*{firstAndLastName}" placeholder="Лице за контакт - име и фамилия" required>
+              <input type="text" class="form-control" th:field="*{fullName}" placeholder="Лице за контакт - име и фамилия" required>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
-              <input type="text" th:field="*{email}" class="form-control" placeholder="Лице за контакт - електронна поща" required>
+              <input type="text" th:field="*{username}" class="form-control" placeholder="Лице за контакт - електронна поща" required>
             </div>
           </div>
           <div class="form-group row">
@@ -181,12 +181,12 @@
           </div>
           <div class="form-group row">
             <div class="col-md-12">
-              <textarea type="text" class="form-control" th:field="*{optionalCharity}" placeholder="Възможност за дарение. Линк към страница с информация за дарения. Или директно посочете тук банкова сметка с данни за дарение."></textarea>
+              <textarea type="text" class="form-control" th:field="*{charityOption}" placeholder="Възможност за дарение. Линк към страница с информация за дарения. Или директно посочете тук банкова сметка с данни за дарение."></textarea>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
-              <textarea name="" id="" th:field="*{purposeOfOrganisation}" class="form-control" placeholder="Мисия на организацията" cols="30" rows="10"></textarea>
+              <textarea name="" id="" th:field="*{organisationPurpose}" class="form-control" placeholder="Мисия на организацията" cols="30" rows="10"></textarea>
             </div>
           </div>
           <div class="form-group row"><div class="col-md-12">
@@ -227,7 +227,7 @@
 
               <div th:each="category : ${priorityCategories}">
                 <label>
-                  <input type="checkbox" th:value="${category}" th:field="*{categories}" />
+                  <input type="checkbox" th:value="${category}" th:field="*{organisationPriorities}" />
                   <span th:text="${category}"></span>
                 </label>
               </div>
@@ -235,6 +235,11 @@
           </div>
             <div class="col-md-6 offset-md-3">
               <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Регистрирай организацията">
+            </div>
+            <div th:if="${validationError}">
+              <ul>
+                <li th:each="error : ${validationError}" th:text="${error}"></li>
+              </ul>
             </div>
           <div>
             Result: <span th:text="${result}"></span>

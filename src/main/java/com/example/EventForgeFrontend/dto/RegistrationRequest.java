@@ -18,21 +18,22 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegistrationRequest {
-
-    private String email;
+    private String username;
     private String name;
     private MultipartFile logo;
     private String bullstat;
-    private Set<String> categories;
+    private Set<String> organisationPriorities;
     private String optionalCategory;
-    private String purposeOfOrganisation;
+    private String organisationPurpose;
     private MultipartFile backgroundCover;
     private String address;
     private String website;
     private String facebookLink;
-    private String firstAndLastName;
+
+    private String fullName;
+
     private String phoneNumber;
-    private String optionalCharity;
+    private String charityOption;
     private String password;
     private String confirmPassword;
 }
