@@ -38,6 +38,9 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
+    <div th:if="${errorMessage}" id="errorMessage">
+        <p th:text="${errorMessage}" style="color: red;"></p>
+    </div>
 
 
     <header class="site-navbar site-navbar-target" role="banner">

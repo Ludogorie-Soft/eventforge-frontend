@@ -6,6 +6,9 @@
 
 </head>
 <body>
+<div th:if="${errorMessage}" id="errorMessage">
+    <p th:text="${errorMessage}" style="color: red;"></p>
+</div>
 <h2>Test</h2>
 <h1>Email: <span th:text="${email}"></span></h1>
 <!-- Display a welcome message if the token is present -->

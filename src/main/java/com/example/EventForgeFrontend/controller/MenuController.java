@@ -100,6 +100,7 @@ public class MenuController {
 
     @GetMapping("/proba")
     public String proba(HttpServletRequest request , Model model) {
+        sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<String> proba = organisationClient.proba(token);
         model.addAttribute("email" , proba.getBody());
