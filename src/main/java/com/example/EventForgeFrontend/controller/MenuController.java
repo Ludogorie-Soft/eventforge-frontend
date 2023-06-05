@@ -10,11 +10,13 @@ import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.Objects;
@@ -22,6 +24,7 @@ import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class MenuController {
 
     private final ApiClient apiClient;
@@ -65,8 +68,13 @@ public class MenuController {
     }
 
     @PostMapping("/submitLogin")
-    public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest, HttpServletRequest request) {
+    public String loginPost(JWTAuthenticationRequest jwtAuthenticationRequest, HttpServletRequest request ,RedirectAttributes redirectAttributes) {
+        //set request attribute , in case the authorization is unsuccessful. Later on we remove this attribute in the exception handler.
+        request.setAttribute("newLoginRequest" , new JWTAuthenticationRequest(jwtAuthenticationRequest.getUserName() , null));
+
         ResponseEntity<AuthenticationResponse> authenticationResponse = authenticationApiClient.getTokenForAuthenticatedUser(jwtAuthenticationRequest);
+        //if the login attempt is successful , we remove the request attribute for new login
+        request.removeAttribute("newLoginRequest");
         String token = Objects.requireNonNull(authenticationResponse.getBody()).getAccessToken();
         String userRole = authenticationResponse.getBody().getUserRole();
 

@@ -1,10 +1,7 @@
 package com.example.EventForgeFrontend.exception.decoder;
 
 
-import com.example.EventForgeFrontend.exception.AccessDeniedException;
-import com.example.EventForgeFrontend.exception.CustomValidationErrorException;
-import com.example.EventForgeFrontend.exception.EmailAlreadyExistsException;
-import com.example.EventForgeFrontend.exception.TokenExpiredException;
+import com.example.EventForgeFrontend.exception.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.ErrorResponse;
 
@@ -40,6 +38,9 @@ public class CustomErrorDecoder implements ErrorDecoder {
         try {
             errorMessage = extractErrorMessage(response);
         } catch (IOException ignored) {
+        }
+        if(response.status() == HttpStatus.NOT_FOUND.value()){
+            return new InvalidUserCredentialException(errorMessage);
         }
         if(response.status() == HttpServletResponse.SC_EXPECTATION_FAILED){
             List<String> validationErrors=  Arrays.asList(errorMessage.split("\n"));
