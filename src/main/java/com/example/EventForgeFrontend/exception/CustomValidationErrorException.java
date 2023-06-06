@@ -1,15 +1,15 @@
 package com.example.EventForgeFrontend.exception;
 
-import java.util.List;
+import java.util.Map;
 
 public class CustomValidationErrorException extends RuntimeException{
-    private final List<String> errors;
+    private  Map<String , String> errors ;
 
-    public CustomValidationErrorException(List<String> errors) {
+    public CustomValidationErrorException(Map<String , String> errors) {
         this.errors = errors;
     }
 
-    public List<String> getErrors() {
+    public Map<String , String> getErrors() {
         return errors;
     }
 }

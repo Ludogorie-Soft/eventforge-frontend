@@ -5,26 +5,19 @@ import com.example.EventForgeFrontend.exception.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-
 import feign.Response;
-
 import feign.codec.ErrorDecoder;
 import jakarta.servlet.http.HttpServletResponse;
-
-import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.ErrorResponse;
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomErrorDecoder implements ErrorDecoder {
 
@@ -34,20 +27,26 @@ public class CustomErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String s, Response response) {
-        String errorMessage = null;
-        try {
-            errorMessage = extractErrorMessage(response);
-        } catch (IOException ignored) {
-        }
+        String errorMessage = extractErrorMessage(response);
+
         if(response.status() == HttpStatus.NOT_FOUND.value()){
             return new InvalidUserCredentialException(errorMessage);
         }
-        if(response.status() == HttpServletResponse.SC_EXPECTATION_FAILED){
-            List<String> validationErrors=  Arrays.asList(errorMessage.split("\n"));
+        if(response.status() == HttpServletResponse.SC_PRECONDITION_FAILED){
+            String[] errorEntries = errorMessage.split(", ");
+            Map<String, String> errorMessages = new HashMap<>();
+            for (String entry : errorEntries) {
+                String[] parts = entry.split(": ");
+                if (parts.length == 2) {
+                    String fieldName = parts[0].trim();
+                    String error = parts[1].trim();
+                    errorMessages.put(fieldName, error);
+                }
+            }
 
-            return new CustomValidationErrorException(validationErrors);
+            return new CustomValidationErrorException(errorMessages);
         }
-        if (response.status() == HttpServletResponse.SC_CONFLICT) {
+        if (response.status() == HttpServletResponse.SC_FOUND) {
 
             return new EmailAlreadyExistsException(errorMessage);
         }
@@ -60,17 +59,33 @@ public class CustomErrorDecoder implements ErrorDecoder {
 
             return new TokenExpiredException(errorMessage);
         }
+        if(response.status() == HttpServletResponse.SC_EXPECTATION_FAILED){
+            return new EmailConfirmationNotSentException(errorMessage);
+        }
+        if(response.status() == HttpServletResponse.SC_BAD_REQUEST){
+            return new InvalidEmailConfirmationLinkException(errorMessage);
+        }
+        if(response.status() == HttpServletResponse.SC_SERVICE_UNAVAILABLE){
+            return new UserDisabledException(errorMessage);
+        }
+        if(response.status() == HttpStatus.LOCKED.value()){
+            return new UserLockedException(errorMessage);
+        }
         // Delegate to default error decoder for other exceptions
         return null;
     }
 
-    private String extractErrorMessage(Response response) throws IOException {
-        if (response.body() != null) {
-            InputStream inputStream = response.body().asInputStream();
-            String errorMessage = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
-            return errorMessage.trim();
+    private String extractErrorMessage(Response response)  {
+        try{
+            if (response.body() != null) {
+                InputStream inputStream = response.body().asInputStream();
+                String errorMessage = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+                return errorMessage.trim();
+            }
+        } catch (IOException ignore) {
+
         }
-        return "Грешка при разкодирането на съобщение"; // Default error message if extraction fails
+        return "Грешка при разкодирането на съобщение";
     }
 
     private List<String> extractValidationErrors(String errorMessage) throws JsonProcessingException {

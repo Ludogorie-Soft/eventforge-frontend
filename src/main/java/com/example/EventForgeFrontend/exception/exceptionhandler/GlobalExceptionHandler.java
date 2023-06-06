@@ -2,21 +2,19 @@ package com.example.EventForgeFrontend.exception.exceptionhandler;
 
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
+import com.example.EventForgeFrontend.dto.RegistrationRequest;
 import com.example.EventForgeFrontend.exception.*;
 import com.example.EventForgeFrontend.session.SessionManager;
-import feign.FeignException;
 import feign.codec.ErrorDecoder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.Map;
+import java.util.Set;
 
 @ControllerAdvice
 @Slf4j
@@ -43,12 +41,40 @@ public class GlobalExceptionHandler {
         return mav;
     }
 
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ModelAndView handleException(EmailAlreadyExistsException ex, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    @ExceptionHandler(CustomValidationErrorException.class)
+    public ModelAndView handleCustomValidationErrorException(CustomValidationErrorException e, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
-        String error = extractCustomErrorMessage(ex.getMessage());
-        redirectAttributes.addFlashAttribute("errorMessage", error);
-        mav.setViewName("redirect:" + request.getHeader("Referer"));
+        Map<String , String> errors = e.getErrors();
+        for (Map.Entry<String, String> error : errors.entrySet()){
+            String fieldName = error.getKey();
+            String message = error.getValue();
+            mav.addObject(fieldName , message);
+            log.info("field name: "+fieldName);
+            log.info("error message:"+message );
+        }
+        RegistrationRequest newRegistrationRequest = (RegistrationRequest) request.getAttribute("newRegistrationRequest");
+        Set<String> orgPriorities = (Set<String>) request.getAttribute("organisationPriorities");
+        request.removeAttribute("newRegistrationRequest");
+        request.removeAttribute("organisationPriorities");
+        mav.addObject("request" ,newRegistrationRequest);
+        mav.addObject("priorityCategories" , orgPriorities);
+        mav.setViewName("registerOrganisation");
+        return mav;
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ModelAndView handleException(EmailAlreadyExistsException ex, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        String error = ex.getMessage();
+
+        RegistrationRequest newRegistrationRequest = (RegistrationRequest) request.getAttribute("newRegistrationRequest");
+        Set<String> orgPriorities = (Set<String>) request.getAttribute("organisationPriorities");
+        request.removeAttribute("newRegistrationRequest");
+        request.removeAttribute("organisationPriorities");
+        mav.addObject("request" ,newRegistrationRequest);
+        mav.addObject("emailTakenError" , error);
+        mav.addObject("priorityCategories" , orgPriorities);
+        mav.setViewName("registerOrganisation");
         return mav;
     }
 

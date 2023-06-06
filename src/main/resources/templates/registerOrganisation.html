@@ -121,15 +121,24 @@
             <div class="col-md-12">
               <input type="text" th:field="*{name}" class="form-control" placeholder="Име на организацията" required>
             </div>
+            <div th:if="${name}" id="nameError">
+              <p th:text="${name}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="password" th:field="*{password}" class="form-control" placeholder="Парола за регистрация ">
             </div>
+            <div th:if="${password}" id="passwordError">
+              <p th:text="${password}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Парола за регистрация ">
+            </div>
+            <div th:if="${confirmPassword}" id="confirmPassword">
+              <p th:text="${confirmPassword}" style="color: red;"></p>
             </div>
           </div>
 <!--          <label>Лого на организацията:</label>-->
@@ -148,40 +157,65 @@
             <div class="col-md-12">
               <input type="text" class="form-control" th:field="*{address}" placeholder="Логация на организацията(ако има такава)">
             </div>
+            <div th:if="${address}" id="addressError">
+              <p th:text="${address}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" th:field="*{bullstat}" class="form-control" placeholder="Булстат ">
+            </div>
+            <div th:if="${bullstat}" id="bullstatError">
+              <p th:text="${bullstat}" style="color: red;"></p>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" class="form-control" th:field="*{website}" placeholder="Уеб сайт на организацията">
             </div>
+            <div th:if="${website}" id="websiteError">
+              <p th:text="${website}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" class="form-control"th:field="*{facebookLink}" placeholder="Линк към фейсбук страница" required>
+            </div>
+            <div th:if="${facebookLink}" id="facebookLinkError">
+              <p th:text="${facebookLink}" style="color: red;"></p>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" class="form-control" th:field="*{fullName}" placeholder="Лице за контакт - име и фамилия" required>
             </div>
+            <div th:if="${fullName}" id="fullNameError">
+              <p th:text="${fullName}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" th:field="*{username}" class="form-control" placeholder="Лице за контакт - електронна поща" required>
             </div>
+            <div th:if="${username}" id="usernameError">
+              <p th:text="${username}" style="color: red;"></p>
+            </div>
+
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" class="form-control" th:field="*{phoneNumber}" placeholder="Лице за контакт - телефон" required>
             </div>
+            <div th:if="${phoneNumber}" id="phoneNumberError">
+              <p th:text="${phoneNumber}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <textarea type="text" class="form-control" th:field="*{charityOption}" placeholder="Възможност за дарение. Линк към страница с информация за дарения. Или директно посочете тук банкова сметка с данни за дарение."></textarea>
+            </div>
+            <div th:if="${charityOption}" id="charityOptionError">
+              <p th:text="${charityOption}" style="color: red;"></p>
             </div>
           </div>
           <div class="form-group row">
@@ -235,11 +269,6 @@
           </div>
             <div class="col-md-6 offset-md-3">
               <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Регистрирай организацията">
-            </div>
-            <div th:if="${validationError}">
-              <ul>
-                <li th:each="error : ${validationError}" th:text="${error}"></li>
-              </ul>
             </div>
           <div>
             Result: <span th:text="${result}"></span>
