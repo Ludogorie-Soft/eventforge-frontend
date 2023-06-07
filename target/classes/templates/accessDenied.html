@@ -27,6 +27,8 @@
             </svg>
 </use>
 <h1>403</h1>
-<h2>Not this time, access forbidden!</h2>
+<h2><div th:if="${errorMessage}" id="errorMessage">
+    <p th:text="${errorMessage}" style="color: red;"></p>
+</div></h2>
 </body>
 </html>

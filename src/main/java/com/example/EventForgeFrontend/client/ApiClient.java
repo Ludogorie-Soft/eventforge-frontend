@@ -14,5 +14,7 @@ import java.util.UUID;
 @FeignClient(name = "api-client" ,url = "http://localhost:8081")
 public interface ApiClient {
 
+    @GetMapping("/proba")
+    public ResponseEntity<String> proba(@RequestHeader("Authorization") String authorization);
 
 }

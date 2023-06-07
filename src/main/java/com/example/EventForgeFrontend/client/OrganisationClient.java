@@ -11,8 +11,7 @@ import java.util.UUID;
 
 @FeignClient(name = "organisation-client" , url ="http://localhost:8081/organisation")
 public interface OrganisationClient {
-    @GetMapping("/proba")
-    public ResponseEntity<String> proba(@RequestHeader("Authorization") String authorization);
+
 
     @PutMapping("/update-account")
     public ResponseEntity<String> updateOrganisation(@Valid @RequestBody OrganisationRequest organisationRequest);

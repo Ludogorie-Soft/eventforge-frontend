@@ -27,15 +27,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidUserCredentialException.class)
     public ModelAndView handleInvalidUserCredentialException(InvalidUserCredentialException e, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView();
-        String error = e.getMessage();
+
         JWTAuthenticationRequest newLoginRequest = (JWTAuthenticationRequest) request.getAttribute("newLoginRequest");
         request.removeAttribute("newLoginRequest");
-        mav.addObject("login", newLoginRequest);
-        mav.addObject("errorMessage", error);
-        mav.setViewName("login");
 
-        return mav;
+       return assembleModelAndViewForLoginRedirectsOnly(newLoginRequest , e.getMessage());
     }
 
     @ExceptionHandler(CustomValidationErrorException.class)
@@ -47,12 +43,12 @@ public class GlobalExceptionHandler {
             log.info("field name: " + error.getKey());
             log.info("error message: " + error.getValue());
         }
-        Object newRegistrationRequest = getAttributeAsType(request  , "newRegistrationRequest" ,RegistrationRequest.class);
+        Object newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
         if (newRegistrationRequest != null) {
             mav.addObject("request", newRegistrationRequest);
         }
 
-        Object organisationPriorities =getAttributeAsType(request, "organisationPriorities" , Set.class);
+        Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
         if (organisationPriorities != null) {
             mav.addObject("priorityCategories", organisationPriorities);
         }
@@ -69,11 +65,11 @@ public class GlobalExceptionHandler {
         ModelAndView mav = new ModelAndView();
         String error = ex.getMessage();
 
-        Object newRegistrationRequest = getAttributeAsType(request , "newRegistrationRequest" , RegistrationRequest.class);
+        Object newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
         if (newRegistrationRequest != null) {
             mav.addObject("request", newRegistrationRequest);
         }
-        Object organisationPriorities =getAttributeAsType(request, "organisationPriorities" , Set.class);
+        Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
         if (organisationPriorities != null) {
             mav.addObject("priorityCategories", organisationPriorities);
         }
@@ -90,26 +86,58 @@ public class GlobalExceptionHandler {
         ModelAndView mav = new ModelAndView();
         log.info(ex.getMessage());
         redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
-        mav.setViewName("redirect:" + request.getHeader("Referer"));
+        mav.setViewName("accessDenied");
         return mav;
     }
 
     @ExceptionHandler(TokenExpiredException.class)
-    public ModelAndView handleTokenExpiredException(TokenExpiredException ex, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public ModelAndView handleTokenExpiredException(TokenExpiredException ex, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
-        if (request.getSession().getAttribute("sessionToken") == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Трябва да сте вписани за да получите достъп");
-            mav.setViewName("redirect:/index");
-            return mav;
-        } else {
-            String token = (String) request.getSession().getAttribute("sessionToken");
+        mav.addObject("login" , new JWTAuthenticationRequest());
+        String sessionToken = (String) request.getSession().getAttribute("sessionToken");
+        if (sessionToken != null) {
+            mav.addObject("tokenExpired", "Сесията Ви е изтекла , моля впишете се отново");
             sessionManager.invalidateSession(request);
-            authenticationApiClient.logout(token);
-            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
-            mav.setViewName("redirect:/login");
+            authenticationApiClient.logout(sessionToken);
+            mav.setViewName("login");
             return mav;
         }
+            mav.addObject("errorMessage" , ex.getMessage());
+            mav.setViewName("login");
+            return mav;
+    }
 
+    @ExceptionHandler(EmailConfirmationNotSentException.class)
+    public ModelAndView emailConfirmationNotSentException(EmailConfirmationNotSentException ex, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("emailConfirmationNotSent", ex.getMessage());
+        mav.setViewName("redirect:" + request.getHeader("Referer"));
+        return mav;
+    }
+
+    @ExceptionHandler(InvalidEmailConfirmationLinkException.class)
+    public ModelAndView invalidEmailConfirmationLinkException(InvalidEmailConfirmationLinkException ex, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("invalidConfirmationLink", ex.getMessage());
+        mav.setViewName("invalidConfirmationLink");
+        return mav;
+    }
+
+    @ExceptionHandler(UserDisabledException.class)
+    public ModelAndView handleUserDisabledException(UserDisabledException ex , HttpServletRequest request) {
+
+        JWTAuthenticationRequest newLoginRequest = (JWTAuthenticationRequest) request.getAttribute("newLoginRequest");
+        request.removeAttribute("newLoginRequest");
+
+        return assembleModelAndViewForLoginRedirectsOnly(newLoginRequest , ex.getMessage());
+    }
+
+    @ExceptionHandler(UserLockedException.class)
+    public ModelAndView handleUserLockedException(UserLockedException ex, HttpServletRequest request) {
+
+        JWTAuthenticationRequest newLoginRequest = (JWTAuthenticationRequest) request.getAttribute("newLoginRequest");
+        request.removeAttribute("newLoginRequest");
+       return assembleModelAndViewForLoginRedirectsOnly(newLoginRequest , ex.getMessage());
     }
 
     @SuppressWarnings("unchecked")
@@ -119,6 +147,12 @@ public class GlobalExceptionHandler {
             return (T) attribute;
         }
         return null;
+    }
+
+    private ModelAndView assembleModelAndViewForLoginRedirectsOnly(JWTAuthenticationRequest request , String errorMessage){
+        return new ModelAndView("login")
+                .addObject("login" , request)
+                .addObject("errorMessage" ,errorMessage);
     }
 
 }

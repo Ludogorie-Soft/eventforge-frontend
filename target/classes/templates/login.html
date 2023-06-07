@@ -77,7 +77,9 @@
             </div>
         </div>
     </header>
-
+    <div th:if="${tokenExpired}" id="tokenExpired">
+        <p th:text="${tokenExpired}" style="color: red;"></p>
+    </div>
     <div class="ftco-blocks-cover-1">
         <div class="site-section-cover overlay">
             <div class="container">
