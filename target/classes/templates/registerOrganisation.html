@@ -121,15 +121,24 @@
             <div class="col-md-12">
               <input type="text" th:field="*{name}" class="form-control" placeholder="Име на организацията" required>
             </div>
+            <div th:if="${name}" id="nameError">
+              <p th:text="${name}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="password" th:field="*{password}" class="form-control" placeholder="Парола за регистрация ">
             </div>
+            <div th:if="${password}" id="passwordError">
+              <p th:text="${password}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Парола за регистрация ">
+            </div>
+            <div th:if="${confirmPassword}" id="confirmPassword">
+              <p th:text="${confirmPassword}" style="color: red;"></p>
             </div>
           </div>
 <!--          <label>Лого на организацията:</label>-->
@@ -148,45 +157,73 @@
             <div class="col-md-12">
               <input type="text" class="form-control" th:field="*{address}" placeholder="Логация на организацията(ако има такава)">
             </div>
+            <div th:if="${address}" id="addressError">
+              <p th:text="${address}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" th:field="*{bullstat}" class="form-control" placeholder="Булстат ">
+            </div>
+            <div th:if="${bullstat}" id="bullstatError">
+              <p th:text="${bullstat}" style="color: red;"></p>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" class="form-control" th:field="*{website}" placeholder="Уеб сайт на организацията">
             </div>
+            <div th:if="${website}" id="websiteError">
+              <p th:text="${website}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" class="form-control"th:field="*{facebookLink}" placeholder="Линк към фейсбук страница" required>
             </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <input type="text" class="form-control" th:field="*{firstAndLastName}" placeholder="Лице за контакт - име и фамилия" required>
+            <div th:if="${facebookLink}" id="facebookLinkError">
+              <p th:text="${facebookLink}" style="color: red;"></p>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
-              <input type="text" th:field="*{email}" class="form-control" placeholder="Лице за контакт - електронна поща" required>
+              <input type="text" class="form-control" th:field="*{fullName}" placeholder="Лице за контакт - име и фамилия" required>
             </div>
+            <div th:if="${fullName}" id="fullNameError">
+              <p th:text="${fullName}" style="color: red;"></p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <input type="text" th:field="*{username}" class="form-control" placeholder="Лице за контакт - електронна поща" required>
+            </div>
+            <div th:if="${username}" id="usernameError">
+              <p th:text="${username}" style="color: red;"></p>
+            </div>
+
           </div>
           <div class="form-group row">
             <div class="col-md-12">
               <input type="text" class="form-control" th:field="*{phoneNumber}" placeholder="Лице за контакт - телефон" required>
             </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-md-12">
-              <textarea type="text" class="form-control" th:field="*{optionalCharity}" placeholder="Възможност за дарение. Линк към страница с информация за дарения. Или директно посочете тук банкова сметка с данни за дарение."></textarea>
+            <div th:if="${phoneNumber}" id="phoneNumberError">
+              <p th:text="${phoneNumber}" style="color: red;"></p>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-md-12">
-              <textarea name="" id="" th:field="*{purposeOfOrganisation}" class="form-control" placeholder="Мисия на организацията" cols="30" rows="10"></textarea>
+              <textarea type="text" class="form-control" th:field="*{charityOption}" placeholder="Възможност за дарение. Линк към страница с информация за дарения. Или директно посочете тук банкова сметка с данни за дарение."></textarea>
+            </div>
+            <div th:if="${charityOption}" id="charityOptionError">
+              <p th:text="${charityOption}" style="color: red;"></p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <textarea name="" id="" th:field="*{organisationPurpose}" class="form-control" placeholder="Мисия на организацията" cols="30" rows="10"></textarea>
+            </div>
+            <div th:if="${organisationPurpose}" id="organisationPurpose">
+              <p th:text="${organisationPurpose}" style="color: red;"></p>
             </div>
           </div>
           <div class="form-group row"><div class="col-md-12">
@@ -227,10 +264,19 @@
 
               <div th:each="category : ${priorityCategories}">
                 <label>
-                  <input type="checkbox" th:value="${category}" th:field="*{categories}" />
+                  <input type="checkbox" th:value="${category}" th:field="*{organisationPriorities}" />
                   <span th:text="${category}"></span>
                 </label>
               </div>
+
+            <div class="form-group row">
+              <div class="col-md-12">
+                <textarea  id="priority" th:field="*{optionalCategory}" class="form-control" placeholder="Опционален приоритет на организация" cols="30" rows="10"></textarea>
+              </div>
+            </div>
+            <div th:if="${registrationRequest}" id="registrationRequest">
+              <p th:text="${registrationRequest}" style="color: red;"></p>
+            </div>
 
           </div>
             <div class="col-md-6 offset-md-3">

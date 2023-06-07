@@ -4,6 +4,8 @@ import com.example.EventForgeFrontend.dto.AuthenticationResponse;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +27,8 @@ public interface AuthenticationApiClient {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> getTokenForAuthenticatedUser(@RequestBody JWTAuthenticationRequest authRequest);
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegistrationRequest request
-    );
+    public ResponseEntity<String> register(
+            @Valid @RequestBody RegistrationRequest request);
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorization);
 }

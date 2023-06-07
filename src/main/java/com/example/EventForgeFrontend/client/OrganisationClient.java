@@ -8,13 +8,11 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @FeignClient(name = "organisation-client" , url ="http://localhost:8081/organisation")
 public interface OrganisationClient {
-    @GetMapping("/proba")
-    public ResponseEntity<String> proba(@RequestHeader("Authorization") String authorization);
+
 
     @PutMapping("/update-account")
     public ResponseEntity<String> updateOrganisation(@Valid @RequestBody OrganisationRequest organisationRequest);
@@ -25,8 +23,6 @@ public interface OrganisationClient {
     public ResponseEntity<List<OrganisationResponse>> getAllOrganisations();
     @DeleteMapping(path = "{organisationId}")
     public ResponseEntity<String> deleteOrganisation(@PathVariable("organisationId") Long id);
-//    @PostMapping("/updateOrganisationIsEnabled")
-//    public ResponseEntity<String> updateOrganisationIsEnabled(@RequestParam("orgName") String orgName);
-    @PostMapping("/enableOrganisationByAdmin")
-    public ResponseEntity<String> enableOrganisationByAdmin(@RequestParam("userId") Long userId);
+    @PostMapping("/updateOrganisationIsEnabled")
+    public ResponseEntity<String> updateOrganisationIsEnabled(@RequestParam("orgName") String orgName);
 }

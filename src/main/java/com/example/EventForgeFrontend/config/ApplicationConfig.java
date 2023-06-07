@@ -1,6 +1,6 @@
 package com.example.EventForgeFrontend.config;
 
-import com.example.EventForgeFrontend.exception.CustomErrorDecoder;
+import com.example.EventForgeFrontend.exception.decoder.CustomErrorDecoder;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

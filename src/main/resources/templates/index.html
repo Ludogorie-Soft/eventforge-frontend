@@ -38,10 +38,6 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
-    <div th:if="${errorMessage}" id="errorMessage">
-        <p th:text="${errorMessage}" style="color: red;"></p>
-    </div>
-
 
     <header class="site-navbar site-navbar-target" role="banner">
 
@@ -62,6 +58,10 @@
                 </div>
             </div>
         </div>
+        <div th:if="${session.sessionUserRole == 'ORGANISATION'}">
+            <!-- Add your content specific to the "organisation" role here -->
+            <p>Welcome, Organisation User!</p>
+        </div>
 
 
         <div class="container">
@@ -72,12 +72,12 @@
 
                 <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
-                        <form th:action="@{/logout}" method="post">
+                        <form th:if="${session.sessionToken}"  th:action="@{/logout}" method="post">
                             <input type="submit" value="Logout">
                         </form>
                         <li class="active"><a href="/index" class="nav-link">Начало</a></li>
                         <li><a href="/registerOrganisation" class="nav-link">Регистрирай се</a></li>
-                        <li><a href="/login" class="nav-link">Впиши се</a></li>
+                        <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
                         <li><a href="gallery.html" class="nav-link">Еднократни активности</a></li>
                         <li><a href="pricing.html" class="nav-link">Продължително активности</a></li>
                         <li><a href="about.html" class="nav-link">Организации</a></li>
@@ -91,7 +91,6 @@
                 </div>
             </div>
         </div>
-
 
 
     </header>
