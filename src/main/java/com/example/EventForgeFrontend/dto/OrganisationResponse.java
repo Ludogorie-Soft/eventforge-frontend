@@ -18,6 +18,7 @@ public class OrganisationResponse {
     private String name;
     private String bullstat;
     private String username;
+    private Long userId;
     private String phone;
     private String address;
     private String charityOption;

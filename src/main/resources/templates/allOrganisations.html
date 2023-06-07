@@ -108,15 +108,15 @@
     <thead>
     <tr>
         <th scope="col">ID</th>
-        <th scope="col">Name</th>
-        <th scope="col">Bullstat</th>
-        <th scope="col">Username</th>
-        <th scope="col">Phone</th>
-        <th scope="col">Address</th>
-        <th scope="col">Charity Option</th>
-        <th scope="col">Purpose of Organisation</th>
-        <th scope="col">Delete organisation</th>
-        <th scope="col">Enable</th>
+        <th scope="col">Име</th>
+        <th scope="col">Булстат</th>
+        <th scope="col">Потребителско име</th>
+        <th scope="col">Телефон</th>
+        <th scope="col">Адрес</th>
+        <th scope="col">Благотворителност</th>
+        <th scope="col">Цел</th>
+        <th scope="col">Изтрий органицизия</th>
+        <th scope="col">Потвърди органицизия</th>
     </tr>
     </thead>
     <tbody>
@@ -136,12 +136,12 @@
 <!--        </td>-->
         <td>
             <form th:action="@{/deleteOrganisation/{organisationId}(organisationId=${organisation.id})}" method="post">
-                <button type="submit" class="btn btn-default" onclick="return confirm('Наистина ли искате да истриете тази организация?')">Delete</button>
+                <button type="submit" class="btn btn-default" onclick="return confirm('Наистина ли искате да истриете тази организация?')">Изтрий</button>
             </form>
         </td>
         <td>
-            <form th:action="@{/updateOrganisationIsEnabled/{orgName}(orgName=${organisation.name})}" th:method="POST">
-                <button type="submit">Enable</button>
+            <form th:action="@{/enableOrganisationByAdmin/{userId}(userId=${organisation.userId})}" th:method="POST">
+                <button type="submit">Потвърди</button>
             </form>
         </td>
     </tr>

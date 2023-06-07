@@ -25,7 +25,6 @@ public class OrganisationController {
         this.organisationClient = organisationClient;
     }
 
-
     @GetMapping("/allOrganisations")
     public String getAllOrganisations(Model model){
         List<OrganisationResponse> allOrganisations = organisationClient.getAllOrganisations().getBody();
@@ -37,17 +36,9 @@ public class OrganisationController {
         organisationClient.deleteOrganisation(organisationId);
         return new ModelAndView("redirect:/allOrganisations");
     }
-    @PostMapping("/updateOrganisationIsEnabled/{orgName}")
-    public ModelAndView updateOrganisationIsEnabled(@PathVariable(name = "orgName") String orgName){
-        organisationClient.updateOrganisationIsEnabled(orgName);
+    @PostMapping("/enableOrganisationByAdmin/{userId}")
+    public ModelAndView enableOrganisationByAdmin(@PathVariable(name = "userId") Long userId){
+        organisationClient.enableOrganisationByAdmin(userId);
         return new ModelAndView("redirect:/allOrganisations");
     }
-
-//    @GetMapping("/organisation/{id}")
-//    public String getOrganisation(@PathVariable UUID id, Model model) {
-//        ResponseEntity<OrganisationResponse> organisation = apiClient.getOrganisation(id);
-//        ResponseEntity<OrganisationResponse> organisation1 = apiClient.updateOrganisation(id, organisation);
-//        model.addAttribute("organisation", organisation);
-//        return "organisation";
-//    }
 }
