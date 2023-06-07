@@ -17,6 +17,7 @@ public class OrganisationResponse {
     private Long id;
     private String name;
     private String bullstat;
+    private Long userId;
     private String username;
     private String phone;
     private String address;

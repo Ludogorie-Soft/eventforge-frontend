@@ -2,7 +2,6 @@ package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.ApiClient;
 import com.example.EventForgeFrontend.client.OrganisationClient;
-import com.example.EventForgeFrontend.dto.Organisation;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,11 +33,6 @@ public class OrganisationController {
     @PostMapping("/deleteOrganisation/{organisationId}")
     public ModelAndView deleteOrganisation(@PathVariable(name = "organisationId") Long organisationId) {
         organisationClient.deleteOrganisation(organisationId);
-        return new ModelAndView("redirect:/allOrganisations");
-    }
-    @PostMapping("/enableOrganisationByAdmin/{userId}")
-    public ModelAndView enableOrganisationByAdmin(@PathVariable(name = "userId") Long userId){
-        organisationClient.enableOrganisationByAdmin(userId);
         return new ModelAndView("redirect:/allOrganisations");
     }
 }
