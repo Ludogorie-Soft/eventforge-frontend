@@ -5,7 +5,6 @@ import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
 import com.example.EventForgeFrontend.exception.*;
 import com.example.EventForgeFrontend.session.SessionManager;
-import feign.codec.ErrorDecoder;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -23,9 +23,6 @@ public class GlobalExceptionHandler {
     private SessionManager sessionManager;
 
     @Autowired
-    private ErrorDecoder errorDecoder;
-
-    @Autowired
     private AuthenticationApiClient authenticationApiClient;
 
     @ExceptionHandler(InvalidUserCredentialException.class)
@@ -34,8 +31,8 @@ public class GlobalExceptionHandler {
         String error = e.getMessage();
         JWTAuthenticationRequest newLoginRequest = (JWTAuthenticationRequest) request.getAttribute("newLoginRequest");
         request.removeAttribute("newLoginRequest");
-        mav.addObject("login" , newLoginRequest);
-        mav.addObject("errorMessage" , error);
+        mav.addObject("login", newLoginRequest);
+        mav.addObject("errorMessage", error);
         mav.setViewName("login");
 
         return mav;
@@ -43,21 +40,26 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomValidationErrorException.class)
     public ModelAndView handleCustomValidationErrorException(CustomValidationErrorException e, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView();
-        Map<String , String> errors = e.getErrors();
-        for (Map.Entry<String, String> error : errors.entrySet()){
-            String fieldName = error.getKey();
-            String message = error.getValue();
-            mav.addObject(fieldName , message);
-            log.info("field name: "+fieldName);
-            log.info("error message:"+message );
+        ModelAndView mav = new ModelAndView("registerOrganisation");
+        Map<String, String> errors = e.getErrors();
+        for (Map.Entry<String, String> error : errors.entrySet()) {
+            mav.addObject(error.getKey(), error.getValue());
+            log.info("field name: " + error.getKey());
+            log.info("error message: " + error.getValue());
         }
-        RegistrationRequest newRegistrationRequest = (RegistrationRequest) request.getAttribute("newRegistrationRequest");
-        Set<String> orgPriorities = (Set<String>) request.getAttribute("organisationPriorities");
+        Object newRegistrationRequest = getAttributeAsType(request  , "newRegistrationRequest" ,RegistrationRequest.class);
+        if (newRegistrationRequest != null) {
+            mav.addObject("request", newRegistrationRequest);
+        }
+
+        Object organisationPriorities =getAttributeAsType(request, "organisationPriorities" , Set.class);
+        if (organisationPriorities != null) {
+            mav.addObject("priorityCategories", organisationPriorities);
+        }
+
+
         request.removeAttribute("newRegistrationRequest");
         request.removeAttribute("organisationPriorities");
-        mav.addObject("request" ,newRegistrationRequest);
-        mav.addObject("priorityCategories" , orgPriorities);
         mav.setViewName("registerOrganisation");
         return mav;
     }
@@ -67,13 +69,18 @@ public class GlobalExceptionHandler {
         ModelAndView mav = new ModelAndView();
         String error = ex.getMessage();
 
-        RegistrationRequest newRegistrationRequest = (RegistrationRequest) request.getAttribute("newRegistrationRequest");
-        Set<String> orgPriorities = (Set<String>) request.getAttribute("organisationPriorities");
+        Object newRegistrationRequest = getAttributeAsType(request , "newRegistrationRequest" , RegistrationRequest.class);
+        if (newRegistrationRequest != null) {
+            mav.addObject("request", newRegistrationRequest);
+        }
+        Object organisationPriorities =getAttributeAsType(request, "organisationPriorities" , Set.class);
+        if (organisationPriorities != null) {
+            mav.addObject("priorityCategories", organisationPriorities);
+        }
+
         request.removeAttribute("newRegistrationRequest");
         request.removeAttribute("organisationPriorities");
-        mav.addObject("request" ,newRegistrationRequest);
-        mav.addObject("emailTakenError" , error);
-        mav.addObject("priorityCategories" , orgPriorities);
+        mav.addObject("emailTakenError", error);
         mav.setViewName("registerOrganisation");
         return mav;
     }
@@ -81,9 +88,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ModelAndView handleForbiddenException(AccessDeniedException ex, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
-        String error = ex.getMessage();
-        log.info(error);
-        redirectAttributes.addFlashAttribute("errorMessage", error);
+        log.info(ex.getMessage());
+        redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
         mav.setViewName("redirect:" + request.getHeader("Referer"));
         return mav;
     }
@@ -96,23 +102,23 @@ public class GlobalExceptionHandler {
             mav.setViewName("redirect:/index");
             return mav;
         } else {
-            String error = ex.getMessage();
             String token = (String) request.getSession().getAttribute("sessionToken");
             sessionManager.invalidateSession(request);
             authenticationApiClient.logout(token);
-            redirectAttributes.addFlashAttribute("errorMessage", error);
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
             mav.setViewName("redirect:/login");
             return mav;
         }
 
     }
 
-    private String extractCustomErrorMessage(String fullErrorMessage) {
-        String[] parts = fullErrorMessage.split("\\[");
-        if (parts.length > 1) {
-            String lastPart = parts[parts.length - 1];
-            return lastPart.substring(0, lastPart.length() - 1);
+    @SuppressWarnings("unchecked")
+    private <T> T getAttributeAsType(HttpServletRequest request, String attributeName, Class<T> targetType) {
+        Object attribute = request.getAttribute(attributeName);
+        if (targetType.isInstance(attribute)) {
+            return (T) attribute;
         }
-        return fullErrorMessage;
+        return null;
     }
+
 }

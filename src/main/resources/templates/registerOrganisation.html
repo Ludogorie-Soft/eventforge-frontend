@@ -222,6 +222,9 @@
             <div class="col-md-12">
               <textarea name="" id="" th:field="*{organisationPurpose}" class="form-control" placeholder="Мисия на организацията" cols="30" rows="10"></textarea>
             </div>
+            <div th:if="${organisationPurpose}" id="organisationPurpose">
+              <p th:text="${organisationPurpose}" style="color: red;"></p>
+            </div>
           </div>
           <div class="form-group row"><div class="col-md-12">
             <label>Отбележете категориите, които съответстват на приоритетите на организацията.:</label>
@@ -265,6 +268,15 @@
                   <span th:text="${category}"></span>
                 </label>
               </div>
+
+            <div class="form-group row">
+              <div class="col-md-12">
+                <textarea  id="priority" th:field="*{optionalCategory}" class="form-control" placeholder="Опционален приоритет на организация" cols="30" rows="10"></textarea>
+              </div>
+            </div>
+            <div th:if="${registrationRequest}" id="registrationRequest">
+              <p th:text="${registrationRequest}" style="color: red;"></p>
+            </div>
 
           </div>
             <div class="col-md-6 offset-md-3">
