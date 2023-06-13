@@ -23,6 +23,4 @@ public interface OrganisationClient {
     public ResponseEntity<List<OrganisationResponse>> getAllOrganisations();
     @DeleteMapping(path = "{organisationId}")
     public ResponseEntity<String> deleteOrganisation(@PathVariable("organisationId") Long id);
-    @PostMapping("/updateOrganisationIsEnabled")
-    public ResponseEntity<String> updateOrganisationIsEnabled(@RequestParam("orgName") String orgName);
 }

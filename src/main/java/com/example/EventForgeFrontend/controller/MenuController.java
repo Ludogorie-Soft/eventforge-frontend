@@ -42,6 +42,10 @@ public class MenuController {
     public String createEvent() {
         return "/createEvent";
     }
+    @GetMapping("/organisationProfile")
+    public String organisationProfile() {
+        return "/organisationProfile";
+    }
 
     @GetMapping("/updateEvent")
     public String updateEvent() {
