@@ -1,6 +1,5 @@
 package com.example.EventForgeFrontend.client;
 
-import com.example.EventForgeFrontend.dto.Organisation;
 import com.example.EventForgeFrontend.dto.OrganisationRequest;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import jakarta.validation.Valid;

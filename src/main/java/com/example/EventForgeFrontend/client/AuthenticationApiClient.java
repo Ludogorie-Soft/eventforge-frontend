@@ -4,7 +4,6 @@ import com.example.EventForgeFrontend.dto.AuthenticationResponse;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 @FeignClient(name = "authentication-api-client" ,url = "http://localhost:8081/auth")
 
