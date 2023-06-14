@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/v1/organisation/manage-events")
+@RequestMapping("/organisation/manage-events")
 @RequiredArgsConstructor
 public class ManageEventsController {
 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Еднократни събития</title>
+    <style>
+        /* CSS to hide the form by default */
+        #advancedSearchForm {
+            display: none;
+        }
+    </style>
+    <script>
+        // JavaScript to toggle the visibility of the form
+        function toggleAdvancedSearchForm() {
+            var form = document.getElementById('advancedSearchForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+
+<h1></h1>
+
+<!-- Show active or expired events based on the isExpired value -->
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Address</th>
+        <!-- Add more columns based on your requirements -->
+    </tr>
+    </thead>
+    <tbody>
+    <input type="hidden" name="isExpired" value="${isExpired}"/>
+    <h>Всички активни еднократни събития</h>
+    <tr th:if="${oneTimeEvents}"><!-- Display this if oneTimeEventsFilter is not empty -->
+        <!-- Add more columns based on your requirements -->
+    <tr th:each="event : ${oneTimeEvents}">
+        <td th:text="${event.name}"></td>
+        <td th:text="${event.description}"></td>
+        <td th:text="${event.address}"></td>
+        <!-- Add more columns based on your requirements -->
+    </tr>
+    </tr>
+
+
+
+
+    </tbody>
+</table>
+<h2>Filter One-Time Events</h2>
+
+<form th:action="@{/one-time-events/advanced-search/{isExpired}(isExpired=${isExpired})}"  method="post">
+    <label for="name">Име на събитието:</label>
+    <input type="text" id="name" name="name" th:value="*{name}"/><br/>
+    <button type="submit">Filter</button>
+</form>
+
+
+<!-- Filter one-time events by criteria -->
+
+
+
+<!-- Show expired events -->
+<h2>Expired One-Time Events</h2>
+<form th:action="@{/one-time-events/expired}" method="get">
+    <input type="hidden" name="isExpired" value="${isExpired}"/>
+    <!-- Add more filter criteria fields based on your requirements -->
+    <button type="submit">Show Expired Events</button>
+</form>
+
+</body>
+</html>

@@ -1,9 +1,7 @@
 package com.example.EventForgeFrontend.controller;
 
-import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
 import com.example.EventForgeFrontend.client.ProbaClient;
-import com.example.EventForgeFrontend.dto.OrganisationRequest;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/menu")
 @Slf4j
 public class MenuController {
 
@@ -26,17 +21,10 @@ public class MenuController {
     private final OrganisationApiClient organisationApiClient;
 
 
-    @GetMapping("/index")
+    @GetMapping
     public String index() {
         return "index";
     }
-
-
-
-
-
-
-
 
 
     @GetMapping("/forgottenPassword")
