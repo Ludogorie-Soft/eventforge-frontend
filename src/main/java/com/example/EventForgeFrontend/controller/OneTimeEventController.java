@@ -29,7 +29,7 @@ public class OneTimeEventController {
         model.addAttribute("oneTimeEvents", oneTimeEvents.getBody());
         model.addAttribute("isExpired", false);
 
-        return "test";
+        return "oneTimeEvents";
     }
 
     @GetMapping("/expired")
@@ -40,7 +40,7 @@ public class OneTimeEventController {
         model.addAttribute("isExpired", true);
 
 
-        return "test";
+        return "oneTimeEvents";
     }
 
 
@@ -58,24 +58,13 @@ public class OneTimeEventController {
                                                 @PathVariable("isExpired") boolean isExpired,
                                                 Model model) {
 
-        CriteriaFilterRequest request = new CriteriaFilterRequest();
-        request.setIsOneTime(true);
-        request.setSortByExpired(isExpired);
-        request.setName(name);
-        request.setDescription(description);
-        request.setAddress(address);
-        request.setOrganisationName(organisationName);
-        request.setMinAge(minAge);
-        request.setMaxAge(maxAge);
-        request.setIsOnline(isOnline);
-        request.setEventCategories(eventCategories);
-        request.setStartsAt(startsAt);
-        request.setEndsAt(endsAt);
+
+        CriteriaFilterRequest request = new CriteriaFilterRequest(true , isExpired ,name ,description ,address,organisationName,minAge,maxAge,isOnline,eventCategories,startsAt,endsAt);
+
         ResponseEntity<List<?>> oneTimeEvents = eventApiClient.getEventsByCriteria(request);
-        model.addAttribute("filterRequest", request);
         model.addAttribute("oneTimeEvents", oneTimeEvents.getBody());
         model.addAttribute("isExpired", isExpired);
-        return "test";
+        return "oneTimeEvents";
     }
 
 

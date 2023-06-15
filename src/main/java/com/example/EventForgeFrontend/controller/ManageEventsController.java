@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,14 +28,9 @@ public class ManageEventsController {
 
         if(SessionManager.storeSessionUserRole.equals("ORGANISATION")){
             ResponseEntity<EventResponseContainer> getAllEventsForOrganisation = organisationApiClient.getAllEventsByOrganisation(authHeader);
-            List<OneTimeEventResponse> oneTimeEventResponses = new ArrayList<>();
-            List<RecurrenceEventResponse> recurrenceEventResponses = new ArrayList<>();
-            if (getAllEventsForOrganisation.getBody().getOneTimeEvents() != null) {
-                oneTimeEventResponses = getAllEventsForOrganisation.getBody().getOneTimeEvents();
-            }
-            if (getAllEventsForOrganisation.getBody().getRecurrenceEvents() != null) {
-                recurrenceEventResponses = getAllEventsForOrganisation.getBody().getRecurrenceEvents();
-            }
+            List<OneTimeEventResponse> oneTimeEventResponses = getAllEventsForOrganisation.getBody().getOneTimeEvents();
+            List<RecurrenceEventResponse> recurrenceEventResponses = getAllEventsForOrganisation.getBody().getRecurrenceEvents();
+
             model.addAttribute("oneTimeEvents", oneTimeEventResponses);
             model.addAttribute("recurrenceEvents", recurrenceEventResponses);
         }
@@ -51,14 +45,9 @@ public class ManageEventsController {
     public String findEventsByName(@RequestHeader("Authorization")String authHeader , @RequestParam(value = "oneTimeEventName" ,required = false)String oneTimeEventName,
                                    @RequestParam(value = "recurrenceEventName" ,required = false)String recurrenceEventName , Model model){
         ResponseEntity<EventResponseContainer> eventResponseContainer = organisationApiClient.getEventsByNameAndByOrganisation(authHeader , oneTimeEventName ,recurrenceEventName);
-        List<OneTimeEventResponse> oneTimeEventsByName = new ArrayList<>();
-        List<RecurrenceEventResponse> recurrenceEventsByName = new ArrayList<>();
-        if(eventResponseContainer.getBody().getOneTimeEvents()!=null){
-            oneTimeEventsByName = eventResponseContainer.getBody().getOneTimeEvents();
-        }
-        if(eventResponseContainer.getBody().getRecurrenceEvents()!=null){
-            recurrenceEventsByName = eventResponseContainer.getBody().getRecurrenceEvents();
-        }
+        List<OneTimeEventResponse> oneTimeEventsByName = eventResponseContainer.getBody().getOneTimeEvents();
+        List<RecurrenceEventResponse> recurrenceEventsByName = eventResponseContainer.getBody().getRecurrenceEvents();
+
         model.addAttribute("oneTimeEvents" , oneTimeEventsByName);
         model.addAttribute("recurrenceEvents" ,recurrenceEventsByName);
         return "manageOrganisationEvents";

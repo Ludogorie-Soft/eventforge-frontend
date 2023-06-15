@@ -1,13 +1,11 @@
 package com.example.EventForgeFrontend.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 @Data
-@NoArgsConstructor
 public class EventResponseContainer {
     private List<OneTimeEventResponse> oneTimeEvents = new ArrayList<>();
     private List<RecurrenceEventResponse> recurrenceEvents =new ArrayList<>();
