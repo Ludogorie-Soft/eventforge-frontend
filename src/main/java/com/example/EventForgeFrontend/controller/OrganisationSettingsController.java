@@ -3,6 +3,8 @@ package com.example.EventForgeFrontend.controller;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
 import com.example.EventForgeFrontend.client.ProbaClient;
 import com.example.EventForgeFrontend.dto.*;
+import com.example.EventForgeFrontend.session.SessionManager;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,10 +18,14 @@ public class OrganisationSettingsController {
     private final ProbaClient probaClient;
     private final OrganisationApiClient organisationApiClient;
 
+    private final SessionManager sessionManager;
+
 
     @GetMapping("/update-profile")
-    public String updateOrgProfile(@RequestHeader("Authorization") String authHeader, Model model) {
-        ResponseEntity<UpdateAccountRequest> getUpdateRequest = organisationApiClient.updateAccountRequestResponseEntity(authHeader);
+    public String updateOrgProfile(HttpServletRequest request, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<UpdateAccountRequest> getUpdateRequest = organisationApiClient.updateAccountRequestResponseEntity(token);
         model.addAttribute("updateRequest", getUpdateRequest.getBody());
         return "organisationProfile";
     }

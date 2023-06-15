@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 @Builder
 public class RecurrenceEventResponse {
     private Long id;
-    //    private String image;
+    private Long imageId;
+    private String imageUrl;
     private String name;
     private String description;
     private String address;

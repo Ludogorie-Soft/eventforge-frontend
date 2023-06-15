@@ -1,7 +1,7 @@
-package com.example.EventForgeFrontend.exception.decoder;
+package com.example.EventForgeFrontend.config.exception.decoder;
 
 
-import com.example.EventForgeFrontend.exception.*;
+import com.example.EventForgeFrontend.config.exception.*;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import jakarta.servlet.http.HttpServletResponse;

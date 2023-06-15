@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
@@ -46,7 +45,7 @@ public class AuthenticationController {
         httpRequest.removeAttribute("newRegistrationRequest");
         httpRequest.removeAttribute("organisationPriorities");
         model.addAttribute("successfulRegistration", register.getBody());
-        return "redirect:/index";
+        return "index";
     }
 
     @GetMapping("/login")
@@ -69,7 +68,7 @@ public class AuthenticationController {
         // Set the session token in the current session
         sessionManager.setSessionToken(request, token, userRole);
 
-        return "redirect:/index";
+        return "redirect:/";
     }
 
     @PostMapping("/logout")

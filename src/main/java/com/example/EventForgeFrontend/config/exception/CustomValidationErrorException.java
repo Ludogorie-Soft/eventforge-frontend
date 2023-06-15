@@ -1,4 +1,4 @@
-package com.example.EventForgeFrontend.exception;
+package com.example.EventForgeFrontend.config.exception;
 
 import java.util.Map;
 

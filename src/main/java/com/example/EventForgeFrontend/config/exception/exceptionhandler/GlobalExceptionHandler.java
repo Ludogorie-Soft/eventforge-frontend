@@ -1,9 +1,10 @@
-package com.example.EventForgeFrontend.exception.exceptionhandler;
+package com.example.EventForgeFrontend.config.exception.exceptionhandler;
 
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
+import com.example.EventForgeFrontend.config.exception.*;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
-import com.example.EventForgeFrontend.exception.*;
+
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
