@@ -4,34 +4,105 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet"  th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet"  th:href="@{/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet"  th:href="@{/css/jquery.fancybox.min.css}">
+    <link rel="stylesheet"  th:href="@{css/owl.carousel.min.css}">
+    <link rel="stylesheet"  th:href="@{css/owl.theme.default.min.css}">
+    <link rel="stylesheet"  th:href="@{fonts/flaticon/font/flaticon.css}">
+    <link rel="stylesheet"  th:href="@{css/aos.css}">
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="displayStyle.css">
+    <link rel="stylesheet" th:href="@{css/displayStyle.css}">
     <title>Display events</title>
 </head>
-<body>
-    <div class="navbar" id="mynavbar">
-        <a href="/index" class="active" style="border-left: 0;"><i class="fa fa-home"></i></a>
-        <a href="/registerOrganisation" class="nav-link">Регистрирай се</a>
-        <a href="/login" class="nav-link">Впиши се</a>
-        <a href="gallery.html" class="nav-link">Еднократни активности</a>
-        <a href="pricing.html" class="nav-link">Продължителни активности</a>
-        <a href="about.html" class="nav-link">Организации</a>
-        <a href="" id="locationObject"><i class="fa fa-location-arrow" style="color: #ffc107;"></i> Varna</a>
-        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-          <i class="fa fa-bars"></i>
-        </a>
+<body >
+    
+
+    <div class="site-wrap" id="home-section">
+    
+      <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+          <div class="site-mobile-menu-close mt-3">
+            <span class="icon-close2 js-menu-toggle"></span>
+          </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+      </div>
+    
+    
+    
+      <header class="site-navbar site-navbar-target" role="banner">
+    
+        <div class="container mb-3">
+          <div class="d-flex align-items-center">
+            <div class="site-logo mr-auto">
+              <a href="/index">Eventforge<span class="text-primary"></span></a>
+            </div>
+            <div class="site-quick-contact d-none d-lg-flex ml-auto ">
+              <div class="d-flex site-info align-items-center mr-5">
+                <span class="block-icon mr-3"><span class="icon-map-marker text-yellow"></span></span>
+                <span>Varna<br> Bulgaria</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="menu-wrap d-flex align-items-center">
+            <span class="d-inline-block d-lg-none"><a href="#" class="text-black site-menu-toggle js-menu-toggle py-5"><span class="icon-menu h3 text-black"></span></a></span>
+            <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
+              <ul class="site-menu main-menu js-clone-nav mr-auto ">
+                <li><a href="/index" class="nav-link">Начало</a></li>
+                <li class="active"><a href="/registerOrganisation" class="nav-link">Регистрирай се</a></li>
+                <li><a href="/login" class="nav-link">Впиши се</a></li>
+                <li><a href="gallery.html" class="nav-link">Еднократни активности</a></li>
+                <li><a href="pricing.html" class="nav-link">Продължителни активности</a></li>
+                <li><a href="about.html" class="nav-link">Организации</a></li>
+              </ul>
+            </nav>
+    
+            <div class="top-social ml-auto">
+              <a href="#"><span class="icon-facebook text-teal"></span></a>
+              <a href="#"><span class="icon-twitter text-success"></span></a>
+              <a href="#"><span class="icon-linkedin text-yellow"></span></a>
+            </div>
+          </div>
+        </div>
+      </header>
+    
+      <div class="ftco-blocks-cover-1">
+        <div class="site-section-cover overlay">
+          <div class="container">
+            <div class="row align-items-center ">
+              <div class="col-md-5 mt-5 pt-5">
+                <span class="text-cursive h5 text-red">Регистрирай организация</span>
+                <h1 class="mb-3 font-weight-bold text-teal">Eventforge</h1>
+              </div>
+              <div class="col-md-5 ml-auto align-self-end">
+                <img src="images/img_1.png" alt="Image" class="img-fluid">
+    
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
     <div class="search-bar">
         <div class="inputGroup">
             <input type="text" onkeyup="searchCards()" name="text" class="input" id="search" placeholder="🔍Търсене">
         </div>
     </div>
-    <div class="container">
+    <div class="container2">
         <div class="cards-container" id="cards-container">
             <div class="myCard">
                 <div class="innerCard">
                   <div class="frontSide">
-                    <div class="banner">
+                    <div class="bannerCard">
                       <img src="img/bg.png" alt="Banner Image"/>
                     </div>
                     <div class="logo">
@@ -62,7 +133,7 @@
             <div class="myCard">
                 <div class="innerCard">
                   <div class="frontSide">
-                    <div class="banner">
+                    <div class="bannerCard">
                       <img src="img/bg.png" alt="Banner Image"/>
                     </div>
                     <div class="logo">
@@ -95,6 +166,21 @@
         <button id="popupCloseButton"class="popupCloseButton" onclick="hidePopup()"><i class="fa fa-close"></i></button>
       </div>
       
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-migrate-3.0.0.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/bootstrap-datepicker.min.js"></script>
+    <script src="js/aos.js"></script>
+
+    <script th:src="@{js/main.js}"></script>
     <script src="script.js"></script>
 </body>
 </html>
