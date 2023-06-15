@@ -26,7 +26,7 @@ public class OneTimeEventController {
     public String showAllActiveOneTimeEvents(@RequestParam(value = "order", required = false) String order, Model model) {
         ResponseEntity<List<OneTimeEventResponse>> oneTimeEvents = oneTimeEventApiClient.showAllActiveOneTimeEvents(order);
 
-        model.addAttribute("oneTimeEvents", oneTimeEvents.getBody());
+        model.addAttribute("items", oneTimeEvents.getBody());
         model.addAttribute("isExpired", false);
 
         return "oneTimeEvents";
@@ -66,6 +66,4 @@ public class OneTimeEventController {
         model.addAttribute("isExpired", isExpired);
         return "oneTimeEvents";
     }
-
-
 }
