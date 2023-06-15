@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
@@ -32,7 +32,7 @@ public class AuthenticationController {
         Set<String> priorityCategories = authenticationApiClient.getAllPriorityCategories().getBody();
         model.addAttribute("request", new RegistrationRequest());
         model.addAttribute("priorityCategories", priorityCategories);
-        return "registerOrganisation";
+        return "/registerOrganisation";
     }
 
     @PostMapping("/submit")

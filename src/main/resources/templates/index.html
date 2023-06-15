@@ -75,8 +75,8 @@
                         <form th:if="${session.sessionToken}"  th:action="@{/logout}" method="post">
                             <input type="submit" value="Logout">
                         </form>
-                        <li class="active"><a href="/index" class="nav-link">Начало</a></li>
-                        <li><a href="/registerOrganisation" class="nav-link">Регистрирай се</a></li>
+                        <li class="active"><a th:href="index" class="nav-link">Начало</a></li>
+                        <li class="active"><a th:href="@{auth/registration}" class="nav-link">Регистрирай се</a></li>
                         <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
                         <li><a href="gallery.html" class="nav-link">Еднократни активности</a></li>
                         <li><a href="pricing.html" class="nav-link">Продължително активности</a></li>
