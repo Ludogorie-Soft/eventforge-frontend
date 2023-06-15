@@ -66,6 +66,4 @@ public class OneTimeEventController {
         model.addAttribute("isExpired", isExpired);
         return "oneTimeEvents";
     }
-
-
 }
