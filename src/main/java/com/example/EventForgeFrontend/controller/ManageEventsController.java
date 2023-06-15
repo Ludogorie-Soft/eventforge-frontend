@@ -68,7 +68,7 @@ public class ManageEventsController {
     public String createEvent(@RequestHeader("Authorization") String authHeader, Model model) {
         EventRequest eventRequest = organisationApiClient.getEventRequest(authHeader).getBody();
         model.addAttribute("eventRequest", eventRequest);
-        return "createEvent";
+        return "/createEvent";
     }
     @PostMapping("create-event")
     public String saveCreatedEvent(EventRequest request, @RequestHeader("Authorization") String authHeader, Model model) {

@@ -20,7 +20,7 @@ public class OrganisationController {
     private final OrganisationApiClient organisationApiClient;
 
 
-    @GetMapping("/manage-events")
+    @GetMapping("/manage-eventsOrg")
     public String showMyEvents(@RequestHeader("Authorization") String authHeader, Model model) {
         ResponseEntity<EventResponseContainer> getAllEvents = organisationApiClient.getAllEventsByOrganisation(authHeader);
         List<OneTimeEventResponse> oneTimeEventResponses = new ArrayList<>();

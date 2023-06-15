@@ -29,13 +29,11 @@ public class EventRequest {
 
     private String eventCategories;
 
-
     private Double price;
 
     private Integer minAge;
 
     private Integer maxAge;
-
 
     private Boolean isOneTime;
 
