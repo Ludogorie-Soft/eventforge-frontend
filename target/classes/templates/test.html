@@ -32,6 +32,7 @@
     </tr>
     </thead>
     <tbody>
+    <input type="hidden" name="isExpired" value="${isExpired}"/>
     <h>Всички активни еднократни събития</h>
     <tr th:if="${oneTimeEvents}"><!-- Display this if oneTimeEventsFilter is not empty -->
         <!-- Add more columns based on your requirements -->
@@ -44,8 +45,8 @@
     </tr>
 
 
-    <input type="hidden" name="isExpired" value="${isExpired}"/>
-    <p th:text="${isExpired}"></p>
+
+
     </tbody>
 </table>
 <h2>Filter One-Time Events</h2>
