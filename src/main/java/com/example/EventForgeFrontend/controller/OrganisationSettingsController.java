@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/organisation/settings")
@@ -46,5 +47,22 @@ public class OrganisationSettingsController {
         ResponseEntity<String> updatePasswordResult = organisationApiClient.changePassword(token, changePasswordRequest);
         model.addAttribute("updatePasswordResult", updatePasswordResult.getBody());
         return "redirect:/update-profile";
+    }
+
+    @PostMapping("update-logo")
+    public String updateLogo(HttpServletRequest request , @RequestParam(value = "file",required = false)MultipartFile file , Model model){
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<String> result = organisationApiClient.updateLogo(token ,file);
+        model.addAttribute("result" ,result.getBody());
+       return  "redirect:/organisation/settings/update-profile";
+    }
+    @PostMapping("update-cover")
+    public String updateCover(HttpServletRequest request , @RequestParam(value = "file",required = false)MultipartFile file , Model model){
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<String> result = organisationApiClient.updateCover(token ,file);
+        model.addAttribute("result" ,result.getBody());
+        return  "redirect:/organisation/settings/update-profile";
     }
 }

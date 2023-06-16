@@ -1,5 +1,6 @@
 package com.example.EventForgeFrontend.controller;
 
+import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
 import com.example.EventForgeFrontend.client.ProbaClient;
 import com.example.EventForgeFrontend.session.SessionManager;
@@ -19,28 +20,12 @@ public class MenuController {
     private final ProbaClient probaClient;
     private final SessionManager sessionManager;
     private final OrganisationApiClient organisationApiClient;
-
+    private final EventApiClient eventApiClient;
 
     @GetMapping
     public String index() {
         return "index";
     }
-
-
-    @GetMapping("/forgottenPassword")
-    public String forgottenPassword() {
-        return "/forgottenPassword";
-    }
-//    @PostMapping("/logout")
-//    public String logout( Model model , HttpSession session){
-//      ResponseEntity<String> index =  apiClient.logout();
-//      model.addAttribute("logout" ,index.getBody());
-//      session.removeAttribute("token");
-//
-//        return "redirect:/index";
-//    }
-
-
 
     @GetMapping("/proba")
     public String proba(HttpServletRequest request, Model model) {
@@ -50,6 +35,4 @@ public class MenuController {
         model.addAttribute("email", proba.getBody());
         return "proba";
     }
-
-
 }

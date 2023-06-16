@@ -4,6 +4,8 @@ import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.RecurrenceEventApiClient;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
 import com.example.EventForgeFrontend.dto.RecurrenceEventResponse;
+import com.example.EventForgeFrontend.session.SessionManager;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ public class RecurrenceEventController {
     private final RecurrenceEventApiClient recurrenceEventApiClient;
 
     private final EventApiClient eventApiClient;
+
+    private final SessionManager sessionManager;
 
 
     @GetMapping
@@ -61,4 +65,14 @@ public class RecurrenceEventController {
         model.addAttribute("isExpired" , isExpired);
         return "recurrenceEvents";
     }
+    @PostMapping("delete/{id}")
+    public String deleteEventById(HttpServletRequest request, @PathVariable("id") Long id, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        if(SessionManager.storeSessionUserRole.equals("ADMIN")){
+        ResponseEntity<String> deleteEventResult = eventApiClient.deleteEventById(token, id);
+        model.addAttribute("deleteEventResult", deleteEventResult.getBody());
+    }
+        return "recurrenceEvents";
+}
 }

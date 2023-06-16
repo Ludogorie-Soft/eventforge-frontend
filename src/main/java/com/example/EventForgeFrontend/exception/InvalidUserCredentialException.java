@@ -1,4 +1,4 @@
-package com.example.EventForgeFrontend.config.exception;
+package com.example.EventForgeFrontend.exception;
 
 public class InvalidUserCredentialException extends RuntimeException{
     public InvalidUserCredentialException(String message){

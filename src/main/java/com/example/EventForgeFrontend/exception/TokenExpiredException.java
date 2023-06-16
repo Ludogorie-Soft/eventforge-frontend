@@ -1,4 +1,4 @@
-package com.example.EventForgeFrontend.config.exception;
+package com.example.EventForgeFrontend.exception;
 
 public class TokenExpiredException extends RuntimeException{
     public TokenExpiredException(String message){

@@ -1,5 +1,6 @@
 package com.example.EventForgeFrontend.controller;
 
+import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
 import com.example.EventForgeFrontend.dto.EventRequest;
 import com.example.EventForgeFrontend.dto.EventResponseContainer;
@@ -16,13 +17,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/organisation/manage-events")
+@RequestMapping("/manage-events")
 @RequiredArgsConstructor
 public class ManageEventsController {
 
     private final OrganisationApiClient organisationApiClient;
 
     private final SessionManager sessionManager;
+
+    private final EventApiClient eventApiClient;
 
     @GetMapping
     public String showMyEvents(HttpServletRequest request, Model model) {
@@ -93,8 +96,10 @@ public class ManageEventsController {
     public String deleteEventById(HttpServletRequest request, @PathVariable("id") Long id, Model model) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<String> deleteEventResult = organisationApiClient.deleteEventByUserId(token, id);
-        model.addAttribute("deleteEventResult", deleteEventResult.getBody());
+        if(SessionManager.storeSessionUserRole.equals("ORGANISATION")){
+            ResponseEntity<String> deleteEventResult = eventApiClient.deleteEventById(token, id);
+            model.addAttribute("deleteEventResult", deleteEventResult.getBody());
+        }
         return "manageOrganisationEvents";
     }
 

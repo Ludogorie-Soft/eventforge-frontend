@@ -1,4 +1,4 @@
-package com.example.EventForgeFrontend.config.exception;
+package com.example.EventForgeFrontend.exception;
 
 public class UserLockedException extends RuntimeException{
 

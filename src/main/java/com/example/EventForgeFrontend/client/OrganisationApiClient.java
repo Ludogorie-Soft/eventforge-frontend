@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +41,10 @@ public interface OrganisationApiClient {
     public ResponseEntity<String> updateEventByOrganisation(@RequestHeader("Authorization")String authHeader,@PathVariable("id") Long id,
                                                             @Valid @RequestBody EventRequest eventRequest);
 
-    @DeleteMapping("/delete-event/{id}")
-    public ResponseEntity<String> deleteEventByUserId(@RequestHeader("Authorization") String authHeader , @PathVariable("id")Long id);
+    @PostMapping("/logo-upload")
+    public ResponseEntity<String> updateLogo(@RequestHeader("Authorization")String authHeader,@RequestParam("file") @Valid MultipartFile image);
+
+    @PostMapping("/cover-upload")
+    public ResponseEntity<String> updateCover(@RequestHeader("Authorization")String authHeader ,@RequestParam("file") @Valid MultipartFile image);
 
 }
