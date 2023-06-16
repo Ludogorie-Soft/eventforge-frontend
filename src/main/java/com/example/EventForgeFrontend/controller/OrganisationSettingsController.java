@@ -31,15 +31,19 @@ public class OrganisationSettingsController {
     }
 
     @PostMapping("submit-update")
-    public String updateProfile(@RequestHeader("Authorization") String authHeader, UpdateAccountRequest request, Model model) {
-        ResponseEntity<String> updateAccountResult = organisationApiClient.updateAccount(authHeader, request);
+    public String updateProfile(HttpServletRequest request, UpdateAccountRequest updateRequest, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<String> updateAccountResult = organisationApiClient.updateAccount(token, updateRequest);
         model.addAttribute("updateAccountResult", updateAccountResult.getBody());
         return "index";
     }
 
     @PostMapping("update-password")
-    public String updatePassword(@RequestHeader("Authorization") String authHeader, ChangePasswordRequest request, Model model) {
-        ResponseEntity<String> updatePasswordResult = organisationApiClient.changePassword(authHeader, request);
+    public String updatePassword(HttpServletRequest request, ChangePasswordRequest changePasswordRequest, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<String> updatePasswordResult = organisationApiClient.changePassword(token, changePasswordRequest);
         model.addAttribute("updatePasswordResult", updatePasswordResult.getBody());
         return "redirect:/update-profile";
     }
