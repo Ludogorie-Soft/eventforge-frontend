@@ -31,7 +31,7 @@ public class RecurrenceEventController {
     public String showAllActiveRecurrenceEvents(@RequestParam(value = "order", required = false) String order, Model model){
         ResponseEntity<List<RecurrenceEventResponse>> recurrenceEvents = recurrenceEventApiClient.showAllActiveRecurrenceEvents(order);
 
-        model.addAttribute("recurrenceEvents" , recurrenceEvents.getBody());
+        model.addAttribute("item" , recurrenceEvents.getBody());
         model.addAttribute("isExpired" ,false);
         return "recurrenceEvents";
     }
