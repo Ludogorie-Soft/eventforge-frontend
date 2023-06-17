@@ -4,6 +4,8 @@ import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.OneTimeEventApiClient;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
 import com.example.EventForgeFrontend.dto.OneTimeEventResponse;
+import com.example.EventForgeFrontend.session.SessionManager;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ public class OneTimeEventController {
     private final OneTimeEventApiClient oneTimeEventApiClient;
 
     private final EventApiClient eventApiClient;
+
+    private final SessionManager sessionManager;
 
     @GetMapping
     public String showAllActiveOneTimeEvents(@RequestParam(value = "order", required = false) String order, Model model) {
@@ -64,6 +68,17 @@ public class OneTimeEventController {
         ResponseEntity<List<?>> oneTimeEvents = eventApiClient.getEventsByCriteria(request);
         model.addAttribute("oneTimeEvents", oneTimeEvents.getBody());
         model.addAttribute("isExpired", isExpired);
+        return "oneTimeEvents";
+    }
+
+    @PostMapping("delete/{id}")
+    public String deleteEventById(HttpServletRequest request, @PathVariable("id") Long id, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        if(SessionManager.storeSessionUserRole.equals("ADMIN")){
+            ResponseEntity<String> deleteEventResult = eventApiClient.deleteEventById(token, id);
+            model.addAttribute("deleteEventResult", deleteEventResult.getBody());
+        }
         return "oneTimeEvents";
     }
 }

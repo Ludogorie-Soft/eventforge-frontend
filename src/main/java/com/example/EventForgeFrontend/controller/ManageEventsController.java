@@ -1,11 +1,13 @@
 package com.example.EventForgeFrontend.controller;
 
+import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
 import com.example.EventForgeFrontend.dto.EventRequest;
 import com.example.EventForgeFrontend.dto.EventResponseContainer;
 import com.example.EventForgeFrontend.dto.OneTimeEventResponse;
 import com.example.EventForgeFrontend.dto.RecurrenceEventResponse;
 import com.example.EventForgeFrontend.session.SessionManager;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/organisation/manage-events")
+@RequestMapping("/manage-events")
 @RequiredArgsConstructor
 public class ManageEventsController {
 
@@ -23,67 +25,81 @@ public class ManageEventsController {
 
     private final SessionManager sessionManager;
 
+    private final EventApiClient eventApiClient;
+
     @GetMapping
-    public String showMyEvents(@RequestHeader("Authorization") String authHeader, Model model) {
+    public String showMyEvents(HttpServletRequest request, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<EventResponseContainer> getAllEventsForOrganisation = organisationApiClient.getAllEventsByOrganisation(token);
+        List<OneTimeEventResponse> oneTimeEventResponses = getAllEventsForOrganisation.getBody().getOneTimeEvents();
+        List<RecurrenceEventResponse> recurrenceEventResponses = getAllEventsForOrganisation.getBody().getRecurrenceEvents();
 
-        if(SessionManager.storeSessionUserRole.equals("ORGANISATION")){
-            ResponseEntity<EventResponseContainer> getAllEventsForOrganisation = organisationApiClient.getAllEventsByOrganisation(authHeader);
-            List<OneTimeEventResponse> oneTimeEventResponses = getAllEventsForOrganisation.getBody().getOneTimeEvents();
-            List<RecurrenceEventResponse> recurrenceEventResponses = getAllEventsForOrganisation.getBody().getRecurrenceEvents();
+        model.addAttribute("oneTimeEvents", oneTimeEventResponses);
+        model.addAttribute("recurrenceEvents", recurrenceEventResponses);
 
-            model.addAttribute("oneTimeEvents", oneTimeEventResponses);
-            model.addAttribute("recurrenceEvents", recurrenceEventResponses);
-        }
-        if(SessionManager.storeSessionUserRole.equals("ADMIN")){
-
-        }
 
         return "manageOrganisationEvents";
     }
 
     @GetMapping("/get-events-by-name")
-    public String findEventsByName(@RequestHeader("Authorization")String authHeader , @RequestParam(value = "oneTimeEventName" ,required = false)String oneTimeEventName,
-                                   @RequestParam(value = "recurrenceEventName" ,required = false)String recurrenceEventName , Model model){
-        ResponseEntity<EventResponseContainer> eventResponseContainer = organisationApiClient.getEventsByNameAndByOrganisation(authHeader , oneTimeEventName ,recurrenceEventName);
+    public String findEventsByName( HttpServletRequest request,@RequestParam(value = "oneTimeEventName", required = false) String oneTimeEventName,
+                                   @RequestParam(value = "recurrenceEventName", required = false) String recurrenceEventName, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<EventResponseContainer> eventResponseContainer = organisationApiClient.getEventsByNameAndByOrganisation(token, oneTimeEventName, recurrenceEventName);
         List<OneTimeEventResponse> oneTimeEventsByName = eventResponseContainer.getBody().getOneTimeEvents();
         List<RecurrenceEventResponse> recurrenceEventsByName = eventResponseContainer.getBody().getRecurrenceEvents();
 
-        model.addAttribute("oneTimeEvents" , oneTimeEventsByName);
-        model.addAttribute("recurrenceEvents" ,recurrenceEventsByName);
+        model.addAttribute("oneTimeEvents", oneTimeEventsByName);
+        model.addAttribute("recurrenceEvents", recurrenceEventsByName);
         return "manageOrganisationEvents";
     }
 
     @GetMapping("/create")
-    public String createEvent(@RequestHeader("Authorization") String authHeader, Model model) {
-        EventRequest eventRequest = organisationApiClient.getEventRequest(authHeader).getBody();
+    public String createEvent(HttpServletRequest request, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        EventRequest eventRequest = organisationApiClient.getEventRequest(token).getBody();
         model.addAttribute("eventRequest", eventRequest);
         return "createEvent";
     }
+
     @PostMapping("create-event")
-    public String saveCreatedEvent(EventRequest request, @RequestHeader("Authorization") String authHeader, Model model) {
-        ResponseEntity<String> eventRequestResult = organisationApiClient.submitCreatedEvent(request, authHeader);
+    public String saveCreatedEvent(EventRequest eventRequest, HttpServletRequest request, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<String> eventRequestResult = organisationApiClient.submitCreatedEvent(eventRequest, token);
         model.addAttribute("eventRequestResult", eventRequestResult.getBody());
         return "redirect:/create-event";
     }
 
     @GetMapping("/update/{id}")
-    public String updateEvent(@RequestHeader("Authorization") String authHeader, @PathVariable("id") Long id, Model model) {
-        ResponseEntity<EventRequest> getEventToUpdate = organisationApiClient.getEventToUpdateByIdAndByOrganisation(authHeader, id);
+    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<EventRequest> getEventToUpdate = organisationApiClient.getEventToUpdateByIdAndByOrganisation(token, id);
         model.addAttribute("eventRequest", getEventToUpdate.getBody());
         return "updateEvent";
     }
 
     @PostMapping("update/{id}")
-    public String submitUpdateEvent(@RequestHeader("Authorization") String authHeader, @PathVariable("id") Long id, EventRequest request, Model model) {
-        ResponseEntity<String> updateEventResult = organisationApiClient.updateEventByOrganisation(authHeader, id, request);
+    public String submitUpdateEvent(HttpServletRequest request, @PathVariable("id") Long id, EventRequest eventRequest, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<String> updateEventResult = organisationApiClient.updateEventByOrganisation(token, id, eventRequest);
         model.addAttribute("updateEventResult", updateEventResult.getBody());
         return "manageOrganisationEvents";
     }
 
     @PostMapping("delete/{id}")
-    public String deleteEventById(@RequestHeader("Authorization") String authHeader, @PathVariable("id") Long id, Model model) {
-        ResponseEntity<String> deleteEventResult = organisationApiClient.deleteEventByUserId(authHeader, id);
-        model.addAttribute("deleteEventResult", deleteEventResult.getBody());
+    public String deleteEventById(HttpServletRequest request, @PathVariable("id") Long id, Model model) {
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        if(SessionManager.storeSessionUserRole.equals("ORGANISATION")){
+            ResponseEntity<String> deleteEventResult = eventApiClient.deleteEventById(token, id);
+            model.addAttribute("deleteEventResult", deleteEventResult.getBody());
+        }
         return "manageOrganisationEvents";
     }
 

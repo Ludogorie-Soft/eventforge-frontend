@@ -1,12 +1,13 @@
-package com.example.EventForgeFrontend.config.exception.decoder;
+package com.example.EventForgeFrontend.exception.decoder;
 
 
-import com.example.EventForgeFrontend.config.exception.*;
+import com.example.EventForgeFrontend.exception.*;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StreamUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
