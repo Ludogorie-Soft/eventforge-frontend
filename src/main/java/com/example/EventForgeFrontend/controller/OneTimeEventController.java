@@ -38,9 +38,8 @@ public class OneTimeEventController {
 
     @GetMapping("/expired")
     public String showAllExpiredOneTimeEvents(@RequestParam(value = "order", required = false) String order, Model model) {
-
         ResponseEntity<List<OneTimeEventResponse>> oneTimeEvents = oneTimeEventApiClient.showAllExpiredOneTimeEvents(order);
-        model.addAttribute("oneTimeEvents", oneTimeEvents.getBody());
+        model.addAttribute("items", oneTimeEvents.getBody());
         model.addAttribute("isExpired", true);
 
 

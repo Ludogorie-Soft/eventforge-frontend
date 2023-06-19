@@ -97,6 +97,10 @@
             <input type="text" onkeyup="searchCards()" name="text" class="input" id="search" placeholder="🔍Търсене">
         </div>
     </div>
+    <form th:action="@{/one-time-events/expired}" method="get">
+        <input type="hidden" name="isExpired" value="${isExpired}"/>
+        <button type="submit">Покажи отминали събития</button>
+    </form>
     <div class="container2">
         <div class="cards-container" id="cards-container">
             <div class="myCard" th:each="item : ${items}">
@@ -104,8 +108,6 @@
                     <div class="frontSide">
                         <div class="bannerCard">
                             <img src="img/bg.png" alt="Banner Image"/>
-
-
                         </div>
                         <div class="logo">
                             <img src="item.imageUrl" alt="Logo">
@@ -139,7 +141,7 @@
       <div class="popup" id="popup">
         <button id="popupCloseButton"class="popupCloseButton" onclick="hidePopup()"><i class="fa fa-close"></i></button>
       </div>
-      
+
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/jquery-migrate-3.0.0.js"></script>
     <script src="js/popper.min.js"></script>
