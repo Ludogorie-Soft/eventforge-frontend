@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet"  th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet"  th:href="@{/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet"  th:href="@{/css/jquery.fancybox.min.css}">
+    <link rel="stylesheet"  th:href="@{css/owl.carousel.min.css}">
+    <link rel="stylesheet"  th:href="@{css/owl.theme.default.min.css}">
+    <link rel="stylesheet"  th:href="@{fonts/flaticon/font/flaticon.css}">
+    <link rel="stylesheet"  th:href="@{css/aos.css}">
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{css/displayStyle.css}">
+    <title>Еднократни акнитности</title>
+</head>
+<body >
+    
+
+    <div class="site-wrap" id="home-section">
+    
+      <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+          <div class="site-mobile-menu-close mt-3">
+            <span class="icon-close2 js-menu-toggle"></span>
+          </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+      </div>
+    
+    
+    
+      <header class="site-navbar site-navbar-target" role="banner">
+    
+        <div class="container mb-3">
+          <div class="d-flex align-items-center">
+            <div class="site-logo mr-auto">
+              <a href="/index">Eventforge<span class="text-primary"></span></a>
+            </div>
+            <div class="site-quick-contact d-none d-lg-flex ml-auto ">
+              <div class="d-flex site-info align-items-center mr-5">
+                <span class="block-icon mr-3"><span class="icon-map-marker text-yellow"></span></span>
+                <span>Varna<br> Bulgaria</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="menu-wrap d-flex align-items-center">
+            <span class="d-inline-block d-lg-none"><a href="#" class="text-black site-menu-toggle js-menu-toggle py-5"><span class="icon-menu h3 text-black"></span></a></span>
+            <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
+              <ul class="site-menu main-menu js-clone-nav mr-auto ">
+                  <li><a th:href="@{/index}" class="nav-link">Начало</a></li>
+                  <li><a th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
+                  <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
+                  <li class="active"><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
+                  <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
+                  <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
+                  <li class="active"><a href="/organisation/settings/update-profile" class="nav-link">Профил</a></li>
+              </ul>
+            </nav>
+    
+            <div class="top-social ml-auto">
+              <a href="#"><span class="icon-facebook text-teal"></span></a>
+              <a href="#"><span class="icon-twitter text-success"></span></a>
+              <a href="#"><span class="icon-linkedin text-yellow"></span></a>
+            </div>
+          </div>
+        </div>
+      </header>
+    
+      <div class="ftco-blocks-cover-1">
+        <div class="site-section-cover overlay">
+          <div class="container">
+            <div class="row align-items-center ">
+              <div class="col-md-5 mt-5 pt-5">
+                <span class="text-cursive h5 text-red">Еднократни активности</span>
+                <h1 class="mb-3 font-weight-bold text-teal">Eventforge</h1>
+              </div>
+              <div class="col-md-5 ml-auto align-self-end">
+                <img src="images/img_1.png" alt="Image" class="img-fluid">
+    
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-bar">
+        <div class="inputGroup">
+            <input type="text" onkeyup="searchCards()" name="text" class="input" id="search" placeholder="🔍Търсене">
+        </div>
+    </div>
+    <div class="container2">
+        <form th:action="@{/one-time-events/expired}" method="get">
+            <input type="hidden" name="isExpired" value="${isExpired}"/>
+            <button type="submit">Покажи отминали събития</button>
+        </form>
+        <form th:action="@{/one-time-events/advanced-search/{isExpired}(isExpired=${isExpired})}"  method="post">
+            <label for="name">Име на събитието:</label>
+            <input type="text" id="name" name="name" th:value="*{name}"/><br/>
+            <label>Описание на събитието:</label>
+            <input type="text" id="description" name="description" th:value="*{description}"/><br/>
+            <label>Адрес на събитието:</label>
+            <input type="text" id="address" name="address" th:value="*{address}"/><br/>
+            <label>Име на организация:</label>
+            <input type="text" id="orgName" name="orgName" th:value="*{organisationName}"/><br/>
+            <label>Минимална възраст за участие:</label>
+            <input type="text" id="minAge" name="minAge" th:value="*{minAge}"/><br/>
+            <label>Максимална възраст за участие:</label>
+            <input type="text" id="maxAge" name="maxAge" th:value="*{maxAge}"/><br/>
+            <label>Онлайн ли е събитието:</label>
+            <input type="radio" id="isOnlineTrue" name="isOnline" value="true" th:checked="${isOnline}"/>
+            <label for="isOnlineTrue">Да</label>
+            <input type="radio" id="isOnlineFalse" name="isOnline" value="false" th:checked="${isOnline}"/>
+            <label for="isOnlineFalse">Не</label><br/>
+            <label>Категории:</label>
+            <input type="text" id="eventCategories" name="eventCategories" th:value="*{eventCategories}"/><br/>
+            <label>Начало:</label>
+            <input type="date" id="startsAt" name="startsAt" th:value="*{startsAt}"/><br/>
+            <label>Край:</label>
+            <input type="date" id="endsAt" name="endsAt" th:value="*{endsAt}"/><br/>
+            <label>Онлайн ли е събитието:</label>
+            <input type="radio" id="isExpiredTrue" name="isExpired" value="true" th:checked="${isExpired}"/>
+            <label for="isExpiredTrue">Да</label>
+            <input type="radio" id="isExpiredFalse" name="isExpired" value="false" th:checked="${isExpired}"/>
+            <label for="isExpiredFalse">Не</label><br/>
+            <button type="submit">Filter</button>
+        </form>
+        <div class="cards-container" id="cards-container">
+            <div class="myCard" th:each="item : ${items}">
+                <div class="innerCard">
+                    <div class="frontSide">
+                        <div class="bannerCard">
+                            <img src="img/bg.png" alt="Banner Image"/>
+                        </div>
+                        <div class="logo">
+                            <img src="item.imageUrl" alt="Logo">
+                            <span class="line"></span>
+                            <span class="line"></span>
+                        </div>
+                        <div class="info">
+                            <div class="notVisible">
+                                <h1 class="notVisibleTitle"><i class="fa fa-info-circle"></i> Детайли</h1>
+                                <p class="notVisibleElement" th:text="'Име: ' + ${item.name}"></p>
+                                <p class="notVisibleElement" th:text="'Организация: ' + ${item.organisationName}"></p>
+                                <p class="notVisibleElement" th:text="'Местоположение: ' + ${item.address}"></p>
+                                <p class="notVisibleElement" th:text="'Категории: ' + ${item.eventCategories}"></p>
+                                <p class="notVisibleElement" th:text="'Възрастово ограничение: ' + ${item.ageBoundary}"></p>
+                                <p class="notVisibleElement" th:text="'Цена: ' + ${item.price} + '$'"></p>
+                                <p class="notVisibleElement" th:text="'За събитието: ' + ${item.description}"></p>
+                            </div>
+                            <h2 id="SearchTitle" th:text="${item.name}"></h2>
+                            <p th:text="'Организация: ' + ${item.organisationName}"></p>
+                            <p th:text="'Адрес: ' + ${item.address}"></p>
+                            <p th:text="'Цена: ' + ${item.price}"></p>
+                            <button class="cta" onclick="showPopup(this)"><span>Научи повече</span><svg viewBox="0 0 13 10" height="10px" width="15px"><path d="M1,5 L11,5"></path><polyline points="8 1 12 5 8 9"></polyline></svg></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+      </div>
+
+      <div class="popup" id="popup">
+        <button id="popupCloseButton"class="popupCloseButton" onclick="hidePopup()"><i class="fa fa-close"></i></button>
+      </div>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-migrate-3.0.0.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/bootstrap-datepicker.min.js"></script>
+    <script src="js/aos.js"></script>
+
+    <script th:src="@{js/main.js}"></script>
+    <script th:src="@{/js/displayScript.js}" ></script>
+</body>
+</html>

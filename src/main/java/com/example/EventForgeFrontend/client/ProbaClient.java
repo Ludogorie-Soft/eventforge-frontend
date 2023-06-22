@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 
-@FeignClient(name = "api-client" ,url = "http://localhost:8081")
-public interface ApiClient {
+@FeignClient(name = "proba-api-client" ,url = "http://localhost:8081")
+public interface ProbaClient {
 
     @GetMapping("/proba")
     public ResponseEntity<String> proba(@RequestHeader("Authorization") String authorization);
