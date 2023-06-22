@@ -61,12 +61,13 @@
         <span class="d-inline-block d-lg-none"><a href="#" class="text-black site-menu-toggle js-menu-toggle py-5"><span class="icon-menu h3 text-black"></span></a></span>
         <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
           <ul class="site-menu main-menu js-clone-nav mr-auto ">
-            <li><a href="/index" class="nav-link">Начало</a></li>
-            <li class="active"><a href="/registerOrganisation" class="nav-link">Регистрирай се</a></li>
-            <li><a href="/login" class="nav-link">Впиши се</a></li>
-            <li><a href="gallery.html" class="nav-link">Еднократни активности</a></li>
-            <li><a href="pricing.html" class="nav-link">Продължителни активности</a></li>
-            <li><a href="about.html" class="nav-link">Организации</a></li>
+            <li><a th:href="@{/index}" class="nav-link">Начало</a></li>
+            <li class="active"><a th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
+            <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
+            <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
+            <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
+            <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
+            <li class="active"><a href="/organisation/settings/update-profile" class="nav-link">Профил</a></li>
           </ul>
         </nav>
 
