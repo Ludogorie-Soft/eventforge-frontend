@@ -1,27 +1,26 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Eventforge</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower}">
 
+    <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="css/jquery.fancybox.min.css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
-    <link rel="stylesheet" href="css/aos.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/css/aos.css}">
 
     <!-- MAIN CSS -->
-    <link rel="stylesheet" href="css/style.css">
-
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -37,7 +36,6 @@
         </div>
         <div class="site-mobile-menu-body"></div>
     </div>
-
 
 
     <header class="site-navbar site-navbar-target" role="banner">
@@ -57,15 +55,17 @@
         </div>
         <div class="container">
             <div class="menu-wrap d-flex align-items-center">
-                <span class="d-inline-block d-lg-none"><a href="#" class="text-black site-menu-toggle js-menu-toggle py-5"><span class="icon-menu h3 text-black"></span></a></span>
+                <span class="d-inline-block d-lg-none"><a href="#"
+                                                          class="text-black site-menu-toggle js-menu-toggle py-5"><span
+                        class="icon-menu h3 text-black"></span></a></span>
                 <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
-                        <li><a href="/index" class="nav-link">Начало</a></li>
-                        <li><a href="/registerOrganisation" class="nav-link">Регистрирай се</a></li>
-                        <li  class="active"><a href="/login" class="nav-link">Впиши се</a></li>
-                        <li><a href="gallery.html" class="nav-link">Еднократни активности</a></li>
-                        <li><a href="pricing.html" class="nav-link">Продължителни активности</a></li>
-                        <li><a href="about.html" class="nav-link">Организации</a></li>
+                        <li class="active"><a th:href="@{/index}" class="nav-link">Начало</a></li>
+                        <li><a th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
+                        <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
+                        <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
+                        <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
+                        <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
                     </ul>
                 </nav>
 
@@ -94,72 +94,70 @@
         </div>
     </div>
 </div>
+<!--<p>The session user role is: <span th:text="${session.sessionUserRole}"></span></p>-->
+<div class="table-responsive">
+    <table class="table table-bordered table-stripped table-hover">
+        <thead class="table-info">
+        <tr>
+            <th scope="col">Лого</th>
+            <th scope="col">Корица</th>
+            <th scope="col">Име</th>
+            <th scope="col">Булстат</th>
+            <th scope="col">Потребителско име</th>
+            <th scope="col">Телефон</th>
+            <th scope="col">Адрес</th>
+            <th scope="col">Благотворителност</th>
+            <th scope="col">Цел</th>
+            <!--            <th scope="col">userid - will be hidden</th>-->
+            <th scope="col" th:if="${session.sessionUserRole == 'ADMIN'}">Изтрий органицизия</th>
+            <th scope="col" th:if="${session.sessionUserRole == 'ADMIN'}">Потвърди органицизия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="organisation : ${organisations}">>
+            <td><img alt="лого" th:src="@{${'file:' + organisation.logo}}" width="50%" height="100px"/></td>
+            <td><img alt="корица" th:src="@{${'file:' + organisation.logo}}" width="50%" height="100px"></td>
+            <td>[[${organisation.name}]]</td>
+            <td>[[${organisation.bullstat}]]</td>
+            <td>[[${organisation.username}]]</td>
+            <td>[[${organisation.phone}]]</td>
+            <td>[[${organisation.address}]]</td>
+            <td>[[${organisation.charityOption}]]</td>
+            <td>[[${organisation.organisationPurpose}]]</td>
+            <td>
+                <div th:if="${session.sessionUserRole == 'ADMIN'}">
+                <form th:action="@{/deleteOrganisation/{organisationId}(organisationId=${organisation.id})}"
+                      method="post">
+                    <button type="submit" class="btn btn-default"
+                            onclick="return confirm('Наистина ли искате да истриете тази организация?')">Изтрий
+                    </button>
+                </form>
+                </div>
+            </td>
+            <td>
+                <div th:if="${session.sessionUserRole == 'ADMIN'}">
+                <form th:action="@{/enableOrganisationByAdmin/{userId}(userId=${organisation.userId})}"
+                      th:method="POST">
+                    <button type="submit">Потвърди</button>
+                </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
-<div class="site-section py-5 bg-warning">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12 d-flex">
-            </div>
-        </div>
-    </div>
-</div>
-<div class = "fr">
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Име</th>
-        <th scope="col">Булстат</th>
-        <th scope="col">Потребителско име</th>
-        <th scope="col">Телефон</th>
-        <th scope="col">Адрес</th>
-        <th scope="col">Благотворителност</th>
-        <th scope="col">Цел</th>
-        <th scope="col">userid - will be hidden</th>
-        <th scope="col">Изтрий органицизия</th>
-        <th scope="col">Потвърди органицизия</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="organisation : ${allOrganisations}">
-        <td th:text="${organisation.id}"></td>
-        <td th:text="${organisation.name}"></td>
-        <td th:text="${organisation.bullstat}"></td>
-        <td th:text="${organisation.username}"></td>
-        <td th:text="${organisation.phone}"></td>
-        <td th:text="${organisation.address}"></td>
-        <td th:text="${organisation.charityOption}"></td>
-        <td th:text="${organisation.organisationPurpose}"></td>
-        <td th:text="${organisation.userId}"></td>
-<!--        <td>-->
-<!--            <form th:action="@{/deleteOrganisation/{organisationId}(organisationId=${organisation.id})}" method="post">-->
-<!--            <button type="submit" class="btn btn-default">Delete</button>-->
-<!--            </form>-->
-<!--        </td>-->
-        <td>
-            <form th:action="@{/deleteOrganisation/{organisationId}(organisationId=${organisation.id})}" method="post">
-                <button type="submit" class="btn btn-default" onclick="return confirm('Наистина ли искате да истриете тази организация?')">Изтрий</button>
-            </form>
-        </td>
-        <td>
-            <form th:action="@{/enableOrganisationByAdmin/{userId}(userId=${organisation.userId})}" th:method="POST">
-                <button type="submit">Потвърди</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-</div>
 </body>
 </html>
 <style>
     div.fr {
-width: 1200px;
-margin: 50px auto 0;
-}
-.text-yellow {
-  color: #f9a122;
-}
+        width: 1200px;
+        margin: 50px auto 0;
+    }
+
+    .text-yellow {
+        color: #f9a122;
+    }
 </style>
 <script>
     function confirmDelete(organisationId) {

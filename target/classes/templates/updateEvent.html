@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
   <title>Create event</title>
@@ -53,10 +53,13 @@
 
         <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
           <ul class="site-menu main-menu js-clone-nav mr-auto ">
-            <li class="active"><a href="/index" class="nav-link">Начало</a></li>
-            <li><a href="gallery.html" class="nav-link">Еднократни активности</a></li>
-            <li><a href="pricing.html" class="nav-link">Продължително активности</a></li>
-            <li><a href="about.html" class="nav-link">Организации</a></li>
+            <li class="active"><a th:href="@{/index}" class="nav-link">Начало</a></li>
+            <li><a th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
+            <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
+            <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
+            <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
+            <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
+            <li><a href="/organisation/settings/update-profile" class="nav-link">Профил</a></li>
           </ul>
         </nav>
 
