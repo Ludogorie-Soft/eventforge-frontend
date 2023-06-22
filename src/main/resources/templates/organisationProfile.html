@@ -1,19 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
+    <title>Eventforge</title>
     <meta charset="utf-8">
-    <title>Organisation profile</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        margin-top: 20px;
-        background: #f8f8f8
-      }
-    </style>
-  </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+    <link rel="stylesheet" href="css/aos.css">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+
 <div class="site-wrap" id="home-section">
+
     <div class="site-mobile-menu site-navbar-target">
         <div class="site-mobile-menu-header">
             <div class="site-mobile-menu-close mt-3">
@@ -22,11 +33,15 @@
         </div>
         <div class="site-mobile-menu-body"></div>
     </div>
+
+
+
     <header class="site-navbar site-navbar-target" role="banner">
+
         <div class="container mb-3">
             <div class="d-flex align-items-center">
                 <div class="site-logo mr-auto">
-                    <a href="index.html">Eventforge<span class="text-primary"></span></a>
+                    <a href="/index">Eventforge<span class="text-primary"></span></a>
                 </div>
                 <div class="site-quick-contact d-none d-lg-flex ml-auto ">
                     <div class="d-flex site-info align-items-center mr-5">
@@ -36,16 +51,17 @@
                 </div>
             </div>
         </div>
-
         <div class="container">
             <div class="menu-wrap d-flex align-items-center">
                 <span class="d-inline-block d-lg-none"><a href="#" class="text-black site-menu-toggle js-menu-toggle py-5"><span class="icon-menu h3 text-black"></span></a></span>
                 <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
-                        <li class="active"><a href="/index" class="nav-link">Начало</a></li>
+                        <li><a href="@{/index}" class="nav-link">Начало</a></li>
+                        <li><a href="/registerOrganisation" class="nav-link">Регистрирай се</a></li>
+                        <li ><a href="/login" class="nav-link">Впиши се</a></li>
                         <li><a href="gallery.html" class="nav-link">Еднократни активности</a></li>
-                        <li><a href="pricing.html" class="nav-link">Продължително активности</a></li>
-                        <li><a href="about.html" class="nav-link">Организации</a></li>
+                        <li><a href="pricing.html" class="nav-link">Продължителни активности</a></li>
+                        <li class="active"><a href="/organisation/settings/update-profile" class="nav-link">Профил</a></li>
                     </ul>
                 </nav>
 
@@ -59,187 +75,199 @@
     </header>
 
     <div class="ftco-blocks-cover-1">
-
         <div class="site-section-cover overlay">
             <div class="container">
                 <div class="row align-items-center ">
                     <div class="col-md-5 mt-5 pt-5">
-                        <span class="text-cursive h5 text-red">Добре дошли в нашия уебсайт</span>
+                        <span class="text-cursive h5 text-red">Влез в своята организация</span>
                         <h1 class="mb-3 font-weight-bold text-teal">Eventforge</h1>
                     </div>
                     <div class="col-md-5 ml-auto align-self-end">
-                        <img src="images/img_2.png" alt="Image" class="img-fluid">
+                        <img src="images/img_1.png" alt="Image" class="img-fluid">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</div>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <div class="container">
-      <div class="row flex-lg-nowrap">
-        <div class="col-12 col-lg-auto mb-3" style="width: 200px;"></div>
-        <div class="col">
-          <div class="row">
-            <div class="col mb-3">
-              <div class="card">
-                <div class="card-body">
-                  <div class="e-profile">
-                    <div class="row">
-                      <div class="col-12 col-sm-auto mb-3">
-                        <div class="mx-auto" style="width: 140px;">
-                          <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-                            <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
-                          </div>
+        <div class="row flex-lg-nowrap">
+            <div class="col-12 col-lg-auto mb-3" style="width: 200px;"></div>
+            <div class="col">
+                <div class="row">
+                    <div class="col mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="e-profile">
+                                    <div class="row">
+                                        <h3 style="color:#ee4557;">Промени информация за организацията си</h3>
+                                    </div>
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item">
+                                            <a href class="active nav-link">Настройки</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content pt-3">
+                                        <div class="tab-pane active">
+                                            <form class="form" novalidate>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Име на организацията</label>
+                                                                    <input class="form-control" type="text" name="name" placeholder = "Име на организацията">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Булстат</label>
+                                                                    <input class="form-control" type="text" placeholder="Булстат">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Телефон</label>
+                                                                    <input class="form-control" type="tel" placeholder="Телефон">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Адрес</label>
+                                                                    <input class="form-control" type="text" placeholder="Адрес">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Уебсайт</label>
+                                                                    <input class="form-control" type="text" placeholder="Уебсайт">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Фейсбук</label>
+                                                                    <input class="form-control" type="text" placeholder="Фeйсбук">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Опция за благотворителност</label>
+                                                                    <input class="form-control" type="text" placeholder="Опция за благотворителност">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Категория</label>
+                                                                    <input class="form-control" type="text" placeholder="Категория">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col mb-3">
+                                                                <div class="form-group">
+                                                                    <label>За организацията</label>
+                                                                    <textarea class="form-control" rows="5" placeholder="За организацията"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex justify-content-end">
+                                                    <button class="btn btn-primary" type="submit" style="width: 150px; height: 50px;position: relative; top: 1px;left: 10px;">Запази</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <form class="form" novalidate>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="col-12 col-sm-6 mb-3">
+                                                        <div class="mb-2">
+                                                            <h3 style="color:#ee4557;">Промени парола</h3>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Текуща парола</label>
+                                                                    <input class="form-control" type="password" placeholder  = "Текуща парола">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Нова парола</label>
+                                                                    <input class="form-control" type="password" placeholder = "Нова парола">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Потвърди <span class="d-none d-xl-inline">Парола</span>
+                                                                    </label>
+                                                                    <input class="form-control" type="password" placeholder = "Потвърди парола">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col d-flex justify-content-end">
+                                                        <button class="btn btn-primary" type="submit" style="width: 150px; height: 50px;position: relative; top: 0px;left: 10px;">Запази</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <form class="form" novalidate>
+                                            <h3 style="color:#ee4557;">Промени снимката на организацията си</h3>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="col-12 col-sm-6 mb-3">
+                                                        <div class="mb-2">
+                                                        </div>
+                                                        <input type="file" name="image" accept="image/*" onchange="previewImage(event)">
+                                                        <img id="preview" src="" alt="Image Preview" width="300" height="300">
+                                                        <div class="col d-flex justify-content-end">
+                                                            <button class="btn btn-primary" type="submit" style="width: 150px; height: 50px;position: relative; top: 10px;left: 445px;">Запази</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                      <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
-                        <div class="text-center text-sm-left mb-2 mb-sm-0">
-                          <div class="mt-2">
-                            <button class="btn btn-primary" type="button">
-                              <i class="fa fa-fw fa-camera"></i>
-                              <span>Промени снимка</span>
-                            </button>
-                          </div>
-                        </div>
-                        <div class="text-center text-sm-right">
-                          <span class="badge badge-secondary">Organization</span>
-                        </div>
-                      </div>
                     </div>
-                    <ul class="nav nav-tabs">
-                      <li class="nav-item">
-                        <a href class="active nav-link">Settings</a>
-                      </li>
-                    </ul>
-                    <div class="tab-content pt-3">
-                      <div class="tab-pane active">
-                        <form class="form" novalidate>
-                          <div class="row">
-                            <div class="col">
-                              <div class="row">
-                                <div class="col">
-                                  <div class="form-group">
-                                    <label>Име на организацията</label>
-                                    <input class="form-control" type="text" name="name">
-                                  </div>
-                                </div>
-                                <!-- <div class="col">
-                                  <div class="form-group">
-                                    <label>Username</label>
-                                    <input class="form-control" type="text" name="username" placeholder="johnny.s" value="johnny.s">
-                                  </div>
-                                </div> -->
-                              </div>
-                              <div class="row">
-                                <div class="col">
-                                  <div class="form-group">
-                                    <label>Имейл</label>
-                                    <input class="form-control" type="text">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col">
-                                  <div class="form-group">
-                                    <label>Булстат</label>
-                                    <input class="form-control" type="text" placeholder="Булстат">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col">
-                                  <div class="form-group">
-                                    <label>Телефон</label>
-                                    <input class="form-control" type="tel" placeholder="Телефон">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col">
-                                  <div class="form-group">
-                                    <label>Адрес</label>
-                                    <input class="form-control" type="text" placeholder="Адрес">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col">
-                                  <div class="form-group">
-                                    <label>Опция за благотворителност</label>
-                                    <input class="form-control" type="text" placeholder="Опция за благотворителност">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col">
-                                  <div class="form-group">
-                                    <label>Категория</label>
-                                    <input class="form-control" type="text" placeholder="Категория">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col mb-3">
-                                  <div class="form-group">
-                                    <label>За организацията</label>
-                                    <textarea class="form-control" rows="5" placeholder="За организацията"></textarea>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-12 col-sm-6 mb-3">
-                              <div class="mb-2">
-                                <b>Change Password</b>
-                              </div>
-                              <div class="row">
-                                <div class="col">
-                                  <div class="form-group">
-                                    <label>Current Password</label>
-                                    <input class="form-control" type="password">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col">
-                                  <div class="form-group">
-                                    <label>New Password</label>
-                                    <input class="form-control" type="password">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col">
-                                  <div class="form-group">
-                                    <label>Confirm <span class="d-none d-xl-inline">Парола</span>
-                                    </label>
-                                    <input class="form-control" type="password">
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <!-- <div class="col-12 col-sm-5 offset-sm-1 mb-3"><div class="mb-2"><b>Keeping in Touch</b></div><div class="row"><div class="col"><label>Email Notifications</label><div class="custom-controls-stacked px-2"><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="notifications-blog" checked><label class="custom-control-label" for="notifications-blog">Blog posts</label></div><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="notifications-news" checked><label class="custom-control-label" for="notifications-news">Newsletter</label></div><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="notifications-offers" checked><label class="custom-control-label" for="notifications-offers">Personal Offers</label></div></div></div></div></div></div> -->
-                            <div class="row">
-                              <div class="col d-flex justify-content-end">
-                                <button class="btn btn-primary" type="submit" style="width: 150px; height: 50px;position: relative; top: 230px;left: 260px;">Save Changes</button>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript"></script>
-   </div>
+</div>
   </body>
 </html>
+<script>
+    function previewImage(event) {
+      var reader = new FileReader();
+      reader.onload = function() {
+        var output = document.getElementById('preview');
+        output.src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
