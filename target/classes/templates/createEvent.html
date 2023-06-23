@@ -101,64 +101,88 @@
         <div class="banner">
             <h1>СЪЗДАЙ СЪБИТИЕ</h1>
         </div>
-        <div class="item">
-            <p>Снимка на събитието:</p>
-            <input type="file" name="image" accept="file/*">
-        </div>
+<!--        <div class="item">-->
+<!--            <p>Снимка на събитието:</p>-->
+<!--            <input type="file" name="image" accept="file/*">-->
+<!--        </div>-->
         <div class="item">
             <p>Име на събитието: <span class="required">*</span></p>
             <div class="item">
-                <input type="text" th:field="*{name}" placeholder="Name" required/>
+                <input type="text" th:field="*{name}" placeholder="Име на събитието" minlength="5" maxlength="30" id="name" required/>
+            </div>
+            <div th:if="${name}" id="nameError">
+                <p th:text="${name}" style="color: red;"></p>
             </div>
             <p>Описание на събитието: <span class="required">*</span></p>
             <div class="item">
-                <input type="text" th:field="*{description}"/>
+                <input type="text" th:field="*{description}" placeholder="Описание на събитието" minlength="5" maxlength="255" id="description"/>
+            </div>
+            <div th:if="${description}" id="descriptionError">
+                <p th:text="${description}" style="color: red;"></p>
             </div>
         </div>
         <div class="question">
             <p>Онлайн ли е събитието? </p>
             <div class="question-answer">
                 <div>
-                    <input type="radio" th:value="true" id="radio_yes" th:field="*{isOnline}"/>
+                    <input type="radio" th:value="true" id="radio_yes" th:field="*{isOnline}" required/>
                     <label class="radio"><span>Да</span></label>
                 </div>
                 <div>
-                    <input type="radio" th:value="false" id="radio_no" th:field="*{isOnline}"/>
+                    <input type="radio" th:value="false" id="radio_no" th:field="*{isOnline}" required/>
                     <label class="radio"><span>Не</span></label>
                 </div>
+                <div th:if="${isOnline}" id="isOnlineError">
+                <p th:text="${isOnline}" style="color: red;"></p>
+            </div>
             </div>
         </div>
         <div class="contact-item">
             <div class="item">
                 <p>Адрес на събитието (ако не е онлайн)</p>
-                <input type="text" th:field="*{address}">
+                <input type="text" th:field="*{address}" minlength="5" placeholder="Адрес на събитието">
+                <div th:if="${address}" id="addressError">
+                    <p th:text="${address}" placeholder="Адрес на събитието" style="color: red;"></p>
+                </div>
             </div>
             <div class="item">
                 <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
-                <input type="text" th:field="*{eventCategories}" required/>
+                <input type="text" th:field="*{eventCategories}" pattern="[a-zA-Zа-яА-Я,]+" placeholder="Категории (ключови думи към събитието)" required/>
+                <div th:if="${eventCategories}" id="eventCategoriesError">
+                    <p th:text="${eventCategories}" style="color: red;"></p>
+                </div>
             </div>
             <div class="item">
                 <p>Цена на събитието (ако е безплатно, въведете 0): <span class="required">*</span></p>
-                <input type="number" th:field="*{price}" required/>
+                <input type="number" th:field="*{price}" min="0" placeholder="Цена на събитието" required/>
+                <div th:if="${price}" id="priceError">
+                    <p th:text="${price}" style="color: red;"></p>
+                </div>
             </div>
             <div class="item">
                 <p>Минимална възраст за участие: <span class="required">*</span></p>
-                <input type="number" th:field="*{minAge}" required/>
+                <input type="number" th:field="*{minAge}" min="0" placeholder="Минимална възраст за участие" required/>
+                <div th:if="${minAge}" id="minAgeError">
+                    <p th:text="${minAge}" style="color: red;"></p>
+                </div>
             </div>
             <div class="item">
                 <p>Максимална възраст за участие: <span class="required">*</span></p>
-                <input type="number" th:field="*{maxAge}" required/>
+                <input type="number" th:field="*{maxAge}" min="0" placeholder="Максимална възраст за участие" required/>
+                <div th:if="${maxAge}" id="maxAgeError">
+                    <p th:text="${maxAge}" style="color: red;"></p>
+                </div>
             </div>
         </div>
         <div class="question">
             <p>Еднократно ли е събитието? </p>
             <div class="question-answer">
                 <div>
-                    <input type="radio" th:value="true" id="radio_yes1" th:field="*{isOneTime}"/>
+                    <input type="radio" th:value="true" id="radio_yes1" th:field="*{isOneTime}" required/>
                     <label class="radio"><span>Да</span></label>
                 </div>
                 <div>
-                    <input type="radio" th:value="false" id="radio_no1" th:field="*{isOneTime}"/>
+                    <input type="radio" th:value="false" id="radio_no1" th:field="*{isOneTime}" required/>
                     <label class="radio"><span>Не</span></label>
                 </div>
             </div>
@@ -166,16 +190,25 @@
         <div class="contact-item">
             <div class="item">
                 <p>Начало на събитието: </p>
-                <input type="datetime-local" th:field="*{startsAt}">
+                <input type="datetime-local" th:field="*{startsAt}" required>
+                <div th:if="${startsAt}" id="startsAtError">
+                    <p th:text="${startsAt}" style="color: red;"></p>
+                </div>
             </div>
             <div class="item">
                 <p>Край на събитието: </p>
-                <input type="datetime-local" th:field="*{endsAt}">
+                <input type="datetime-local" th:field="*{endsAt}" required>
+                <div th:if="${endsAt}" id="endsAtError">
+                    <p th:text="${endsAt}" style="color: red;"></p>
+                </div>
             </div>
         </div>
         <div class="item">
             <p>Детайли относно повторяемостта на събитието: </p>
-            <input type="text" th:field="*{recurrenceDetails}">
+            <input type="text" th:field="*{recurrenceDetails}" placeholder="Детайли относно повторяемостта на събитието">
+            <div th:if="${recurrenceDetails}" id="recurrenceDetailsError">
+                <p th:text="${recurrenceDetails}" style="color: red;"></p>
+            </div>
         </div>
         <div class="btn-block">
             <button type="submit">Създай събитие</button>
@@ -183,6 +216,7 @@
     </form>
 </div>
 </div>
+<script th:src="@{/js/eventValidations.js}"></script>
 </body>
 </html>
 <style>
