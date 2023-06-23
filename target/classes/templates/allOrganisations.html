@@ -60,7 +60,7 @@
                         class="icon-menu h3 text-black"></span></a></span>
                 <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
-                        <li class="active"><a th:href="@{/index}" class="nav-link">Начало</a></li>
+                        <li class="active"><a th:href="@{/}" class="nav-link">Начало</a></li>
                         <li><a th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
                         <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
                         <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
@@ -87,20 +87,19 @@
                         <h1 class="mb-3 font-weight-bold text-teal">Eventforge</h1>
                     </div>
                     <div class="col-md-5 ml-auto align-self-end">
-                        <img src="images/img_1.png" alt="Image" class="img-fluid">
+                        <img src="/images/img_1.png" alt="Image" class="img-fluid">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!--<p>The session user role is: <span th:text="${session.sessionUserRole}"></span></p>-->
 <div class="table-responsive">
-    <table class="table table-bordered table-stripped table-hover">
+    <table class="table table-bordered table-hover">
         <thead class="table-info">
         <tr>
             <th scope="col">Лого</th>
-            <th scope="col">Корица</th>
+            <!--            <th scope="col">Корица</th>-->
             <th scope="col">Име</th>
             <th scope="col">Булстат</th>
             <th scope="col">Потребителско име</th>
@@ -108,15 +107,14 @@
             <th scope="col">Адрес</th>
             <th scope="col">Благотворителност</th>
             <th scope="col">Цел</th>
-            <!--            <th scope="col">userid - will be hidden</th>-->
-            <th scope="col" th:if="${session.sessionUserRole == 'ADMIN'}">Изтрий органицизия</th>
             <th scope="col" th:if="${session.sessionUserRole == 'ADMIN'}">Потвърди органицизия</th>
+<!--            <th scope="col" th:if="${session.sessionUserRole == 'ADMIN'}">Изтрий органицизия</th>-->
         </tr>
         </thead>
         <tbody>
-        <tr th:each="organisation : ${organisations}">>
-            <td><img alt="лого" th:src="@{${'file:' + organisation.logo}}" width="50%" height="100px"/></td>
-            <td><img alt="корица" th:src="@{${'file:' + organisation.logo}}" width="50%" height="100px"></td>
+        <tr th:each="organisation : ${organisations}">
+<!--            <p type="hidden" th:field="*{organisation.userId}"></p>-->
+            <td><img alt="лого" th:src="@{'file:' + ${organisation.logo}}" width="50%" height="100px"/></td>
             <td>[[${organisation.name}]]</td>
             <td>[[${organisation.bullstat}]]</td>
             <td>[[${organisation.username}]]</td>
@@ -124,23 +122,19 @@
             <td>[[${organisation.address}]]</td>
             <td>[[${organisation.charityOption}]]</td>
             <td>[[${organisation.organisationPurpose}]]</td>
-            <td>
-                <div th:if="${session.sessionUserRole == 'ADMIN'}">
-                <form th:action="@{/deleteOrganisation/{organisationId}(organisationId=${organisation.id})}"
-                      method="post">
-                    <button type="submit" class="btn btn-default"
-                            onclick="return confirm('Наистина ли искате да истриете тази организация?')">Изтрий
-                    </button>
-                </form>
-                </div>
-            </td>
-            <td>
-                <div th:if="${session.sessionUserRole == 'ADMIN'}">
-                <form th:action="@{/enableOrganisationByAdmin/{userId}(userId=${organisation.userId})}"
+            <td th:if="${session.sessionUserRole == 'ADMIN'}">
+                <form th:action="@{/admin/enableOrganisationByAdmin/{userId}(userId=${organisation.userId})}"
+<!--                <form th:attr="action=@{/admin/enableOrganisationByAdmin/{userId}(userId=${organisation.userId})}"-->
                       th:method="POST">
                     <button type="submit">Потвърди</button>
                 </form>
-                </div>
+<!--            <td th:if="${session.sessionUserRole == 'ADMIN'}">-->
+<!--                <form th:action="@{/deleteOrganisation/{organisationId}(organisationId=${organisation.id})}"-->
+<!--                      method="post">-->
+<!--                    <button type="submit" class="btn btn-default"-->
+<!--                            onclick="return confirm('Наистина ли искате да истриете тази организация?')">Изтрий-->
+<!--                    </button>-->
+<!--                </form>-->
             </td>
         </tr>
         </tbody>

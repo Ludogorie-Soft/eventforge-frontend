@@ -75,13 +75,13 @@
                         <form th:if="${session.sessionToken}"  th:action="@{/logout}" method="post">
                             <input type="submit" value="Logout">
                         </form>
-                        <li class="active"><a th:href="@{/index}" class="nav-link">Начало</a></li>
+                        <li class="active"><a th:href="@{/}" class="nav-link">Начало</a></li>
                         <li><a th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
                         <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
                         <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
                         <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
                         <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
-                        <li class="active"><a href="/organisation/settings/update-profile" class="nav-link">Профил</a></li>
+                        <li class="active" th:if="${session.sessionUserRole == 'ORGANISATION'}"><a th:href="@{/organisation/settings/update-profile}" class="nav-link">Профил</a></li>
                     </ul>
                 </nav>
 
