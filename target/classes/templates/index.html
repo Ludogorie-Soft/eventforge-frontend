@@ -11,13 +11,13 @@
 
     <link rel="stylesheet" th:href="@{fonts/icomoon/style.css}">
 
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{css/bootstrap-datepicker.css}">
-    <link rel="stylesheet" th:href="@{css/jquery.fancybox.min.css}">
-    <link rel="stylesheet" th:href="@{css/owl.carousel.min.css}">
-    <link rel="stylesheet" th:href="@{css/owl.theme.default.min.css}">
-    <link rel="stylesheet" th:href="@{fonts/flaticon/font/flaticon.css}">
-    <link rel="stylesheet" th:href="@{css/aos.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/css/aos.css}">
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{css/style.css}">
@@ -81,7 +81,8 @@
                         <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
                         <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
                         <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
-                        <li class="active"><a href="/organisation/settings/update-profile" class="nav-link">Профил</a></li>
+                        <li><a href="/organisation/settings/update-profile" class="nav-link">Профил</a></li>
+                        <li><a th:href="@{/manage-events/create}" class="nav-link">Създай събитие</a></li>
                     </ul>
                 </nav>
 

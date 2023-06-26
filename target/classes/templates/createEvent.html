@@ -9,10 +9,10 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
     <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
-    <link rel="stylesheet" th:href="@{css/owl.carousel.min.css}">
-    <link rel="stylesheet" th:href="@{css/owl.theme.default.min.css}">
-    <link rel="stylesheet" th:href="@{fonts/flaticon/font/flaticon.css}">
-    <link rel="stylesheet" th:href="@{css/aos.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/css/aos.css}">
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
@@ -65,8 +65,7 @@
                         <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
                         <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
                         <li><a href="/organisation/settings/update-profile" class="nav-link">Профил</a></li>
-                        <li class="active"><a th:href="@{/recurrence-events}" class="nav-link">Продължителни
-                            активности</a></li>
+                        <li class="active"><a th:href="@{/manage-events/create}" class="nav-link">Създай събитие</a></li>
                     </ul>
                 </nav>
 
@@ -105,6 +104,9 @@
 <!--            <p>Снимка на събитието:</p>-->
 <!--            <input type="file" name="image" accept="file/*">-->
 <!--        </div>-->
+<!--        <input  type="file" path="imagePath" class="form-control" name="imagePath"-->
+<!--                placeholder="Изображение(моля поставете линк към изображението)" th:field="*{image}" required title="Полето е задължително">-->
+<!--        <p style="color:red">*</p>-->
         <div class="item">
             <p>Име на събитието: <span class="required">*</span></p>
             <div class="item">
@@ -147,7 +149,7 @@
             </div>
             <div class="item">
                 <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
-                <input type="text" th:field="*{eventCategories}" pattern="[a-zA-Zа-яА-Я,]+" placeholder="Категории (ключови думи към събитието)" required/>
+                <input type="text" th:field="*{eventCategories}" pattern="[A-Za-zА-Яа-я, ]{3,10}" placeholder="Категории (ключови думи към събитието)" required/>
                 <div th:if="${eventCategories}" id="eventCategoriesError">
                     <p th:text="${eventCategories}" style="color: red;"></p>
                 </div>

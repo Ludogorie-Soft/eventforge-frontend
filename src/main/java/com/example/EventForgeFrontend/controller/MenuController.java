@@ -22,7 +22,7 @@ public class MenuController {
     private final OrganisationApiClient organisationApiClient;
     private final EventApiClient eventApiClient;
 
-    @GetMapping
+    @GetMapping("index")
     public String index() {
         return "index";
     }
