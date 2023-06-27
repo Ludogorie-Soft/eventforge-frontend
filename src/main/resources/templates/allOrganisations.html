@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" th:href="@{https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower">
 
     <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
@@ -99,43 +99,25 @@
         <thead class="table-info">
         <tr>
             <th scope="col">Лого</th>
-            <!--            <th scope="col">Корица</th>-->
             <th scope="col">Име</th>
             <th scope="col">Булстат</th>
-            <th scope="col">Потребителско име</th>
             <th scope="col">Телефон</th>
             <th scope="col">Адрес</th>
             <th scope="col">Благотворителност</th>
             <th scope="col">Цел</th>
-            <th scope="col" th:if="${session.sessionUserRole == 'ADMIN'}">Потвърди органицизия</th>
-<!--            <th scope="col" th:if="${session.sessionUserRole == 'ADMIN'}">Изтрий органицизия</th>-->
+            <th scope="col">Приоритети</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="organisation : ${organisations}">
-<!--            <p type="hidden" th:field="*{organisation.userId}"></p>-->
-            <td><img alt="лого" th:src="@{'file:' + ${organisation.logo}}" width="50%" height="100px"/></td>
+            <td><img alt="лого" th:src="@{'/imgs/' +${organisation.logo}}" width="50%" height="100px"/></td>
             <td>[[${organisation.name}]]</td>
             <td>[[${organisation.bullstat}]]</td>
-            <td>[[${organisation.username}]]</td>
             <td>[[${organisation.phone}]]</td>
             <td>[[${organisation.address}]]</td>
             <td>[[${organisation.charityOption}]]</td>
             <td>[[${organisation.organisationPurpose}]]</td>
-            <td th:if="${session.sessionUserRole == 'ADMIN'}">
-                <form th:action="@{/admin/enableOrganisationByAdmin/{userId}(userId=${organisation.userId})}"
-<!--                <form th:attr="action=@{/admin/enableOrganisationByAdmin/{userId}(userId=${organisation.userId})}"-->
-                      th:method="POST">
-                    <button type="submit">Потвърди</button>
-                </form>
-<!--            <td th:if="${session.sessionUserRole == 'ADMIN'}">-->
-<!--                <form th:action="@{/deleteOrganisation/{organisationId}(organisationId=${organisation.id})}"-->
-<!--                      method="post">-->
-<!--                    <button type="submit" class="btn btn-default"-->
-<!--                            onclick="return confirm('Наистина ли искате да истриете тази организация?')">Изтрий-->
-<!--                    </button>-->
-<!--                </form>-->
-            </td>
+            <td>[[${organisation.organisationPriorities}]]</td>
         </tr>
         </tbody>
     </table>
@@ -143,21 +125,3 @@
 
 </body>
 </html>
-<style>
-    div.fr {
-        width: 1200px;
-        margin: 50px auto 0;
-    }
-
-    .text-yellow {
-        color: #f9a122;
-    }
-</style>
-<script>
-    function confirmDelete(organisationId) {
-        if (confirm('Наистина ли искате да истриете тази организация?')) {
-            // If confirmed, submit the form
-            document.getElementById('deleteForm').submit();
-        }
-    }
-</script>
