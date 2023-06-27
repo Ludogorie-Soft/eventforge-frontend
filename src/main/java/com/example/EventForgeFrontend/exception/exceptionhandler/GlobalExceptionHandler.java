@@ -8,6 +8,7 @@ import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -92,18 +93,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(TokenExpiredException.class)
     public ModelAndView handleTokenExpiredException(TokenExpiredException ex, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav = new ModelAndView("login");
         mav.addObject("login" , new JWTAuthenticationRequest());
         String sessionToken = (String) request.getSession().getAttribute("sessionToken");
         if (sessionToken != null) {
             mav.addObject("tokenExpired", "Сесията Ви е изтекла , моля впишете се отново");
             sessionManager.invalidateSession(request);
             authenticationApiClient.logout(sessionToken);
-            mav.setViewName("login");
             return mav;
         }
             mav.addObject("errorMessage" , ex.getMessage());
-            mav.setViewName("login");
             return mav;
     }
 
@@ -138,6 +137,28 @@ public class GlobalExceptionHandler {
         JWTAuthenticationRequest newLoginRequest = (JWTAuthenticationRequest) request.getAttribute("newLoginRequest");
         request.removeAttribute("newLoginRequest");
        return assembleModelAndViewForLoginRedirectsOnly(newLoginRequest , ex.getMessage());
+    }
+
+    @ExceptionHandler(DateTimeException.class)
+    public ModelAndView handleDateTimeException(DateTimeException ex , HttpServletRequest request){
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("dateTimeException" , ex.getMessage());
+        mav.setViewName("redirect:" + request.getHeader("Referer"));
+        return mav;
+    }
+    @ExceptionHandler(ImageException.class)
+    public ModelAndView handleImageException(ImageException ex , HttpServletRequest request){
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("imageException" , ex.getMessage());
+        mav.setViewName("redirect:" + request.getHeader("Referer"));
+        return mav;
+    }
+    @ExceptionHandler(PasswordNotMatchException.class)
+    public ModelAndView passwordsNotMatchException(PasswordNotMatchException ex , HttpServletRequest request){
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("passwordError" , ex.getMessage());
+        mav.setViewName("redirect:" + request.getHeader("Referer"));
+        return mav;
     }
 
     @SuppressWarnings("unchecked")

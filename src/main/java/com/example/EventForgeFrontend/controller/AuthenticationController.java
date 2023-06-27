@@ -34,7 +34,7 @@ public class AuthenticationController {
         return "/registerOrganisation";
     }
 
-    @PostMapping("/submit")
+    @PostMapping("submit")
     public String register(RegistrationRequest request, HttpServletRequest httpRequest, Model model) {
         Set<String> priorityCategories = authenticationApiClient.getAllPriorityCategories().getBody();
         httpRequest.setAttribute("newRegistrationRequest", new RegistrationRequest(request.getUsername(), request.getName(), null, request.getBullstat(), null, request.getOptionalCategory(), request.getOrganisationPurpose(), null, request.getAddress(), request.getWebsite(), request.getFacebookLink(), request.getFullName(), request.getPhoneNumber(), request.getCharityOption(), request.getPassword(), request.getConfirmPassword()));

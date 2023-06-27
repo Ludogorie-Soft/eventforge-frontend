@@ -12,7 +12,7 @@
     <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{css/bootstrap-datepicker.css}">
     <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
     <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
     <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
@@ -60,7 +60,7 @@
                 <span class="d-inline-block d-lg-none"><a href="#" class="text-black site-menu-toggle js-menu-toggle py-5"><span class="icon-menu h3 text-black"></span></a></span>
                 <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
-                        <li><a th:href="@{/index}" class="nav-link">Начало</a></li>
+                        <li><a th:href="@{/}" class="nav-link">Начало</a></li>
                         <li><a th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
                         <li class="active"><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
                         <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>

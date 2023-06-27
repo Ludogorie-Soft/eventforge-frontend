@@ -2,6 +2,7 @@ package com.example.EventForgeFrontend.exception.decoder;
 
 
 import com.example.EventForgeFrontend.exception.*;
+import com.example.EventForgeFrontend.exception.DateTimeException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,10 +22,10 @@ public class CustomErrorDecoder implements ErrorDecoder {
     public Exception decode(String s, Response response) {
         String errorMessage = extractErrorMessage(response);
 
-        if(response.status() == HttpStatus.NOT_FOUND.value()){
+        if (response.status() == HttpStatus.NOT_FOUND.value()) {
             return new InvalidUserCredentialException(errorMessage);
         }
-        if(response.status() == HttpServletResponse.SC_PRECONDITION_FAILED){
+        if (response.status() == HttpServletResponse.SC_PRECONDITION_FAILED) {
             String[] errorEntries = errorMessage.split("/ ");
             Map<String, String> errorMessages = new HashMap<>();
             for (String entry : errorEntries) {
@@ -51,25 +52,34 @@ public class CustomErrorDecoder implements ErrorDecoder {
 
             return new TokenExpiredException(errorMessage);
         }
-        if(response.status() == HttpServletResponse.SC_EXPECTATION_FAILED){
+        if (response.status() == HttpServletResponse.SC_EXPECTATION_FAILED) {
             return new EmailConfirmationNotSentException(errorMessage);
         }
-        if(response.status() == HttpServletResponse.SC_BAD_REQUEST){
+        if (response.status() == HttpServletResponse.SC_BAD_REQUEST) {
             return new InvalidEmailConfirmationLinkException(errorMessage);
         }
-        if(response.status() == HttpServletResponse.SC_SERVICE_UNAVAILABLE){
+        if (response.status() == HttpServletResponse.SC_SERVICE_UNAVAILABLE) {
             return new UserDisabledException(errorMessage);
         }
-        if(response.status() == HttpStatus.LOCKED.value()){
+        if (response.status() == HttpStatus.LOCKED.value()) {
             return new UserLockedException(errorMessage);
+        }
+        if(response.status() == HttpStatus.SEE_OTHER.value()){
+            return new DateTimeException(errorMessage);
+        }
+        if(response.status() == HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE){
+            return new ImageException(errorMessage);
+        }
+        if(response.status() == HttpServletResponse.SC_CONFLICT){
+            return new PasswordNotMatchException(errorMessage);
         }
         // Delegate to default error decoder for other exceptions
         return new RuntimeException("Нещо се обърка. Моля опитайте отново");
     }
 
 
-    private String extractErrorMessage(Response response)  {
-        try{
+    private String extractErrorMessage(Response response) {
+        try {
             if (response.body() != null) {
                 InputStream inputStream = response.body().asInputStream();
                 String errorMessage = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
