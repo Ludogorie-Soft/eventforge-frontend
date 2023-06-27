@@ -15,6 +15,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class OrganisationResponse {
     private Long id;
+    private String logo;
+    private String background;
     private String name;
     private String bullstat;
     private Long userId;
@@ -24,6 +26,6 @@ public class OrganisationResponse {
     private String charityOption;
     private String organisationPurpose;
     private List<String> organisationPriorities;
-//    private LocalDateTime registeredAt;
-//    private LocalDateTime updatedAt;
+    private LocalDateTime registeredAt;
+    private LocalDateTime updatedAt;
 }
