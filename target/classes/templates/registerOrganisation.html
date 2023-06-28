@@ -1,5 +1,4 @@
 <!doctype html>
-<html lang="en">
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Eventforge</title>
@@ -149,18 +148,19 @@
                             <p th:text="${confirmPassword}" style="color: red;"></p>
                         </div>
                     </div>
-                    <!--          <label>Лого на организацията:</label>-->
-                    <!--          <div class="form-group row">-->
-                    <!--            <div class="col-md-12">-->
-                    <!--              <input type="file" name="logo" th:field="*{logo}" class="form-control-file">-->
-                    <!--            </div>-->
-                    <!--          </div>-->
-                    <!--          <label>Корица на организацията:</label>-->
-                    <!--          <div class="form-group row">-->
-                    <!--            <div class="col-md-12">-->
-                    <!--              <input type="file" name="background" th:field="*{backgroundCover}" class="form-control-file">-->
-                    <!--            </div>-->
-                    <!--          </div>-->
+                    <label>Лого на организацията:</label>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="file" th:field="*{logo}" class="form-control-file">
+                        </div>
+                    </div>
+
+                    <label>Корица на организацията:</label>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="file" th:field="*{backgroundCover}" class="form-control-file" >
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{address}"
@@ -191,7 +191,7 @@
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{facebookLink}"
                                    placeholder="Линк към фейсбук страница"
-                                   pattern="(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)"
+
                                    id="facebook" required>
                         </div>
                         <div th:if="${facebookLink}" id="facebookLinkError">
@@ -281,8 +281,6 @@
             </div>
         </div>
     </div>
-</div>
-
 </div>
 
 <script src="js/jquery-3.3.1.min.js"></script>
