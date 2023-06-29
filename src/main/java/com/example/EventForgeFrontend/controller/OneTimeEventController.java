@@ -67,7 +67,7 @@ public class OneTimeEventController {
         ResponseEntity<List<?>> oneTimeEvents = eventApiClient.getEventsByCriteria(request);
         model.addAttribute("oneTimeEvents", oneTimeEvents.getBody());
         model.addAttribute("isExpired", isExpired);
-        return "oneTimeEvents";
+        return "/oneTimeEvents";
     }
 
     @PostMapping("delete/{id}")
