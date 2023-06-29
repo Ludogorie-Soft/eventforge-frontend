@@ -38,68 +38,20 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
+    <th:block th:include="~{fragments/header}"></th:block>
 
-    <header class="site-navbar site-navbar-target" role="banner">
-
-        <div class="container mb-3">
-            <div class="d-flex align-items-center">
-                <div class="site-logo mr-auto">
-                    <a href="/index">Eventforge<span class="text-primary"></span></a>
-                </div>
-                <div class="site-quick-contact d-none d-lg-flex ml-auto ">
-                    <div class="d-flex site-info align-items-center mr-5">
-                        <span class="block-icon mr-3"><span class="icon-map-marker text-yellow"></span></span>
-                        <span>Varna<br> Bulgaria</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="menu-wrap d-flex align-items-center">
-                <span class="d-inline-block d-lg-none"><a href="#"
-                                                          class="text-black site-menu-toggle js-menu-toggle py-5"><span
-                        class="icon-menu h3 text-black"></span></a></span>
-                <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
-                    <ul class="site-menu main-menu js-clone-nav mr-auto ">
-                        <li><a th:href="@{/index}" class="nav-link">Начало</a></li>
-                        <li class="active"><a th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
-                        <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
-                        <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
-                        <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
-                        <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
-                        <li class="active"><a href="/organisation/settings/update-profile" class="nav-link">Профил</a>
-                        </li>
-                    </ul>
-                </nav>
-
-                <div class="top-social ml-auto">
-                    <a href="#"><span class="icon-facebook text-teal"></span></a>
-                    <a href="#"><span class="icon-twitter text-success"></span></a>
-                    <a href="#"><span class="icon-linkedin text-yellow"></span></a>
-                </div>
-            </div>
-        </div>
-    </header>
 
     <div class="ftco-blocks-cover-1">
         <div class="site-section-cover overlay">
             <div class="container">
                 <div class="row align-items-center ">
-                    <div class="col-md-5 mt-5 pt-5">
-                        <span class="text-cursive h5 text-red">Регистрирай организация</span>
-                        <h1 class="mb-3 font-weight-bold text-teal">Eventforge</h1>
-                    </div>
-                    <div class="col-md-5 ml-auto align-self-end">
-                        <img src="images/img_1.png" alt="Image" class="img-fluid">
-
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="site-section py-5 bg-warning">
+<div class="site-section py-1 bg-warning">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 d-flex">
@@ -158,7 +110,7 @@
                     <label>Корица на организацията:</label>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="file" th:field="*{backgroundCover}" class="form-control-file" >
+                            <input type="file" th:field="*{backgroundCover}" class="form-control-file">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -241,7 +193,7 @@
                         <div class="col-md-12">
                             <textarea name="" id="purpose" th:field="*{organisationPurpose}" class="form-control"
                                       placeholder="Мисия на организацията" minlength="15" cols="30"
-                                      rows="10"></textarea>
+                                      rows="3"></textarea>
                         </div>
                         <div th:if="${organisationPurpose}" id="organisationPurpose">
                             <p th:text="${organisationPurpose}" style="color: red;"></p>
@@ -259,9 +211,9 @@
 
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <textarea id="priority" th:field="*{optionalCategory}" class="form-control"
-                                              placeholder="Опционален приоритет на организация" cols="30"
-                                              rows="10"></textarea>
+                                    <input id="priority" th:field="*{optionalCategory}" class="form-control"
+                                           placeholder="Опционален приоритет на организация" cols="30"
+                                           rows="10"></input>
                                 </div>
                             </div>
                             <div th:if="${registrationRequest}" id="registrationRequest">
@@ -282,6 +234,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/jquery-migrate-3.0.0.js"></script>
@@ -304,8 +257,8 @@
 
 </html>
 <style>
-.text-yellow {
-  color: #f9a122;
-}
+    .text-yellow {
+        color: #f9a122;
+    }
 
 </style>
