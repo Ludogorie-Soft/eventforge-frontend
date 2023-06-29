@@ -66,7 +66,7 @@
         <tbody>
         <tr th:each="organisation : ${organisations}">
             <td>
-                <img style='display:block; width:100px;height:100px;' id='base64image'
+                <img style='display:block; width:100px; height:100px;' id='base64image'
                       th:src="@{'data:image/jpeg;base64,' + ${organisation.logo}}" />
             </td>
             <td>[[${organisation.name}]]</td>
