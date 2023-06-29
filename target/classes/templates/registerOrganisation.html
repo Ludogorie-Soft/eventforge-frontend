@@ -86,9 +86,6 @@
                             <input type="password" th:field="*{password}" class="form-control" id="password"
                                    placeholder="Парола за регистрация " required>
                         </div>
-                        <div th:if="${registrationRequest}" >
-                            <p th:text="${registrationRequest}" style="color: red;"></p>
-                        </div>
                         <div th:if="${password}" id="passwordError">
                             <p th:text="${password}" style="color: red;"></p>
                         </div>
