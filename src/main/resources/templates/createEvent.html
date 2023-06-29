@@ -90,54 +90,52 @@
     </div>
 <div class="formbold-main-wrapper">
     <div class="formbold-form-wrapper">
-        <form action="https://formbold.com/s/FORM_ID" method="POST">
+        <form th:action="@{/manage-events/create-event}" th:object="${eventRequest}" method="POST" enctype="multipart/form-data">
             <div class="formbold-mb-5">
-                <label class="formbold-form-label"> Кой организира събитието? </label>
-                <input type="text" placeholder="Организатор на събитието" class="formbold-form-input" required/>
+                <label class="formbold-form-label"> Изображение </label>
+                <input type="file" th:field="*{image}" class="formbold-form-input" required/>
             </div>
             <div class="formbold-mb-5">
                 <label class="formbold-form-label"> Име на събитието </label>
-                <input type="text" placeholder="Име на събитието" class="formbold-form-input" required/>
+                <input type="text" th:field="*{name}" placeholder="Име на събитието" class="formbold-form-input" required/>
             </div>
             <div class="formbold-mb-5">
-                <label class="formbold-form-label"> Дата </label>
-                <input type="date" class="formbold-form-input"/>
+                <label class="formbold-form-label"> Дата (начална) </label>
+                <input type="datetime-local" th:field="*{startsAt}" class="formbold-form-input"/>
             </div>
-            <div class="flex flex-wrap formbold--mx-3">
-                <div class="w-full sm:w-half formbold-px-3">
-                    <div class="formbold-mb-5">
-                        <label value="time" class="formbold-form-label"> Начален час на събитието </label>
-                        <input type="time" class="formbold-form-input" required/>
-                    </div>
-                </div>
-                <div class="w-full sm:w-half formbold-px-3">
-                    <div class="formbold-mb-5">
-                        <label value="time" class="formbold-form-label"> Краен час на събитието </label>
-                        <input type="time" class="formbold-form-input" required/>
-                    </div>
-                </div>
+            <div class="formbold-mb-5">
+                <label class="formbold-form-label"> Дата (крайна) </label>
+                <input type="datetime-local" th:field="*{endsAt}" class="formbold-form-input"/>
             </div>
             <div class="formbold-mb-5">
                 <label class="formbold-form-label"> Адрес или линк на събитието </label>
-                <input type="text" placeholder="Адрес на събитието или линк" class="formbold-form-input" required/>
+                <input type="text" th:field="*{address}" placeholder="Адрес на събитието или линк" class="formbold-form-input" required/>
             </div>
             <div class="formbold-mb-5">
                 <label class="formbold-form-label">Подробно описание на събитието</label>
-                <textarea placeholder="Подробно описание на събитието" class="formbold-form-input" style="width: 550px; height: 150px;" required></textarea>
+                <textarea th:field="*{description}" placeholder="Подробно описание на събитието" class="formbold-form-input" style="width: 550px; height: 150px;" required></textarea>
             </div>
             <div class="formbold-mb-5">
                 <label class="formbold-form-label">Цена за вход събитието (ако е безплатно въведете 0)</label>
-                <input type="number" step="0.01" placeholder="Цена за вход на събитието" class="formbold-form-input" required />
+                <input type="number" th:field="*{price}" step="0.01" placeholder="Цена за вход на събитието" class="formbold-form-input" required />
             </div>
             <div class="formbold-mb-5">
                 <label class="formbold-form-label">Посочете за коя възрастова група е подходящо събитието</label>
-                <input type="text" step="1" placeholder="Посочете за коя възрастова група е подходящо събитието" class="formbold-form-input" />
+                <input type="text"  th:field="*{minAge}" step="1" min="0" placeholder="от" class="formbold-form-input" />
+                <input type="text"  th:field="*{maxAge}" step="1" min="0" placeholder="от" class="formbold-form-input" />
+            </div>
+            <div class="formbold-mb-5">
+                <label class="formbold-form-label">Тип събитие?</label>
+                <input type="radio" th:field="*{isOnline}" value="false" id="live" >
+                <label value="Да" class="formbold-form-input">на живо</label>
+                <input type="radio" th:field="*{isOnline}" value="true" id="online">
+                <label value="Не" class="formbold-form-input">онлайн</label>
             </div>
             <div class="formbold-mb-5">
                 <label class="formbold-form-label">Регулярно събитие ли е?</label>
-                <input type="radio" name="option" value="option1" id="option1" >
+                <input type="radio" th:field="*{isOneTime}" value="false" id="option1" >
                 <label value="Да" class="formbold-form-input">Да</label>
-                <input type="radio" name="option" value="option2" id="option2">
+                <input type="radio" th:field="*{isOneTime}" value="true" id="option2">
                 <label value="Не" class="formbold-form-input">Не</label>
             </div>
             <div>
