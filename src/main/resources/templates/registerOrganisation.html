@@ -71,11 +71,11 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 mb-5">
 
-                <form action="#" th:action="@{submit}" th:object="${request}" method="post" id="registerForm">
+                <form action="#" th:action="@{submit}" th:object="${request}" method="post" accept="image/png, image/jpeg"  enctype="multipart/form-data" id="registerForm">
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" th:field="*{name}" class="form-control"
-                                   placeholder="Име на организацията" minlength="5" maxlength="30" id="name" required>
+                                   placeholder="Име на организацията"  id="name" required>
                         </div>
                         <div th:if="${name}" id="nameError">
                             <p th:text="${name}" style="color: red;"></p>
@@ -84,7 +84,6 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="password" th:field="*{password}" class="form-control" id="password"
-                                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{6,72}$"
                                    placeholder="Парола за регистрация " required>
                         </div>
                         <div th:if="${password}" id="passwordError">
@@ -100,19 +99,19 @@
                             <p th:text="${confirmPassword}" style="color: red;"></p>
                         </div>
                     </div>
-                    <label>Лого на организацията:</label>
-                    <div class="form-group row">
-                        <div class="col-md-12">
-                            <input type="file" th:field="*{logo}" class="form-control-file">
-                        </div>
-                    </div>
+<!--                    <label>Лого на организацията:</label>-->
+<!--                    <div class="form-group row">-->
+<!--                        <div class="col-md-12">-->
+<!--                            <input type="file" name="logo" class="form-control-file">-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                    <label>Корица на организацията:</label>
-                    <div class="form-group row">
-                        <div class="col-md-12">
-                            <input type="file" th:field="*{backgroundCover}" class="form-control-file">
-                        </div>
-                    </div>
+<!--                    <label>Корица на организацията:</label>-->
+<!--                    <div class="form-group row">-->
+<!--                        <div class="col-md-12">-->
+<!--                            <input type="file" name="backgroundCover" class="form-control-file">-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{address}"
@@ -153,8 +152,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{fullName}"
-                                   placeholder="Лице за контакт - име и фамилия" id="fullname" minlength="8"
-                                   pattern="^([a-zA-Zа-яА-Я -]*)$" required>
+                                   placeholder="Лице за контакт - име и фамилия" id="fullname" required>
                         </div>
                         <div th:if="${fullName}" id="fullNameError">
                             <p th:text="${fullName}" style="color: red;"></p>
@@ -173,8 +171,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{phoneNumber}"
-                                   placeholder="Лице за контакт - телефон" id="phone" minlength="10" maxlength="13"
-                                   pattern="^\+?[0-9]+$" required>
+                                   placeholder="Лице за контакт - телефон" id="phone" >
                         </div>
                         <div th:if="${phoneNumber}" id="phoneNumberError">
                             <p th:text="${phoneNumber}" style="color: red;"></p>
@@ -192,7 +189,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <textarea name="" id="purpose" th:field="*{organisationPurpose}" class="form-control"
-                                      placeholder="Мисия на организацията" minlength="15" cols="30"
+                                      placeholder="Мисия на организацията"  cols="30"
                                       rows="3"></textarea>
                         </div>
                         <div th:if="${organisationPurpose}" id="organisationPurpose">
