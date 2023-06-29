@@ -48,6 +48,7 @@
         </div>
     </div>
 </div>
+
 <div class="table-responsive">
     <table class="table table-bordered table-hover">
         <thead class="table-info">
@@ -64,7 +65,10 @@
         </thead>
         <tbody>
         <tr th:each="organisation : ${organisations}">
-            <td><img alt="лого" th:src="@{'/imgs/' +${organisation.logo}}" width="50%" height="100px"/></td>
+            <td>
+                <img style='display:block; width:100px;height:100px;' id='base64image'
+                      th:src="@{'data:image/jpeg;base64,' + ${organisation.logo}}" />
+            </td>
             <td>[[${organisation.name}]]</td>
             <td>[[${organisation.bullstat}]]</td>
             <td>[[${organisation.phone}]]</td>
