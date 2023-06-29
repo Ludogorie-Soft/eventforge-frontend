@@ -5,7 +5,7 @@
         <div class="d-flex align-items-center">
             <div class="site-logo mr-auto">
                 <img src="/images/img_1.png" alt="Image" class="img-fluid">
-                <a href="/index">Eventforge<span class="text-primary"></span></a>
+                <a th:href="@{/}">Eventforge<span class="text-primary"></span></a>
             </div>
             <div class="site-quick-contact d-none d-lg-flex ml-auto ">
                 <div class="d-flex site-info align-items-center mr-5">
@@ -23,7 +23,7 @@
             <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav mr-auto ">
                     <li><a th:href="@{/}" class="nav-link">Начало</a></li>
-                    <li class="active"><a th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
+                    <li class="active"><a th:if="${session.sessionToken == null}" th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
                     <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
                     <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
                     <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
