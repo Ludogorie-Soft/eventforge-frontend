@@ -52,12 +52,12 @@
         </div>
     </div>
     <div class="container2">
-        <center>
+        <div style="text-align: center;">
         <form th:action="@{/one-time-events/expired}" method="get">
             <input type="hidden" name="isExpired" value="${isExpired}"/>
             <button type="submit" class="btn btn-warning">Покажи отминали събития</button>
         </form>
-        </center>
+        </div>
         <form th:action="@{/one-time-events/advanced-search/{isExpired}(isExpired=${isExpired})}"  method="post">
             <label for="name">Име на събитието:</label>
             <input type="text" id="name" name="name" th:value="*{name}"/><br/>

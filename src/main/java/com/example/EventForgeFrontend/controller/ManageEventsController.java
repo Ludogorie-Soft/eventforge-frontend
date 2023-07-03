@@ -71,7 +71,7 @@ public class ManageEventsController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<String> eventRequestResult = organisationApiClient.submitCreatedEvent(eventRequest, token);
         model.addAttribute("eventRequestResult", eventRequestResult.getBody());
-        return "redirect:/create-event";
+        return "redirect:/manage-events/create";
     }
 
     @GetMapping("/update/{id}")
