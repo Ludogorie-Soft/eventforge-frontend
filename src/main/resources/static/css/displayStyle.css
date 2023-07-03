@@ -330,3 +330,224 @@ border-radius: 5px;
 font-size: 24px;
 color: white;
 }
+
+
+.adv-search {
+  color: white;
+  background-color: var(--purple);
+  padding: 1rem;
+  border-bottom-right-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border: none;
+  position: relative;
+  right: 6%;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.adv-search:hover {
+  background-color:#7c7cb3;
+  transform: scale(1.05);
+}
+
+.adv-search i {
+  pointer-events: none;
+}
+
+.search-input {
+  width: 35vw;
+  border: none;
+  padding: 1rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  background: #e8e8e8;
+  box-shadow: 20px 20px 60px #c5c5c5,
+         -20px -20px 60px #ffffff;
+}
+
+.search-bar {
+    position: absolute;
+    top: 12vh;
+    left: 12vw;
+}
+
+.search-input:focus  {
+    outline-color: #e8e8e8;
+    background: #e8e8e8;
+    box-shadow: inset 20px 20px 60px #c5c5c5,
+           inset -20px -20px 60px #ffffff;
+    transition: 0.3s;
+}
+
+.search-input:focus + .adv-search {
+  transition: 0.3s;
+  border: 2.5px solid #e8e8e8;
+}
+
+.adv-form input {
+  border: none;
+  border-radius: 3px;
+  border-bottom: 1px solid rgb(66, 66, 66);
+}
+
+.adv-form input:focus {
+  outline: none;
+}
+
+.adv-form {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 5%;
+  position: relative;
+  bottom: 2vh;
+  left: 2%;
+}
+
+.adv-input {
+  padding-bottom: 3%;
+}
+
+.adv-search-form-title{
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  position: relative;
+  bottom: 2vh;
+  border-bottom: 2.5px solid var(--purple);
+  border-radius: 2px;
+  padding-bottom: 2%;
+  color: var(--purple);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup {
+  background-color: white;
+  padding: 20px;
+  max-width: 40%;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 2%;
+  font-size: 5rem;
+  color: red;
+  transition: 0.3s;
+}
+
+.close-btn:hover {
+  color: rgb(250, 76, 76);
+}
+
+.noselect {
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+  background: var(--purple);
+ }
+ 
+ .noselect, .noselect span {
+  transition: 200ms;
+ }
+ 
+ .noselect .text {
+  transform: translateX(35px);
+  color: white;
+  font-weight: bold;
+ }
+ 
+ .noselect .icon {
+  position: absolute;
+  color: white;
+  border-left: 1px solid #48487a;
+  transform: translateX(110px);
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ }
+ 
+ .noselect svg {
+  width: 15px;
+  fill: #eee;
+ }
+ 
+ .noselect:hover {
+  background: #7c7cb3;
+ }
+ 
+ .noselect:hover .text {
+  color: transparent;
+ }
+ 
+ .noselect:hover .icon {
+  width: 150px;
+  border-left: none;
+  transform: translateX(0);
+ }
+ 
+ .noselect:focus {
+  outline: none;
+ }
+ 
+ .noselect:active .icon svg {
+  transform: scale(0.8);
+ }
+
+ 
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: -8%;
+  background-color: #f1f1f1;
+  min-width: 9.3vw;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: white;
+  font-size: rem;
+  background-color: var(--purple);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #c2c2c2;}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
