@@ -69,3 +69,36 @@ ctaButtons.forEach(function(button) {
   });
 });
 
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function dropDown() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+var advSearchButton = document.getElementById('testt');
+var overlay = document.getElementById('overlay');
+var closeBtn = document.getElementById('close-btn');
+
+advSearchButton.addEventListener('click', function() {
+  overlay.style.display = 'flex';
+});
+
+closeBtn.addEventListener('click', function() {
+  overlay.style.display = 'none';
+});
+
+
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
