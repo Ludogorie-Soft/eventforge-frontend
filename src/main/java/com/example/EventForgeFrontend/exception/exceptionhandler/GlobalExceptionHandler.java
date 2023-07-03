@@ -3,6 +3,7 @@ package com.example.EventForgeFrontend.exception.exceptionhandler;
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
+import com.example.EventForgeFrontend.dto.UpdateAccountRequest;
 import com.example.EventForgeFrontend.exception.*;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomValidationErrorException.class)
     public ModelAndView handleCustomValidationErrorException(CustomValidationErrorException e, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("registerOrganisation");
+        ModelAndView mav = new ModelAndView();
         Map<String, String> errors = e.getErrors();
         for (Map.Entry<String, String> error : errors.entrySet()) {
             mav.addObject(error.getKey(), error.getValue());
@@ -45,8 +46,15 @@ public class GlobalExceptionHandler {
             log.info("error message: " + error.getValue());
         }
         Object newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
+        Object newUpdateRequest = getAttributeAsType(request , "updateRequest" , UpdateAccountRequest.class);
+        Object allPriorities = getAttributeAsType(request , "allPriorities" , Set.class);
         if (newRegistrationRequest != null) {
             mav.addObject("request", newRegistrationRequest);
+        }
+        if(newUpdateRequest !=null){
+            mav.addObject("allPriorities" , allPriorities);
+            mav.addObject("updateRequest" , newUpdateRequest);
+
         }
 
         Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
@@ -55,9 +63,15 @@ public class GlobalExceptionHandler {
         }
 
 
+        request.removeAttribute("updateRequest");
         request.removeAttribute("newRegistrationRequest");
         request.removeAttribute("organisationPriorities");
-        mav.setViewName("registerOrganisation");
+        if(newRegistrationRequest!=null){
+            mav.setViewName("registerOrganisation");
+        } else {
+            mav.setViewName("organisationProfile");
+        }
+
         return mav;
     }
 
