@@ -45,12 +45,81 @@
         </div>
       </div>
     </div>
-
-    <div class="search-bar">
+<div class="search-bar">
+        <input type="search" class="search-input"  id="search" placeholder="Търсене..." required>
+        <div class="dropdown">
+            <button type="submit" onclick="dropDown()" id="adv-search" class="dropbtn adv-search"><i class="fa fa-search" onclick="dropDown()"></i> <i class="fa fa-caret-down"></i></button>
+            <div id="myDropdown" class="dropdown-content">
+              <a id="testt">Разширено търсене</a>
+            </div>
+          </div>
+        <div class="overlay" id="overlay">
+            <div class="popup">
+              <div class="close-btn" id="close-btn">&times;</div>
+              <div class="advanced-search-form" id="advanced-search-form">
+                <h1 class="adv-search-form-title">Разширено търсене</h1>
+                <form class="adv-form" th:action="@{/one-time-events/advanced-search/{isExpired}(isExpired=${isExpired})}"  method="post">
+                    <div class="adv-input">
+                    <label for="name">Име на събитието:</label>
+                    <input type="text" id="name" name="name" th:value="*{name}"/><br/>
+                    </div>
+                    <div class="adv-input">
+                    <label>Описание на събитието:</label>
+                    <input type="text" id="description" name="description" th:value="*{description}"/><br/>
+                    </div>
+                    <div class="adv-input">
+                    <label>Адрес на събитието:</label>
+                    <input type="text" id="address" name="address" th:value="*{address}"/><br/>
+                    </div>
+                    <div class="adv-input">
+                    <label>Име на организация:</label>
+                    <input type="text" id="orgName" name="orgName" th:value="*{organisationName}"/><br/>
+                    </div>
+                    <div class="adv-input">
+                    <label>Минимална възраст за участие:</label>
+                    <input type="text" id="minAge" name="minAge" th:value="*{minAge}"/><br/>
+                    </div>
+                    <div class="adv-input">
+                    <label>Максимална възраст за участие:</label>
+                    <input type="text" id="maxAge" name="maxAge" th:value="*{maxAge}"/><br/>
+                    </div>
+                    <div class="adv-input">
+                    <label>Онлайн ли е събитието:</label>
+                    <input type="radio" id="isOnlineTrue" name="isOnline" value="true" th:checked="${isOnline}"/>
+                    <label for="isOnlineTrue">Да</label>
+                    <input type="radio" id="isOnlineFalse" name="isOnline" value="false" th:checked="${isOnline}"/>
+                    <label for="isOnlineFalse">Не</label><br/>
+                    </div>
+                    <div class="adv-input">
+                    <label>Категории:</label>
+                    <input type="text" id="eventCategories" name="eventCategories" th:value="*{eventCategories}"/><br/>
+                    <label>Начало:</label>
+                    <input type="date" id="startsAt" name="startsAt" th:value="*{startsAt}"/><br/>
+                    <label>Край:</label>
+                    <input type="date" id="endsAt" name="endsAt" th:value="*{endsAt}"/><br/>
+                    </div>
+                    <div class="adv-input">
+                    <label>Онлайн ли е събитието:</label>
+                    <input type="radio" id="isExpiredTrue" name="isExpired" value="true" th:checked="${isExpired}"/>
+                    <label for="isExpiredTrue">Да</label>
+                    <input type="radio" id="isExpiredFalse" name="isExpired" value="false" th:checked="${isExpired}"/>
+                    <label for="isExpiredFalse">Не</label><br/>
+                    </div>
+                    <button class="noselect">
+                        <span class="text">Потърси</span>
+                        <span class="icon"><i class="fa fa-search"></i></span>
+                      </button>
+                </form>
+              </div>
+            </div>
+          </div>
+    </div>   
+    <!-- <div class="search-bar">
         <div class="inputGroup">
+            <button type="button" class="advancedSearch"><i class="fa fa-search"></i></button>
             <input type="text" onkeyup="searchCards()" name="text" class="input" id="search" placeholder="🔍Търсене">
         </div>
-    </div>
+    </div> -->
     <div class="container2">
         <div style="text-align: center;">
         <form th:action="@{/one-time-events/expired}" method="get">
