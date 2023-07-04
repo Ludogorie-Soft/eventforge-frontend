@@ -74,6 +74,7 @@
                 <form action="#" th:action="@{submit}" th:object="${request}" method="post" accept="image/png, image/jpeg"  enctype="multipart/form-data" id="registerForm">
                     <div class="form-group row">
                         <div class="col-md-12">
+                            <p>Име на организацията: <span class="required">*</span></p>
                             <input type="text" th:field="*{name}" class="form-control"
                                    placeholder="Име на организацията"  id="name" required>
                         </div>

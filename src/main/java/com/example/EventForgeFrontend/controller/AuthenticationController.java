@@ -75,6 +75,6 @@ public class AuthenticationController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         authenticationApiClient.logout(token);
         sessionManager.invalidateSession(request);
-        return "redirect:/login";
+        return "redirect:/";
     }
 }
