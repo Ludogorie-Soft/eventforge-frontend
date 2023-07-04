@@ -36,6 +36,7 @@ public class OrganisationSettingsController {
         return "organisationProfile";
     }
 
+
     @PostMapping("submit-update")
     public String updateProfile(HttpServletRequest request, UpdateAccountRequest updateRequest, Model model) {
         sessionManager.isSessionExpired(request);
@@ -50,14 +51,20 @@ public class OrganisationSettingsController {
         model.addAttribute("updateAccountResult", updateAccountResult.getBody());
         return "redirect:/organisation/settings";
     }
-
+    @GetMapping("/change-password")
+    public String updatePasswordGetMapper(HttpServletRequest request , Model model){
+        model.addAttribute("changePasswordRequest" , new ChangePasswordRequest());
+        return "passwordChange";
+    }
     @PostMapping("update-password")
     public String updatePassword(HttpServletRequest request, ChangePasswordRequest changePasswordRequest, Model model) {
         sessionManager.isSessionExpired(request);
+        request.setAttribute("changePasswordRequest" , changePasswordRequest);
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<String> updatePasswordResult = organisationApiClient.changePassword(token, changePasswordRequest);
         model.addAttribute("updatePasswordResult", updatePasswordResult.getBody());
-        return "redirect:/organisation/settings";
+        request.removeAttribute("changePasswordRequest");
+        return "redirect:/organisation/settings/change-password";
     }
 
     @PostMapping("update-logo")

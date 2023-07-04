@@ -109,9 +109,12 @@
                                 <div class="row">
                                     <h3 style="color:#ee4557;">Промени информация за организацията си</h3>
                                 </div>
-                                <ul class="nav nav-tabs">
+                                <ul class="nav nav-tabs d-flex">
                                     <li class="nav-item">
-                                        <a href class="active nav-link">Настройки</a>
+                                        <a th:href="@{/organisation/settings}" class="active nav-link">Настройки на акаунт</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href="@{/organisation/settings/change-password}" class="active nav-link">Смяна на парола</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content pt-3">
@@ -290,52 +293,53 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <form class="form"  th:action="@{update-password}"
-                                          th:object="${changePasswordRequest}" method="post" novalidate>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="col-12 col-sm-6 mb-3">
-                                                    <div class="mb-2">
-                                                        <h3 style="color:#ee4557;">Промени парола</h3>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div class="form-group">
-                                                                <label>Текуща парола</label>
-                                                                <input class="form-control" type="password"  placeholder="Текуща парола">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div class="form-group">
-                                                                <label>Нова парола</label>
-                                                                <input class="form-control" type="password"
-                                                                       placeholder="Нова парола">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div class="form-group">
-                                                                <label>Потвърди <span
-                                                                        class="d-none d-xl-inline">Парола</span>
-                                                                </label>
-                                                                <input class="form-control" type="password"
-                                                                       placeholder="Потвърди парола">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col d-flex justify-content-end">
-                                                    <button class="btn btn-primary" type="submit"
-                                                            style="width: 150px; height: 50px;position: relative; top: 0px;left: 10px;">
-                                                        Запази
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
+<!--                                    <form class="form"  th:action="@{/organisation/settings/update-password}"-->
+<!--                                          th:object="${changePasswordRequest}" method="post" novalidate>-->
+<!--                                        <div class="row">-->
+<!--                                            <div class="col">-->
+<!--                                                <div class="col-12 col-sm-6 mb-3">-->
+<!--                                                    <div class="mb-2">-->
+<!--                                                        <h3 style="color:#ee4557;">Промени парола</h3>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="row">-->
+<!--                                                        <div class="col">-->
+<!--                                                            <div class="form-group">-->
+<!--                                                                <label>Текуща парола</label>-->
+<!--                                                                <input class="form-control" type="password" th:field="*{oldPassword}"  placeholder="Текуща парола">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="row">-->
+<!--                                                        <div class="col">-->
+<!--                                                            <div class="form-group">-->
+<!--                                                                <label>Нова парола</label>-->
+<!--                                                                <input class="form-control" type="password"  th:field="*{newPassword}" placeholder="Нова парола">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="row">-->
+<!--                                                        <div class="col">-->
+<!--                                                            <div class="form-group">-->
+<!--                                                                <label>Потвърди <span-->
+<!--                                                                        class="d-none d-xl-inline">Парола</span>-->
+<!--                                                                </label>-->
+<!--                                                                <input class="form-control" type="password"  th:field="*{confirmNewPassword}" placeholder="Потвърди парола">-->
+<!--                                                            </div>-->
+<!--                                                            <div th:if="${newPassword}" id="newPassword">-->
+<!--                                                                <p th:text="${newPassword}" style="color: red;"></p>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="col d-flex justify-content-end">-->
+<!--                                                    <button class="btn btn-primary" type="submit"-->
+<!--                                                            style="width: 150px; height: 50px;position: relative; top: 0px;left: 10px;">-->
+<!--                                                        Запази-->
+<!--                                                    </button>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </form>-->
                                     <form class="form" novalidate>
                                         <h3 style="color:#ee4557;">Промени снимката на организацията си</h3>
                                         <div class="row">
