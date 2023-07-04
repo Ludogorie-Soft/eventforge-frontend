@@ -4,6 +4,8 @@ import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.dto.AuthenticationResponse;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
+import com.example.EventForgeFrontend.image.ImageService;
+import com.example.EventForgeFrontend.image.ImageType;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Objects;
@@ -25,6 +29,8 @@ public class AuthenticationController {
 
     private final SessionManager sessionManager;
 
+    private final ImageService imageService;
+
     @GetMapping("/registration")
     public String showRegistrationForm(Model model) {
         Set<String> priorityCategories = authenticationApiClient.getAllPriorityCategories().getBody();
@@ -34,11 +40,14 @@ public class AuthenticationController {
     }
 
     @PostMapping("submit")
-    public String register(RegistrationRequest request, HttpServletRequest httpRequest, Model model) {
+    public String register(@RequestPart("logo") MultipartFile logo, @RequestPart(value = "backgroundCover", required = false) MultipartFile backgroundCover, RegistrationRequest request, HttpServletRequest httpRequest, Model model) {
         Set<String> priorityCategories = authenticationApiClient.getAllPriorityCategories().getBody();
-        httpRequest.setAttribute("newRegistrationRequest", new RegistrationRequest(request.getUsername(), request.getName(), null, request.getBullstat(), null, request.getOptionalCategory(), request.getOrganisationPurpose(), null, request.getAddress(), request.getWebsite(), request.getFacebookLink(), request.getFullName(), request.getPhoneNumber(), request.getCharityOption(), request.getPassword(), request.getConfirmPassword()));
-        httpRequest.setAttribute("organisationPriorities" ,priorityCategories);
-
+        httpRequest.setAttribute("newRegistrationRequest", new RegistrationRequest(request.getUsername(), request.getName(), request.getLogo(), request.getBullstat(), request.getOrganisationPriorities(), request.getOptionalCategory(), request.getOrganisationPurpose(), request.getBackgroundCover(), request.getAddress(), request.getWebsite(), request.getFacebookLink(), request.getFullName(), request.getPhoneNumber(), request.getCharityOption(), request.getPassword(), request.getConfirmPassword()));
+        httpRequest.setAttribute("organisationPriorities", priorityCategories);
+        String logoUrl = imageService.uploadImageToFileSystem(logo, ImageType.LOGO);
+        String coverUrl = imageService.uploadImageToFileSystem(backgroundCover, ImageType.COVER);
+        request.setLogo(logoUrl);
+        request.setBackgroundCover(coverUrl);
         ResponseEntity<String> register = authenticationApiClient.register(request);
 
         httpRequest.removeAttribute("newRegistrationRequest");

@@ -20,12 +20,12 @@ import java.util.Set;
 public class RegistrationRequest {
     private String username;
     private String name;
-    private MultipartFile logo;
+    private String logo;
     private String bullstat;
     private Set<String> organisationPriorities;
     private String optionalCategory;
     private String organisationPurpose;
-    private MultipartFile backgroundCover;
+    private String backgroundCover;
     private String address;
     private String website;
     private String facebookLink;
