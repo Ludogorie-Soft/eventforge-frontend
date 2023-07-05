@@ -4,6 +4,8 @@ import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
 import com.example.EventForgeFrontend.client.ProbaClient;
 import com.example.EventForgeFrontend.dto.*;
+import com.example.EventForgeFrontend.image.ImageService;
+import com.example.EventForgeFrontend.image.ImageType;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -25,20 +28,27 @@ public class OrganisationSettingsController {
 
     private final SessionManager sessionManager;
 
+    private final ImageService imageService;
+
 
     @GetMapping
-    public String updateOrgProfile(HttpServletRequest request, Model model) {
+    public String updateOrgProfile(HttpServletRequest request, Model model , @ModelAttribute("updateRequest")UpdateAccountRequest updateAccountRequest) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<UpdateAccountRequest> getUpdateRequest = organisationApiClient.updateAccountRequestResponseEntity(token);
-        model.addAttribute("updateRequest", getUpdateRequest.getBody());
+        if(updateAccountRequest.getName()!=null){
+            model.addAttribute("updateRequest" , updateAccountRequest);
+        } else {
+            model.addAttribute("updateRequest", getUpdateRequest.getBody());
+
+        }
         model.addAttribute("allPriorities" , getUpdateRequest.getBody().getAllPriorities());
         return "organisationProfile";
     }
 
 
     @PostMapping("submit-update")
-    public String updateProfile(HttpServletRequest request, UpdateAccountRequest updateRequest, Model model) {
+    public String updateProfile(HttpServletRequest request, UpdateAccountRequest updateRequest, Model model , @RequestParam(value = "logo",required = false)MultipartFile logo , @RequestParam(value = "cover",required = false)MultipartFile cover) {
         sessionManager.isSessionExpired(request);
         request.setAttribute("updateRequest" ,updateRequest);
         Set<String> allCategories = authenticationApiClient.getAllPriorityCategories().getBody();
@@ -59,28 +69,41 @@ public class OrganisationSettingsController {
     @PostMapping("update-password")
     public String updatePassword(HttpServletRequest request, ChangePasswordRequest changePasswordRequest, Model model) {
         sessionManager.isSessionExpired(request);
-        request.setAttribute("changePasswordRequest" , changePasswordRequest);
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<String> updatePasswordResult = organisationApiClient.changePassword(token, changePasswordRequest);
         model.addAttribute("updatePasswordResult", updatePasswordResult.getBody());
-        request.removeAttribute("changePasswordRequest");
         return "redirect:/organisation/settings/change-password";
     }
+    @GetMapping("/change-pictures")
+    public String changePictures( HttpServletRequest request , Model model){
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<List<String>> getPictures = organisationApiClient.getOrganisationLogoAndCover(token);
+        String logoUrl = ImageService.encodeImage(getPictures.getBody().get(0));
+        String coverUrl = ImageService.encodeImage(getPictures.getBody().get(1));
+        model.addAttribute("logoUrl" ,logoUrl);
+        model.addAttribute("coverUrl" ,coverUrl);
+        return "updateProfilePictures";
+    }
 
-    @PostMapping("update-logo")
-    public String updateLogo(HttpServletRequest request , @RequestParam(value = "file",required = false)MultipartFile file , Model model){
+    @PostMapping("update-pictures")
+    public String updateLogo(HttpServletRequest request , @RequestParam(value = "logo",required = false)MultipartFile logo , @RequestParam(value = "cover",required = false)MultipartFile cover ,Model model){
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<String> result = organisationApiClient.updateLogo(token ,file);
+        String logoUrl = imageService.updatePicture(logo , ImageType.LOGO );
+        String coverUrl = imageService.updatePicture(cover, ImageType.COVER);
+        ResponseEntity<String> result = organisationApiClient.updateLogo(token ,logoUrl , coverUrl);
+
         model.addAttribute("result" ,result.getBody());
-       return  "redirect:/organisation/settings";
+       return  "redirect:/organisation/settings/change-pictures";
     }
-    @PostMapping("update-cover")
-    public String updateCover(HttpServletRequest request , @RequestParam(value = "file",required = false)MultipartFile file , Model model){
-        sessionManager.isSessionExpired(request);
-        String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<String> result = organisationApiClient.updateCover(token ,file);
-        model.addAttribute("result" ,result.getBody());
-        return  "redirect:/organisation/settings";
-    }
+//    @PostMapping("update-cover")
+//    public String updateCover(HttpServletRequest request , @RequestParam(value = "file",required = false)MultipartFile file , Model model){
+//        sessionManager.isSessionExpired(request);
+//        String token = (String) request.getSession().getAttribute("sessionToken");
+//        String backgroundCover = imageService.uploadImageToFileSystem(file , ImageType.COVER);
+//        ResponseEntity<String> result = organisationApiClient.updateCover(token ,backgroundCover);
+//        model.addAttribute("result" ,result.getBody());
+//        return  "redirect:/organisation/settings";
+//    }
 }

@@ -9,10 +9,9 @@ import java.util.List;
 
 @FeignClient(name = "admin-api-client" , url = "http://localhost:8081/admin")
 public interface AdminApiClient {
-    @GetMapping("/organisation-management/approved-accounts")
-    public ResponseEntity<List<OrganisationResponseForAdmin>> getAllApprovedOrganisationsForAdmin(@RequestHeader("Authorization")String authHeader );
-    @GetMapping("/organisation-management/unapproved-accounts")
-    public ResponseEntity<List<OrganisationResponseForAdmin>> getAllUnapprovedOrganisationsForAdmin(@RequestHeader("Authorization")String authHeader);
+    @GetMapping("/organisation-management")
+    public ResponseEntity<List<OrganisationResponseForAdmin>> getAllOrganisationsForAdminByApprovedOrNot(@RequestHeader("Authorization")String authHeader , @RequestParam("isApproved") boolean isApproved );
+
 
     @PutMapping("/organisation-management/ban-account/{id}/{email}")
     public ResponseEntity<String> banAccountById(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long id , @PathVariable("email")String email);

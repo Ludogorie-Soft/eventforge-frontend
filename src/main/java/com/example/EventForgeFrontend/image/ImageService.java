@@ -24,8 +24,6 @@ public class ImageService {
 
     public String uploadImageToFileSystem(MultipartFile file, ImageType imageType) {
 
-        if(file != null) {
-
             String fileName = file.getOriginalFilename();
 
             String sanitizedFileName = null;
@@ -56,64 +54,20 @@ public class ImageService {
                 throw new ImageException("Грешка със запазването на файла. Моля уверете се , че подавате валиден файл и не е празен.");
             }
             return imageUrlAbsolutePath;
-        }
+
+    }
+
+    public String updatePicture(MultipartFile file , ImageType type ) {
+        if(file == null || file.isEmpty()){
             return null;
-    }
-
-    public void updateOrganisationLogo(String token, MultipartFile file) {
-        User user = userService.getLoggedUserByToken(token);
-        if (user != null) {
-            Organisation organisation = organisationService.getOrganisationByUserId(user.getId());
-            Image logo = imageRepository.findOrganisationLogoByOrgId(organisation.getId());
-            uploadImageToFileSystem(file, ImageType.LOGO, organisation, null);
-            if (logo != null) {
-                String filePath = logo.getUrl().substring(logo.getUrl().indexOf("src"));
-                deleteImageFile(filePath);
-                imageRepository.deleteById(logo.getId());
-            }
-            log.info("Successfully updated logo picture for user with email:" + user.getUsername());
-            return;
         }
-
-        log.info("Unsuccessful attempt to upload picture!!");
-
+            ImageValidator.isImageValid(file);
+        return uploadImageToFileSystem(file, type);
     }
-
-    public void updateOrganisationCoverPicture(String token, MultipartFile file) {
-        User user = userService.getLoggedUserByToken(token);
-        if (user != null) {
-            Organisation organisation = organisationService.getOrganisationByUserId(user.getId());
-            Image cover = imageRepository.findOrganisationCoverPictureByOrgId(organisation.getId());
-            uploadImageToFileSystem(file, ImageType.COVER, organisation, null);
-            if (cover != null) {
-                String filePath = cover.getUrl().substring(cover.getUrl().indexOf("src"));
-
-                deleteImageFile(filePath);
-                imageRepository.deleteById(cover.getId());
-            }
-            log.info("Successfully updated cover picture for user with email:" + user.getUsername());
-            return;
-        }
-        log.info("Unsuccessful attempt to upload picture!!");
-
-    }
-
-    public void updateEventPicture(Long eventId, Long imageId, MultipartFile file) {
-        Optional<Event> event = eventService.findEventById(eventId);
-
-        if (event.isPresent()) {
-            Image eventPicture = imageRepository.findEventPictureByEventIdImage(eventId, imageId);
-            uploadImageToFileSystem(file, ImageType.EVENT_PICTURE, null, event.get());
-            if (eventPicture != null) {
-                String filePath = eventPicture.getUrl().substring(eventPicture.getUrl().indexOf("src"));
-
-                deleteImageFile(filePath);
-                imageRepository.deleteById(eventPicture.getId());
-            }
-            log.info("Successfully uploaded event picture for user!");
-            return;
-        }
-        log.info("Unsuccessful attempt to upload picture!!");
+    public String uploadPicture(MultipartFile file, ImageType type) {
+        ImageValidator.isImageEmpty(file);
+        ImageValidator.isImageValid(file);
+        return uploadImageToFileSystem(file, type);
     }
 
     private String sanitizeFileName(String fileName) {
@@ -137,10 +91,6 @@ public class ImageService {
         return sanitizedFileName;
     }
 
-    private boolean doesFileNameExists(String fileName) {
-        Optional<Image> imageOptional = imageRepository.findImageByUrl(fileName);
-        return imageOptional.isPresent();
-    }
 
     @Nullable
     String getFileExtension(String fileName) {
@@ -174,7 +124,7 @@ public class ImageService {
                 }
             }
             base64Image = Base64.getEncoder().encodeToString(Arrays.copyOf(imageData, totalBytesRead));
-            log.info("Total bytes read: " + totalBytesRead);
+
         } catch (FileNotFoundException e) {
             throw new ImageException("Изображението не е намерено");
         } catch (IOException e) {

@@ -40,11 +40,9 @@ public interface OrganisationApiClient {
     @PutMapping("update/{id}")
     public ResponseEntity<String> updateEventByOrganisation(@RequestHeader("Authorization")String authHeader,@PathVariable("id") Long id,
                                                             @Valid @RequestBody EventRequest eventRequest);
-
-    @PostMapping("/logo-upload")
-    public ResponseEntity<String> updateLogo(@RequestHeader("Authorization")String authHeader,@RequestParam("file") @Valid MultipartFile image);
-
-    @PostMapping("/cover-upload")
-    public ResponseEntity<String> updateCover(@RequestHeader("Authorization")String authHeader ,@RequestParam("file") @Valid MultipartFile image);
+    @GetMapping("/show-pictures")
+    public ResponseEntity<List<String>> getOrganisationLogoAndCover(@RequestHeader("Authorization")String authHeader);
+    @PostMapping("/change-picture")
+    public ResponseEntity<String> updateLogo(@RequestHeader("Authorization")String authHeader,@RequestParam("logo") String logo , @RequestParam("cover")String cover);
 
 }
