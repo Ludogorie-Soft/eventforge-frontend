@@ -39,7 +39,7 @@ public class AuthenticationController {
 
         }
         model.addAttribute("priorityCategories", priorityCategories);
-        return "/registerOrganisation";
+        return "registerOrganisation";
     }
 
     @PostMapping("submit")
@@ -68,7 +68,7 @@ public class AuthenticationController {
         } else {
             model.addAttribute("login", new JWTAuthenticationRequest());
         }
-        return "/login";
+        return "login";
     }
 
     @PostMapping("/submitLogin")
