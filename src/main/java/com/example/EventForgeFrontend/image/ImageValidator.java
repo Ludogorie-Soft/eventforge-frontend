@@ -19,9 +19,13 @@ public class ImageValidator {
         }
     }
 
-    public static void isImageEmpty(MultipartFile image){
-        if(image==null || image.isEmpty()){
-            throw new ImageException("Полетата за лого на организация и корица са задължителни , моля прикачете снимки.");
+    public static void isImageEmpty(MultipartFile image , ImageType type) {
+        if (image == null || image.isEmpty()) {
+            if (type.equals(ImageType.COVER) || type.equals(ImageType.LOGO)) {
+                throw new ImageException("Полетата за лого на организация и корица са задължителни , моля прикачете снимки.");
+            } else {
+                throw new ImageException("Полето за снимка на събитиетето е задължително , моля прикачете файл.");
+            }
         }
     }
 }

@@ -6,6 +6,8 @@ import com.example.EventForgeFrontend.dto.EventRequest;
 import com.example.EventForgeFrontend.dto.EventResponseContainer;
 import com.example.EventForgeFrontend.dto.OneTimeEventResponse;
 import com.example.EventForgeFrontend.dto.RecurrenceEventResponse;
+import com.example.EventForgeFrontend.image.ImageService;
+import com.example.EventForgeFrontend.image.ImageType;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,6 +29,8 @@ public class ManageEventsController {
     private final SessionManager sessionManager;
 
     private final EventApiClient eventApiClient;
+
+    private final ImageService imageService;
 
     @GetMapping
     public String showMyEvents(HttpServletRequest request, Model model) {
@@ -57,7 +62,7 @@ public class ManageEventsController {
     }
 
     @GetMapping("/create")
-    public String createEvent(HttpServletRequest request, Model model) {
+    public String createEvent(HttpServletRequest request, Model model ) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
         EventRequest eventRequest = organisationApiClient.getEventRequest(token).getBody();
@@ -66,11 +71,15 @@ public class ManageEventsController {
     }
 
     @PostMapping("create-event")
-    public String saveCreatedEvent(EventRequest eventRequest, HttpServletRequest request, Model model) {
+    public String saveCreatedEvent(EventRequest eventRequest, HttpServletRequest request, Model model , @RequestParam("image")MultipartFile image) {
         sessionManager.isSessionExpired(request);
+        request.setAttribute("eventRequest" , eventRequest);
         String token = (String) request.getSession().getAttribute("sessionToken");
+        String eventPicture = imageService.uploadPicture(image , ImageType.EVENT_PICTURE);
+        eventRequest.setImage(eventPicture);
         ResponseEntity<String> eventRequestResult = organisationApiClient.submitCreatedEvent(eventRequest, token);
         model.addAttribute("eventRequestResult", eventRequestResult.getBody());
+        request.removeAttribute("eventRequest");
         return "redirect:/manage-events/create";
     }
 

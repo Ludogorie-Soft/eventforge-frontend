@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name="one-time-event-api-client" ,url = "https://eventforge-backend-demo.up.railway.app/api/v1/one-time-events")
+@FeignClient(name="one-time-event-api-client" ,url = "${backend.url}/api/v1/one-time-events")
 public interface OneTimeEventApiClient {
 
     @GetMapping("/active")

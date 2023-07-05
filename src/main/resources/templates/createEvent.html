@@ -61,9 +61,9 @@
                     <p>Снимка на събитието:</p>
                     <input type="file" name="image" accept="file/*">
                 </div>
-                <input  type="file" path="imagePath" class="form-control" name="imagePath"
-                        placeholder="Изображение(моля поставете линк към изображението)" th:field="*{image}" required title="Полето е задължително">
-                <p style="color:red">*</p>
+        <div th:if="${fileError}" id="fileError">
+            <p th:text="${fileError}" style="color: red;"></p>
+        </div>
         <div class="item">
             <p>Име на събитието: <span class="required">*</span></p>
             <div class="item">

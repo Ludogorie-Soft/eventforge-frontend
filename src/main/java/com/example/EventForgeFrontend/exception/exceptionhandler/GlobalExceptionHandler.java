@@ -1,10 +1,7 @@
 package com.example.EventForgeFrontend.exception.exceptionhandler;
 
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
-import com.example.EventForgeFrontend.dto.ChangePasswordRequest;
-import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
-import com.example.EventForgeFrontend.dto.RegistrationRequest;
-import com.example.EventForgeFrontend.dto.UpdateAccountRequest;
+import com.example.EventForgeFrontend.dto.*;
 import com.example.EventForgeFrontend.exception.*;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
@@ -73,14 +70,16 @@ public class GlobalExceptionHandler {
         ModelAndView mav = new ModelAndView();
         Object newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
         Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
-//
+        Object newEventRequest = getAttributeAsType(request , "eventRequest" , EventRequest.class);
         redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
 
 
         request.removeAttribute("newRegistrationRequest");
         request.removeAttribute("priorityCategories");
+        request.removeAttribute("eventRequest");
         redirectAttributes.addFlashAttribute("fileError", e.getMessage());
         redirectAttributes.addFlashAttribute("request", newRegistrationRequest);
+        redirectAttributes.addFlashAttribute("eventRequest" , newEventRequest);
         mav.setViewName("redirect:" + request.getHeader("Referer"));
         return mav;
     }

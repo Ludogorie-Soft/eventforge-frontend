@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "organisation-client" , url ="https://eventforge-backend-demo.up.railway.app/organisation")
+@FeignClient(name = "organisation-client" , url = "${backend.url}/organisation")
 public interface OrganisationApiClient {
 
     @GetMapping("/account-update")

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "event-api-client" , url = "https://eventforge-backend-demo.up.railway.app")
+@FeignClient(name = "event-api-client" ,url = "${backend.url}")
 
 public interface EventApiClient {
 
