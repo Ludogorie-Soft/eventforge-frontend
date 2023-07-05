@@ -8,12 +8,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -70,7 +72,9 @@ public class GlobalExceptionHandler {
         ModelAndView mav = new ModelAndView();
         Object newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
         Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
-        Object newEventRequest = getAttributeAsType(request , "eventRequest" , EventRequest.class);
+        EventRequest newEventRequest = getAttributeAsType(request , "eventRequest" , EventRequest.class);
+
+
         redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
 
 

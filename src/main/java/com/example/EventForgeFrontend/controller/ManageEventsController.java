@@ -62,24 +62,31 @@ public class ManageEventsController {
     }
 
     @GetMapping("/create")
-    public String createEvent(HttpServletRequest request, Model model ) {
+    public String createEvent(HttpServletRequest request, Model model , @ModelAttribute("eventRequest")EventRequest eventRequest ) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        EventRequest eventRequest = organisationApiClient.getEventRequest(token).getBody();
-        model.addAttribute("eventRequest", eventRequest);
+        if(eventRequest.getName()!=null && !eventRequest.getName().isEmpty()){
+            model.addAttribute("eventRequest" , eventRequest);
+        } else {
+            model.addAttribute("eventRequest", organisationApiClient.getEventRequest(token).getBody());
+
+        }
         return "createEvent";
     }
 
     @PostMapping("create-event")
-    public String saveCreatedEvent(EventRequest eventRequest, HttpServletRequest request, Model model , @RequestParam("image")MultipartFile image) {
+    public String saveCreatedEvent( @RequestParam("image")MultipartFile image,EventRequest eventRequest, HttpServletRequest request, Model model ) {
         sessionManager.isSessionExpired(request);
+
         request.setAttribute("eventRequest" , eventRequest);
+
         String token = (String) request.getSession().getAttribute("sessionToken");
         String eventPicture = imageService.uploadPicture(image , ImageType.EVENT_PICTURE);
-        eventRequest.setImage(eventPicture);
+        eventRequest.setImageUrl(eventPicture);
         ResponseEntity<String> eventRequestResult = organisationApiClient.submitCreatedEvent(eventRequest, token);
         model.addAttribute("eventRequestResult", eventRequestResult.getBody());
         request.removeAttribute("eventRequest");
+
         return "redirect:/manage-events/create";
     }
 
