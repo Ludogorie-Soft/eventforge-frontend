@@ -7,12 +7,6 @@
                     <img src="/images/img_1.png" alt="Image" style="max-width: 16%" class="img-fluid">
                     <a th:href="@{/}">Eventforge<span class="text-primary"></span></a>
                 </div>
-<!--                <div class="site-quick-contact d-none d-lg-flex ml-auto ">-->
-<!--                    <div class="d-flex site-info align-items-center mr-5 ">-->
-<!--                        <span class="block-icon mr-3"><span class="icon-map-marker text-yellow"></span></span>-->
-<!--                        <span>Varna<br> Bulgaria</span>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <div th:if="${session.sessionToken}" class="profile-icon">
                     <div class="profile-img">
                         <img src="/images/profile.png" alt="profile-icon">
@@ -48,6 +42,7 @@
                 <span class="d-inline-block d-lg-none"><a href="#"
                                                           class="text-black site-menu-toggle js-menu-toggle py-5"><span
                         class="icon-menu h3 text-black"></span></a></span>
+
                 <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
                         <li><a th:href="@{/}" class="nav-link">Начало</a></li>
