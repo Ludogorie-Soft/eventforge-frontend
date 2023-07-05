@@ -27,7 +27,6 @@ public class UpdateAccountRequest {
 
     private String address;
 
-    @URL(message = "Моля въведете валиден линк")
     private String website;
 
 

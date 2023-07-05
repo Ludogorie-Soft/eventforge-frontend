@@ -28,7 +28,7 @@
                     <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
                     <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
                     <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
-                    <li class="active"><a th:if="${session.sessionToken != null}" href="/organisation/settings/update-profile" class="nav-link">Профил</a>
+                    <li class="active"><a th:if="${session.sessionToken != null}" href="/organisation/settings" class="nav-link">Профил</a>
                     </li>
                 </ul>
             </nav>

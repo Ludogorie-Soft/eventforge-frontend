@@ -1,14 +1,17 @@
 package com.example.EventForgeFrontend.exception.exceptionhandler;
 
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
+import com.example.EventForgeFrontend.dto.ChangePasswordRequest;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
+import com.example.EventForgeFrontend.dto.UpdateAccountRequest;
 import com.example.EventForgeFrontend.exception.*;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,7 +40,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomValidationErrorException.class)
     public ModelAndView handleCustomValidationErrorException(CustomValidationErrorException e, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("registerOrganisation");
+        ModelAndView mav = new ModelAndView();
         Map<String, String> errors = e.getErrors();
         for (Map.Entry<String, String> error : errors.entrySet()) {
             mav.addObject(error.getKey(), error.getValue());
@@ -45,19 +48,33 @@ public class GlobalExceptionHandler {
             log.info("error message: " + error.getValue());
         }
         Object newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
-        if (newRegistrationRequest != null) {
-            mav.addObject("request", newRegistrationRequest);
-        }
+        Object newUpdateRequest = getAttributeAsType(request , "updateRequest" , UpdateAccountRequest.class);
+        Object allPriorities = getAttributeAsType(request , "allPriorities" , Set.class);
+        Object changePasswordRequest = getAttributeAsType(request , "changePasswordRequest" , ChangePasswordRequest.class);
+
+
 
         Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
-        if (organisationPriorities != null) {
             mav.addObject("priorityCategories", organisationPriorities);
-        }
+            mav.addObject("allPriorities" , allPriorities);
 
 
+
+        request.removeAttribute("updateRequest");
         request.removeAttribute("newRegistrationRequest");
         request.removeAttribute("organisationPriorities");
-        mav.setViewName("registerOrganisation");
+        request.removeAttribute("changePasswordRequest");
+        if(newRegistrationRequest!=null){
+            mav.addObject("request", newRegistrationRequest);
+            mav.setViewName("registerOrganisation");
+        } else if (newUpdateRequest!=null){
+            mav.addObject("updateRequest" , newUpdateRequest);
+            mav.setViewName("organisationProfile");
+        } else if(changePasswordRequest!=null){
+            mav.addObject("changePasswordRequest" , changePasswordRequest);
+            mav.setViewName("passwordChange");
+
+        }
         return mav;
     }
 
@@ -156,8 +173,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PasswordNotMatchException.class)
     public ModelAndView passwordsNotMatchException(PasswordNotMatchException ex , HttpServletRequest request){
         ModelAndView mav = new ModelAndView();
+
+        mav.addObject("changePasswordRequest" , new ChangePasswordRequest());
         mav.addObject("passwordError" , ex.getMessage());
-        mav.setViewName("redirect:" + request.getHeader("Referer"));
+        mav.setViewName("passwordChange");
+
         return mav;
     }
 
