@@ -39,4 +39,5 @@ public class UpdateAccountRequest {
 
     private String charityOption;
     private Set<String> allPriorities;
+
 }

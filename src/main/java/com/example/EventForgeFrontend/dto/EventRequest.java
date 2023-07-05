@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 
 public class EventRequest {
 
-    private MultipartFile image;
+    private String image;
 
     private String name;
 

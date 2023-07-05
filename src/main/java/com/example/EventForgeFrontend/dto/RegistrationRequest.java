@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,15 +18,15 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistrationRequest {
+public class RegistrationRequest implements Serializable {
     private String username;
     private String name;
-    private MultipartFile logo;
+    private String logo;
     private String bullstat;
     private Set<String> organisationPriorities;
     private String optionalCategory;
     private String organisationPurpose;
-    private MultipartFile backgroundCover;
+    private String backgroundCover;
     private String address;
     private String website;
     private String facebookLink;

@@ -71,10 +71,9 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 mb-5">
 
-                <form action="#" th:action="@{submit}" th:object="${request}" method="post" accept="image/png, image/jpeg"  enctype="multipart/form-data" id="registerForm">
+                <form action="#" th:action="@{submit}" th:object="${request}" method="post" enctype="multipart/form-data"  id="registerForm">
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <p>Име на организацията: <span class="required">*</span></p>
                             <input type="text" th:field="*{name}" class="form-control"
                                    placeholder="Име на организацията"  id="name" required>
                         </div>
@@ -103,14 +102,17 @@
                     <label>Лого на организацията:</label>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="file" name="logo" class="form-control-file">
+                            <input type="file" name="logoFile" class="form-control-file">
                         </div>
                     </div>
 
                     <label>Корица на организацията:</label>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="file" name="backgroundCover" class="form-control-file">
+                            <input type="file" name="backgroundCoverFile" class="form-control-file">
+                        </div>
+                        <div th:if="${fileError}" id="fileError">
+                            <p th:text="${fileError}" style="color: red;"></p>
                         </div>
                     </div>
                     <div class="form-group row">
