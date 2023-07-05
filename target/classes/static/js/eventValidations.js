@@ -22,7 +22,7 @@ document.getElementById('address').addEventListener('input', function () {
 document.getElementById('eventCategories').addEventListener('input', function () {
     this.setCustomValidity('');
     if (!this.checkValidity()) {
-      this.setCustomValidity("Моля използвайте само букви (латиница , кирилица) и запетаи!");
+      this.setCustomValidity("Моля използвайте само букви (латиница, кирилица) и запетаи!");
     }
 });
 document.getElementById('price').addEventListener('input', function () {

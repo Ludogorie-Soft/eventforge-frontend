@@ -1,43 +1,88 @@
-<th:block xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
-<header class="site-navbar site-navbar-target" role="banner">
+<th:block xmlns:th="http://www.w3.org/1999/xhtml">
+    <header class="site-navbar site-navbar-target" role="banner">
 
-    <div class="container mb-2">
-        <div class="d-flex align-items-center">
-            <div class="site-logo mr-auto">
-                <img src="/images/img_1.png" alt="Image" class="img-fluid">
-                <a th:href="@{/}">Eventforge<span class="text-primary"></span></a>
-            </div>
-            <div class="site-quick-contact d-none d-lg-flex ml-auto ">
-                <div class="d-flex site-info align-items-center mr-5">
-                    <span class="block-icon mr-3"><span class="icon-map-marker text-yellow"></span></span>
-                    <span>Varna<br> Bulgaria</span>
+        <div class="container mb-2">
+            <div class="d-flex align-items-center">
+                <div class="site-logo mr-auto">
+                    <img src="/images/img_1.png" alt="Image" style="max-width: 16%" class="img-fluid">
+                    <a th:href="@{/}">Eventforge<span class="text-primary"></span></a>
                 </div>
+                <div th:if="${session.sessionToken}" class="profile-icon">
+                    <div class="profile-img">
+                        <img src="/images/profile.png" alt="profile-icon">
+                    </div>
+                    <ul class="menu">
+                        <li class="active">
+                            <a href="/organisation/settings/update-profile" class="nav-link" style="display: flex">
+                                <div>
+                                    <img src="/images/setting.png" style="width: 30px; height: 30px">
+                                </div>
+                                <div>
+                                    <h6>Профил</h6>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <form th:action="@{/logout}" method="post" class="nav-link">
+                                <button type="submit"
+                                        style="border: none; background: none; padding: 0; font: inherit; cursor: pointer; color: inherit; display: flex">
+                                    <img src="/images/logout.png" style="width: 30px; height: 30px">
+                                    <h6>Изход</h6>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="menu-wrap d-flex align-items-center">
+
+        <div class="container">
+            <div class="menu-wrap d-flex align-items-center">
                 <span class="d-inline-block d-lg-none"><a href="#"
                                                           class="text-black site-menu-toggle js-menu-toggle py-5"><span
                         class="icon-menu h3 text-black"></span></a></span>
-            <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
-                <ul class="site-menu main-menu js-clone-nav mr-auto ">
-                    <li><a th:href="@{/}" class="nav-link">Начало</a></li>
-                    <li class="active"><a th:if="${session.sessionToken == null}" th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
-                    <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
-                    <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
-                    <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
-                    <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
-                    <li class="active"><a th:if="${session.sessionToken != null}" href="/organisation/settings" class="nav-link">Профил</a>
-                    </li>
-                </ul>
-            </nav>
 
-            <div class="top-social ml-auto">
-                <a href="#"><span class="icon-facebook text-teal"></span></a>
-                <a href="#"><span class="icon-twitter text-success"></span></a>
-                <a href="#"><span class="icon-linkedin text-yellow"></span></a>
+                <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
+                    <ul class="site-menu main-menu js-clone-nav mr-auto ">
+                        <li><a th:href="@{/}" class="nav-link">Начало</a></li>
+                        <li class="active"><a th:if="${session.sessionToken == null}" th:href="@{/registration}"
+                                              class="nav-link">Регистрирай се</a></li>
+                        <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
+                        <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
+                        <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
+                        <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
+                    </ul>
+                </nav>
+
+                <div class="top-social ml-auto">
+                    <a href="#"><span class="icon-facebook text-teal"></span></a>
+                    <a href="#"><span class="icon-linkedin text-yellow"></span></a>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
+</th:block>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var profileImg = document.getElementsByClassName("profile-img")[0];
+        var menu = document.getElementsByClassName("menu")[0];
+
+        if (profileImg !== undefined) {
+            profileImg.addEventListener("click", function () {
+                menu.classList.toggle("open");
+            });
+        }
+    });
+
+</script>
+
+<style>
+    h6 {
+        line-height: 1.7;
+    }
+    ul {
+        border-radius: 35px;
+    }
+</style>
