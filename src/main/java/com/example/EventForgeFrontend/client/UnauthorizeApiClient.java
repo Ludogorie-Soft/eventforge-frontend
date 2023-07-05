@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "unauthorized-api-client" ,url = "http://localhost:8081/unauthorized")
+@FeignClient(name = "unauthorized-api-client" ,url = "https://eventforge-backend-demo.up.railway.app/unauthorized")
 public interface UnauthorizeApiClient {
 
     @GetMapping

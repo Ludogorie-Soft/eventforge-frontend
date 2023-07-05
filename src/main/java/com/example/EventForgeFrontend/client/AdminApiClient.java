@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "admin-api-client" , url = "http://localhost:8081/admin")
+@FeignClient(name = "admin-api-client" , url = "https://eventforge-backend-demo.up.railway.app/admin")
 public interface AdminApiClient {
     @GetMapping("/organisation-management")
     public ResponseEntity<List<OrganisationResponseForAdmin>> getAllOrganisationsForAdminByApprovedOrNot(@RequestHeader("Authorization")String authHeader , @RequestParam("isApproved") boolean isApproved );

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "recurrence-event-api-client" ,url = "http://localhost:8081/api/v1/recurrence-events")
+@FeignClient(name = "recurrence-event-api-client" ,url = "https://eventforge-backend-demo.up.railway.app/api/v1/recurrence-events")
 
 public interface RecurrenceEventApiClient {
 
