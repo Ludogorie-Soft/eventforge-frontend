@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 
-@FeignClient(name = "proba-api-client" ,url = "https://eventforge-backend-demo.up.railway.app")
+@FeignClient(name = "proba-api-client" ,url = "${backend.url}")
 public interface ProbaClient {
 
     @GetMapping("/proba")

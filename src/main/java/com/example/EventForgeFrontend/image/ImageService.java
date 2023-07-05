@@ -65,7 +65,7 @@ public class ImageService {
         return uploadImageToFileSystem(file, type);
     }
     public String uploadPicture(MultipartFile file, ImageType type) {
-        ImageValidator.isImageEmpty(file);
+        ImageValidator.isImageEmpty(file , type);
         ImageValidator.isImageValid(file);
         return uploadImageToFileSystem(file, type);
     }
