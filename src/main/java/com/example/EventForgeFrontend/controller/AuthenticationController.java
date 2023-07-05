@@ -62,7 +62,7 @@ public class AuthenticationController {
 
     @GetMapping("/login")
     public String login(Model model , @ModelAttribute("login") JWTAuthenticationRequest login) {
-        if(login!=null){
+        if(login.getUserName()!=null && !login.getUserName().isEmpty()){
             model.addAttribute("login", login);
 
         } else {
