@@ -44,6 +44,9 @@
 
         <div class="site-section-cover overlay">
             <div class="container">
+                <div th:if="${successfulRegistration}" id="successfulRegistration">
+                    <p th:text="${successfulRegistration}" style="color: green;"></p>
+                </div>
                 <div class="row align-items-center ">
                 </div>
             </div>
