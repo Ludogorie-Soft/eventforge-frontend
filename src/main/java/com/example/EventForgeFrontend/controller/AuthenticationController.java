@@ -12,10 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
 
@@ -30,10 +34,10 @@ public class AuthenticationController {
     private final ImageService imageService;
 
     @GetMapping("/registration")
-    public String showRegistrationForm(Model model , @ModelAttribute("request")RegistrationRequest request) {
+    public String showRegistrationForm(Model model, @ModelAttribute("request") RegistrationRequest request) {
         Set<String> priorityCategories = authenticationApiClient.getAllPriorityCategories().getBody();
-        if(request!=null){
-            model.addAttribute("request" ,request);
+        if (request != null) {
+            model.addAttribute("request", request);
         } else {
             model.addAttribute("request", new RegistrationRequest());
 
@@ -43,26 +47,46 @@ public class AuthenticationController {
     }
 
     @PostMapping("submit")
-    public String register(@RequestParam("logoFile")MultipartFile logoFile,@RequestParam("backgroundCoverFile")MultipartFile backgroundCoverFile,@ModelAttribute("request") RegistrationRequest request, HttpServletRequest httpRequest, Model model) {
+    public String register(@RequestParam("logoFile") MultipartFile logoFile, @RequestParam("backgroundCoverFile") MultipartFile backgroundCoverFile, @ModelAttribute("request") RegistrationRequest request, HttpServletRequest httpRequest, RedirectAttributes redirectAttributes) {
         Set<String> priorityCategories = authenticationApiClient.getAllPriorityCategories().getBody();
         httpRequest.setAttribute("newRegistrationRequest", new RegistrationRequest(request.getUsername(), request.getName(), request.getLogo(), request.getBullstat(), request.getOrganisationPriorities(), request.getOptionalCategory(), request.getOrganisationPurpose(), request.getBackgroundCover(), request.getAddress(), request.getWebsite(), request.getFacebookLink(), request.getFullName(), request.getPhoneNumber(), request.getCharityOption(), request.getPassword(), request.getConfirmPassword()));
         httpRequest.setAttribute("organisationPriorities", priorityCategories);
+        String appUrl = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort() + httpRequest.getContextPath();
+
 
         String logoUrl = imageService.uploadPicture(logoFile, ImageType.LOGO);
         String coverUrl = imageService.uploadPicture(backgroundCoverFile, ImageType.COVER);
         request.setLogo(logoUrl);
         request.setBackgroundCover(coverUrl);
         ResponseEntity<String> register = authenticationApiClient.register(request);
-
         httpRequest.removeAttribute("newRegistrationRequest");
         httpRequest.removeAttribute("organisationPriorities");
-        model.addAttribute("successfulRegistration", register.getBody());
-        return "index";
+        redirectAttributes.addFlashAttribute("successfulRegistration", register.getBody());
+        return "redirect:/login";
+    }
+
+    @GetMapping("/verifyEmail")
+    public String verifyEmail(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        String url = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/resend-email-confirmation-link?verificationToken=" + verificationToken;
+        ResponseEntity<String> verifyEmailResult = authenticationApiClient.verifyEmail(verificationToken);
+        if (verifyEmailResult.getBody().startsWith("http")) {
+            redirectAttributes.addFlashAttribute("resendLink", verifyEmailResult.getBody());
+        } else {
+            redirectAttributes.addFlashAttribute("verifyEmailResult", verifyEmailResult.getBody());
+        }
+        return "redirect:/login";
+    }
+
+    @GetMapping("/resend-email-confirmation-link")
+    public String resendEmailConfirmationLink(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes) {
+        String resendResult = authenticationApiClient.resendVerificationToken(verificationToken);
+        redirectAttributes.addFlashAttribute("verifyEmailResult", resendResult);
+        return "redirect:/login";
     }
 
     @GetMapping("/login")
-    public String login(Model model , @ModelAttribute("login") JWTAuthenticationRequest login) {
-        if(login.getUserName()!=null && !login.getUserName().isEmpty()){
+    public String login(Model model, @ModelAttribute("login") JWTAuthenticationRequest login) throws IOException {
+        if (login.getUserName() != null && !login.getUserName().isEmpty()) {
             model.addAttribute("login", login);
 
         } else {

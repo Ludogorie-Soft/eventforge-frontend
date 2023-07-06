@@ -1,21 +1,22 @@
 package com.example.EventForgeFrontend.exception.exceptionhandler;
 
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
-import com.example.EventForgeFrontend.dto.*;
+import com.example.EventForgeFrontend.dto.EventRequest;
+import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
+import com.example.EventForgeFrontend.dto.RegistrationRequest;
+import com.example.EventForgeFrontend.dto.UpdateAccountRequest;
 import com.example.EventForgeFrontend.exception.*;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -143,10 +144,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({EmailConfirmationNotSentException.class , InvalidEmailConfirmationLinkException.class})
-    public ModelAndView emailConfirmationNotSentException(Exception ex) {
+    public ModelAndView emailConfirmationNotSentException(Exception ex , HttpServletRequest request , RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("errorMessage", ex.getMessage());
-        mav.setViewName("login");
+        redirectAttributes.addFlashAttribute("verifyEmailResult" , ex.getMessage());
+        mav.setViewName("redirect:/login");
         return mav;
     }
 

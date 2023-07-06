@@ -169,6 +169,9 @@
                         <div th:if="${username}" id="usernameError">
                             <p th:text="${username}" style="color: red;"></p>
                         </div>
+                        <div th:if="${emailTakenError}" id="emailTakenError">
+                            <p th:text="${emailTakenError}" style="color: red;"></p>
+                        </div>
 
                     </div>
                     <div class="form-group row">

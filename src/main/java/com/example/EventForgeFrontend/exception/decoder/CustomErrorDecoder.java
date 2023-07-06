@@ -58,6 +58,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
         if (response.status() == HttpServletResponse.SC_BAD_REQUEST) {
             return new InvalidEmailConfirmationLinkException(errorMessage);
         }
+
         if (response.status() == HttpServletResponse.SC_SERVICE_UNAVAILABLE) {
             return new UserDisabledException(errorMessage);
         }

@@ -26,7 +26,6 @@ public class MenuController {
     public String index() {
         return "index";
     }
-
     @GetMapping("/proba")
     public String proba(HttpServletRequest request, Model model) {
         sessionManager.isSessionExpired(request);
