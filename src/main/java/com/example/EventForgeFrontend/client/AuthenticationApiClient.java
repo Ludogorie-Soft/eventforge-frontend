@@ -26,12 +26,11 @@ public interface AuthenticationApiClient {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> getTokenForAuthenticatedUser(@RequestBody JWTAuthenticationRequest authRequest);
     @GetMapping("/verifyEmail")
-    public ResponseEntity<String> verifyEmail(@RequestParam("verificationToken") String verificationToken);
+    public ResponseEntity<String> verifyEmail(@RequestParam("verificationToken") String verificationToken ,@RequestParam("appUrl")String appUrl);
     @GetMapping("/resend-verification-token")
-    public String resendVerificationToken(@RequestParam("verificationToken") String verificationToken);
+    public String resendVerificationToken(@RequestParam("verificationToken") String verificationToken,@RequestParam("appUrl")String appUrl);
     @PostMapping("/register")
-    public ResponseEntity<String> register(
-            @Valid @RequestBody RegistrationRequest request);
+    public ResponseEntity<String> register(@Valid @RequestBody RegistrationRequest request,@RequestParam("appUrl") String appUrl);
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorization);
 }

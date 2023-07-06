@@ -58,7 +58,7 @@ public class AuthenticationController {
         String coverUrl = imageService.uploadPicture(backgroundCoverFile, ImageType.COVER);
         request.setLogo(logoUrl);
         request.setBackgroundCover(coverUrl);
-        ResponseEntity<String> register = authenticationApiClient.register(request);
+        ResponseEntity<String> register = authenticationApiClient.register(request,appUrl);
         httpRequest.removeAttribute("newRegistrationRequest");
         httpRequest.removeAttribute("organisationPriorities");
         redirectAttributes.addFlashAttribute("successfulRegistration", register.getBody());
@@ -68,7 +68,7 @@ public class AuthenticationController {
     @GetMapping("/verifyEmail")
     public String verifyEmail(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         String url = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/resend-email-confirmation-link?verificationToken=" + verificationToken;
-        ResponseEntity<String> verifyEmailResult = authenticationApiClient.verifyEmail(verificationToken);
+        ResponseEntity<String> verifyEmailResult = authenticationApiClient.verifyEmail(verificationToken , url);
         if (verifyEmailResult.getBody().startsWith("http")) {
             redirectAttributes.addFlashAttribute("resendLink", verifyEmailResult.getBody());
         } else {
@@ -78,8 +78,10 @@ public class AuthenticationController {
     }
 
     @GetMapping("/resend-email-confirmation-link")
-    public String resendEmailConfirmationLink(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes) {
-        String resendResult = authenticationApiClient.resendVerificationToken(verificationToken);
+    public String resendEmailConfirmationLink(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes , HttpServletRequest request) {
+        String url = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/verifyEmail?verificationToken=";
+
+        String resendResult = authenticationApiClient.resendVerificationToken(verificationToken , url);
         redirectAttributes.addFlashAttribute("verifyEmailResult", resendResult);
         return "redirect:/login";
     }
