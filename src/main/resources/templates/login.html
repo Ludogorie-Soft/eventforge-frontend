@@ -3,7 +3,7 @@
 
 <head>
     <title>Eventforge</title>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
@@ -38,7 +38,7 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
-<!--    HEADER  -->
+    <!--    HEADER  -->
     <th:block th:include="~{fragments/header}"></th:block>
 
 
@@ -60,7 +60,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12 d-flex">
                 <h2 class="text-white m-0">Нямаш профил?</h2>
-                <a href="/registerOrganisation" class="btn btn-primary btn-custom-1 py-3 px-5 ml-auto">Регистрирай се!</a>
+                <a href="/registerOrganisation" class="btn btn-primary btn-custom-1 py-3 px-5 ml-auto">Регистрирай
+                    се!</a>
             </div>
         </div>
     </div>
@@ -74,11 +75,12 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-lg-8 mb-5" >
-                <form method="post" th:action="@{/submitLogin}" th:object="${login}" >
+            <div class="col-lg-8 mb-5">
+                <form method="post" th:action="@{/submitLogin}" th:object="${login}">
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="email" th:field="*{userName}" class="form-control" placeholder="Email" required>
+                            <input type="email" th:field="*{userName}" class="form-control" placeholder="Email"
+                                   required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -86,25 +88,36 @@
                             <input type="password" th:field="*{password}" class="form-control" placeholder="Парола">
                         </div>
                     </div>
-                         <div class="col-md-6 offset-md-3">
-                            <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Влез">
-                        </div>
+                    <div class="col-md-6 offset-md-3">
+                        <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Влез">
+                    </div>
                     <div th:if="${errorMessage}" id="errorMessage">
                         <p th:text="${errorMessage}" style="color: red;"></p>
+                    </div>
+                    <div th:if="${successfulRegistration}" id="successfulRegistration">
+                        <p th:text="${successfulRegistration}" style="color: green;"></p>
+                    </div>
+                    <div th:if="${verifyEmailResult}" id="verifyEmailResult">
+                        <a th:if="${verifyEmailResult}" style="color: green;" th:text="${verifyEmailResult}"></a>
+                    </div>
+                    <div th:if="${resendLink}" id="resendLink">
+    <span th:if="${resendLink}" style="color: green;">
+        Линкът за активация е изтекъл, моля кликнете на следният линк за да генерирате нов -
+        <a th:href="@{${resendLink}}">Генерирай нов линк за активация.</a>
+    </span>
                     </div>
 
                     <div class="form-
                     group row">
-                            <div class="col-md-12 text-center">
-                                <a href="/forgottenPassword" class="forgot-password-link">Забравена парола?</a>
-                            </div>
+                        <div class="col-md-12 text-center">
+                            <a href="/forgottenPassword" class="forgot-password-link">Забравена парола?</a>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 
 
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -130,4 +143,5 @@
 .text-yellow {
   color: #f9a122;
 }
+
 </style>

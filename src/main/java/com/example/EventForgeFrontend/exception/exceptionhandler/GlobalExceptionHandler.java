@@ -1,7 +1,10 @@
 package com.example.EventForgeFrontend.exception.exceptionhandler;
 
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
-import com.example.EventForgeFrontend.dto.*;
+import com.example.EventForgeFrontend.dto.EventRequest;
+import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
+import com.example.EventForgeFrontend.dto.RegistrationRequest;
+import com.example.EventForgeFrontend.dto.UpdateAccountRequest;
 import com.example.EventForgeFrontend.exception.*;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
@@ -70,7 +73,9 @@ public class GlobalExceptionHandler {
         ModelAndView mav = new ModelAndView();
         Object newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
         Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
-        Object newEventRequest = getAttributeAsType(request , "eventRequest" , EventRequest.class);
+        EventRequest newEventRequest = getAttributeAsType(request , "eventRequest" , EventRequest.class);
+
+
         redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
 
 
@@ -139,10 +144,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({EmailConfirmationNotSentException.class , InvalidEmailConfirmationLinkException.class})
-    public ModelAndView emailConfirmationNotSentException(Exception ex) {
+    public ModelAndView emailConfirmationNotSentException(Exception ex , HttpServletRequest request , RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("errorMessage", ex.getMessage());
-        mav.setViewName("login");
+        redirectAttributes.addFlashAttribute("verifyEmailResult" , ex.getMessage());
+        mav.setViewName("redirect:/login");
         return mav;
     }
 

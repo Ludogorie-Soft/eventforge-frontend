@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -57,13 +57,6 @@
                 <h2 class="text-cursive 21 text-yellow">Създай събитие</h2>
             </div>
         </div>
-                <div class="item">
-                    <p>Снимка на събитието:</p>
-                    <input type="file" name="image" accept="file/*">
-                </div>
-        <div th:if="${fileError}" id="fileError">
-            <p th:text="${fileError}" style="color: red;"></p>
-        </div>
         <div class="item">
             <p>Име на събитието: <span class="required">*</span></p>
             <div class="item">
@@ -73,10 +66,17 @@
             <div th:if="${name}" id="nameError">
                 <p th:text="${name}" style="color: red;"></p>
             </div>
+            <div class="item">
+                <p>Снимка на събитието: <span class="required">*</span></p>
+                <input type="file" name="image" >
+            </div>
+            <div th:if="${fileError}" id="fileError">
+                <p th:text="${fileError}" style="color: red;"></p>
+            </div>
             <p>Описание на събитието: <span class="required">*</span></p>
             <div class="item">
-                <input type="text" th:field="*{description}" placeholder="Описание на събитието" minlength="5"
-                       maxlength="255" id="description"/>
+                <textarea type="text" th:field="*{description}" placeholder="Описание на събитието" minlength="5"
+                       maxlength="255" id="description"></textarea>
             </div>
             <div th:if="${description}" id="descriptionError">
                 <p th:text="${description}" style="color: red;"></p>
@@ -100,15 +100,15 @@
         </div>
         <div class="contact-item">
             <div class="item">
-                <p>Адрес на събитието (ако не е онлайн)</p>
-                <input type="text" th:field="*{address}" minlength="5" placeholder="Адрес на събитието">
+                <p>Адрес на събитието (ако е онлайн посочете линк)</p>
+                <input type="text" th:field="*{address}" minlength="5" placeholder="Адрес/линк на събитието">
                 <div th:if="${address}" id="addressError">
-                    <p th:text="${address}" placeholder="Адрес на събитието" style="color: red;"></p>
+                    <p th:text="${address}" placeholder="Адрес/линк на събитието" style="color: red;"></p>
                 </div>
             </div>
             <div class="item">
                 <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
-                <input type="text" th:field="*{eventCategories}" pattern="[A-Za-zА-Яа-я, ]{3,100}"
+                <input type="text" th:field="*{eventCategories}" pattern="^([a-zA-Zа-яА-Я ,-]*)${3,100}"
                        placeholder="Категории (ключови думи към събитието)" required/>
                 <div th:if="${eventCategories}" id="eventCategoriesError">
                     <p th:text="${eventCategories}" style="color: red;"></p>
@@ -122,14 +122,14 @@
                 </div>
             </div>
             <div class="item">
-                <p>Минимална възраст за участие: <span class="required">*</span></p>
+                <p>Минимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
                 <input type="number" th:field="*{minAge}" min="0" placeholder="Минимална възраст за участие" required/>
                 <div th:if="${minAge}" id="minAgeError">
                     <p th:text="${minAge}" style="color: red;"></p>
                 </div>
             </div>
             <div class="item">
-                <p>Максимална възраст за участие: <span class="required">*</span></p>
+                <p>Максимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
                 <input type="number" th:field="*{maxAge}" min="0" placeholder="Максимална възраст за участие" required/>
                 <div th:if="${maxAge}" id="maxAgeError">
                     <p th:text="${maxAge}" style="color: red;"></p>
@@ -137,16 +137,24 @@
             </div>
         </div>
         <div class="question">
-            <p>Еднократно ли е събитието? </p>
+            <p>Тип на събитието: <span class="required">*</span></p>
             <div class="question-answer">
                 <div>
                     <input type="radio" th:value="true" id="radio_yes1" th:field="*{isOneTime}" required/>
-                    <label class="radio"><span>Да</span></label>
+                    <label class="radio"><span>Еднократно</span></label>
                 </div>
                 <div>
                     <input type="radio" th:value="false" id="radio_no1" th:field="*{isOneTime}" required/>
-                    <label class="radio"><span>Не</span></label>
+                    <label class="radio"><span>Повтарящо се</span></label>
                 </div>
+            </div>
+        </div>
+        <div class="item">
+            <p>Детайли относно повторяемостта на събитието: (моля попълнете полето , само ако събитието е повтарящо се) </p>
+            <input type="text" th:field="*{recurrenceDetails}"
+                   placeholder="Детайли относно повторяемостта на събитието">
+            <div th:if="${recurrenceDetails}" id="recurrenceDetailsError">
+                <p th:text="${recurrenceDetails}" style="color: red;"></p>
             </div>
         </div>
         <div class="contact-item">
@@ -165,20 +173,13 @@
                 </div>
             </div>
         </div>
-        <div class="item">
-            <p>Детайли относно повторяемостта на събитието: </p>
-            <input type="text" th:field="*{recurrenceDetails}"
-                   placeholder="Детайли относно повторяемостта на събитието">
-            <div th:if="${recurrenceDetails}" id="recurrenceDetailsError">
-                <p th:text="${recurrenceDetails}" style="color: red;"></p>
-            </div>
-        </div>
+
         <div class="col-md-6 offset-md-3">
             <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5"
                    value="Създай събитие">
         </div>
     </form>
-<script th:src="@{/js/eventValidations.js}"></script>
+    <script th:src="@{/js/eventValidations.js}"></script>
 </div>
 
 <script src="/js/jquery-3.3.1.min.js"></script>
@@ -196,11 +197,9 @@
 <script src="/js/aos.js"></script>
 
 <script th:src="@{/js/main.js}"></script>
-<script th:src="@{/js/displayScript.js}" ></script>
+<script th:src="@{/js/displayScript.js}"></script>
 </body>
 </html>
-
-
 
 
 <style>
@@ -398,6 +397,7 @@
         }
 
     }
+
 
 </style>
 
