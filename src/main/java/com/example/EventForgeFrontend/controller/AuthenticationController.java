@@ -51,7 +51,7 @@ public class AuthenticationController {
         Set<String> priorityCategories = authenticationApiClient.getAllPriorityCategories().getBody();
         httpRequest.setAttribute("newRegistrationRequest", new RegistrationRequest(request.getUsername(), request.getName(), request.getLogo(), request.getBullstat(), request.getOrganisationPriorities(), request.getOptionalCategory(), request.getOrganisationPurpose(), request.getBackgroundCover(), request.getAddress(), request.getWebsite(), request.getFacebookLink(), request.getFullName(), request.getPhoneNumber(), request.getCharityOption(), request.getPassword(), request.getConfirmPassword()));
         httpRequest.setAttribute("organisationPriorities", priorityCategories);
-        String appUrl = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort() + httpRequest.getContextPath();
+        String appUrl = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort() + httpRequest.getContextPath()+"/verifyEmail?verificationToken=";
 
 
         String logoUrl = imageService.uploadPicture(logoFile, ImageType.LOGO);
