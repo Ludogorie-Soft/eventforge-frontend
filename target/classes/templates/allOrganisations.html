@@ -48,38 +48,18 @@
         </div>
     </div>
 </div>
-
-<div class="table-responsive">
-    <table class="table table-bordered table-hover">
-        <thead class="table-info">
-        <tr>
-            <th scope="col">Лого</th>
-            <th scope="col">Име</th>
-            <th scope="col">Булстат</th>
-            <th scope="col">Телефон</th>
-            <th scope="col">Адрес</th>
-            <th scope="col">Благотворителност</th>
-            <th scope="col">Цел</th>
-            <th scope="col">Приоритети</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="organisation : ${organisations}">
-            <td>
-                <img style='display:block; width:100px; height:100px;' id='base64image'
-                      th:src="@{'data:image/jpeg;base64,' + ${organisation.logo}}" />
-            </td>
-            <td>[[${organisation.name}]]</td>
-            <td>[[${organisation.bullstat}]]</td>
-            <td>[[${organisation.phone}]]</td>
-            <td>[[${organisation.address}]]</td>
-            <td>[[${organisation.charityOption}]]</td>
-            <td>[[${organisation.organisationPurpose}]]</td>
-            <td>[[${organisation.organisationPriorities}]]</td>
-        </tr>
-        </tbody>
-    </table>
+<div class="wrapper-flex">
+    <div th:each="organisation : ${organisations}" class="container-2">
+        <img th:src="@{'data:image/jpeg;base64,' + ${organisation.logo}}" alt="profile image" class="logo-img">
+        <div class="card-content">
+            <p class="name" th:text="${organisation.name}"></p>
+            <textarea class="description" readonly th:text="${#strings.abbreviate(organisation.organisationPurpose, 100)}"></textarea>
+            <button class="btn">Follow</button>
+        </div>
+    </div>
 </div>
+
+
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/jquery-migrate-3.0.0.js"></script>
 <script src="/js/popper.min.js"></script>
@@ -95,6 +75,77 @@
 <script src="/js/aos.js"></script>
 
 <script th:src="@{/js/main.js}"></script>
-<script th:src="@{/js/displayScript.js}" ></script>
+<script th:src="@{/js/displayScript.js}"></script>
 </body>
 </html>
+<style>
+    :root {
+        --clr-primary: #651fff;
+        --clr-gray: #37474f;
+        --clr-gray-light: #b0bec5;
+    }
+
+    .wrapper-flex {
+        margin-top: 0px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .container-2 {
+        overflow: hidden;
+        box-shadow: 0px 2px 8px 0px var(--clr-gray-light);
+        background-color: white;
+        text-align: center;
+        border-radius: 1rem;
+        position: relative;
+        width: 280px;
+        margin-bottom: 1rem;
+        margin-left: 3rem;
+        margin-top: 3rem;
+    }
+
+    .logo-img {
+        background-color: #ccc;
+        border-radius: 50%;
+        margin-right: 10px;
+        width: 6rem;
+        height: 6rem;
+        clip-path: circle(60px at center);
+        margin-top: 1.5rem;
+    }
+
+    .logo-img:hover {
+        transform: scale(1.1);
+    }
+
+    .name {
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    .description {
+        margin: 1rem 2rem;
+        font-size: 0.9rem;
+        border: none;
+        resize: none;
+        background-color: transparent;
+        overflow: hidden;
+        outline: none;
+        height: 100px;
+        width: 70%;
+
+    }
+
+    .btn {
+        width: 50%;
+        border: none;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        padding: 1rem;
+        background-color: #656598;
+        margin-bottom: 10px;
+    }
+
+</style>
