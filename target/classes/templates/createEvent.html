@@ -75,8 +75,8 @@
             </div>
             <p>Описание на събитието: <span class="required">*</span></p>
             <div class="item">
-                <textarea type="text" th:field="*{description}" placeholder="Описание на събитието" minlength="5"
-                       maxlength="255" id="description"></textarea>
+                <textarea type="text" th:field="*{description}" placeholder="Описание на събитието" minlength="100"
+                       maxlength="500" id="description"></textarea>
             </div>
             <div th:if="${description}" id="descriptionError">
                 <p th:text="${description}" style="color: red;"></p>
@@ -109,10 +109,11 @@
             <div class="item">
                 <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
                 <input type="text" th:field="*{eventCategories}" pattern="^([a-zA-Zа-яА-Я ,-]*)${3,100}"
-                       placeholder="Категории (ключови думи към събитието)" required/>
+                       placeholder="ключови думи към събитието" required/>
                 <div th:if="${eventCategories}" id="eventCategoriesError">
                     <p th:text="${eventCategories}" style="color: red;"></p>
                 </div>
+                <p style="font-size: 15px; color: #999;">Моля отделяйте всяка ключова дума със запетая</p>
             </div>
             <div class="item">
                 <p>Цена на събитието (ако е безплатно, въведете 0): <span class="required">*</span></p>

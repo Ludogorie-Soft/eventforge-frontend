@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/manage-events")
@@ -33,10 +34,12 @@ public class ManageEventsController {
     private final ImageService imageService;
 
     @GetMapping
-    public String showMyEvents(HttpServletRequest request, Model model) {
+    public String showMyEvents(HttpServletRequest request, Model model
+            , @RequestParam(value = "oneTimeEventsName", required = false) String oneTimeEventsName
+            , @RequestParam(value = "recurrenceEventsName", required = false) String recurrenceEventName) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<EventResponseContainer> getAllEventsForOrganisation = organisationApiClient.getAllEventsByOrganisation(token);
+        ResponseEntity<EventResponseContainer> getAllEventsForOrganisation = organisationApiClient.showAllOrganisationEvents(token, oneTimeEventsName, recurrenceEventName);
         List<OneTimeEventResponse> oneTimeEventResponses = getAllEventsForOrganisation.getBody().getOneTimeEvents();
         List<RecurrenceEventResponse> recurrenceEventResponses = getAllEventsForOrganisation.getBody().getRecurrenceEvents();
 
@@ -47,26 +50,12 @@ public class ManageEventsController {
         return "manageOrganisationEvents";
     }
 
-    @GetMapping("/get-events-by-name")
-    public String findEventsByName( HttpServletRequest request,@RequestParam(value = "oneTimeEventName", required = false) String oneTimeEventName,
-                                   @RequestParam(value = "recurrenceEventName", required = false) String recurrenceEventName, Model model) {
-        sessionManager.isSessionExpired(request);
-        String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<EventResponseContainer> eventResponseContainer = organisationApiClient.getEventsByNameAndByOrganisation(token, oneTimeEventName, recurrenceEventName);
-        List<OneTimeEventResponse> oneTimeEventsByName = eventResponseContainer.getBody().getOneTimeEvents();
-        List<RecurrenceEventResponse> recurrenceEventsByName = eventResponseContainer.getBody().getRecurrenceEvents();
-
-        model.addAttribute("oneTimeEvents", oneTimeEventsByName);
-        model.addAttribute("recurrenceEvents", recurrenceEventsByName);
-        return "manageOrganisationEvents";
-    }
-
     @GetMapping("/create")
-    public String createEvent(HttpServletRequest request, Model model , @ModelAttribute("eventRequest")EventRequest eventRequest ) {
+    public String createEvent(HttpServletRequest request, Model model, @ModelAttribute("eventRequest") EventRequest eventRequest) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        if(eventRequest.getName()!=null && !eventRequest.getName().isEmpty()){
-            model.addAttribute("eventRequest" , eventRequest);
+        if (eventRequest.getName() != null && !eventRequest.getName().isEmpty()) {
+            model.addAttribute("eventRequest", eventRequest);
         } else {
             model.addAttribute("eventRequest", organisationApiClient.getEventRequest(token).getBody());
 
@@ -75,13 +64,13 @@ public class ManageEventsController {
     }
 
     @PostMapping("create-event")
-    public String saveCreatedEvent( @RequestParam("image")MultipartFile image,EventRequest eventRequest, HttpServletRequest request, Model model ) {
+    public String saveCreatedEvent(@RequestParam("image") MultipartFile image, EventRequest eventRequest, HttpServletRequest request, Model model) {
         sessionManager.isSessionExpired(request);
 
-        request.setAttribute("eventRequest" , eventRequest);
+        request.setAttribute("eventRequest", eventRequest);
 
         String token = (String) request.getSession().getAttribute("sessionToken");
-        String eventPicture = imageService.uploadPicture(image , ImageType.EVENT_PICTURE);
+        String eventPicture = imageService.uploadPicture(image, ImageType.EVENT_PICTURE);
         eventRequest.setImageUrl(eventPicture);
         ResponseEntity<String> eventRequestResult = organisationApiClient.submitCreatedEvent(eventRequest, token);
         model.addAttribute("eventRequestResult", eventRequestResult.getBody());
@@ -91,20 +80,33 @@ public class ManageEventsController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, Model model) {
+    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, Model model ,@ModelAttribute("eventRequest")EventRequest newEventRequest) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
+
         ResponseEntity<EventRequest> getEventToUpdate = organisationApiClient.getEventToUpdateByIdAndByOrganisation(token, id);
-        model.addAttribute("eventRequest", getEventToUpdate.getBody());
+        String currentEventPictureUrl = ImageService.encodeImage(Objects.requireNonNull(getEventToUpdate.getBody()).getImageUrl());
+        if(newEventRequest!=null && newEventRequest.getName()!=null){
+            model.addAttribute("eventRequest" , newEventRequest);
+        } else {
+            model.addAttribute("eventRequest", getEventToUpdate.getBody());
+        }
+        model.addAttribute("eventPictureUrl", currentEventPictureUrl);
         return "updateEvent";
     }
 
     @PostMapping("update/{id}")
-    public String submitUpdateEvent(HttpServletRequest request, @PathVariable("id") Long id, EventRequest eventRequest, Model model) {
+    public String submitUpdateEvent(@RequestParam("image") MultipartFile image, HttpServletRequest request, @PathVariable("id") Long id, EventRequest eventRequest, Model model) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
+        request.setAttribute("eventRequest" , eventRequest);
+        String eventPicture = imageService.updatePicture(image, ImageType.EVENT_PICTURE);
+        if (eventPicture != null) {
+            eventRequest.setImageUrl(eventPicture);
+        }
         ResponseEntity<String> updateEventResult = organisationApiClient.updateEventByOrganisation(token, id, eventRequest);
         model.addAttribute("updateEventResult", updateEventResult.getBody());
+        request.removeAttribute("eventRequest");
         return "manageOrganisationEvents";
     }
 
@@ -112,7 +114,7 @@ public class ManageEventsController {
     public String deleteEventById(HttpServletRequest request, @PathVariable("id") Long id, Model model) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        if(SessionManager.storeSessionUserRole.equals("ORGANISATION")){
+        if (SessionManager.storeSessionUserRole.equals("ORGANISATION")) {
             ResponseEntity<String> deleteEventResult = eventApiClient.deleteEventById(token, id);
             model.addAttribute("deleteEventResult", deleteEventResult.getBody());
         }
