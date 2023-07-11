@@ -26,7 +26,6 @@
 
 </head>
 
-
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
 
@@ -66,19 +65,25 @@
                 <td> Заглавие</td>
                 <td> Начало</td>
                 <td> Край</td>
-                <td> Цена</td>
-                <td></td>
+                <td> Тип на събитието</td>
+                <td> Редактирай</td>
+                <td> Изтрий</td>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="event : ${oneTimeEvents}">
+            <tr th:each="event : ${events}">
                 <td th:text="${event.name}"></td>
                 <td class = "startsAt" th:text="${event.startsAt}"></td>
                 <td class = "endsAt" th:text="${event.endsAt}"></td>
-                <td th:text="${event.price}"></td>
+                <td th:text="${event.isOneTime}"></td>
                 <td>
                     <a th:href="@{manage-events/update/{id}(id=${event.id})}"><i class='fas fa-pencil-alt'></i></a>
+                </td>
+                <td>
+                    <form th:action="@{/manage-events/delete/{id}(id=${event.id})}" method="post">
+                        <button type="submit"><i class='fas fa-trash'></i></button>
+                    </form>
                 </td>
 
             </tr>
@@ -136,5 +141,8 @@
         element.textContent = moment(endsAt).format('YYYY-MM-DD HH:mm');
     });
 </script>
+
+
+
 </body>
 </html>
