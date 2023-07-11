@@ -155,11 +155,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({UserDisabledException.class, InvalidUserCredentialException.class, UserLockedException.class})
     public ModelAndView handleUserDisabledException(Exception ex, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        ModelAndView mav = assembleModelAndView(request);
+        ModelAndView mav = new ModelAndView();
         JWTAuthenticationRequest newLoginRequest = (JWTAuthenticationRequest) request.getAttribute("newLoginRequest");
         redirectAttributes.addFlashAttribute("login", newLoginRequest);
         redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
         request.removeAttribute("newLoginRequest");
+        mav.setViewName("redirect:/login");
         return mav;
     }
 
