@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Objects;
@@ -73,12 +74,16 @@ public class ManageEventsController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, Model model, @ModelAttribute("eventRequest") EventRequest newEventRequest) {
+    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, RedirectAttributes redirectAttributes,Model model ,@ModelAttribute("eventRequest") EventRequest newEventRequest) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
 
         ResponseEntity<EventRequest> getEventToUpdate = organisationApiClient.getEventToUpdateByIdAndByOrganisation(token, id);
-        String currentEventPictureUrl = ImageService.encodeImage(Objects.requireNonNull(getEventToUpdate.getBody()).getImageUrl());
+        if(getEventToUpdate.getBody()==null){
+            redirectAttributes.addFlashAttribute("eventNotFound" ,"Търсеното от вас събитие с идентификационен номер:" + id+ " ,не съществува или не принаджели на вашият акаунт!");
+            return "redirect:/manage-events";
+        }
+        String currentEventPictureUrl = ImageService.encodeImage((getEventToUpdate.getBody()).getImageUrl());
         if (newEventRequest != null && newEventRequest.getName() != null) {
             model.addAttribute("eventRequest", newEventRequest);
         } else {

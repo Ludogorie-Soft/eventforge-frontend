@@ -53,11 +53,17 @@
         <img th:src="@{'data:image/jpeg;base64,' + ${organisation.logo}}" alt="profile image" class="logo-img">
         <div class="card-content">
             <p class="name" th:text="${organisation.name}"></p>
+            <p class="address">Адрес: <span th:text="${organisation.address}"></span></p>
+            <p>Приоритети: </p>
+            <div th:each="priority : ${organisation.organisationPriorities}">
+                <p class="priority" ><span th:text="${priority}"></span></p>
+            </div>
             <textarea class="description" readonly th:text="${#strings.abbreviate(organisation.organisationPurpose, 100)}"></textarea>
             <button class="btn">Follow</button>
         </div>
     </div>
 </div>
+
 
 
 <script src="/js/jquery-3.3.1.min.js"></script>
