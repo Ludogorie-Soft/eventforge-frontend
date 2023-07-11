@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Set;
@@ -48,7 +49,7 @@ public class OrganisationSettingsController {
 
 
     @PostMapping("submit-update")
-    public String updateProfile(HttpServletRequest request, UpdateAccountRequest updateRequest, Model model , @RequestParam(value = "logo",required = false)MultipartFile logo , @RequestParam(value = "cover",required = false)MultipartFile cover) {
+    public String updateProfile(HttpServletRequest request, UpdateAccountRequest updateRequest, RedirectAttributes redirectAttributes , @RequestParam(value = "logo",required = false)MultipartFile logo , @RequestParam(value = "cover",required = false)MultipartFile cover) {
         sessionManager.isSessionExpired(request);
         request.setAttribute("updateRequest" ,updateRequest);
         Set<String> allCategories = authenticationApiClient.getAllPriorityCategories().getBody();
@@ -58,7 +59,7 @@ public class OrganisationSettingsController {
 
         request.removeAttribute("updateRequest");
         request.removeAttribute("allPriorities");
-        model.addAttribute("updateAccountResult", updateAccountResult.getBody());
+        redirectAttributes.addFlashAttribute("updateAccountResult", updateAccountResult.getBody());
         return "redirect:/organisation/settings";
     }
     @GetMapping("/change-password")
