@@ -39,7 +39,9 @@
     </div>
 <!--    HEADER-->
     <th:block th:include="~{fragments/header}"></th:block>
-
+    <div th:if="${eventNotFound}" id="eventNotFound">
+        <p th:text="${eventNotFound}" style="color: red;"></p>
+    </div>
     <div class="ftco-blocks-cover-1">
         <div class="site-section-cover overlay">
             <div class="container">

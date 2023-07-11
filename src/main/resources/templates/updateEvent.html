@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
-  <meta charset="utf-8">
-  <title>Create event</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/eventForm.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style type="text/css">
-      body {
-        margin-top: 20px;
-        background: #f8f8f8
-      }
-    </style>
-</head>
-<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Еднократни активности</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+  <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
+  <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+  <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+  <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
+  <link rel="stylesheet" th:href="@{/css/aos.css}">
+
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+
+<body>
 
 <div class="site-wrap" id="home-section">
 
@@ -26,127 +34,377 @@
     </div>
     <div class="site-mobile-menu-body"></div>
   </div>
-  <header class="site-navbar site-navbar-target" role="banner">
-
-    <div class="container mb-3">
-      <div class="d-flex align-items-center">
-        <div class="site-logo mr-auto">
-          <a href="index.html">Eventforge<span class="text-primary"></span></a>
-        </div>
-        <div class="site-quick-contact d-none d-lg-flex ml-auto ">
-          <div class="d-flex site-info align-items-center mr-5">
-            <span class="block-icon mr-3"><span class="icon-map-marker text-yellow"></span></span>
-            <span>Varna<br> Bulgaria</span>
-          </div>
 
 
-        </div>
-      </div>
-    </div>
-
-
-    <div class="container">
-      <div class="menu-wrap d-flex align-items-center">
-        <span class="d-inline-block d-lg-none"><a href="#" class="text-black site-menu-toggle js-menu-toggle py-5"><span class="icon-menu h3 text-black"></span></a></span>
-
-
-
-        <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
-          <ul class="site-menu main-menu js-clone-nav mr-auto ">
-            <li class="active"><a th:href="@{/index}" class="nav-link">Начало</a></li>
-            <li><a th:href="@{/registration}" class="nav-link">Регистрирай се</a></li>
-            <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
-            <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
-            <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
-            <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
-            <li><a href="/organisation/settings/update-profile" class="nav-link">Профил</a></li>
-            <li><a th:href="@{/manage-events/create}" class="nav-link">Създай събитие</a></li>
-          </ul>
-        </nav>
-
-        <div class="top-social ml-auto">
-          <a href="#"><span class="icon-facebook text-teal"></span></a>
-          <a href="#"><span class="icon-twitter text-success"></span></a>
-          <a href="#"><span class="icon-linkedin text-yellow"></span></a>
-        </div>
-      </div>
-    </div>
-  </header>
+  <!--    HEADER  -->
+  <th:block th:include="~{fragments/header}"></th:block>
 
   <div class="ftco-blocks-cover-1">
-
     <div class="site-section-cover overlay">
       <div class="container">
         <div class="row align-items-center ">
-          <div class="col-md-5 mt-5 pt-5">
-            <span class="text-cursive h5 text-red">Добре дошли в нашия уебсайт</span>
-            <h1 class="mb-3 font-weight-bold text-teal">Eventforge</h1>
-          </div>
-          <div class="col-md-5 ml-auto align-self-end">
-            <img src="images/img_2.png" alt="Image" class="img-fluid">
-          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="formbold-main-wrapper">
-    <div class="formbold-form-wrapper">
-      <form action="https://formbold.com/s/FORM_ID" method="POST">
-        <div class="formbold-mb-5">
-          <label class="formbold-form-label"> Кой организира събитието? </label>
-          <input type="text" placeholder="Организатор на събитието" class="formbold-form-input" required/>
-        </div>
-        <div class="formbold-mb-5">
-          <label class="formbold-form-label"> Име на събитието </label>
-          <input type="text" placeholder="Име на събитието" class="formbold-form-input" required/>
-        </div>
-        <div class="formbold-mb-5">
-          <label class="formbold-form-label"> Дата </label>
-          <input type="date" class="formbold-form-input"/>
-        </div>
-        <div class="flex flex-wrap formbold--mx-3">
-          <div class="w-full sm:w-half formbold-px-3">
-            <div class="formbold-mb-5">
-              <label value="time" class="formbold-form-label"> Начален час на събитието </label>
-              <input type="time" class="formbold-form-input" required/>
-            </div>
-          </div>
-          <div class="w-full sm:w-half formbold-px-3">
-            <div class="formbold-mb-5">
-              <label value="time" class="formbold-form-label"> Краен час на събитието </label>
-              <input type="time" class="formbold-form-input" required/>
-            </div>
-          </div>
-        </div>
-        <div class="formbold-mb-5">
-          <label class="formbold-form-label"> Адрес или линк на събитието </label>
-          <input type="text" placeholder="Адрес на събитието или линк" class="formbold-form-input" required/>
-        </div>
-        <div class="formbold-mb-5">
-          <label class="formbold-form-label">Подробно описание на събитието</label>
-          <textarea placeholder="Подробно описание на събитието" class="formbold-form-input" style="width: 550px; height: 150px;" required></textarea>
-        </div>
-        <div class="formbold-mb-5">
-          <label class="formbold-form-label">Цена за вход събитието (ако е безплатно въведете 0)</label>
-          <input type="number" step="0.01" placeholder="Цена за вход на събитието" class="formbold-form-input" required />
-        </div>
-        <div class="formbold-mb-5">
-          <label class="formbold-form-label">Посочете за коя възрастова група е подходящо събитието</label>
-          <input type="text" step="1" placeholder="Посочете за коя възрастова група е подходящо събитието" class="formbold-form-input" />
-        </div>
-        <div class="formbold-mb-5">
-          <label class="formbold-form-label">Регулярно събитие ли е?</label>
-          <input type="radio" name="option" value="option1" id="option1" >
-          <label value="Да" class="formbold-form-input">Да</label>
-          <input type="radio" name="option" value="option2" id="option2">
-          <label value="Не" class="formbold-form-input">Не</label>
+</div>
+
+<div class="testbox">
+  <form action="#" th:action="@{/manage-events/update-event/{id}(id=${id})}" th:object="${eventRequest}" method="post"
+        enctype="multipart/form-data">
+    <input type="hidden" name="id" value="${id}" />
+    <div class="row justify-content-center text-center">
+      <div class="col-7 text-center mb-5">
+        <h2 class="text-cursive 21 text-yellow">Редактирай събитие</h2>
+      </div>
+    </div>
+    <div class="item">
+      <p>Име на събитието: <span class="required">*</span></p>
+      <div class="item">
+        <input type="text" th:field="*{name}" placeholder="Име на събитието" minlength="5" maxlength="30"
+               id="name" required/>
+      </div>
+      <div th:if="${name}" id="nameError">
+        <p th:text="${name}" style="color: red;"></p>
+      </div>
+      <div class="item">
+        <p>Снимка на събитието: <span class="required">*</span></p>
+        <td>
+          <img style='display:block; width:100px; height:100px;' id='base64image'
+               th:src="@{'data:image/jpeg;base64,' + ${eventPictureUrl}}" />
+        </td>
+        <input type="hidden" name="eventPictureUrl" th:value="${eventPictureUrl}" />
+        <input type="file" name="image" placeholder="прикачи нова снимка" >
+      </div>
+      <div th:if="${fileError}" id="fileError">
+        <p th:text="${fileError}" style="color: red;"></p>
+      </div>
+      <p>Описание на събитието: <span class="required">*</span></p>
+      <div class="item">
+                <textarea type="text" th:field="*{description}" placeholder="Описание на събитието" minlength="5"
+                          maxlength="255" id="description"></textarea>
+      </div>
+      <div th:if="${description}" id="descriptionError">
+        <p th:text="${description}" style="color: red;"></p>
+      </div>
+    </div>
+    <div class="question">
+      <p>Онлайн ли е събитието?  <span class="required">*</span> </p>
+      <div class="question-answer">
+        <div>
+          <input type="radio" th:value="true" id="radio_yes" th:field="*{isOnline}" required/>
+          <label class="radio"><span>Да</span></label>
         </div>
         <div>
-          <button class="formbold-btn">Актуализирай събитие</button>
+          <input type="radio" th:value="false" id="radio_no" th:field="*{isOnline}" required/>
+          <label class="radio"><span>Не</span></label>
         </div>
-      </form>
+        <div th:if="${isOnline}" id="isOnlineError">
+          <p th:text="${isOnline}" style="color: red;"></p>
+        </div>
+      </div>
     </div>
-  </div>
+    <div class="contact-item">
+      <div class="item">
+        <p>Адрес на събитието (ако е онлайн посочете линк)</p>
+        <input type="text" th:field="*{address}" minlength="5" placeholder="Адрес/линк на събитието">
+        <div th:if="${address}" id="addressError">
+          <p th:text="${address}" placeholder="Адрес/линк на събитието" style="color: red;"></p>
+        </div>
+      </div>
+      <div class="item">
+        <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
+        <input type="text" th:field="*{eventCategories}" pattern="^([a-zA-Zа-яА-Я ,-]*)${3,100}"
+               placeholder="Категории (ключови думи към събитието)" required/>
+        <div th:if="${eventCategories}" id="eventCategoriesError">
+          <p th:text="${eventCategories}" style="color: red;"></p>
+        </div>
+      </div>
+      <div class="item">
+        <p>Цена на събитието (ако е безплатно, въведете 0): <span class="required">*</span></p>
+        <input type="number" th:field="*{price}" min="0" placeholder="Цена на събитието" required/>
+        <div th:if="${price}" id="priceError">
+          <p th:text="${price}" style="color: red;"></p>
+        </div>
+      </div>
+      <div class="item">
+        <p>Минимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
+        <input type="number" th:field="*{minAge}" min="0" placeholder="Минимална възраст за участие" required/>
+        <div th:if="${minAge}" id="minAgeError">
+          <p th:text="${minAge}" style="color: red;"></p>
+        </div>
+      </div>
+      <div class="item">
+        <p>Максимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
+        <input type="number" th:field="*{maxAge}" min="0" placeholder="Максимална възраст за участие" required/>
+        <div th:if="${maxAge}" id="maxAgeError">
+          <p th:text="${maxAge}" style="color: red;"></p>
+        </div>
+      </div>
+    </div>
+    <div class="question">
+      <p>Тип на събитието: <span class="required">*</span></p>
+      <div class="question-answer">
+        <div>
+          <input type="radio" th:value="true" id="radio_yes1" th:field="*{isOneTime}" required/>
+          <label class="radio"><span>Еднократно</span></label>
+        </div>
+        <div>
+          <input type="radio" th:value="false" id="radio_no1" th:field="*{isOneTime}" required/>
+          <label class="radio"><span>Повтарящо се</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <p>Детайли относно повторяемостта на събитието: (моля попълнете полето , само ако събитието е повтарящо се) </p>
+      <input type="text" th:field="*{recurrenceDetails}"
+             placeholder="Детайли относно повторяемостта на събитието">
+      <div th:if="${recurrenceDetails}" id="recurrenceDetailsError">
+        <p th:text="${recurrenceDetails}" style="color: red;"></p>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="item">
+        <p>Начало на събитието:   <span class="required">*</span></p>
+        <input type="datetime-local" th:field="*{startsAt}" required>
+        <div th:if="${startsAt}" id="startsAtError">
+          <p th:text="${startsAt}" style="color: red;"></p>
+        </div>
+      </div>
+      <div class="item">
+        <p>Край на събитието:  <span class="required">*</span> </p>
+        <input type="datetime-local" th:field="*{endsAt}" required>
+        <div th:if="${endsAt}" id="endsAtError">
+          <p th:text="${endsAt}" style="color: red;"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 offset-md-3">
+      <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5"
+             value="Запази">
+    </div>
+
+  </form>
+  <script th:src="@{/js/eventValidations.js}"></script>
 </div>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/jquery-migrate-3.0.0.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.sticky.js"></script>
+<script src="/js/jquery.waypoints.min.js"></script>
+<script src="/js/jquery.animateNumber.min.js"></script>
+<script src="/js/jquery.fancybox.min.js"></script>
+<script src="/js/jquery.stellar.min.js"></script>
+<script src="/js/jquery.easing.1.3.js"></script>
+<script src="/js/bootstrap-datepicker.min.js"></script>
+<script src="/js/aos.js"></script>
+
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/displayScript.js}"></script>
 </body>
 </html>
+
+
+<style>
+    html, body {
+        min-height: 100%;
+    }
+
+    body, div, form, input, select, p {
+        padding: 0;
+        margin: 0;
+        outline: none;
+        /*font-family: "Open Sans", Arial, sans-serif;*/
+        /*font-size: 14px;*/
+        color: #666;
+        line-height: 22px;
+    }
+
+    body{
+        background-color: #f6f5f5 !important;
+    }
+
+
+
+    p.top-info {
+        margin: 10px 0;
+    }
+
+    .testbox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: inherit;
+        padding: 20px;
+    }
+
+    form {
+        width: 70%;
+        padding: 20px;
+        border-radius: 6px;
+    }
+
+
+    input, select, textarea {
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    input {
+        width: calc(100% - 10px);
+        padding: 5px;
+    }
+
+    input[type="date"] {
+        padding: 4px 5px;
+    }
+
+    select {
+        width: 100%;
+        padding: 7px 0;
+        background: transparent;
+    }
+
+    .item {
+        position: relative;
+        margin: 10px 0;
+    }
+
+    input[type="date"]::-webkit-inner-spin-button {
+        display: none;
+    }
+
+    .item i, input[type="date"]::-webkit-calendar-picker-indicator {
+        position: absolute;
+        font-size: 20px;
+        color: #a9a9a9;
+    }
+
+    .item i {
+        right: 2%;
+        top: 30px;
+        z-index: 1;
+    }
+
+    [type="date"]::-webkit-calendar-picker-indicator {
+        right: 1%;
+        z-index: 2;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    input[type="radio"] {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        /* Provide a fallback for older browsers */
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+        /* Set the size of the radio button */
+        width: 16px;
+        height: 16px;
+        /* Define the border and background */
+        border: 2px solid #bbb;
+        border-radius: 50%;
+        background-color: #fff;
+    }
+
+    input[type="radio"]:checked {
+        /* Change the border and background color */
+        border-color: #fdb62f;
+        background-color: #fdb62f;
+    }
+
+    .question span {
+        margin-left: 30px;
+    }
+
+    span.required {
+        margin-left: 0;
+        color: red;
+    }
+
+    label.radio:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+    }
+
+    label.radio:after {
+        content: "";
+        position: absolute;
+        top: 6px;
+        left: 5px;
+        width: 8px;
+        height: 4px;
+        border-top: none;
+        border-right: none;
+        transform: rotate(-45deg);
+        opacity: 0;
+    }
+
+    input[type=radio]:checked + label:after {
+        opacity: 1;
+    }
+
+    .btn-block {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    button {
+        width: auto;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        /*background: #1c87c9;*/
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    @media (min-width: 568px) {
+        .name-item, .contact-item, .position-item {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .name-item input {
+            width: calc(50% - 20px);
+        }
+
+        .contact-item .item, .position-item .item {
+            width: calc(50% - 8px);
+        }
+
+        .contact-item input, .position-item input {
+            width: calc(100% - 12px);
+        }
+
+        .position-item select {
+            width: 100%;
+        }
+
+        form {
+            width: 50%;
+        }
+
+    }
+
+
+</style>
+

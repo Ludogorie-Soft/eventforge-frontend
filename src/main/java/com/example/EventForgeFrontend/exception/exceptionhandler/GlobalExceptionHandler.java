@@ -44,15 +44,17 @@ public class GlobalExceptionHandler {
         Object allPriorities = getAttributeAsType(request, "allPriorities", Set.class);
         Object logo = getAttributeAsType(request, "logo", MultipartFile.class);
         Object cover = getAttributeAsType(request, "cover", MultipartFile.class);
+        Object newEventRequest = getAttributeAsType(request ,"eventRequest" ,EventRequest.class);
 
         redirectAttributes.addFlashAttribute("logoFile", logo);
         redirectAttributes.addFlashAttribute("backgroundCoverFile", cover);
+        redirectAttributes.addFlashAttribute("eventRequest" ,newEventRequest);
 
         Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
         redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
         redirectAttributes.addFlashAttribute("allPriorities", allPriorities);
 
-
+        request.removeAttribute("eventRequest");
         request.removeAttribute("updateRequest");
         request.removeAttribute("newRegistrationRequest");
         request.removeAttribute("organisationPriorities");
@@ -175,6 +177,13 @@ public class GlobalExceptionHandler {
 
         redirectAttributes.addFlashAttribute("passwordError" , ex.getMessage());
 
+        return mav;
+    }
+
+    @ExceptionHandler(EventRequestException.class)
+    public ModelAndView handleEventRequestException(EventRequestException e ,RedirectAttributes redirectAttributes , HttpServletRequest request){
+        ModelAndView mav = assembleModelAndView(request);
+        redirectAttributes.addFlashAttribute("eventNotFound" , e.getMessage());
         return mav;
     }
 
