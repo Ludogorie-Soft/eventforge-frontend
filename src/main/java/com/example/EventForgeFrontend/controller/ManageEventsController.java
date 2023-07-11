@@ -2,10 +2,7 @@ package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
-import com.example.EventForgeFrontend.dto.EventRequest;
-import com.example.EventForgeFrontend.dto.EventResponseContainer;
-import com.example.EventForgeFrontend.dto.OneTimeEventResponse;
-import com.example.EventForgeFrontend.dto.RecurrenceEventResponse;
+import com.example.EventForgeFrontend.dto.*;
 import com.example.EventForgeFrontend.image.ImageService;
 import com.example.EventForgeFrontend.image.ImageType;
 import com.example.EventForgeFrontend.session.SessionManager;
@@ -35,17 +32,13 @@ public class ManageEventsController {
 
     @GetMapping
     public String showMyEvents(HttpServletRequest request, Model model
-            , @RequestParam(value = "oneTimeEventsName", required = false) String oneTimeEventsName
-            , @RequestParam(value = "recurrenceEventsName", required = false) String recurrenceEventName) {
+            , @RequestParam(value = "findByName", required = false) String findByName
+    ) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<EventResponseContainer> getAllEventsForOrganisation = organisationApiClient.showAllOrganisationEvents(token, oneTimeEventsName, recurrenceEventName);
-        List<OneTimeEventResponse> oneTimeEventResponses = getAllEventsForOrganisation.getBody().getOneTimeEvents();
-        List<RecurrenceEventResponse> recurrenceEventResponses = getAllEventsForOrganisation.getBody().getRecurrenceEvents();
+        ResponseEntity<List<CommonEventResponse>> getAllEventsForOrganisation = organisationApiClient.showAllOrganisationEvents(token, findByName);
 
-        model.addAttribute("oneTimeEvents", oneTimeEventResponses);
-        model.addAttribute("recurrenceEvents", recurrenceEventResponses);
-
+        model.addAttribute("events", getAllEventsForOrganisation.getBody());
 
         return "manageOrganisationEvents";
     }
@@ -80,14 +73,14 @@ public class ManageEventsController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, Model model ,@ModelAttribute("eventRequest")EventRequest newEventRequest) {
+    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, Model model, @ModelAttribute("eventRequest") EventRequest newEventRequest) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
 
         ResponseEntity<EventRequest> getEventToUpdate = organisationApiClient.getEventToUpdateByIdAndByOrganisation(token, id);
         String currentEventPictureUrl = ImageService.encodeImage(Objects.requireNonNull(getEventToUpdate.getBody()).getImageUrl());
-        if(newEventRequest!=null && newEventRequest.getName()!=null){
-            model.addAttribute("eventRequest" , newEventRequest);
+        if (newEventRequest != null && newEventRequest.getName() != null) {
+            model.addAttribute("eventRequest", newEventRequest);
         } else {
             model.addAttribute("eventRequest", getEventToUpdate.getBody());
         }
@@ -95,11 +88,11 @@ public class ManageEventsController {
         return "updateEvent";
     }
 
-    @PostMapping("update/{id}")
+    @PostMapping("update-event/{id}")
     public String submitUpdateEvent(@RequestParam("image") MultipartFile image, HttpServletRequest request, @PathVariable("id") Long id, EventRequest eventRequest, Model model) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        request.setAttribute("eventRequest" , eventRequest);
+        request.setAttribute("eventRequest", eventRequest);
         String eventPicture = imageService.updatePicture(image, ImageType.EVENT_PICTURE);
         if (eventPicture != null) {
             eventRequest.setImageUrl(eventPicture);

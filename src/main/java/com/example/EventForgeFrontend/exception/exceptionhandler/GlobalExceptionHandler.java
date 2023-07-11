@@ -184,7 +184,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleEventRequestException(EventRequestException e ,RedirectAttributes redirectAttributes , HttpServletRequest request){
         ModelAndView mav = assembleModelAndView(request);
         redirectAttributes.addFlashAttribute("eventNotFound" , e.getMessage());
-        mav.setViewName("redirect:");
         return mav;
     }
 
