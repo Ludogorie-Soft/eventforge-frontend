@@ -70,7 +70,7 @@ public class ManageEventsController {
         model.addAttribute("eventRequestResult", eventRequestResult.getBody());
         request.removeAttribute("eventRequest");
 
-        return "redirect:/manage-events/create";
+        return "redirect:/manage-events";
     }
 
     @GetMapping("/update/{id}")
