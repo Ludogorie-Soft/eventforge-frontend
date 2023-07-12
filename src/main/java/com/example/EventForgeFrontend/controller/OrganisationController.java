@@ -33,9 +33,9 @@ public class OrganisationController { //this controller is to list organisations
         return "allOrganisations";
     }
 
-    @GetMapping("/{orgName}/get-events")
-    public String showOrganisationEventsById(@PathVariable("orgName")String orgName ,Model model){
-      ResponseEntity<List<CommonEventResponse>> result=  unauthorizeApiClient.showOrgEvents(orgName);
+    @GetMapping("/{orgId}/{orgName}/get-events")
+    public String showOrganisationEventsById(@PathVariable("orgId")Long orgId,@PathVariable("orgName")String orgName ,Model model){
+      ResponseEntity<List<CommonEventResponse>> result=  unauthorizeApiClient.showOrgEvents(orgId,orgName);
       model.addAttribute("events" ,result.getBody());
       return "showOrganisationEvents";
     }

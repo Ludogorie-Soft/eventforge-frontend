@@ -17,6 +17,6 @@ public interface UnauthorizeApiClient {
     @GetMapping
      ResponseEntity<List<OrganisationResponse>> showAllOrganisationsForUnauthorizedUser(@RequestParam(name = "search" ,required = false)String search);
 
-    @GetMapping("/{orgName}/get-events")
-     ResponseEntity<List<CommonEventResponse>> showOrgEvents(@PathVariable("orgName")String organisationName);
+    @GetMapping("/{orgId}/{orgName}/get-events")
+     ResponseEntity<List<CommonEventResponse>> showOrgEvents(@PathVariable("orgId")Long orgId,@PathVariable("orgName")String organisationName );
 }
