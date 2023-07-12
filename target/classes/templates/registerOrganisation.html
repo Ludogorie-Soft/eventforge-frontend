@@ -218,6 +218,9 @@
                                            placeholder="Опционален приоритет на организация" cols="30"
                                            rows="10"></input>
                                 </div>
+                                <div th:if="${optionalCategory}" id="optionalCategory">
+                                    <p th:text="${optionalCategory}" style="color: red;"></p>
+                                </div>
                             </div>
                             <div th:if="${registrationRequest}" id="registrationRequest">
                                 <p th:text="${registrationRequest}" style="color: red;"></p>
