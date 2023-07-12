@@ -248,6 +248,9 @@
                                                                            placeholder="Категория">
                                                                 </div>
                                                             </div>
+                                                            <div th:if="${optionalCategory}" id="optionalCategory">
+                                                                <p th:text="${optionalCategory}" style="color: red;"></p>
+                                                            </div>
                                                         </div>
 
                                                     </div>

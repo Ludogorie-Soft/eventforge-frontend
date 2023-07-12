@@ -49,6 +49,7 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("logoFile", logo);
         redirectAttributes.addFlashAttribute("backgroundCoverFile", cover);
         redirectAttributes.addFlashAttribute("eventRequest" ,newEventRequest);
+        redirectAttributes.addFlashAttribute("updateAccountResult" ,"Неуспешен опит да редактирате профилът си");
 
         Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
         redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
