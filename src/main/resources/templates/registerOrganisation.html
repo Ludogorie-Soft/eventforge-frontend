@@ -75,7 +75,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" th:field="*{name}" class="form-control"
-                                   placeholder="Име на организацията"  id="name" required>
+                                   placeholder="Име на организацията*"  id="name" required>
                         </div>
                         <div th:if="${name}" id="nameError">
                             <p th:text="${name}" style="color: red;"></p>
@@ -84,7 +84,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="password" th:field="*{password}" class="form-control" id="password"
-                                   placeholder="Парола за регистрация " required>
+                                   placeholder="Парола за регистрация*" required>
                         </div>
                         <div th:if="${password}" id="passwordError">
                             <p th:text="${password}" style="color: red;"></p>
@@ -93,23 +93,23 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="password" th:field="*{confirmPassword}" class="form-control"
-                                   placeholder="Парола за регистрация " required>
+                                   placeholder="Потвърди парола*" required>
                         </div>
                         <div th:if="${confirmPassword}" id="confirmPassword">
                             <p th:text="${confirmPassword}" style="color: red;"></p>
                         </div>
                     </div>
-                    <label>Лого на организацията:</label>
+                    <label>Лого на организацията:*</label>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="file" name="logoFile" class="form-control-file">
+                            <input type="file" name="logoFile" class="form-control-file" required>
                         </div>
                     </div>
 
-                    <label>Корица на организацията:</label>
+                    <label>Корица на организацията:*</label>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="file" name="backgroundCoverFile" class="form-control-file">
+                            <input type="file" name="backgroundCoverFile" class="form-control-file" required>
                         </div>
                         <div th:if="${fileError}" id="fileError">
                             <p th:text="${fileError}" style="color: red;"></p>
@@ -144,7 +144,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{facebookLink}"
-                                   placeholder="Линк към фейсбук страница"
+                                   placeholder="Линк към фейсбук страница*"
 
                                    id="facebook" required>
                         </div>
@@ -155,7 +155,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{fullName}"
-                                   placeholder="Лице за контакт - име и фамилия" id="fullname" required>
+                                   placeholder="Лице за контакт - име и фамилия*" id="fullname" required>
                         </div>
                         <div th:if="${fullName}" id="fullNameError">
                             <p th:text="${fullName}" style="color: red;"></p>
@@ -164,7 +164,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" th:field="*{username}" class="form-control"
-                                   placeholder="Лице за контакт - електронна поща" required>
+                                   placeholder="Лице за контакт - електронна поща*" required>
                         </div>
                         <div th:if="${username}" id="usernameError">
                             <p th:text="${username}" style="color: red;"></p>
@@ -177,7 +177,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{phoneNumber}"
-                                   placeholder="Лице за контакт - телефон" id="phone" >
+                                   placeholder="Лице за контакт - телефон*" id="phone" required>
                         </div>
                         <div th:if="${phoneNumber}" id="phoneNumberError">
                             <p th:text="${phoneNumber}" style="color: red;"></p>
@@ -195,8 +195,8 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <textarea name="" id="purpose" th:field="*{organisationPurpose}" class="form-control"
-                                      placeholder="Мисия на организацията"  cols="30"
-                                      rows="3"></textarea>
+                                      placeholder="Мисия на организацията*"  cols="60"
+                                      rows="5" required></textarea>
                         </div>
                         <div th:if="${organisationPurpose}" id="organisationPurpose">
                             <p th:text="${organisationPurpose}" style="color: red;"></p>
@@ -215,7 +215,7 @@
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <input id="priority" th:field="*{optionalCategory}" class="form-control"
-                                           placeholder="Опционален приоритет на организация" cols="30"
+                                           placeholder="Опционален приоритет на организация(в случай ,че показаните отгоре не отговарят на вашите приоритети)" cols="30"
                                            rows="10"></input>
                                 </div>
                                 <div th:if="${optionalCategory}" id="optionalCategory">
@@ -233,7 +233,7 @@
                     </div>
                     <div class="col-md-6 offset-md-3">
                         <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5"
-                               value="Регистрирай организацията">
+                               value="Регистрирай се">
                     </div>
                 </form>
             </div>
