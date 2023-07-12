@@ -1,10 +1,7 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.UnauthorizeApiClient;
-import com.example.EventForgeFrontend.dto.EventResponseContainer;
-import com.example.EventForgeFrontend.dto.OneTimeEventResponse;
-import com.example.EventForgeFrontend.dto.OrganisationResponse;
-import com.example.EventForgeFrontend.dto.RecurrenceEventResponse;
+import com.example.EventForgeFrontend.dto.*;
 import com.example.EventForgeFrontend.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +33,10 @@ public class OrganisationController { //this controller is to list organisations
         return "allOrganisations";
     }
 
-    @GetMapping("/{orgName}/get-events/{id}")
-    public String showOrganisationEventsById(@PathVariable("orgName")String orgName ,@PathVariable("id")Long id ,Model model){
-      ResponseEntity<EventResponseContainer> result=  unauthorizeApiClient.showOrgEvents(orgName ,id);
-      List<OneTimeEventResponse> oneTimeEvens = result.getBody().getOneTimeEvents();
-      List<RecurrenceEventResponse> recurrenceEvents = result.getBody().getRecurrenceEvents();
-      model.addAttribute("oneTimeEvents" ,oneTimeEvens);
-      model.addAttribute("recurrenceEvents" , recurrenceEvents);
+    @GetMapping("/{orgId}/{orgName}/get-events")
+    public String showOrganisationEventsById(@PathVariable("orgId")Long orgId,@PathVariable("orgName")String orgName ,Model model){
+      ResponseEntity<List<CommonEventResponse>> result=  unauthorizeApiClient.showOrgEvents(orgId,orgName);
+      model.addAttribute("events" ,result.getBody());
       return "showOrganisationEvents";
     }
 }

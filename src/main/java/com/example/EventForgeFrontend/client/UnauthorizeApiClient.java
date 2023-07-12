@@ -1,5 +1,6 @@
 package com.example.EventForgeFrontend.client;
 
+import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.EventResponseContainer;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,8 +15,8 @@ import java.util.List;
 public interface UnauthorizeApiClient {
 
     @GetMapping
-    public ResponseEntity<List<OrganisationResponse>> showAllOrganisationsForUnauthorizedUser(@RequestParam(name = "search" ,required = false)String search);
+     ResponseEntity<List<OrganisationResponse>> showAllOrganisationsForUnauthorizedUser(@RequestParam(name = "search" ,required = false)String search);
 
-    @GetMapping("/{orgName}/get-events/{orgId}")
-    public ResponseEntity<EventResponseContainer> showOrgEvents(@PathVariable("orgName")String organisationName , @PathVariable("orgId")Long id);
+    @GetMapping("/{orgId}/{orgName}/get-events")
+     ResponseEntity<List<CommonEventResponse>> showOrgEvents(@PathVariable("orgId")Long orgId,@PathVariable("orgName")String organisationName );
 }
