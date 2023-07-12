@@ -116,13 +116,6 @@
                 <p style="font-size: 15px; color: #999;">Моля отделяйте всяка ключова дума със запетая</p>
             </div>
             <div class="item">
-                <p>Цена на събитието (ако е безплатно, въведете 0): <span class="required">*</span></p>
-                <input type="number" th:field="*{price}" min="0" placeholder="Цена на събитието" required/>
-                <div th:if="${price}" id="priceError">
-                    <p th:text="${price}" style="color: red;"></p>
-                </div>
-            </div>
-            <div class="item">
                 <p>Минимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
                 <input type="number" th:field="*{minAge}" min="0" placeholder="Минимална възраст за участие" required/>
                 <div th:if="${minAge}" id="minAgeError">
@@ -134,6 +127,13 @@
                 <input type="number" th:field="*{maxAge}" min="0" placeholder="Максимална възраст за участие" required/>
                 <div th:if="${maxAge}" id="maxAgeError">
                     <p th:text="${maxAge}" style="color: red;"></p>
+                </div>
+            </div>
+            <div class="item">
+                <p>Цена на събитието (ако е безплатно, въведете 0): <span class="required">*</span></p>
+                <input type="number" th:field="*{price}" min="0" placeholder="Цена на събитието" required/>
+                <div th:if="${price}" id="priceError">
+                    <p th:text="${price}" style="color: red;"></p>
                 </div>
             </div>
         </div>
@@ -368,6 +368,10 @@
         font-weight: 700;
         color: #fff;
         cursor: pointer;
+    }
+
+    #description{
+        width: 100%;
     }
 
     @media (min-width: 568px) {
