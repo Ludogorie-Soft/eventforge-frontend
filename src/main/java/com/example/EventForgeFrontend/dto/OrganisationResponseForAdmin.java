@@ -15,7 +15,11 @@ public class OrganisationResponseForAdmin {
 
     private Long userId;
 
-    private String logo;
+    private String orgName;
+
+    private String fullName;
+
+    private String phoneNumber;
 
     private String email;
 
@@ -25,10 +29,6 @@ public class OrganisationResponseForAdmin {
 
     private boolean isNonLocked;
 
-    private Integer countEvents;
-
     private LocalDateTime registeredAt;
-
-    private LocalDateTime updatedAt;
 
 }
