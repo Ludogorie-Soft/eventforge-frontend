@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="https://datatables.net/media/css/site-examples.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
 
     <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
@@ -62,20 +62,22 @@
         <table id="table_id" class="display nowrap" style="width: 100%">
             <thead>
             <tr>
-                <td> Име на организация</td>
-                <td> Имейл</td>
-                <td> Име и фамилия</td>
-                <td> Телефон</td>
-                <td> Регистриран на</td>
-                <td> Потвърден имейл</td>
-                <td> Одобрен от админ</td>
-                <td> Статус</td>
-                <td> Детайли</td>
+                <th></th>
+                <th> Име на организация</th>
+                <th> Имейл </th>
+                <th> Име и фамилия </th>
+                <th> Телефон </th>
+                <th> Регистриран на: </th>
+                <th> Потвърден имейл </th>
+                <th> Одобрен от админ </th>
+                <th> Статус: </th>
+                <th> Детайли </th>
             </tr>
             </thead>
 
             <tbody>
             <tr th:each="org : ${organisations}">
+                <td class="dt-control"></td>
                 <td th:text="${org.orgName}"></td>
                 <td th:text="${org.email}"></td>
                 <td th:text="${org.fullName}"></td>
@@ -88,18 +90,16 @@
                         <button type="submit">Одобри</button>
                     </form>
                 </td>
-
-
                 <td>
                     <form th:if="${org.isNonLocked}" th:action="@{/admin/ban/{userId}/{email}(userId=${org.userId}, email=${org.email})}" method="post">
-                        <span>Активен</span>
-                        <button type="submit">Блокирай</button>
+                        <span>Активен</span> <button type="submit">Блокирай</button>
                     </form>
                     <form th:unless="${org.isNonLocked}" th:action="@{/admin/unban/{userId}/{email}(userId=${org.userId}, email=${org.email})}" method="post">
                         <span>Неактивен</span>
                         <button type="submit">Отблокирай</button>
                     </form>
                 </td>
+                <td></td>
             </tr>
             </tbody>
         </table>
