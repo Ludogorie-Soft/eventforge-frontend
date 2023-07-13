@@ -1,5 +1,7 @@
 package com.example.EventForgeFrontend.client;
 
+import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponseForAdmin;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -21,4 +23,11 @@ public interface AdminApiClient {
 
     @PutMapping("/organisation-management/approve-account/{id}")
     ResponseEntity<String> approveUserAccount(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long userId);
+
+    @GetMapping("/organisation/details/{id}")
+    ResponseEntity<OrganisationResponse> showOrganisationDetailsForAdmin(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long orgId);
+
+    @GetMapping("/event/details/{id}")
+    ResponseEntity<CommonEventResponse>showEventDetailsForAdmin(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long eventId);
+
 }

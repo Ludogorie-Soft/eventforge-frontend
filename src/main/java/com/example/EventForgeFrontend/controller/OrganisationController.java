@@ -33,10 +33,10 @@ public class OrganisationController { //this controller is to list organisations
         return "allOrganisations";
     }
 
-    @GetMapping("/{orgId}/{orgName}/get-events")
-    public String showOrganisationEventsById(@PathVariable("orgId")Long orgId,@PathVariable("orgName")String orgName ,Model model){
-      ResponseEntity<List<CommonEventResponse>> result=  unauthorizeApiClient.showOrgEvents(orgId,orgName);
-      model.addAttribute("events" ,result.getBody());
-      return "showOrganisationEvents";
+    @GetMapping("/details/{id}")
+    public String showOrganisationDetailsWithConditionsById(@PathVariable("id")Long id , Model model){
+        ResponseEntity<OrganisationResponse> orgDetails= unauthorizeApiClient.getOrganisationDetails(id);
+        model.addAttribute("organisationDetails" , orgDetails.getBody());
+        return "showOrganisationDetails";
     }
 }

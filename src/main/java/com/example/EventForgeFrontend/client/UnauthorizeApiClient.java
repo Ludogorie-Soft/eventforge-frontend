@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @FeignClient(name = "unauthorized-api-client" ,url = "${backend.url}/unauthorized")
-public interface UnauthorizeApiClient {
+public interface  UnauthorizeApiClient {
 
     @GetMapping
      ResponseEntity<List<OrganisationResponse>> showAllOrganisationsForUnauthorizedUser(@RequestParam(name = "search" ,required = false)String search);
+    @GetMapping("/{organisationId}")
+     ResponseEntity<OrganisationResponse> getOrganisationDetails(@PathVariable("organisationId") Long id);
 
-    @GetMapping("/{orgId}/{orgName}/get-events")
-     ResponseEntity<List<CommonEventResponse>> showOrgEvents(@PathVariable("orgId")Long orgId,@PathVariable("orgName")String organisationName );
+    @GetMapping("/event/details/{id}")
+    public ResponseEntity<CommonEventResponse> showEventDetailsWithCondition(@PathVariable("id")Long id );
 }

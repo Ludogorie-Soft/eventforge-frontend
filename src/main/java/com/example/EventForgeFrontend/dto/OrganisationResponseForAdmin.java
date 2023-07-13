@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class OrganisationResponseForAdmin {
 
     private Long userId;
-
+    private Long orgId;
     private String orgName;
 
     private String fullName;

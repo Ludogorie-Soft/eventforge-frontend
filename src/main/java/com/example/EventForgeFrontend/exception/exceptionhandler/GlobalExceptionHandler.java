@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
@@ -186,6 +187,13 @@ public class GlobalExceptionHandler {
     public ModelAndView handleEventRequestException(EventRequestException e ,RedirectAttributes redirectAttributes , HttpServletRequest request){
         ModelAndView mav = assembleModelAndView(request);
         redirectAttributes.addFlashAttribute("eventNotFound" , e.getMessage());
+        return mav;
+    }
+
+    @ExceptionHandler(OrganisationRequestException.class)
+    public ModelAndView handleOrganisationRequestException(OrganisationRequestException ex , RedirectAttributes redirectAttributes , HttpServletRequest request){
+        ModelAndView mav = assembleModelAndView(request);
+        redirectAttributes.addFlashAttribute("result" , ex.getMessage());
         return mav;
     }
 
