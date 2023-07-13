@@ -62,22 +62,25 @@
         <table id="table_id" class="display nowrap" style="width: 100%">
             <thead>
             <tr>
+                <td> Име на организация</td>
                 <td> Имейл</td>
+                <td> Име и фамилия</td>
+                <td> Телефон</td>
                 <td> Регистриран на</td>
-                <td> Последно обновен на</td>
                 <td> Потвърден имейл</td>
                 <td> Одобрен от админ</td>
                 <td> Статус</td>
-                <td> Брой събития</td>
-                <td> Изтрий</td>
+                <td> Детайли</td>
             </tr>
             </thead>
 
             <tbody>
             <tr th:each="org : ${organisations}">
+                <td th:text="${org.orgName}"></td>
                 <td th:text="${org.email}"></td>
-                <td  th:text="${org.registeredAt}"></td>
-                <td th:text="${org.updatedAt}"></td>
+                <td th:text="${org.fullName}"></td>
+                <td th:text="${org.phoneNumber}"></td>
+                <td class="registeredAt" th:text="${org.registeredAt}"></td>
                 <td th:text="${org.isEnabled} ? 'Потвърден' : 'Непотвърден'"></td>
                 <td>
                     <span th:if="${org.isApprovedByAdmin}">Одобрен</span>
@@ -89,16 +92,14 @@
 
                 <td>
                     <form th:if="${org.isNonLocked}" th:action="@{/admin/ban/{userId}/{email}(userId=${org.userId}, email=${org.email})}" method="post">
-                        <span>отблокиран</span>
+                        <span>Активен</span>
                         <button type="submit">Блокирай</button>
                     </form>
                     <form th:unless="${org.isNonLocked}" th:action="@{/admin/unban/{userId}/{email}(userId=${org.userId}, email=${org.email})}" method="post">
-                        <span>блокиран</span>
+                        <span>Неактивен</span>
                         <button type="submit">Отблокирай</button>
                     </form>
                 </td>
-
-                <td th:text="${org.countEvents}"></td>
             </tr>
             </tbody>
         </table>
@@ -132,7 +133,8 @@
         responsive: true,
         columnDefs: [
             { responsivePriority: 1, targets: 0 },
-            { responsivePriority: 1, targets: -1 }
+            { responsivePriority: 1, targets: -3 },
+            { responsivePriority: 1, targets: -4 }
         ],
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/bg.json',
@@ -141,8 +143,8 @@
 </script>
 <script type="text/javascript">
     // Вземете елементите на таблицата, които съдържат дати и часове
-    var startsAtElements = document.getElementsByClassName('startsAt');
-    var endsAtElements = document.getElementsByClassName('endsAt');
+    var startsAtElements = document.getElementsByClassName('registeredAt');
+    var endsAtElements = document.getElementsByClassName('updatedAt');
 
     // Обходете елементите и форматирайте датите и часовете
     Array.from(startsAtElements).forEach(function(element) {
