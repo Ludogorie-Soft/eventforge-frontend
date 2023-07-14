@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,13 +39,9 @@ public class OrganisationController { //this controller is to list organisations
         if (orgDetails.getBody() != null) {
             orgDetails.getBody().setLogo(ImageService.encodeImage(orgDetails.getBody().getLogo()));
             orgDetails.getBody().setBackground(ImageService.encodeImage(orgDetails.getBody().getBackground()));
-            List<CommonEventResponse> allEvents = new ArrayList<>();
-            allEvents.addAll(orgDetails.getBody().getExpiredEvents());
-            allEvents.addAll(orgDetails.getBody().getActiveEvents());
-            allEvents.addAll(orgDetails.getBody().getUpcomingEvents());
-            for(CommonEventResponse event : allEvents){
-                event.setImageUrl(ImageService.encodeImage(event.getImageUrl()));
-            }
+            ImageService.encodeCommonEventResponseImages(orgDetails.getBody().getActiveEvents());
+            ImageService.encodeCommonEventResponseImages(orgDetails.getBody().getExpiredEvents());
+            ImageService.encodeCommonEventResponseImages(orgDetails.getBody().getUpcomingEvents());
             model.addAttribute("organisationDetails", orgDetails.getBody());
         } else {
             model.addAttribute("result", "Няма намерена организация с идентификационен номер: " + id);
