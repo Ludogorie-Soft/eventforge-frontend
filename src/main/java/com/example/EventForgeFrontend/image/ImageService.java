@@ -1,5 +1,8 @@
 package com.example.EventForgeFrontend.image;
 
+import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.OneTimeEventResponse;
+import com.example.EventForgeFrontend.dto.RecurrenceEventResponse;
 import com.example.EventForgeFrontend.exception.ImageException;
 import jakarta.annotation.Nullable;
 import org.springframework.stereotype.Service;
@@ -13,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -131,5 +133,31 @@ public class ImageService {
             throw new ImageException("Грешка с прочитането на изображението");
         }
         return base64Image;
+    }
+
+    public static void encodeCommonEventResponseImages(List<CommonEventResponse> events) {
+        if(events!=null && !events.isEmpty()){
+            for (CommonEventResponse event : events) {
+                event.setImageUrl(encodeImage(event.getImageUrl()));
+            }
+        }
+
+    }
+
+    public static void encodeOneTimeEventResponseImages(List<OneTimeEventResponse> events){
+        if(events!= null && !events.isEmpty()){
+            for(OneTimeEventResponse event :events){
+                event.setImageUrl(encodeImage(event.getImageUrl()));
+            }
+        }
+
+    }
+
+    public static void encodeRecurrenceEventResponseImages(List<RecurrenceEventResponse> events){
+        if(events!=null && !events.isEmpty()){
+            for(RecurrenceEventResponse event : events){
+                event.setImageUrl(encodeImage(event.getImageUrl()));
+            }
+        }
     }
 }

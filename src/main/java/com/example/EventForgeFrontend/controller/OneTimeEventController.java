@@ -4,6 +4,7 @@ import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.OneTimeEventApiClient;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
 import com.example.EventForgeFrontend.dto.OneTimeEventResponse;
+import com.example.EventForgeFrontend.image.ImageService;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,9 @@ public class OneTimeEventController {
     @GetMapping
     public String showAllActiveOneTimeEvents(@RequestParam(value = "order", required = false) String order, Model model) {
         ResponseEntity<List<OneTimeEventResponse>> oneTimeEvents = oneTimeEventApiClient.showAllActiveOneTimeEvents(order);
-
+        if(oneTimeEvents.getBody()!=null && !oneTimeEvents.getBody().isEmpty()){
+            ImageService.encodeOneTimeEventResponseImages(oneTimeEvents.getBody());
+        }
         model.addAttribute("items", oneTimeEvents.getBody());
         model.addAttribute("isExpired", false);
 
@@ -39,6 +42,9 @@ public class OneTimeEventController {
     @GetMapping("/expired")
     public String showAllExpiredOneTimeEvents(@RequestParam(value = "order", required = false) String order, Model model) {
         ResponseEntity<List<OneTimeEventResponse>> oneTimeEvents = oneTimeEventApiClient.showAllExpiredOneTimeEvents(order);
+        if(oneTimeEvents.getBody()!=null && !oneTimeEvents.getBody().isEmpty()){
+            ImageService.encodeOneTimeEventResponseImages(oneTimeEvents.getBody());
+        }
         model.addAttribute("items", oneTimeEvents.getBody());
         model.addAttribute("isExpired", true);
 
@@ -65,6 +71,9 @@ public class OneTimeEventController {
         CriteriaFilterRequest request = new CriteriaFilterRequest(true , isExpired ,name ,description ,address,organisationName,minAge,maxAge,isOnline,eventCategories,startsAt,endsAt);
 
         ResponseEntity<List<?>> oneTimeEvents = eventApiClient.getEventsByCriteria(request);
+        if(oneTimeEvents.getBody()!=null && !oneTimeEvents.getBody().isEmpty()){
+            ImageService.encodeOneTimeEventResponseImages((List<OneTimeEventResponse>) oneTimeEvents.getBody());
+        }
         model.addAttribute("oneTimeEvents", oneTimeEvents.getBody());
         model.addAttribute("isExpired", isExpired);
         return "/oneTimeEvents";
