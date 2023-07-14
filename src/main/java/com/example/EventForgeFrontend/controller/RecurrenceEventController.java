@@ -31,7 +31,7 @@ public class RecurrenceEventController {
     @GetMapping
     public String showAllActiveRecurrenceEvents(@RequestParam(value = "order", required = false) String order, Model model){
         ResponseEntity<List<RecurrenceEventResponse>> recurrenceEvents = recurrenceEventApiClient.showAllActiveRecurrenceEvents(order);
-        if(recurrenceEvents.getBody()!=null){
+        if(recurrenceEvents.getBody()!=null && !recurrenceEvents.getBody().isEmpty()){
             ImageService.encodeRecurrenceEventResponseImages(recurrenceEvents.getBody());
         }
         model.addAttribute("item" , recurrenceEvents.getBody());
@@ -42,7 +42,7 @@ public class RecurrenceEventController {
     @GetMapping("/expired")
     public String showAllExpiredRecurrenceEvents(@RequestParam(value = "order", required = false) String order, Model model){
         ResponseEntity<List<RecurrenceEventResponse>> recurrenceEvents = recurrenceEventApiClient.showAllExpiredRecurrenceEvents(order);
-        if(recurrenceEvents.getBody()!=null){
+        if(recurrenceEvents.getBody()!=null && !recurrenceEvents.getBody().isEmpty()){
             ImageService.encodeRecurrenceEventResponseImages(recurrenceEvents.getBody());
         }
         model.addAttribute("recurrenceEvents" , recurrenceEvents.getBody());
@@ -66,7 +66,7 @@ public class RecurrenceEventController {
 
        CriteriaFilterRequest request = new CriteriaFilterRequest(false , isExpired ,name ,description ,address,organisationName,minAge,maxAge,isOnline,eventCategories,startsAt,endsAt);
         ResponseEntity<List<?>> recurrenceEvents = eventApiClient.getEventsByCriteria(request);
-        if(recurrenceEvents.getBody()!=null){
+        if(recurrenceEvents.getBody()!=null && !recurrenceEvents.getBody().isEmpty()){
             ImageService.encodeRecurrenceEventResponseImages((List<RecurrenceEventResponse>) recurrenceEvents.getBody());
 
         }

@@ -136,20 +136,28 @@ public class ImageService {
     }
 
     public static void encodeCommonEventResponseImages(List<CommonEventResponse> events) {
-        for (CommonEventResponse event : events) {
-            event.setImageUrl(encodeImage(event.getImageUrl()));
+        if(events!=null && !events.isEmpty()){
+            for (CommonEventResponse event : events) {
+                event.setImageUrl(encodeImage(event.getImageUrl()));
+            }
         }
+
     }
 
     public static void encodeOneTimeEventResponseImages(List<OneTimeEventResponse> events){
-        for(OneTimeEventResponse event :events){
-            event.setImageUrl(encodeImage(event.getImageUrl()));
+        if(events!= null && !events.isEmpty()){
+            for(OneTimeEventResponse event :events){
+                event.setImageUrl(encodeImage(event.getImageUrl()));
+            }
         }
+
     }
 
     public static void encodeRecurrenceEventResponseImages(List<RecurrenceEventResponse> events){
-        for(RecurrenceEventResponse event : events){
-            event.setImageUrl(encodeImage(event.getImageUrl()));
+        if(events!=null && !events.isEmpty()){
+            for(RecurrenceEventResponse event : events){
+                event.setImageUrl(encodeImage(event.getImageUrl()));
+            }
         }
     }
 }
