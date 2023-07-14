@@ -99,7 +99,11 @@
                         <button type="submit">Отблокирай</button>
                     </form>
                 </td>
-                <td></td>
+                <td>
+                    <form th:action="@{/admin/organisation/details/{id}(id=${org.orgId})}" method="get">
+                        <button type="submit">Детайли</button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
