@@ -1,6 +1,8 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.AdminApiClient;
+import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponseForAdmin;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -31,7 +35,32 @@ public class AdminController {
         model.addAttribute("organisations" , organisations.getBody());
         return "adminManageOrganisations";
     }
+    @GetMapping("/organisation/details/{id}")
+    public String showOrganisationDetailsWithoutConditionsById(@PathVariable("id")Long orgId ,Model model , HttpServletRequest request){
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<OrganisationResponse> organisationDetails = adminApiClient.showOrganisationDetailsForAdmin(token ,orgId);
+        if(organisationDetails.getBody() != null){
+            model.addAttribute("organisationDetails" , organisationDetails.getBody());
 
+        } else {
+            model.addAttribute("result" ,"Няма намерена организация с идентификационен номер: "+orgId);
+        }
+        return "showOrganisationDetails";
+    }
+
+    @GetMapping("/event/details/{id}")
+    public String showEventDetailsForAdmin(@PathVariable("id")Long eventId , HttpServletRequest request , Model model){
+        sessionManager.isSessionExpired(request);
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<CommonEventResponse> eventDetails = adminApiClient.showEventDetailsForAdmin(token , eventId);
+        if(eventDetails.getBody()!=null){
+            model.addAttribute("eventDetails" , eventDetails.getBody());
+        } else {
+            model.addAttribute("result" , "Търсеното от вас събитие не съществува с идентификационен номер: "+eventId);
+        }
+        return "";
+    }
     @PostMapping("/approve/account/{id}")
     public String approveAccount(@PathVariable("id")Long userId , HttpServletRequest request , RedirectAttributes redirectAttributes ){
         sessionManager.isSessionExpired(request);

@@ -7,24 +7,23 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrganisationResponse {
-    private Long id;
+    private Long orgId;
     private String logo;
     private String background;
     private String name;
     private String bullstat;
-    private Long userId;
-    private String username;
-    private String phone;
     private String address;
     private String charityOption;
     private String organisationPurpose;
-    private List<String> organisationPriorities;
+    private Set<String> organisationPriorities;
+    private List<CommonEventResponse> organisationEvents;
     private LocalDateTime registeredAt;
     private LocalDateTime updatedAt;
 }
