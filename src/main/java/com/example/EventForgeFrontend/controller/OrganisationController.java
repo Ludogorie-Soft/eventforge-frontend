@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,20 +24,34 @@ public class OrganisationController { //this controller is to list organisations
     private final UnauthorizeApiClient unauthorizeApiClient;
 
     @GetMapping
-    public String  showAllOrganisationForUnauthorized(@RequestParam(value = "name" ,required = false)String name , Model model){
+    public String showAllOrganisationForUnauthorized(@RequestParam(value = "name", required = false) String name, Model model) {
         ResponseEntity<List<OrganisationResponse>> result = unauthorizeApiClient.showAllOrganisationsForUnauthorizedUser(name);
-        for(OrganisationResponse org: Objects.requireNonNull(result.getBody())){
+        for (OrganisationResponse org : Objects.requireNonNull(result.getBody())) {
             org.setLogo(ImageService.encodeImage(org.getLogo()));
             org.setBackground(ImageService.encodeImage(org.getBackground()));
         }
-        model.addAttribute("organisations" ,result.getBody());
+        model.addAttribute("organisations", result.getBody());
         return "allOrganisations";
     }
 
     @GetMapping("/details/{id}")
-    public String showOrganisationDetailsWithConditionsById(@PathVariable("id")Long id , Model model){
-        ResponseEntity<OrganisationResponse> orgDetails= unauthorizeApiClient.getOrganisationDetails(id);
-        model.addAttribute("organisationDetails" , orgDetails.getBody());
+    public String showOrganisationDetailsWithConditionsById(@PathVariable("id") Long id, Model model) {
+        ResponseEntity<OrganisationResponse> orgDetails = unauthorizeApiClient.getOrganisationDetails(id);
+        if (orgDetails.getBody() != null) {
+            orgDetails.getBody().setLogo(ImageService.encodeImage(orgDetails.getBody().getLogo()));
+            orgDetails.getBody().setBackground(ImageService.encodeImage(orgDetails.getBody().getBackground()));
+            List<CommonEventResponse> allEvents = new ArrayList<>();
+            allEvents.addAll(orgDetails.getBody().getExpiredEvents());
+            allEvents.addAll(orgDetails.getBody().getActiveEvents());
+            allEvents.addAll(orgDetails.getBody().getUpcomingEvents());
+            for(CommonEventResponse event : allEvents){
+                event.setImageUrl(ImageService.encodeImage(event.getImageUrl()));
+            }
+            model.addAttribute("organisationDetails", orgDetails.getBody());
+        } else {
+            model.addAttribute("result", "Няма намерена организация с идентификационен номер: " + id);
+        }
+
         return "showOrganisationDetails";
     }
 }

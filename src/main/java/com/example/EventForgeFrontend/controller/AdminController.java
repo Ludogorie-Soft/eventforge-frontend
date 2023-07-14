@@ -4,6 +4,7 @@ import com.example.EventForgeFrontend.client.AdminApiClient;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponseForAdmin;
+import com.example.EventForgeFrontend.image.ImageService;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -39,9 +41,18 @@ public class AdminController {
     public String showOrganisationDetailsWithoutConditionsById(@PathVariable("id")Long orgId ,Model model , HttpServletRequest request){
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<OrganisationResponse> organisationDetails = adminApiClient.showOrganisationDetailsForAdmin(token ,orgId);
-        if(organisationDetails.getBody() != null){
-            model.addAttribute("organisationDetails" , organisationDetails.getBody());
+        ResponseEntity<OrganisationResponse> orgDetails = adminApiClient.showOrganisationDetailsForAdmin(token ,orgId);
+        if(orgDetails.getBody() != null){
+            orgDetails.getBody().setLogo(ImageService.encodeImage(orgDetails.getBody().getLogo()));
+            orgDetails.getBody().setBackground(ImageService.encodeImage(orgDetails.getBody().getBackground()));
+            List<CommonEventResponse> allEvents = new ArrayList<>();
+            allEvents.addAll(orgDetails.getBody().getExpiredEvents());
+            allEvents.addAll(orgDetails.getBody().getActiveEvents());
+            allEvents.addAll(orgDetails.getBody().getUpcomingEvents());
+            for(CommonEventResponse event : allEvents){
+                event.setImageUrl(ImageService.encodeImage(event.getImageUrl()));
+            }
+            model.addAttribute("orgDetails" , orgDetails.getBody());
 
         } else {
             model.addAttribute("result" ,"Няма намерена организация с идентификационен номер: "+orgId);
@@ -55,6 +66,7 @@ public class AdminController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<CommonEventResponse> eventDetails = adminApiClient.showEventDetailsForAdmin(token , eventId);
         if(eventDetails.getBody()!=null){
+            eventDetails.getBody().setImageUrl(ImageService.encodeImage(eventDetails.getBody().getImageUrl()));
             model.addAttribute("eventDetails" , eventDetails.getBody());
         } else {
             model.addAttribute("result" , "Търсеното от вас събитие не съществува с идентификационен номер: "+eventId);

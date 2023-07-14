@@ -2,7 +2,8 @@ package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
-import com.example.EventForgeFrontend.dto.*;
+import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.EventRequest;
 import com.example.EventForgeFrontend.image.ImageService;
 import com.example.EventForgeFrontend.image.ImageType;
 import com.example.EventForgeFrontend.session.SessionManager;
@@ -16,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/manage-events")
