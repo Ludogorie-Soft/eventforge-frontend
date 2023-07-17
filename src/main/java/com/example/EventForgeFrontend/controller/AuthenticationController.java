@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
 
@@ -51,14 +50,14 @@ public class AuthenticationController {
         Set<String> priorityCategories = authenticationApiClient.getAllPriorityCategories().getBody();
         httpRequest.setAttribute("newRegistrationRequest", new RegistrationRequest(request.getUsername(), request.getName(), request.getLogo(), request.getBullstat(), request.getOrganisationPriorities(), request.getOptionalCategory(), request.getOrganisationPurpose(), request.getBackgroundCover(), request.getAddress(), request.getWebsite(), request.getFacebookLink(), request.getFullName(), request.getPhoneNumber(), request.getCharityOption(), request.getPassword(), request.getConfirmPassword()));
         httpRequest.setAttribute("organisationPriorities", priorityCategories);
-        String appUrl = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort() + httpRequest.getContextPath()+"/verifyEmail?verificationToken=";
+        String appUrl = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort() + httpRequest.getContextPath() + "/verifyEmail?verificationToken=";
 
 
         String logoUrl = imageService.uploadPicture(logoFile, ImageType.LOGO);
         String coverUrl = imageService.uploadPicture(backgroundCoverFile, ImageType.COVER);
         request.setLogo(logoUrl);
         request.setBackgroundCover(coverUrl);
-        ResponseEntity<String> register = authenticationApiClient.register(request,appUrl);
+        ResponseEntity<String> register = authenticationApiClient.register(request, appUrl);
         httpRequest.removeAttribute("newRegistrationRequest");
         httpRequest.removeAttribute("organisationPriorities");
         redirectAttributes.addFlashAttribute("successfulRegistration", register.getBody());
@@ -66,29 +65,42 @@ public class AuthenticationController {
     }
 
     @GetMapping("/verifyEmail")
-    public String verifyEmail(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        String url = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/resend-email-confirmation-link?verificationToken=" + verificationToken;
-        ResponseEntity<String> verifyEmailResult = authenticationApiClient.verifyEmail(verificationToken , url);
-        if (verifyEmailResult.getBody().startsWith("http")) {
-            redirectAttributes.addFlashAttribute("resendLink", verifyEmailResult.getBody());
-        } else {
-            redirectAttributes.addFlashAttribute("verifyEmailResult", verifyEmailResult.getBody());
+    public String verifyEmail(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes) {
+        ResponseEntity<String> verifyEmailResult = authenticationApiClient.verifyEmail(verificationToken);
+
+        redirectAttributes.addFlashAttribute("result", verifyEmailResult.getBody());
+
+        return "redirect:/login";
+    }
+
+    @PostMapping("/resend/confirmation")
+    public String resendEmailConfirmationLink(@RequestParam(value = "email" ,required = false) String email, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        String url = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/verifyEmail?verificationToken=";
+        String resendResult = authenticationApiClient.resendVerificationToken(email, url);
+        redirectAttributes.addFlashAttribute("result", resendResult);
+        return "redirect:/login";
+    }
+
+    @PostMapping("/forgotten/password")
+    public String forgottenPasswordRequest(@RequestParam(value = "email" ,required = false)String email , HttpServletRequest httpRequest , RedirectAttributes redirectAttributes){
+        String appUrl = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort() + httpRequest.getContextPath() + "/reset/password?verificationToken=";
+        if(email != null && !email.isEmpty()){
+            ResponseEntity<String> result = authenticationApiClient.forgottenPassword(email, appUrl);
+            redirectAttributes.addFlashAttribute("result" , result.getBody());
         }
         return "redirect:/login";
     }
-
-    @GetMapping("/resend-email-confirmation-link")
-    public String resendEmailConfirmationLink(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes , HttpServletRequest request) {
-        String url = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/verifyEmail?verificationToken=";
-
-        String resendResult = authenticationApiClient.resendVerificationToken(verificationToken , url);
-        redirectAttributes.addFlashAttribute("verifyEmailResult", resendResult);
-        return "redirect:/login";
+    @GetMapping("/reset/password")
+    public String resetForgottenPassword(@RequestParam("verificationToken")String verificationToken ,RedirectAttributes redirectAttributes){
+         authenticationApiClient.resetPassword(verificationToken);
+         redirectAttributes.addFlashAttribute("result" ,"Проверете пощата си отново. Генерирахме нова парола за вас.");
+         return "redirect:/login";
     }
 
+
     @GetMapping("/login")
-    public String login(Model model, @ModelAttribute("login") JWTAuthenticationRequest login) throws IOException {
-        if (login.getUserName() != null && !login.getUserName().isEmpty()) {
+    public String login(Model model, @ModelAttribute("login") JWTAuthenticationRequest login) {
+        if (login!=null && login.getUserName() != null && !login.getUserName().isEmpty()) {
             model.addAttribute("login", login);
 
         } else {

@@ -80,6 +80,9 @@ public class CustomErrorDecoder implements ErrorDecoder {
         if(response.status() == HttpServletResponse.SC_GONE){
             return new OrganisationRequestException(errorMessage);
         }
+        if(response.status() == 321){
+           return new UsernameNotFoundException(errorMessage);
+        }
         // Delegate to default error decoder for other exceptions
         return new RuntimeException("Нещо се обърка. Моля опитайте отново");
     }

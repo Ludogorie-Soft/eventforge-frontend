@@ -59,7 +59,7 @@ public class OrganisationSettingsController {
 
         request.removeAttribute("updateRequest");
         request.removeAttribute("allPriorities");
-        redirectAttributes.addFlashAttribute("updateAccountResult", updateAccountResult.getBody());
+        redirectAttributes.addFlashAttribute("result", updateAccountResult.getBody());
         return "redirect:/organisation/settings";
     }
     @GetMapping("/change-password")
@@ -98,13 +98,4 @@ public class OrganisationSettingsController {
         model.addAttribute("result" ,result.getBody());
        return  "redirect:/organisation/settings/change-pictures";
     }
-//    @PostMapping("update-cover")
-//    public String updateCover(HttpServletRequest request , @RequestParam(value = "file",required = false)MultipartFile file , Model model){
-//        sessionManager.isSessionExpired(request);
-//        String token = (String) request.getSession().getAttribute("sessionToken");
-//        String backgroundCover = imageService.uploadImageToFileSystem(file , ImageType.COVER);
-//        ResponseEntity<String> result = organisationApiClient.updateCover(token ,backgroundCover);
-//        model.addAttribute("result" ,result.getBody());
-//        return  "redirect:/organisation/settings";
-//    }
 }

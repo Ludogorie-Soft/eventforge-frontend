@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +30,7 @@ public class GlobalExceptionHandler {
     private AuthenticationApiClient authenticationApiClient;
 
     @ExceptionHandler(CustomValidationErrorException.class)
-    public ModelAndView handleCustomValidationErrorException(CustomValidationErrorException e, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public ModelAndView handleCustomValidationErrorException(CustomValidationErrorException e, HttpServletRequest request, RedirectAttributes redirectAttributes ) {
         ModelAndView mav = assembleModelAndView(request);
 
         Map<String, String> errors = e.getErrors();
@@ -50,7 +49,7 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("logoFile", logo);
         redirectAttributes.addFlashAttribute("backgroundCoverFile", cover);
         redirectAttributes.addFlashAttribute("eventRequest" ,newEventRequest);
-        redirectAttributes.addFlashAttribute("updateAccountResult" ,"Неуспешен опит да редактирате профилът си");
+        redirectAttributes.addFlashAttribute("result" ,"Неуспешен опит да редактирате профилът си");
 
         Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
         redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
@@ -138,29 +137,29 @@ public class GlobalExceptionHandler {
         mav.addObject("login", new JWTAuthenticationRequest());
         String sessionToken = (String) request.getSession().getAttribute("sessionToken");
         if (sessionToken != null) {
-            mav.addObject("errorMessage", "Сесията Ви е изтекла , моля впишете се отново");
+            mav.addObject("result", "Сесията Ви е изтекла , моля впишете се отново");
             sessionManager.invalidateSession(request);
             authenticationApiClient.logout(sessionToken);
             return mav;
         }
-        mav.addObject("errorMessage", ex.getMessage());
+        mav.addObject("result", ex.getMessage());
         return mav;
     }
 
     @ExceptionHandler({EmailConfirmationNotSentException.class , InvalidEmailConfirmationLinkException.class})
     public ModelAndView emailConfirmationNotSentException(Exception ex , HttpServletRequest request , RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
-        redirectAttributes.addFlashAttribute("verifyEmailResult" , ex.getMessage());
+        redirectAttributes.addFlashAttribute("result" , ex.getMessage());
         mav.setViewName("redirect:/login");
         return mav;
     }
 
-    @ExceptionHandler({UserDisabledException.class, InvalidUserCredentialException.class, UserLockedException.class})
+    @ExceptionHandler({UserDisabledException.class, InvalidUserCredentialException.class, UserLockedException.class ,UsernameNotFoundException.class})
     public ModelAndView handleUserDisabledException(Exception ex, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
         JWTAuthenticationRequest newLoginRequest = (JWTAuthenticationRequest) request.getAttribute("newLoginRequest");
         redirectAttributes.addFlashAttribute("login", newLoginRequest);
-        redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+        redirectAttributes.addFlashAttribute("result", ex.getMessage());
         request.removeAttribute("newLoginRequest");
         mav.setViewName("redirect:/login");
         return mav;
