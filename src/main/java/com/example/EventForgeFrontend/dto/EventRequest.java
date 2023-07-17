@@ -26,7 +26,6 @@ public class EventRequest {
 
     private String eventCategories;
 
-
     private Double price;
 
     private Integer minAge;
