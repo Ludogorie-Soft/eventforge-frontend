@@ -22,7 +22,7 @@ public interface AdminApiClient {
     ResponseEntity<String> unbanAccountById(@RequestHeader("Authorization") String authHeader , @PathVariable("id")Long id ,@PathVariable("email")String email);
 
     @PutMapping("/organisation-management/approve-account/{id}")
-    ResponseEntity<String> approveUserAccount(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long userId);
+    public ResponseEntity<String> approveUserAccount(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long userId , @RequestParam("email")String email);
 
     @GetMapping("/organisation/details/{id}")
     ResponseEntity<OrganisationResponse> showOrganisationDetailsForAdmin(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long orgId);

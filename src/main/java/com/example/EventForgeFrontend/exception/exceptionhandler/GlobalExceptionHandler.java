@@ -39,35 +39,46 @@ public class GlobalExceptionHandler {
             log.info("field name: " + error.getKey());
             log.info("error message: " + error.getValue());
         }
-        Object newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
-        Object newUpdateRequest = getAttributeAsType(request, "updateRequest", UpdateAccountRequest.class);
+        RegistrationRequest newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
+        UpdateAccountRequest newUpdateRequest = getAttributeAsType(request, "updateRequest", UpdateAccountRequest.class);
         Object allPriorities = getAttributeAsType(request, "allPriorities", Set.class);
-        Object logo = getAttributeAsType(request, "logo", MultipartFile.class);
-        Object cover = getAttributeAsType(request, "cover", MultipartFile.class);
-        Object newEventRequest = getAttributeAsType(request ,"eventRequest" ,EventRequest.class);
+        MultipartFile logo = getAttributeAsType(request, "logo", MultipartFile.class);
+        MultipartFile cover = getAttributeAsType(request, "cover", MultipartFile.class);
+        EventRequest newEventRequest = getAttributeAsType(request ,"eventRequest" ,EventRequest.class);
+
+        if(newRegistrationRequest!=null){
+            redirectAttributes.addFlashAttribute("request", newRegistrationRequest);
+            redirectAttributes.addFlashAttribute("result", "Неуспешна регистрация. Моля, проверете изискванията за всички полета.");
+            request.removeAttribute("newRegistrationRequest");
+
+        }
+
+        if (newUpdateRequest != null) {
+            redirectAttributes.addFlashAttribute("updateRequest", newUpdateRequest);
+            redirectAttributes.addFlashAttribute("result" ,"Неуспешен опит да редактирате профилът си");
+            request.removeAttribute("updateRequest");
+
+        }
+        if(newEventRequest!=null){
+            redirectAttributes.addFlashAttribute("eventRequest" ,newEventRequest);
+            redirectAttributes.addFlashAttribute("result" ,"Неуспешен опит.Моля уверете се , че покривате изискванията на всички полета.");
+            request.removeAttribute("eventRequest");
+
+        }
 
         redirectAttributes.addFlashAttribute("logoFile", logo);
         redirectAttributes.addFlashAttribute("backgroundCoverFile", cover);
-        redirectAttributes.addFlashAttribute("eventRequest" ,newEventRequest);
-        redirectAttributes.addFlashAttribute("result" ,"Неуспешен опит да редактирате профилът си");
 
         Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
         redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
         redirectAttributes.addFlashAttribute("allPriorities", allPriorities);
 
-        request.removeAttribute("eventRequest");
-        request.removeAttribute("updateRequest");
-        request.removeAttribute("newRegistrationRequest");
         request.removeAttribute("organisationPriorities");
         request.removeAttribute("allPriorities");
         request.removeAttribute("logoFile");
         request.removeAttribute("backgroundCoverFile");
-        if (newRegistrationRequest != null) {
-            redirectAttributes.addFlashAttribute("request", newRegistrationRequest);
-        }
-        if (newUpdateRequest != null) {
-            redirectAttributes.addFlashAttribute("updateRequest", newUpdateRequest);
-        }
+
+
         return mav;
     }
 
@@ -185,7 +196,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EventRequestException.class)
     public ModelAndView handleEventRequestException(EventRequestException e ,RedirectAttributes redirectAttributes , HttpServletRequest request){
         ModelAndView mav = assembleModelAndView(request);
-        redirectAttributes.addFlashAttribute("eventNotFound" , e.getMessage());
+        redirectAttributes.addFlashAttribute("result" , e.getMessage());
         return mav;
     }
 

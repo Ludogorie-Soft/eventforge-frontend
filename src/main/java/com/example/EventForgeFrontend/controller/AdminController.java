@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -56,7 +53,7 @@ public class AdminController {
     }
 
     @GetMapping("/event/details/{id}")
-    public String showEventDetailsForAdmin(@PathVariable("id")Long eventId , HttpServletRequest request , Model model){
+    public String showEventDetailsForAdmin(@PathVariable("id")Long eventId , HttpServletRequest request , Model model , RedirectAttributes redirectAttributes){
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<CommonEventResponse> eventDetails = adminApiClient.showEventDetailsForAdmin(token , eventId);
@@ -64,17 +61,18 @@ public class AdminController {
             eventDetails.getBody().setImageUrl(ImageService.encodeImage(eventDetails.getBody().getImageUrl()));
             model.addAttribute("eventDetails" , eventDetails.getBody());
         } else {
-            model.addAttribute("result" , "Търсеното от вас събитие не съществува с идентификационен номер: "+eventId);
+           redirectAttributes.addFlashAttribute("result" , "Търсеното от вас събитие не съществува с идентификационен номер: "+eventId);
+            return "redirect:/admin/organisation-management";
         }
         return "";
     }
     @PostMapping("/approve/account/{id}")
-    public String approveAccount(@PathVariable("id")Long userId , HttpServletRequest request , RedirectAttributes redirectAttributes ){
+    public String approveAccount(@PathVariable("id")Long userId , HttpServletRequest request , RedirectAttributes redirectAttributes , @RequestParam("email")String email){
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<String> result = adminApiClient.approveUserAccount(token , userId);
+        ResponseEntity<String> result = adminApiClient.approveUserAccount(token , userId , email);
         redirectAttributes.addFlashAttribute("result", result.getBody());
-        return "redirect:" + request.getHeader("Referer");
+        return "redirect:/admin/organisation-management";
     }
     @PostMapping("/ban/{userId}/{email}")
     public String lockAccountById(@PathVariable(name = "userId")Long userId,@PathVariable(name = "email") String email , HttpServletRequest request , RedirectAttributes redirectAttributes ) {

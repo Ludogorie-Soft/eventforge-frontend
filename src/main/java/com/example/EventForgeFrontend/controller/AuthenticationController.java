@@ -60,7 +60,7 @@ public class AuthenticationController {
         ResponseEntity<String> register = authenticationApiClient.register(request, appUrl);
         httpRequest.removeAttribute("newRegistrationRequest");
         httpRequest.removeAttribute("organisationPriorities");
-        redirectAttributes.addFlashAttribute("successfulRegistration", register.getBody());
+        redirectAttributes.addFlashAttribute("result", register.getBody());
         return "redirect:/login";
     }
 
@@ -122,15 +122,16 @@ public class AuthenticationController {
 
         // Set the session token in the current session
         sessionManager.setSessionToken(request, token, userRole);
-
+        redirectAttributes.addFlashAttribute("result" ,"Успешно се вписахте в профилът си");
         return "redirect:/";
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public String logout(HttpServletRequest request , RedirectAttributes redirectAttributes) {
         String token = (String) request.getSession().getAttribute("sessionToken");
         authenticationApiClient.logout(token);
         sessionManager.invalidateSession(request);
+        redirectAttributes.addFlashAttribute("result" ,"Успешно излязохте от профилът си");
         return "redirect:/";
     }
 }

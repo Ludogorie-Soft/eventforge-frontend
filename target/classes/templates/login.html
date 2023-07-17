@@ -91,18 +91,6 @@
                     <div class="col-md-6 offset-md-3">
                         <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Влез">
                     </div>
-                    <div th:if="${successfulRegistration}" id="successfulRegistration">
-                        <p th:text="${successfulRegistration}" style="color: green;"></p>
-                    </div>
-                    <div th:if="${verifyEmailResult}" id="verifyEmailResult">
-                        <a th:if="${verifyEmailResult}" style="color: green;" th:text="${verifyEmailResult}"></a>
-                    </div>
-                    <div th:if="${resendLink}" id="resendLink">
-    <span th:if="${resendLink}" style="color: green;">
-        Линкът за активация е изтекъл, моля кликнете на следният линк за да генерирате нов -
-        <a th:href="@{${resendLink}}">Генерирай нов линк за активация.</a>
-    </span>
-                    </div>
 
                     <div class="form-group row">
                         <div class="col-md-12 text-center">
@@ -168,52 +156,7 @@
     }
 </script>
 
-<script>
-  var popup = document.querySelector(".popup");
-  var result = popup.dataset.result;
 
-  if (result && result.trim() !== '') {
-    var popupElement = document.createElement("div");
-    popupElement.innerHTML = result;
-    popupElement.style.position = "fixed";
-    popupElement.style.top = "50%";
-    popupElement.style.left = "50%";
-    popupElement.style.transform = "translate(-50%, -50%)";
-    popupElement.style.backgroundColor = "lightgray";
-    popupElement.style.padding = "20px";
-    popupElement.style.border = "1px solid gray";
-    popupElement.style.borderRadius = "5px";
-    popupElement.style.opacity = "1";
-    popupElement.style.transition = "opacity 2s";
-
-    var closeButton = document.createElement("button");
-    closeButton.innerHTML = "X";
-    closeButton.style.position = "absolute";
-    closeButton.style.top = "5px";
-    closeButton.style.right = "5px";
-    closeButton.style.border = "none";
-    closeButton.style.backgroundColor = "red";
-    closeButton.style.color = "white";
-    closeButton.style.fontSize = "12px";
-    closeButton.style.width = "20px";
-    closeButton.style.height = "20px";
-    closeButton.style.borderRadius = "50%";
-    closeButton.style.cursor = "pointer";
-
-    popupElement.appendChild(closeButton);
-    document.body.appendChild(popupElement);
-
-    function closePopup() {
-      popupElement.style.opacity = "0";
-      setTimeout(function() {
-        document.body.removeChild(popupElement);
-      }, 2000);
-    }
-
-    closeButton.addEventListener("click", closePopup);
-    setTimeout(closePopup, 5000);
-  }
-</script>
 
 
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -229,7 +172,7 @@
 <script src="js/jquery.easing.1.3.js"></script>
 <script src="js/bootstrap-datepicker.min.js"></script>
 <script src="js/aos.js"></script>
-
+<script src="js/resultPopUp.js"></script>
 <script src="js/main.js"></script>
 
 </body>
