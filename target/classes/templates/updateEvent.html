@@ -23,7 +23,8 @@
 
 
 <body>
-
+<div class="col-12 popup" th:attr="data-result=${result}">
+</div>
 <div class="site-wrap" id="home-section">
 
   <div class="site-mobile-menu site-navbar-target">
@@ -50,7 +51,7 @@
 </div>
 
 <div class="testbox">
-  <form action="#" th:action="@{/manage-events/update-event/{id}(id=${id})}" th:object="${eventRequest}" method="post"
+  <form action="#" th:action="@{/manage-events/update-event/{id}(id=${id})}" th:object="${event}" method="post"
         enctype="multipart/form-data">
     <input type="hidden" name="id" value="${id}" />
     <div class="row justify-content-center text-center">
@@ -127,6 +128,9 @@
         <div th:if="${minAge}" id="minAgeError">
           <p th:text="${minAge}" style="color: red;"></p>
         </div>
+        <div th:if="${eventRequest}" id="eventRequest">
+          <p th:text="${eventRequest}" style="color: red;"></p>
+        </div>
       </div>
       <div class="item">
         <p>Максимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
@@ -167,15 +171,17 @@
     <div class="contact-item">
       <div class="item">
         <p>Начало на събитието:   <span class="required">*</span></p>
-        <input type="datetime-local" th:field="*{startsAt}" required oninvalid="this.setCustomValidity('Моля, въведете начална дата и час на събитието.')" oninput="this.setCustomValidity('')" >
-        <div th:if="${startsAt}" id="startsAtError">
+        <input type="datetime-local" th:value="${event.startsAt}" name="startsAt" required
+               oninvalid="this.setCustomValidity('Моля, въведете начална дата и час на събитието.')"
+               oninput="this.setCustomValidity('')">        <div th:if="${startsAt}" id="startsAtError">
           <p th:text="${startsAt}" style="color: red;"></p>
         </div>
       </div>
       <div class="item">
         <p>Край на събитието:  <span class="required">*</span> </p>
-        <input type="datetime-local" th:field="*{endsAt}" required oninvalid="this.setCustomValidity('Моля, въведете крайна дата и час на събитието.')" oninput="this.setCustomValidity('')">
-        <div th:if="${endsAt}" id="endsAtError">
+        <input type="datetime-local" th:value="${event.endsAt}" name="endsAt" required
+               oninvalid="this.setCustomValidity('Моля, въведете крайна дата и час на събитието.')"
+               oninput="this.setCustomValidity('')">        <div th:if="${endsAt}" id="endsAtError">
           <p th:text="${endsAt}" style="color: red;"></p>
         </div>
       </div>
@@ -206,6 +212,53 @@
 
 <script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/displayScript.js}"></script>
+
+<script>
+  var popup = document.querySelector(".popup");
+  var result = popup.dataset.result;
+
+  if (result && result.trim() !== '') {
+    var popupElement = document.createElement("div");
+    popupElement.innerHTML = result;
+    popupElement.style.position = "fixed";
+    popupElement.style.top = "50%";
+    popupElement.style.left = "50%";
+    popupElement.style.transform = "translate(-50%, -50%)";
+    popupElement.style.backgroundColor = "lightgray";
+    popupElement.style.padding = "20px";
+    popupElement.style.border = "1px solid gray";
+    popupElement.style.borderRadius = "5px";
+    popupElement.style.opacity = "1";
+    popupElement.style.transition = "opacity 2s";
+
+    var closeButton = document.createElement("button");
+    closeButton.innerHTML = "X";
+    closeButton.style.position = "absolute";
+    closeButton.style.top = "5px";
+    closeButton.style.right = "5px";
+    closeButton.style.border = "none";
+    closeButton.style.backgroundColor = "red";
+    closeButton.style.color = "white";
+    closeButton.style.fontSize = "12px";
+    closeButton.style.width = "20px";
+    closeButton.style.height = "20px";
+    closeButton.style.borderRadius = "50%";
+    closeButton.style.cursor = "pointer";
+
+    popupElement.appendChild(closeButton);
+    document.body.appendChild(popupElement);
+
+    function closePopup() {
+      popupElement.style.opacity = "0";
+      setTimeout(function() {
+        document.body.removeChild(popupElement);
+      }, 2000);
+    }
+
+    closeButton.addEventListener("click", closePopup);
+    setTimeout(closePopup, 5000);
+  }
+</script>
 </body>
 </html>
 
