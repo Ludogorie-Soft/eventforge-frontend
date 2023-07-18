@@ -211,6 +211,9 @@
                                     <span th:text="${category}"></span>
                                 </label>
                             </div>
+                            <div th:if="${organisationPriorities}" id="organisationPriorities">
+                                <p th:text="${organisationPriorities}" style="color: red;"></p>
+                            </div>
 
                             <div class="form-group row">
                                 <div class="col-md-12">
@@ -222,9 +225,7 @@
                                     <p th:text="${optionalCategory}" style="color: red;"></p>
                                 </div>
                             </div>
-                            <div th:if="${registrationRequest}" id="registrationRequest">
-                                <p th:text="${registrationRequest}" style="color: red;"></p>
-                            </div>
+
 
                         </div>
 

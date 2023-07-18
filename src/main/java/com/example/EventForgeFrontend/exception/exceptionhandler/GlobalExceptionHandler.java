@@ -13,7 +13,6 @@ import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededExceptio
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -42,15 +41,18 @@ public class GlobalExceptionHandler {
         RegistrationRequest newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
         UpdateAccountRequest newUpdateRequest = getAttributeAsType(request, "updateRequest", UpdateAccountRequest.class);
         Object allPriorities = getAttributeAsType(request, "allPriorities", Set.class);
-        MultipartFile logo = getAttributeAsType(request, "logo", MultipartFile.class);
-        MultipartFile cover = getAttributeAsType(request, "cover", MultipartFile.class);
-        EventRequest newEventRequest = getAttributeAsType(request ,"eventRequest" ,EventRequest.class);
+        EventRequest newEventRequest = getAttributeAsType(request ,"event" ,EventRequest.class);
+        Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
+
 
         if(newRegistrationRequest!=null){
             redirectAttributes.addFlashAttribute("request", newRegistrationRequest);
             redirectAttributes.addFlashAttribute("result", "Неуспешна регистрация. Моля, проверете изискванията за всички полета.");
+            redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
+            redirectAttributes.addFlashAttribute("allPriorities", allPriorities);
             request.removeAttribute("newRegistrationRequest");
-
+            request.removeAttribute("organisationPriorities");
+            request.removeAttribute("allPriorities");
         }
 
         if (newUpdateRequest != null) {
@@ -60,24 +62,11 @@ public class GlobalExceptionHandler {
 
         }
         if(newEventRequest!=null){
-            redirectAttributes.addFlashAttribute("eventRequest" ,newEventRequest);
+            redirectAttributes.addFlashAttribute("event" ,newEventRequest);
             redirectAttributes.addFlashAttribute("result" ,"Неуспешен опит.Моля уверете се , че покривате изискванията на всички полета.");
-            request.removeAttribute("eventRequest");
+            request.removeAttribute("event");
 
         }
-
-        redirectAttributes.addFlashAttribute("logoFile", logo);
-        redirectAttributes.addFlashAttribute("backgroundCoverFile", cover);
-
-        Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
-        redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
-        redirectAttributes.addFlashAttribute("allPriorities", allPriorities);
-
-        request.removeAttribute("organisationPriorities");
-        request.removeAttribute("allPriorities");
-        request.removeAttribute("logoFile");
-        request.removeAttribute("backgroundCoverFile");
-
 
         return mav;
     }
@@ -85,20 +74,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ImageException.class)
     public ModelAndView handleImageException(ImageException e, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
-        Object newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
+        RegistrationRequest newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
         Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
-        EventRequest newEventRequest = getAttributeAsType(request , "eventRequest" , EventRequest.class);
+        EventRequest newEventRequest = getAttributeAsType(request , "event" , EventRequest.class);
 
+        if(newRegistrationRequest!=null){
+            redirectAttributes.addFlashAttribute("request", newRegistrationRequest);
+            redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
+            request.removeAttribute("newRegistrationRequest");
+            request.removeAttribute("priorityCategories");
+        }
+        if(newEventRequest!=null){
+            redirectAttributes.addFlashAttribute("event" , newEventRequest);
+            request.removeAttribute("event");
 
-        redirectAttributes.addFlashAttribute("priorityCategories", organisationPriorities);
-
-
-        request.removeAttribute("newRegistrationRequest");
-        request.removeAttribute("priorityCategories");
-        request.removeAttribute("eventRequest");
+        }
+        redirectAttributes.addFlashAttribute("result" ,"Неуспешен опит.Моля уверете се , че покривате изискванията на всички полета.");
         redirectAttributes.addFlashAttribute("fileError", e.getMessage());
-        redirectAttributes.addFlashAttribute("request", newRegistrationRequest);
-        redirectAttributes.addFlashAttribute("eventRequest" , newEventRequest);
         mav.setViewName("redirect:" + request.getHeader("Referer"));
         return mav;
     }
@@ -107,31 +99,10 @@ public class GlobalExceptionHandler {
     public ModelAndView handleMaxUploadSizeExceededException(FileSizeLimitExceededException e, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
         redirectAttributes.addFlashAttribute("fileError", "Файлът не може да надвишава 5МБ!");
+        redirectAttributes.addFlashAttribute("result" ,"Неуспешен опит.Моля уверете се , че покривате изискванията на всички полета.");
         mav.setViewName("redirect:" + request.getHeader("Referer"));
         return mav;
 
-    }
-
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ModelAndView handleException(EmailAlreadyExistsException ex, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        ModelAndView mav = assembleModelAndView(request);
-        String error = ex.getMessage();
-
-        Object newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
-
-
-        redirectAttributes.addFlashAttribute("request", newRegistrationRequest);
-
-        Object organisationPriorities = getAttributeAsType(request, "organisationPriorities", Set.class);
-
-        redirectAttributes.addFlashAttribute("priorityCategories",organisationPriorities);
-
-        request.removeAttribute("newRegistrationRequest");
-        request.removeAttribute("organisationPriorities");
-
-        redirectAttributes.addFlashAttribute("emailTakenError" , error);
-
-        return mav;
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -143,17 +114,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TokenExpiredException.class)
-    public ModelAndView handleTokenExpiredException(TokenExpiredException ex, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("login");
+    public ModelAndView handleTokenExpiredException(TokenExpiredException ex, HttpServletRequest request , RedirectAttributes redirectAttributes) {
+        ModelAndView mav = new ModelAndView("redirect:/login");
         mav.addObject("login", new JWTAuthenticationRequest());
         String sessionToken = (String) request.getSession().getAttribute("sessionToken");
         if (sessionToken != null) {
-            mav.addObject("result", "Сесията Ви е изтекла , моля впишете се отново");
+            redirectAttributes.addFlashAttribute("result", "Сесията Ви е изтекла , моля впишете се отново");
             sessionManager.invalidateSession(request);
             authenticationApiClient.logout(sessionToken);
             return mav;
         }
-        mav.addObject("result", ex.getMessage());
+        redirectAttributes.addFlashAttribute("result", ex.getMessage());
         return mav;
     }
 
@@ -181,15 +152,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleDateTimeException(DateTimeException ex, HttpServletRequest request , RedirectAttributes redirectAttributes) {
         ModelAndView mav = assembleModelAndView(request);
         redirectAttributes.addFlashAttribute("dateTimeException" , ex.getMessage());
-        return mav;
-    }
-
-    @ExceptionHandler(PasswordNotMatchException.class)
-    public ModelAndView passwordsNotMatchException(PasswordNotMatchException ex, HttpServletRequest request , RedirectAttributes redirectAttributes) {
-        ModelAndView mav = assembleModelAndView(request);
-
-        redirectAttributes.addFlashAttribute("passwordError" , ex.getMessage());
-
         return mav;
     }
 

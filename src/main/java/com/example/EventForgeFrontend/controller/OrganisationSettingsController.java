@@ -23,7 +23,6 @@ import java.util.Set;
 @RequestMapping("/organisation/settings")
 @RequiredArgsConstructor
 public class OrganisationSettingsController {
-    private final ProbaClient probaClient;
     private final OrganisationApiClient organisationApiClient;
     private final AuthenticationApiClient authenticationApiClient;
 
@@ -64,15 +63,15 @@ public class OrganisationSettingsController {
     }
     @GetMapping("/change-password")
     public String updatePasswordGetMapper(HttpServletRequest request , Model model){
-        model.addAttribute("changePasswordRequest" , new ChangePasswordRequest());
+        model.addAttribute("changePassword" , new ChangePasswordRequest());
         return "passwordChange";
     }
     @PostMapping("update-password")
-    public String updatePassword(HttpServletRequest request, ChangePasswordRequest changePasswordRequest, Model model) {
+    public String updatePassword(HttpServletRequest request, ChangePasswordRequest changePasswordRequest, RedirectAttributes redirectAttributes) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<String> updatePasswordResult = organisationApiClient.changePassword(token, changePasswordRequest);
-        model.addAttribute("updatePasswordResult", updatePasswordResult.getBody());
+        redirectAttributes.addFlashAttribute("result", updatePasswordResult.getBody());
         return "redirect:/organisation/settings/change-password";
     }
     @GetMapping("/change-pictures")
@@ -88,14 +87,14 @@ public class OrganisationSettingsController {
     }
 
     @PostMapping("update-pictures")
-    public String updateLogo(HttpServletRequest request , @RequestParam(value = "logo",required = false)MultipartFile logo , @RequestParam(value = "cover",required = false)MultipartFile cover ,Model model){
+    public String updateLogo(HttpServletRequest request , @RequestParam(value = "logo",required = false)MultipartFile logo , @RequestParam(value = "cover",required = false)MultipartFile cover ,RedirectAttributes redirectAttributes){
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
         String logoUrl = imageService.updatePicture(logo , ImageType.LOGO );
         String coverUrl = imageService.updatePicture(cover, ImageType.COVER);
         ResponseEntity<String> result = organisationApiClient.updateLogo(token ,logoUrl , coverUrl);
 
-        model.addAttribute("result" ,result.getBody());
+        redirectAttributes.addFlashAttribute("result" ,result.getBody());
        return  "redirect:/organisation/settings/change-pictures";
     }
 }

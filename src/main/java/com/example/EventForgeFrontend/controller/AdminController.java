@@ -62,7 +62,7 @@ public class AdminController {
             model.addAttribute("eventDetails" , eventDetails.getBody());
         } else {
            redirectAttributes.addFlashAttribute("result" , "Търсеното от вас събитие не съществува с идентификационен номер: "+eventId);
-            return "redirect:/admin/organisation-management";
+            return "redirect:" + request.getHeader("Referer");
         }
         return "";
     }
@@ -72,7 +72,7 @@ public class AdminController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<String> result = adminApiClient.approveUserAccount(token , userId , email);
         redirectAttributes.addFlashAttribute("result", result.getBody());
-        return "redirect:/admin/organisation-management";
+        return "redirect:" + request.getHeader("Referer");
     }
     @PostMapping("/ban/{userId}/{email}")
     public String lockAccountById(@PathVariable(name = "userId")Long userId,@PathVariable(name = "email") String email , HttpServletRequest request , RedirectAttributes redirectAttributes ) {

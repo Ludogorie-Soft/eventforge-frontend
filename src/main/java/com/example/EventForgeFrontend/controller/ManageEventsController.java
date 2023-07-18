@@ -45,13 +45,13 @@ public class ManageEventsController {
     }
 
     @GetMapping("/create")
-    public String createEvent(HttpServletRequest request, Model model, @ModelAttribute("eventRequest") EventRequest eventRequest) {
+    public String createEvent(HttpServletRequest request, Model model, @ModelAttribute("event") EventRequest eventRequest) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
         if (eventRequest.getName() != null && !eventRequest.getName().isEmpty()) {
-            model.addAttribute("eventRequest", eventRequest);
+            model.addAttribute("event", eventRequest);
         } else {
-            model.addAttribute("eventRequest", organisationApiClient.getEventRequest(token).getBody());
+            model.addAttribute("event", organisationApiClient.getEventRequest(token).getBody());
 
         }
         return "createEvent";
@@ -61,20 +61,20 @@ public class ManageEventsController {
     public String saveCreatedEvent(@RequestParam("image") MultipartFile image, EventRequest eventRequest, HttpServletRequest request,RedirectAttributes redirectAttributes) {
         sessionManager.isSessionExpired(request);
 
-        request.setAttribute("eventRequest", eventRequest);
+        request.setAttribute("event", eventRequest);
 
         String token = (String) request.getSession().getAttribute("sessionToken");
         String eventPicture = imageService.uploadPicture(image, ImageType.EVENT_PICTURE);
         eventRequest.setImageUrl(eventPicture);
         ResponseEntity<String> eventRequestResult = organisationApiClient.submitCreatedEvent(eventRequest, token);
         redirectAttributes.addFlashAttribute("result", eventRequestResult.getBody());
-        request.removeAttribute("eventRequest");
+        request.removeAttribute("event");
 
         return "redirect:/manage-events";
     }
 
     @GetMapping("/update/{id}")
-    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, RedirectAttributes redirectAttributes,Model model ,@ModelAttribute("eventRequest") EventRequest newEventRequest) {
+    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, RedirectAttributes redirectAttributes,Model model ,@ModelAttribute("event") EventRequest newEventRequest) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
 
@@ -85,9 +85,9 @@ public class ManageEventsController {
         }
         String currentEventPictureUrl = ImageService.encodeImage((getEventToUpdate.getBody()).getImageUrl());
         if (newEventRequest != null && newEventRequest.getName() != null) {
-            model.addAttribute("eventRequest", newEventRequest);
+            model.addAttribute("event", newEventRequest);
         } else {
-            model.addAttribute("eventRequest", getEventToUpdate.getBody());
+            model.addAttribute("event", getEventToUpdate.getBody());
         }
         model.addAttribute("eventPictureUrl", currentEventPictureUrl);
         return "updateEvent";
@@ -97,14 +97,14 @@ public class ManageEventsController {
     public String submitUpdateEvent(@RequestParam("image") MultipartFile image, HttpServletRequest request, @PathVariable("id") Long id, EventRequest eventRequest, RedirectAttributes redirectAttributes) {
         sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
-        request.setAttribute("eventRequest", eventRequest);
+        request.setAttribute("event", eventRequest);
         String eventPicture = imageService.updatePicture(image, ImageType.EVENT_PICTURE);
         if (eventPicture != null) {
             eventRequest.setImageUrl(eventPicture);
         }
         ResponseEntity<String> updateEventResult = organisationApiClient.updateEventByOrganisation(token, id, eventRequest);
         redirectAttributes.addFlashAttribute("result", updateEventResult.getBody());
-        request.removeAttribute("eventRequest");
+        request.removeAttribute("event");
         return "redirect:/manage-events";
     }
 
