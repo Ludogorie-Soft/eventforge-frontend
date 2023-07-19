@@ -121,10 +121,9 @@ public class GlobalExceptionHandler {
         if (sessionToken != null) {
             redirectAttributes.addFlashAttribute("result", "Сесията Ви е изтекла , моля впишете се отново");
             sessionManager.invalidateSession(request);
-            authenticationApiClient.logout(sessionToken);
-            return mav;
+        } else {
+            redirectAttributes.addFlashAttribute("result", ex.getMessage());;
         }
-        redirectAttributes.addFlashAttribute("result", ex.getMessage());
         return mav;
     }
 
