@@ -76,9 +76,9 @@ public class RecurrenceEventController {
     }
     @PostMapping("delete/{id}")
     public String deleteEventById(HttpServletRequest request, @PathVariable("id") Long id, Model model) {
-        sessionManager.isSessionExpired(request);
+
         String token = (String) request.getSession().getAttribute("sessionToken");
-        if(SessionManager.storeSessionUserRole.equals("ADMIN")){
+        if(sessionManager.getStoreSessionUserRole().equals("ADMIN")){
         ResponseEntity<String> deleteEventResult = eventApiClient.deleteEventById(token, id);
         model.addAttribute("deleteEventResult", deleteEventResult.getBody());
     }

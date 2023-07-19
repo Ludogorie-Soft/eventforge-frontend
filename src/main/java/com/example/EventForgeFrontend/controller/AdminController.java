@@ -27,7 +27,7 @@ public class AdminController {
 
     @GetMapping("/organisation-management")
     public String showAllOrganisationsToAdmin(HttpServletRequest request , Model model){
-        sessionManager.isSessionExpired(request);
+
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<List<OrganisationResponseForAdmin>> organisations = adminApiClient.getAllOrganisationsForAdminByApprovedOrNot(token);
         model.addAttribute("organisations" , organisations.getBody());
@@ -35,7 +35,7 @@ public class AdminController {
     }
     @GetMapping("/organisation/details/{id}")
     public String showOrganisationDetailsWithoutConditionsById(@PathVariable("id")Long orgId ,Model model , HttpServletRequest request){
-        sessionManager.isSessionExpired(request);
+
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<OrganisationResponse> orgDetails = adminApiClient.showOrganisationDetailsForAdmin(token ,orgId);
         if(orgDetails.getBody() != null){
@@ -54,7 +54,7 @@ public class AdminController {
 
     @GetMapping("/event/details/{id}")
     public String showEventDetailsForAdmin(@PathVariable("id")Long eventId , HttpServletRequest request , Model model , RedirectAttributes redirectAttributes){
-        sessionManager.isSessionExpired(request);
+
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<CommonEventResponse> eventDetails = adminApiClient.showEventDetailsForAdmin(token , eventId);
         if(eventDetails.getBody()!=null){
@@ -68,7 +68,6 @@ public class AdminController {
     }
     @PostMapping("/approve/account/{id}")
     public String approveAccount(@PathVariable("id")Long userId , HttpServletRequest request , RedirectAttributes redirectAttributes , @RequestParam("email")String email){
-        sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<String> result = adminApiClient.approveUserAccount(token , userId , email);
         redirectAttributes.addFlashAttribute("result", result.getBody());
@@ -76,7 +75,7 @@ public class AdminController {
     }
     @PostMapping("/ban/{userId}/{email}")
     public String lockAccountById(@PathVariable(name = "userId")Long userId,@PathVariable(name = "email") String email , HttpServletRequest request , RedirectAttributes redirectAttributes ) {
-        sessionManager.isSessionExpired(request);
+
         String token = (String) request.getSession().getAttribute("sessionToken");
        ResponseEntity<String> result = adminApiClient.banAccountById(token ,userId , email);
         redirectAttributes.addFlashAttribute("result", result.getBody());
@@ -85,7 +84,6 @@ public class AdminController {
 
     @PostMapping("/unban/{userId}/{email}")
     public String unlockAccountById(@PathVariable(name = "userId")Long userId, @PathVariable(name = "email") String email , HttpServletRequest request ,RedirectAttributes redirectAttributes){
-        sessionManager.isSessionExpired(request);
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<String> result = adminApiClient.unbanAccountById(token , userId ,email);
         redirectAttributes.addFlashAttribute("result", result.getBody());
