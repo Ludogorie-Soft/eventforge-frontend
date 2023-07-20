@@ -88,13 +88,13 @@ public class AuthenticationController {
             ResponseEntity<String> result = authenticationApiClient.forgottenPassword(email, appUrl);
             redirectAttributes.addFlashAttribute("result" , result.getBody());
         }
-        return "redirect:/login";
+        return "redirect:" + httpRequest.getHeader("Referer");
     }
     @GetMapping("/reset/password")
     public String resetForgottenPassword(@RequestParam("verificationToken")String verificationToken ,RedirectAttributes redirectAttributes){
          authenticationApiClient.resetPassword(verificationToken);
          redirectAttributes.addFlashAttribute("result" ,"Проверете пощата си отново. Генерирахме нова парола за вас.");
-         return "redirect:/login";
+         return "redirect:/";
     }
 
 

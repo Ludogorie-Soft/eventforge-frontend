@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -68,6 +69,13 @@ public class GlobalExceptionHandler {
 
         }
 
+        return mav;
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ModelAndView handleInvalidPasswordException(InvalidPasswordException ex , HttpServletRequest request , RedirectAttributes redirectAttributes){
+        ModelAndView mav = assembleModelAndView(request);
+        redirectAttributes.addFlashAttribute("oldPassword" , ex.getMessage());
         return mav;
     }
 

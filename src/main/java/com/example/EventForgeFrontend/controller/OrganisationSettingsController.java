@@ -63,7 +63,10 @@ public class OrganisationSettingsController {
     }
     @GetMapping("/change-password")
     public String updatePasswordGetMapper(HttpServletRequest request , Model model){
-        model.addAttribute("changePassword" , new ChangePasswordRequest());
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<ChangePasswordRequest> changePasswordRequest =organisationApiClient.changePasswordRequest(token);
+        model.addAttribute("changePassword" , changePasswordRequest.getBody());
+
         return "passwordChange";
     }
     @PostMapping("update-password")

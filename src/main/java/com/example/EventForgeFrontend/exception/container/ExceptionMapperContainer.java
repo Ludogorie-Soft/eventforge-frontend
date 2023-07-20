@@ -16,6 +16,7 @@ public class ExceptionMapperContainer {
             entry(EmailConfirmationNotSentException.class, HttpServletResponse.SC_EXPECTATION_FAILED),
             entry(EventRequestException.class, HttpServletResponse.SC_NO_CONTENT),
             entry(ImageException.class, HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE),
+            entry(InvalidPasswordException.class , HttpServletResponse.SC_CONFLICT),
             entry(InvalidEmailConfirmationLinkException.class, HttpServletResponse.SC_BAD_REQUEST),
             entry(InvalidUserCredentialException.class, HttpServletResponse.SC_NOT_FOUND),
             entry(OrganisationRequestException.class, HttpServletResponse.SC_GONE),
