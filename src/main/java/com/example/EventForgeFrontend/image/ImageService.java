@@ -153,6 +153,7 @@ public class ImageService {
 
     }
 
+
     public static void encodeRecurrenceEventResponseImages(List<RecurrenceEventResponse> events){
         if(events!=null && !events.isEmpty()){
             for(RecurrenceEventResponse event : events){

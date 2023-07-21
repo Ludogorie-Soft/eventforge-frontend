@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Controller
@@ -72,11 +73,19 @@ public class OneTimeEventController {
 
         ResponseEntity<List<?>> oneTimeEvents = eventApiClient.getEventsByCriteria(request);
         if(oneTimeEvents.getBody()!=null && !oneTimeEvents.getBody().isEmpty()){
-            ImageService.encodeOneTimeEventResponseImages((List<OneTimeEventResponse>) oneTimeEvents.getBody());
-        }
-        model.addAttribute("oneTimeEvents", oneTimeEvents.getBody());
+            for(int i =1; i <= oneTimeEvents.getBody().size(); i++){
+
+                LinkedHashMap<String, Object> list = (LinkedHashMap<String, Object>) oneTimeEvents.getBody().get(i-1);
+                String imageUrl = (String) list.get("imageUrl");
+                list.put("imageUrl" , ImageService.encodeImage(imageUrl));
+            }
+            model.addAttribute("items", oneTimeEvents.getBody());
+
+            }
+
+
         model.addAttribute("isExpired", isExpired);
-        return "/oneTimeEvents";
+        return "oneTimeEvents";
     }
 
     @PostMapping("delete/{id}")
