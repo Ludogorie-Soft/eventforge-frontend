@@ -1,16 +1,23 @@
 package com.example.EventForgeFrontend.client;
 
+import com.example.EventForgeFrontend.dto.ChangePasswordRequest;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponseForAdmin;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @FeignClient(name = "admin-api-client" ,url = "${backend.url}/admin")
 public interface AdminApiClient {
+
+    @GetMapping("/settings")
+    public ResponseEntity<ChangePasswordRequest> adminSettings(@RequestHeader("Authorization")String authHeader);
+    @PutMapping("update-profile")
+    ResponseEntity<String> updateAdminProfile(@RequestHeader("Authorization")String authHeader , @Validated @RequestBody ChangePasswordRequest passwordRequest);
     @GetMapping("/organisation-management")
     ResponseEntity<List<OrganisationResponseForAdmin>> getAllOrganisationsForAdminByApprovedOrNot(@RequestHeader("Authorization")String authHeader );
 

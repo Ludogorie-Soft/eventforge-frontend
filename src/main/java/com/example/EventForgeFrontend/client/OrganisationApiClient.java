@@ -20,7 +20,8 @@ public interface OrganisationApiClient {
 
     @PutMapping("/update")
      ResponseEntity<String> updateAccount(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody UpdateAccountRequest request);
-
+    @GetMapping("/password-update")
+    ResponseEntity<ChangePasswordRequest> changePasswordRequest(@RequestHeader("Authorization")String authHeader);
     @PutMapping("/update-password")
      ResponseEntity<String> changePassword(@RequestHeader("Authorization") String token, @Validated @RequestBody ChangePasswordRequest request);
 

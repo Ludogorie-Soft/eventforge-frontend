@@ -1,6 +1,7 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.AdminApiClient;
+import com.example.EventForgeFrontend.dto.ChangePasswordRequest;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponseForAdmin;
@@ -25,6 +26,22 @@ public class AdminController {
     private final AdminApiClient adminApiClient;
 
 
+    @GetMapping("/settings")
+    public String adminSettings(HttpServletRequest request,Model model){
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<ChangePasswordRequest> passwordRequest = adminApiClient.adminSettings(token);
+        model.addAttribute("changePassword" ,passwordRequest.getBody());
+        return "adminSettings";
+    }
+
+    @PostMapping("/update/password")
+    public String updateAdminCredentials( RedirectAttributes redirectAttributes , ChangePasswordRequest passwordRequest , HttpServletRequest request){
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<String> result = adminApiClient.updateAdminProfile(token ,passwordRequest);
+        redirectAttributes.addFlashAttribute("result" ,result.getBody());
+        return "redirect:/admin/settings";
+
+    }
     @GetMapping("/organisation-management")
     public String showAllOrganisationsToAdmin(HttpServletRequest request , Model model){
 
