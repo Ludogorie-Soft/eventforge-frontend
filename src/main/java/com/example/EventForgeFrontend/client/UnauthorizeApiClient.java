@@ -1,7 +1,7 @@
 package com.example.EventForgeFrontend.client;
 
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
-import com.example.EventForgeFrontend.dto.EventResponseContainer;
+
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

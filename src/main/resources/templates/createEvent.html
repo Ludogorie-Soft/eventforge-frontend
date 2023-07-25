@@ -25,7 +25,8 @@
 <body>
 
 <div class="site-wrap" id="home-section">
-
+    <div class="col-12 popup" th:attr="data-result=${result}">
+    </div>
     <div class="site-mobile-menu site-navbar-target">
         <div class="site-mobile-menu-header">
             <div class="site-mobile-menu-close mt-3">
@@ -50,7 +51,7 @@
 </div>
 
 <div class="testbox">
-    <form action="#" th:action="@{/manage-events/create-event}" th:object="${eventRequest}" method="post"
+    <form action="#" th:action="@{/manage-events/create-event}" th:object="${event}" method="post"
           enctype="multipart/form-data">
         <div class="row justify-content-center text-center">
             <div class="col-7 text-center mb-5">
@@ -60,37 +61,39 @@
         <div class="item">
             <p>Име на събитието: <span class="required">*</span></p>
             <div class="item">
-                <input type="text" th:field="*{name}" placeholder="Име на събитието" minlength="5" maxlength="30"
-                       id="name" required/>
+                <input type="text" th:field="*{name}" placeholder="Име на събитието" oninvalid="this.setCustomValidity('Моля, въведете между 5 и 30 символа.')" oninput="this.setCustomValidity('')" minlength="5" maxlength="30"
+                       id="name" required title="Името на събитието трябва да е между 5 и 30 символа!"/>
             </div>
             <div th:if="${name}" id="nameError">
                 <p th:text="${name}" style="color: red;"></p>
             </div>
             <div class="item">
                 <p>Снимка на събитието: <span class="required">*</span></p>
-                <input type="file" name="image" >
+                <input type="file" name="image" id="file-input">
+                <!-- Display the filename if it was previously selected -->
+                <span id="file-name"></span>
             </div>
             <div th:if="${fileError}" id="fileError">
                 <p th:text="${fileError}" style="color: red;"></p>
             </div>
             <p>Описание на събитието: <span class="required">*</span></p>
             <div class="item">
-                <textarea type="text" th:field="*{description}" placeholder="Описание на събитието" minlength="100"
-                       maxlength="500" id="description"></textarea>
+                <textarea  th:field="*{description}" oninvalid="this.setCustomValidity('Описанието трява да е между 100 и 500 символа!')" oninput="this.setCustomValidity('')" placeholder="Описание на събитието" minlength="100"
+                       maxlength="500" id="description" required title="Моля въведете между 100 и 500 симбова."></textarea>
             </div>
             <div th:if="${description}" id="descriptionError">
                 <p th:text="${description}" style="color: red;"></p>
             </div>
         </div>
         <div class="question">
-            <p>Онлайн ли е събитието? </p>
+            <p>Онлайн ли е събитието?  <span class="required">*</span></p>
             <div class="question-answer">
                 <div>
                     <input type="radio" th:value="true" id="radio_yes" th:field="*{isOnline}" required/>
                     <label class="radio"><span>Да</span></label>
                 </div>
                 <div>
-                    <input type="radio" th:value="false" id="radio_no" th:field="*{isOnline}" required/>
+                    <input type="radio" th:value="false" id="radio_no" th:field="*{isOnline}"   required/>
                     <label class="radio"><span>Не</span></label>
                 </div>
                 <div th:if="${isOnline}" id="isOnlineError">
@@ -100,16 +103,17 @@
         </div>
         <div class="contact-item">
             <div class="item">
-                <p>Адрес на събитието (ако е онлайн посочете линк)</p>
-                <input type="text" th:field="*{address}" minlength="5" placeholder="Адрес/линк на събитието">
+                <p>Адрес на събитието (ако е онлайн посочете линк)  <span class="required">*</span></p>
+                <input type="text" th:field="*{address}" oninvalid="this.setCustomValidity('Полето трява да съдържа поне 5 символа!')" oninput="this.setCustomValidity('')" minlength="5" placeholder="Адрес/линк на събитието" required title ="Трябва да въведете минимум 5 символа">
                 <div th:if="${address}" id="addressError">
                     <p th:text="${address}" placeholder="Адрес/линк на събитието" style="color: red;"></p>
                 </div>
             </div>
             <div class="item">
                 <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
-                <input type="text" th:field="*{eventCategories}" pattern="^([a-zA-Zа-яА-Я ,-]*)${3,100}"
-                       placeholder="ключови думи към събитието" required/>
+                <input type="text" th:field="*{eventCategories}" oninvalid="this.setCustomValidity('Моля веведете поне една ключова дума с минимум 3 букви!')" oninput="this.setCustomValidity('')" minlength="3" required
+                       title="Моля, използвайте само букви (латиница и кирилица) и запетаи." >
+
                 <div th:if="${eventCategories}" id="eventCategoriesError">
                     <p th:text="${eventCategories}" style="color: red;"></p>
                 </div>
@@ -117,21 +121,24 @@
             </div>
             <div class="item">
                 <p>Минимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
-                <input type="number" th:field="*{minAge}" min="0" placeholder="Минимална възраст за участие" required/>
+                <input type="number" th:field="*{minAge}" min="0" oninvalid="this.setCustomValidity('Позволени са само цифри (цели и положителни)')" oninput="this.setCustomValidity('')" placeholder="Минимална възраст за участие" required title="Моля въведете стойност по-голяма или равна на 0"/>
                 <div th:if="${minAge}" id="minAgeError">
                     <p th:text="${minAge}" style="color: red;"></p>
+                </div>
+                <div th:if="${eventRequest}" id="eventRequest">
+                    <p th:text="${eventRequest}" style="color: red;"></p>
                 </div>
             </div>
             <div class="item">
                 <p>Максимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
-                <input type="number" th:field="*{maxAge}" min="0" placeholder="Максимална възраст за участие" required/>
+                <input type="number" th:field="*{maxAge}" min="0" oninvalid="this.setCustomValidity('Позволени са само цифри (цели и положителни)')" oninput="this.setCustomValidity('')" placeholder="Максимална възраст за участие" required title="Моля въведете стойност по-голяма или равна на 0"/>
                 <div th:if="${maxAge}" id="maxAgeError">
                     <p th:text="${maxAge}" style="color: red;"></p>
                 </div>
             </div>
             <div class="item">
-                <p>Цена на събитието (ако е безплатно, въведете 0): <span class="required">*</span></p>
-                <input type="number" th:field="*{price}" min="0" placeholder="Цена на събитието" required/>
+                <p>Цена на събитието (ако е безплатно, въведете 0. Ако е десетично число , моля използвайте точка за разделител.): <span class="required">*</span></p>
+                <input type="number" step="any" th:field="*{price}" min="0" oninvalid="this.setCustomValidity('Позволени са само цифри (цели , дробни и положителни)')" oninput="this.setCustomValidity('')" placeholder="Цена на събитието" required title="Моля въведете стойност по-голяма или равна на 0"/>
                 <div th:if="${price}" id="priceError">
                     <p th:text="${price}" style="color: red;"></p>
                 </div>
@@ -161,14 +168,18 @@
         <div class="contact-item">
             <div class="item">
                 <p>Начало на събитието: </p>
-                <input type="datetime-local" th:field="*{startsAt}" required>
+                <input type="datetime-local" th:value="${event.startsAt}" name="startsAt" required
+                       oninvalid="this.setCustomValidity('Моля, въведете начална дата и час на събитието.')"
+                       oninput="this.setCustomValidity('')">
                 <div th:if="${startsAt}" id="startsAtError">
                     <p th:text="${startsAt}" style="color: red;"></p>
                 </div>
             </div>
             <div class="item">
                 <p>Край на събитието: </p>
-                <input type="datetime-local" th:field="*{endsAt}" required>
+                <input type="datetime-local" th:value="${event.endsAt}" name="endsAt" required
+                       oninvalid="this.setCustomValidity('Моля, въведете крайна дата и час на събитието.')"
+                       oninput="this.setCustomValidity('')">
                 <div th:if="${endsAt}" id="endsAtError">
                     <p th:text="${endsAt}" style="color: red;"></p>
                 </div>
@@ -199,6 +210,54 @@
 
 <script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/displayScript.js}"></script>
+
+<script>
+  var popup = document.querySelector(".popup");
+  var result = popup.dataset.result;
+
+  if (result && result.trim() !== '') {
+    var popupElement = document.createElement("div");
+    popupElement.innerHTML = result;
+    popupElement.style.position = "fixed";
+    popupElement.style.top = "50%";
+    popupElement.style.left = "50%";
+    popupElement.style.transform = "translate(-50%, -50%)";
+    popupElement.style.backgroundColor = "lightgray";
+    popupElement.style.padding = "20px";
+    popupElement.style.border = "1px solid gray";
+    popupElement.style.borderRadius = "5px";
+    popupElement.style.opacity = "1";
+    popupElement.style.transition = "opacity 2s";
+
+    var closeButton = document.createElement("button");
+    closeButton.innerHTML = "X";
+    closeButton.style.position = "absolute";
+    closeButton.style.top = "5px";
+    closeButton.style.right = "5px";
+    closeButton.style.border = "none";
+    closeButton.style.backgroundColor = "red";
+    closeButton.style.color = "white";
+    closeButton.style.fontSize = "12px";
+    closeButton.style.width = "20px";
+    closeButton.style.height = "20px";
+    closeButton.style.borderRadius = "50%";
+    closeButton.style.cursor = "pointer";
+
+    popupElement.appendChild(closeButton);
+    document.body.appendChild(popupElement);
+
+    function closePopup() {
+      popupElement.style.opacity = "0";
+      setTimeout(function() {
+        document.body.removeChild(popupElement);
+      }, 2000);
+    }
+
+    closeButton.addEventListener("click", closePopup);
+    setTimeout(closePopup, 5000);
+  }
+</script>
+
 </body>
 </html>
 

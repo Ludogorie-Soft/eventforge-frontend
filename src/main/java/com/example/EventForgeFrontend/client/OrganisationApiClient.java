@@ -1,9 +1,13 @@
 package com.example.EventForgeFrontend.client;
 
-import com.example.EventForgeFrontend.dto.*;
+import com.example.EventForgeFrontend.dto.ChangePasswordRequest;
+import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.EventRequest;
+import com.example.EventForgeFrontend.dto.UpdateAccountRequest;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,13 +20,13 @@ public interface OrganisationApiClient {
 
     @PutMapping("/update")
      ResponseEntity<String> updateAccount(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody UpdateAccountRequest request);
-
+    @GetMapping("/password-update")
+    ResponseEntity<ChangePasswordRequest> changePasswordRequest(@RequestHeader("Authorization")String authHeader);
     @PutMapping("/update-password")
-     ResponseEntity<String> changePassword(@RequestHeader("Authorization") String token, @Valid @RequestBody ChangePasswordRequest request);
+     ResponseEntity<String> changePassword(@RequestHeader("Authorization") String token, @Validated @RequestBody ChangePasswordRequest request);
 
     @GetMapping("/show-my-events")
-     ResponseEntity<List<CommonEventResponse>> showAllOrganisationEvents(@RequestHeader("Authorization") String authHeader,
-                                                                               @RequestParam(value = "findByName" ,required = false)String findByName);
+    ResponseEntity<List<CommonEventResponse>> showAllOrganisationEvents(@RequestHeader("Authorization") String authHeader);
 
     @GetMapping("/create-event")
      ResponseEntity<EventRequest> getEventRequest(@RequestHeader("Authorization")String authHeader);

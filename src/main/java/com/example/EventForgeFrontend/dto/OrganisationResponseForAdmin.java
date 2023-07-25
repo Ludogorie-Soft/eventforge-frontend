@@ -23,6 +23,8 @@ public class OrganisationResponseForAdmin {
 
     private String email;
 
+    private String bullstat;
+
     private boolean isEnabled;
 
     private boolean isApprovedByAdmin;
@@ -30,5 +32,7 @@ public class OrganisationResponseForAdmin {
     private boolean isNonLocked;
 
     private LocalDateTime registeredAt;
+    private LocalDateTime updatedAt;
+
 
 }

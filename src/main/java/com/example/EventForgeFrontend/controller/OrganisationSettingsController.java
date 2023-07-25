@@ -23,7 +23,6 @@ import java.util.Set;
 @RequestMapping("/organisation/settings")
 @RequiredArgsConstructor
 public class OrganisationSettingsController {
-    private final ProbaClient probaClient;
     private final OrganisationApiClient organisationApiClient;
     private final AuthenticationApiClient authenticationApiClient;
 
@@ -34,7 +33,7 @@ public class OrganisationSettingsController {
 
     @GetMapping
     public String updateOrgProfile(HttpServletRequest request, Model model , @ModelAttribute("updateRequest")UpdateAccountRequest updateAccountRequest) {
-        sessionManager.isSessionExpired(request);
+
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<UpdateAccountRequest> getUpdateRequest = organisationApiClient.updateAccountRequestResponseEntity(token);
         if(updateAccountRequest.getName()!=null){
@@ -50,7 +49,7 @@ public class OrganisationSettingsController {
 
     @PostMapping("submit-update")
     public String updateProfile(HttpServletRequest request, UpdateAccountRequest updateRequest, RedirectAttributes redirectAttributes , @RequestParam(value = "logo",required = false)MultipartFile logo , @RequestParam(value = "cover",required = false)MultipartFile cover) {
-        sessionManager.isSessionExpired(request);
+
         request.setAttribute("updateRequest" ,updateRequest);
         Set<String> allCategories = authenticationApiClient.getAllPriorityCategories().getBody();
         request.setAttribute("allPriorities" , allCategories);
@@ -59,25 +58,28 @@ public class OrganisationSettingsController {
 
         request.removeAttribute("updateRequest");
         request.removeAttribute("allPriorities");
-        redirectAttributes.addFlashAttribute("updateAccountResult", updateAccountResult.getBody());
+        redirectAttributes.addFlashAttribute("result", updateAccountResult.getBody());
         return "redirect:/organisation/settings";
     }
     @GetMapping("/change-password")
     public String updatePasswordGetMapper(HttpServletRequest request , Model model){
-        model.addAttribute("changePasswordRequest" , new ChangePasswordRequest());
+        String token = (String) request.getSession().getAttribute("sessionToken");
+        ResponseEntity<ChangePasswordRequest> changePasswordRequest =organisationApiClient.changePasswordRequest(token);
+        model.addAttribute("changePassword" , changePasswordRequest.getBody());
+
         return "passwordChange";
     }
     @PostMapping("update-password")
-    public String updatePassword(HttpServletRequest request, ChangePasswordRequest changePasswordRequest, Model model) {
-        sessionManager.isSessionExpired(request);
+    public String updatePassword(HttpServletRequest request, ChangePasswordRequest changePasswordRequest, RedirectAttributes redirectAttributes) {
+
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<String> updatePasswordResult = organisationApiClient.changePassword(token, changePasswordRequest);
-        model.addAttribute("updatePasswordResult", updatePasswordResult.getBody());
+        redirectAttributes.addFlashAttribute("result", updatePasswordResult.getBody());
         return "redirect:/organisation/settings/change-password";
     }
     @GetMapping("/change-pictures")
     public String changePictures( HttpServletRequest request , Model model){
-        sessionManager.isSessionExpired(request);
+
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<List<String>> getPictures = organisationApiClient.getOrganisationLogoAndCover(token);
         String logoUrl = ImageService.encodeImage(getPictures.getBody().get(0));
@@ -88,23 +90,14 @@ public class OrganisationSettingsController {
     }
 
     @PostMapping("update-pictures")
-    public String updateLogo(HttpServletRequest request , @RequestParam(value = "logo",required = false)MultipartFile logo , @RequestParam(value = "cover",required = false)MultipartFile cover ,Model model){
-        sessionManager.isSessionExpired(request);
+    public String updateLogo(HttpServletRequest request , @RequestParam(value = "logo",required = false)MultipartFile logo , @RequestParam(value = "cover",required = false)MultipartFile cover ,RedirectAttributes redirectAttributes){
+
         String token = (String) request.getSession().getAttribute("sessionToken");
         String logoUrl = imageService.updatePicture(logo , ImageType.LOGO );
         String coverUrl = imageService.updatePicture(cover, ImageType.COVER);
         ResponseEntity<String> result = organisationApiClient.updateLogo(token ,logoUrl , coverUrl);
 
-        model.addAttribute("result" ,result.getBody());
+        redirectAttributes.addFlashAttribute("result" ,result.getBody());
        return  "redirect:/organisation/settings/change-pictures";
     }
-//    @PostMapping("update-cover")
-//    public String updateCover(HttpServletRequest request , @RequestParam(value = "file",required = false)MultipartFile file , Model model){
-//        sessionManager.isSessionExpired(request);
-//        String token = (String) request.getSession().getAttribute("sessionToken");
-//        String backgroundCover = imageService.uploadImageToFileSystem(file , ImageType.COVER);
-//        ResponseEntity<String> result = organisationApiClient.updateCover(token ,backgroundCover);
-//        model.addAttribute("result" ,result.getBody());
-//        return  "redirect:/organisation/settings";
-//    }
 }

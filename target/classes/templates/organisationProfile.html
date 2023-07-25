@@ -23,7 +23,8 @@
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
-<div class="popup" th:data-update-account-result="${updateAccountResult}">
+<div class="popup" th:data-result="${result}">
+
 
 </div>
 
@@ -294,11 +295,11 @@
 
 <script>
   var popup = document.querySelector(".popup");
-  var updateAccountResult = popup.dataset.updateAccountResult;
+  var result = popup.dataset.result;
 
-  if (updateAccountResult && updateAccountResult.trim() !== '') {
+  if (result && result.trim() !== '') {
     var popupElement = document.createElement("div");
-    popupElement.innerHTML = updateAccountResult;
+    popupElement.innerHTML = result;
     popupElement.style.position = "fixed";
     popupElement.style.top = "50%";
     popupElement.style.left = "50%";

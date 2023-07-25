@@ -56,6 +56,9 @@
         </div>
     </div>
 </div>
+        <div class="col-12 popup" th:attr="data-result=${result}">
+        </div>
+
 
 <div class="container my-2">
     <div class="section">
@@ -67,7 +70,9 @@
                 <th> Имейл </th>
                 <th> Име и фамилия </th>
                 <th> Телефон </th>
+                <th> Булстат: </th>
                 <th> Регистриран на: </th>
+                <th> Последно обновен на: </th>
                 <th> Потвърден имейл </th>
                 <th> Одобрен от админ </th>
                 <th> Статус: </th>
@@ -82,11 +87,15 @@
                 <td th:text="${org.email}"></td>
                 <td th:text="${org.fullName}"></td>
                 <td th:text="${org.phoneNumber}"></td>
+                <td th:text="${org.bullstat}"></td>
                 <td class="registeredAt" th:text="${org.registeredAt}"></td>
+                <td class="registeredAt" th:text="${org.updatedAt}"></td>
+
                 <td th:text="${org.isEnabled} ? 'Потвърден' : 'Непотвърден'"></td>
                 <td>
                     <span th:if="${org.isApprovedByAdmin}">Одобрен</span>
                     <form th:unless="${org.isApprovedByAdmin}" th:action="@{/admin/approve/account/{id}(id=${org.userId})}" method="post">
+                        <input type="hidden" name="email" th:value="${org.email}" />
                         <button type="submit">Одобри</button>
                     </form>
                 </td>
@@ -153,15 +162,62 @@
     // Обходете елементите и форматирайте датите и часовете
     Array.from(startsAtElements).forEach(function(element) {
         var startsAt = element.textContent;
-        element.textContent = moment(startsAt).format('YYYY-MM-DD HH:mm');
+        element.textContent = moment(startsAt).format('dd-MM-yyyy HH:mm');
     });
 
     Array.from(endsAtElements).forEach(function(element) {
         var endsAt = element.textContent;
-        element.textContent = moment(endsAt).format('YYYY-MM-DD HH:mm');
+        element.textContent = moment(endsAt).format('dd-MM-yyyy HH:mm');
     });
 </script>
 
+
+<script>
+  var popup = document.querySelector(".popup");
+  var result = popup.dataset.result;
+
+  if (result && result.trim() !== '') {
+    var popupElement = document.createElement("div");
+    popupElement.innerHTML = result;
+    popupElement.style.position = "fixed";
+    popupElement.style.top = "50%";
+    popupElement.style.left = "50%";
+    popupElement.style.transform = "translate(-50%, -50%)";
+    popupElement.style.backgroundColor = "lightgray";
+    popupElement.style.padding = "20px";
+    popupElement.style.border = "1px solid gray";
+    popupElement.style.borderRadius = "5px";
+    popupElement.style.opacity = "1";
+    popupElement.style.transition = "opacity 2s";
+
+    var closeButton = document.createElement("button");
+    closeButton.innerHTML = "X";
+    closeButton.style.position = "absolute";
+    closeButton.style.top = "5px";
+    closeButton.style.right = "5px";
+    closeButton.style.border = "none";
+    closeButton.style.backgroundColor = "red";
+    closeButton.style.color = "white";
+    closeButton.style.fontSize = "12px";
+    closeButton.style.width = "20px";
+    closeButton.style.height = "20px";
+    closeButton.style.borderRadius = "50%";
+    closeButton.style.cursor = "pointer";
+
+    popupElement.appendChild(closeButton);
+    document.body.appendChild(popupElement);
+
+    function closePopup() {
+      popupElement.style.opacity = "0";
+      setTimeout(function() {
+        document.body.removeChild(popupElement);
+      }, 2000);
+    }
+
+    closeButton.addEventListener("click", closePopup);
+    setTimeout(closePopup, 5000);
+  }
+</script>
 
 
 </body>

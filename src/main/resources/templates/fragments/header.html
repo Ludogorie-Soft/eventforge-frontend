@@ -12,12 +12,19 @@
                         <img src="/images/profile.png" alt="profile-icon">
                     </div>
                     <ul class="menu">
-                        <li class="active">
+                        <li class="active" th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}">
                             <a href="/organisation/settings" class="nav-link" style="text-align: center">
-<!--                                <div>-->
-<!--                                    <img src="/images/setting.png" style="width: 30px; height: 30px">-->
-<!--                                </div>-->
-                                Профил
+                                Настройки
+                            </a>
+                        </li>
+                        <li class="active" th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
+                            <a th:href="@{/admin/settings}" class="nav-link" style="text-align: center">
+                                Настройки
+                            </a>
+                        </li>
+                        <li class="active" th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
+                            <a th:href="@{/admin/organisation-management}" class="nav-link" style="text-align: center">
+                                Управление на организации
                             </a>
                         </li>
                         <li th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}" class="active">
@@ -52,8 +59,8 @@
                         <li class="active"><a th:if="${session.sessionToken == null}" th:href="@{/registration}"
                                               class="nav-link">Регистрирай се</a></li>
                         <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
-                        <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни активности</a></li>
-                        <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни активности</a></li>
+                        <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни събития</a></li>
+                        <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни събития</a></li>
                         <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
                     </ul>
                 </nav>

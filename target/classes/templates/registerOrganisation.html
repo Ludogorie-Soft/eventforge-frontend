@@ -65,7 +65,7 @@
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-7 text-center mb-5">
-                <h2 class="text-cursive 21 text-yellow">Регистрирай организация</h2>
+                <h2 class="text-cursive 21 text-yellow">Регистрирай се</h2>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -84,7 +84,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="password" th:field="*{password}" class="form-control" id="password"
-                                   placeholder="Парола за регистрация*" required>
+                                   placeholder="Парола*" required title="Паролата трябва да е дълга поне 8 знака и да съдържа поне една цифра, една малка буква, една главна буква, един специален знак и без интервали!">
                         </div>
                         <div th:if="${password}" id="passwordError">
                             <p th:text="${password}" style="color: red;"></p>
@@ -211,6 +211,9 @@
                                     <span th:text="${category}"></span>
                                 </label>
                             </div>
+                            <div th:if="${organisationPriorities}" id="organisationPriorities">
+                                <p th:text="${organisationPriorities}" style="color: red;"></p>
+                            </div>
 
                             <div class="form-group row">
                                 <div class="col-md-12">
@@ -222,9 +225,7 @@
                                     <p th:text="${optionalCategory}" style="color: red;"></p>
                                 </div>
                             </div>
-                            <div th:if="${registrationRequest}" id="registrationRequest">
-                                <p th:text="${registrationRequest}" style="color: red;"></p>
-                            </div>
+
 
                         </div>
 

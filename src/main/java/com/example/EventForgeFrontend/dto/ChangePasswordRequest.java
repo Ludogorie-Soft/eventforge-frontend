@@ -1,14 +1,9 @@
 package com.example.EventForgeFrontend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
+import lombok.*;
+@Getter
 @NoArgsConstructor
-@Builder
+@Setter
 public class ChangePasswordRequest {
 
     private String oldPassword;
@@ -16,4 +11,5 @@ public class ChangePasswordRequest {
     private String newPassword;
 
     private String confirmNewPassword;
+
 }

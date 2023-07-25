@@ -9,40 +9,22 @@ import org.springframework.stereotype.Component;
 @Getter
 public class SessionManager {
 
-    private static String storeSessionToken;
+    private   String storeSessionUserRole;
 
-    public static String storeSessionUserRole;
-
-    public void setSessionToken(HttpServletRequest request, String sessionToken , String userRole) {
-        String token = "Bearer "+sessionToken;
-        storeSessionToken = token;
+    public void setSessionToken(HttpServletRequest request, String sessionToken, String userRole) {
+        String token = "Bearer " + sessionToken;
         storeSessionUserRole = userRole;
 
         HttpSession session = request.getSession(true);
         session.setAttribute("sessionToken", token);
-        session.setAttribute("sessionUserRole" , userRole);
-    }
-
-    private void resetSession(HttpServletRequest request){
-        HttpSession session = request.getSession(true);
-        session.setAttribute("sessionToken" , storeSessionToken);
-        session.setAttribute("sessionUserRole" , storeSessionUserRole);
+        session.setAttribute("sessionUserRole", userRole);
     }
 
     public void invalidateSession(HttpServletRequest request ){
         HttpSession session = request.getSession(false);
         if(session!= null){
             session.invalidate();
-            storeSessionToken = null;
-            storeSessionUserRole = null;
         }
     }
 
-    public void isSessionExpired(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if(session == null){
-            resetSession(request);
-        }
-    }
 }
-

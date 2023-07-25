@@ -1,16 +1,16 @@
 package com.example.EventForgeFrontend.exception.decoder;
 
 
-import com.example.EventForgeFrontend.exception.*;
-import com.example.EventForgeFrontend.exception.DateTimeException;
+import com.example.EventForgeFrontend.exception.CustomValidationErrorException;
+import com.example.EventForgeFrontend.exception.container.ExceptionMapperContainer;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,13 +20,9 @@ public class CustomErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String s, Response response) {
-        String errorMessage = extractErrorMessage(response);
 
-        if (response.status() == HttpStatus.NOT_FOUND.value()) {
-            return new InvalidUserCredentialException(errorMessage);
-        }
-        if (response.status() == HttpServletResponse.SC_PRECONDITION_FAILED) {
-            String[] errorEntries = errorMessage.split("/ ");
+        if(response.status() == HttpServletResponse.SC_PRECONDITION_FAILED){
+            String[] errorEntries = extractErrorMessage(response).split("/ ");
             Map<String, String> errorMessages = new HashMap<>();
             for (String entry : errorEntries) {
                 String[] parts = entry.split(": ");
@@ -36,49 +32,21 @@ public class CustomErrorDecoder implements ErrorDecoder {
                     errorMessages.put(fieldName, error);
                 }
             }
-
-            return new CustomValidationErrorException(errorMessages);
-        }
-        if (response.status() == HttpServletResponse.SC_FOUND) {
-
-            return new EmailAlreadyExistsException(errorMessage);
+            return new  CustomValidationErrorException(errorMessages);
         }
 
-        if (response.status() == HttpServletResponse.SC_FORBIDDEN) {
-
-            return new AccessDeniedException(errorMessage);
-        }
-        if (response.status() == HttpServletResponse.SC_NOT_ACCEPTABLE) {
-
-            return new TokenExpiredException(errorMessage);
-        }
-        if (response.status() == HttpServletResponse.SC_EXPECTATION_FAILED) {
-            return new EmailConfirmationNotSentException(errorMessage);
-        }
-        if (response.status() == HttpServletResponse.SC_BAD_REQUEST) {
-            return new InvalidEmailConfirmationLinkException(errorMessage);
-        }
-
-        if (response.status() == HttpServletResponse.SC_SERVICE_UNAVAILABLE) {
-            return new UserDisabledException(errorMessage);
-        }
-        if (response.status() == HttpStatus.LOCKED.value()) {
-            return new UserLockedException(errorMessage);
-        }
-        if(response.status() == HttpStatus.SEE_OTHER.value()){
-            return new DateTimeException(errorMessage);
-        }
-        if(response.status() == HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE){
-            return new ImageException(errorMessage);
-        }
-        if(response.status() == HttpServletResponse.SC_CONFLICT){
-            return new PasswordNotMatchException(errorMessage);
-        }
-        if(response.status() == HttpServletResponse.SC_NO_CONTENT){
-            return new EventRequestException(errorMessage);
-        }
-        if(response.status() == HttpServletResponse.SC_GONE){
-            return new OrganisationRequestException(errorMessage);
+        Class<? extends RuntimeException> exceptionClass = ExceptionMapperContainer.exceptionResponse
+                .keySet()
+                .stream()
+                .filter(key -> ExceptionMapperContainer.exceptionResponse.get(key) == response.status())
+                .findFirst()
+                .orElse(null);
+        if (exceptionClass != null ) {
+            try {
+                return exceptionClass.getConstructor(String.class).newInstance(extractErrorMessage(response));
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e ) {
+                e.printStackTrace();
+            }
         }
         // Delegate to default error decoder for other exceptions
         return new RuntimeException("Нещо се обърка. Моля опитайте отново");
