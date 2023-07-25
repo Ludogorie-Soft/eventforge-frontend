@@ -1,10 +1,9 @@
 package com.example.EventForgeFrontend.image;
 
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
-import com.example.EventForgeFrontend.dto.OneTimeEventResponse;
-import com.example.EventForgeFrontend.dto.RecurrenceEventResponse;
 import com.example.EventForgeFrontend.exception.ImageException;
 import jakarta.annotation.Nullable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -134,29 +133,16 @@ public class ImageService {
         }
         return base64Image;
     }
-
-    public static void encodeCommonEventResponseImages(List<CommonEventResponse> events) {
+    public static void encodeCommonEventResponseListImages(List<CommonEventResponse> events){
         if(events!=null && !events.isEmpty()){
-            for (CommonEventResponse event : events) {
+            for(CommonEventResponse event : events){
                 event.setImageUrl(encodeImage(event.getImageUrl()));
             }
         }
-
     }
-
-    public static void encodeOneTimeEventResponseImages(List<OneTimeEventResponse> events){
-        if(events!= null && !events.isEmpty()){
-            for(OneTimeEventResponse event :events){
-                event.setImageUrl(encodeImage(event.getImageUrl()));
-            }
-        }
-
-    }
-
-
-    public static void encodeRecurrenceEventResponseImages(List<RecurrenceEventResponse> events){
+    public static void encodeCommonEventResponsePageImages(Page<CommonEventResponse> events){
         if(events!=null && !events.isEmpty()){
-            for(RecurrenceEventResponse event : events){
+            for(CommonEventResponse event : events){
                 event.setImageUrl(encodeImage(event.getImageUrl()));
             }
         }

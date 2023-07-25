@@ -2,20 +2,20 @@ package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.OneTimeEventApiClient;
+import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
-import com.example.EventForgeFrontend.dto.OneTimeEventResponse;
 import com.example.EventForgeFrontend.image.ImageService;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 @Controller
 @RequestMapping("/one-time-events")
@@ -29,24 +29,35 @@ public class OneTimeEventController {
     private final SessionManager sessionManager;
 
     @GetMapping
-    public String showAllActiveOneTimeEvents(@RequestParam(value = "order", required = false) String order, Model model) {
-        ResponseEntity<List<OneTimeEventResponse>> oneTimeEvents = oneTimeEventApiClient.showAllActiveOneTimeEvents(order);
-        if(oneTimeEvents.getBody()!=null && !oneTimeEvents.getBody().isEmpty()){
-            ImageService.encodeOneTimeEventResponseImages(oneTimeEvents.getBody());
+    public String showAllActiveOneTimeEvents(@RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
+            , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize
+            , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
+            , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
+            , Model model) {
+        Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Page<CommonEventResponse> events = oneTimeEventApiClient.showAllActiveOneTimeEvents(pageNo , pageSize , sort1 , sortByColumn);
+        if(events!=null && !events.isEmpty()){
+            ImageService.encodeCommonEventResponsePageImages(events);
         }
-        model.addAttribute("items", oneTimeEvents.getBody());
+        model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
 
         return "oneTimeEvents";
     }
 
     @GetMapping("/expired")
-    public String showAllExpiredOneTimeEvents(@RequestParam(value = "order", required = false) String order, Model model) {
-        ResponseEntity<List<OneTimeEventResponse>> oneTimeEvents = oneTimeEventApiClient.showAllExpiredOneTimeEvents(order);
-        if(oneTimeEvents.getBody()!=null && !oneTimeEvents.getBody().isEmpty()){
-            ImageService.encodeOneTimeEventResponseImages(oneTimeEvents.getBody());
+    public String showAllExpiredOneTimeEvents(@RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
+            , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize
+            , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
+            , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
+            , Model model) {
+        Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+        Page<CommonEventResponse> events = oneTimeEventApiClient.showAllExpiredOneTimeEvents(pageNo , pageSize , sort1 , sortByColumn);
+        if(events!=null && !events.isEmpty()){
+            ImageService.encodeCommonEventResponsePageImages(events);
         }
-        model.addAttribute("items", oneTimeEvents.getBody());
+        model.addAttribute("events", events);
         model.addAttribute("isExpired", true);
 
 
@@ -66,21 +77,21 @@ public class OneTimeEventController {
                                                 @RequestParam(value = "startsAt", required = false) LocalDateTime startsAt,
                                                 @RequestParam(value = "endsAt", required = false) LocalDateTime endsAt,
                                                 @PathVariable("isExpired") boolean isExpired,
+                                                @RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
+            , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize
+            , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
+            , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
+            ,
                                                 Model model) {
 
+        Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
         CriteriaFilterRequest request = new CriteriaFilterRequest(true , isExpired ,name ,description ,address,organisationName,minAge,maxAge,isOnline,eventCategories,startsAt,endsAt);
 
-        ResponseEntity<List<?>> oneTimeEvents = eventApiClient.getEventsByCriteria(request);
-        if(oneTimeEvents.getBody()!=null && !oneTimeEvents.getBody().isEmpty()){
-            for(int i =1; i <= oneTimeEvents.getBody().size(); i++){
-
-                LinkedHashMap<String, Object> list = (LinkedHashMap<String, Object>) oneTimeEvents.getBody().get(i-1);
-                String imageUrl = (String) list.get("imageUrl");
-                list.put("imageUrl" , ImageService.encodeImage(imageUrl));
-            }
-            model.addAttribute("items", oneTimeEvents.getBody());
-
+       Page<CommonEventResponse> oneTimeEvents = eventApiClient.getEventsByCriteria(pageNo , pageSize , sort1 , sortByColumn,request);
+        if(oneTimeEvents!=null && !oneTimeEvents.isEmpty()){
+            ImageService.encodeCommonEventResponsePageImages(oneTimeEvents);
+            model.addAttribute("events", oneTimeEvents);
             }
 
 
@@ -94,7 +105,7 @@ public class OneTimeEventController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         if(sessionManager.getStoreSessionUserRole().equals("ADMIN")){
             ResponseEntity<String> deleteEventResult = eventApiClient.deleteEventById(token, id);
-            model.addAttribute("deleteEventResult", deleteEventResult.getBody());
+            model.addAttribute("result", deleteEventResult.getBody());
         }
         return "oneTimeEvents";
     }

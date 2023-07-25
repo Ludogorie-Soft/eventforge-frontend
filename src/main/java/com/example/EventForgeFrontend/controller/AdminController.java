@@ -6,7 +6,6 @@ import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponseForAdmin;
 import com.example.EventForgeFrontend.image.ImageService;
-import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final SessionManager sessionManager;
     private final AdminApiClient adminApiClient;
 
 
@@ -58,9 +56,9 @@ public class AdminController {
         if(orgDetails.getBody() != null){
             orgDetails.getBody().setLogo(ImageService.encodeImage(orgDetails.getBody().getLogo()));
             orgDetails.getBody().setBackground(ImageService.encodeImage(orgDetails.getBody().getBackground()));
-            ImageService.encodeCommonEventResponseImages(orgDetails.getBody().getActiveEvents());
-            ImageService.encodeCommonEventResponseImages(orgDetails.getBody().getExpiredEvents());
-            ImageService.encodeCommonEventResponseImages(orgDetails.getBody().getUpcomingEvents());
+            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getActiveEvents());
+            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getExpiredEvents());
+            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getUpcomingEvents());
             model.addAttribute("orgDetails" , orgDetails.getBody());
 
         } else {

@@ -2,20 +2,20 @@ package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.RecurrenceEventApiClient;
+import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
-import com.example.EventForgeFrontend.dto.RecurrenceEventResponse;
 import com.example.EventForgeFrontend.image.ImageService;
 import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 @Controller
 @RequestMapping("/recurrence-events")
@@ -30,23 +30,34 @@ public class RecurrenceEventController {
 
 
     @GetMapping
-    public String showAllActiveRecurrenceEvents(@RequestParam(value = "order", required = false) String order, Model model) {
-        ResponseEntity<List<RecurrenceEventResponse>> recurrenceEvents = recurrenceEventApiClient.showAllActiveRecurrenceEvents(order);
-        if (recurrenceEvents.getBody() != null && !recurrenceEvents.getBody().isEmpty()) {
-            ImageService.encodeRecurrenceEventResponseImages(recurrenceEvents.getBody());
+    public String showAllActiveRecurrenceEvents(@RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
+            , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize
+            , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
+            , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
+            , Model model) {
+        Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+        Page<CommonEventResponse> events = recurrenceEventApiClient.showAllActiveRecurrenceEvents(pageNo ,pageSize , sort1 ,sortByColumn);
+        if (events != null && !events.isEmpty()) {
+            ImageService.encodeCommonEventResponsePageImages(events);
         }
-        model.addAttribute("item", recurrenceEvents.getBody());
+        model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
         return "recurrenceEvents";
     }
 
     @GetMapping("/expired")
-    public String showAllExpiredRecurrenceEvents(@RequestParam(value = "order", required = false) String order, Model model) {
-        ResponseEntity<List<RecurrenceEventResponse>> recurrenceEvents = recurrenceEventApiClient.showAllExpiredRecurrenceEvents(order);
-        if (recurrenceEvents.getBody() != null && !recurrenceEvents.getBody().isEmpty()) {
-            ImageService.encodeRecurrenceEventResponseImages(recurrenceEvents.getBody());
+    public String showAllExpiredRecurrenceEvents(@RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
+            , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize
+            , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
+            , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
+            , Model model) {
+        Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Page<CommonEventResponse> events = recurrenceEventApiClient.showAllExpiredRecurrenceEvents(pageNo , pageSize , sort1 , sortByColumn);
+        if (events != null && !events.isEmpty()) {
+            ImageService.encodeCommonEventResponsePageImages(events);
         }
-        model.addAttribute("recurrenceEvents", recurrenceEvents.getBody());
+        model.addAttribute("events", events);
         model.addAttribute("isExpired", true);
         return "recurrenceEvents";
     }
@@ -63,18 +74,20 @@ public class RecurrenceEventController {
                                                    @RequestParam(value = "startsAt", required = false) LocalDateTime startsAt,
                                                    @RequestParam(value = "endsAt", required = false) LocalDateTime endsAt,
                                                    @PathVariable("isExpired") boolean isExpired,
+                                                   @RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
+            , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize
+            , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
+            , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
+            ,
                                                    Model model) {
+        Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+
 
         CriteriaFilterRequest request = new CriteriaFilterRequest(false, isExpired, name, description, address, organisationName, minAge, maxAge, isOnline, eventCategories, startsAt, endsAt);
-        ResponseEntity<List<?>> recurrenceEvents = eventApiClient.getEventsByCriteria(request);
-        if (recurrenceEvents.getBody() != null && !recurrenceEvents.getBody().isEmpty()) {
-
-            for(int i =1; i <= recurrenceEvents.getBody().size(); i++){
-                LinkedHashMap<String, Object> list = (LinkedHashMap<String, Object>) recurrenceEvents.getBody().get(i-1);
-                String imageUrl = (String) list.get("imageUrl");
-                list.put("imageUrl" , ImageService.encodeImage(imageUrl));
-            }
-            model.addAttribute("items", recurrenceEvents.getBody());
+        Page<CommonEventResponse> recurrenceEvents = eventApiClient.getEventsByCriteria(pageNo , pageSize , sort1 , sortByColumn,request);
+        if (recurrenceEvents != null && !recurrenceEvents.isEmpty()) {
+            ImageService.encodeCommonEventResponsePageImages(recurrenceEvents);
+            model.addAttribute("items", recurrenceEvents);
         }
         model.addAttribute("isExpired", isExpired);
         return "recurrenceEvents";

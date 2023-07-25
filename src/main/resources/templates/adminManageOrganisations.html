@@ -70,7 +70,9 @@
                 <th> Имейл </th>
                 <th> Име и фамилия </th>
                 <th> Телефон </th>
+                <th> Булстат: </th>
                 <th> Регистриран на: </th>
+                <th> Последно обновен на: </th>
                 <th> Потвърден имейл </th>
                 <th> Одобрен от админ </th>
                 <th> Статус: </th>
@@ -85,7 +87,10 @@
                 <td th:text="${org.email}"></td>
                 <td th:text="${org.fullName}"></td>
                 <td th:text="${org.phoneNumber}"></td>
+                <td th:text="${org.bullstat}"></td>
                 <td class="registeredAt" th:text="${org.registeredAt}"></td>
+                <td class="registeredAt" th:text="${org.updatedAt}"></td>
+
                 <td th:text="${org.isEnabled} ? 'Потвърден' : 'Непотвърден'"></td>
                 <td>
                     <span th:if="${org.isApprovedByAdmin}">Одобрен</span>
@@ -157,12 +162,12 @@
     // Обходете елементите и форматирайте датите и часовете
     Array.from(startsAtElements).forEach(function(element) {
         var startsAt = element.textContent;
-        element.textContent = moment(startsAt).format('YYYY-MM-DD HH:mm');
+        element.textContent = moment(startsAt).format('dd-MM-yyyy HH:mm');
     });
 
     Array.from(endsAtElements).forEach(function(element) {
         var endsAt = element.textContent;
-        element.textContent = moment(endsAt).format('YYYY-MM-DD HH:mm');
+        element.textContent = moment(endsAt).format('dd-MM-yyyy HH:mm');
     });
 </script>
 
