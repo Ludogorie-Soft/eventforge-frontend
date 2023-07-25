@@ -1960,8 +1960,6 @@ h1, h2, h3, h4, h5,
   display: block;
 }
 
-
-
 /* Media query for responsiveness on phones */
 @media (max-width: 480px) {
   .menu-icon {
