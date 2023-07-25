@@ -59,7 +59,7 @@ public class AdminController {
             ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getActiveEvents());
             ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getExpiredEvents());
             ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getUpcomingEvents());
-            model.addAttribute("orgDetails" , orgDetails.getBody());
+            model.addAttribute("organisationDetails" , orgDetails.getBody());
 
         } else {
             model.addAttribute("result" ,"Няма намерена организация с идентификационен номер: "+orgId);

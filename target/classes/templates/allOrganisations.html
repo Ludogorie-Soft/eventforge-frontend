@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700%7CIndie+Flower">
 
     <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
@@ -48,23 +48,40 @@
         </div>
     </div>
 </div>
-
 <div class="wrapper-flex">
     <div th:each="organisation : ${organisations}" class="container-2">
         <img th:src="@{'data:image/jpeg;base64,' + ${organisation.logo}}" alt="profile image" class="logo-img">
         <div class="card-content">
             <p class="name" th:text="${organisation.name}"></p>
-            <p class="address">Адрес: <span th:text="${organisation.address}"></span></p>
-            <p>Приоритети: </p>
-            <div th:each="priority : ${organisation.organisationPriorities}">
-                <p class="priority" ><span th:text="${priority}"></span></p>
+            <div th:if="${organisation.address != null and organisation.address != ''}">
+                <p class="label">Адрес</p>
+                <P th:text="${organisation.address}"></P>
             </div>
-            <textarea class="description" readonly th:text="${#strings.abbreviate(organisation.organisationPurpose, 100)}"></textarea>
-            <button class="btn">Follow</button>
+
+            <p class="label">Приоритети</p>
+            <div>
+                <span th:each="priority, iterStat : ${organisation.organisationPriorities}" th:if="${iterStat.index < 3}">
+                    <span th:text="${priority}"></span>
+                    <span th:unless="${iterStat.last}" th:if="${iterStat.index < 2}">, </span>
+                </span>
+                <span th:if="${#sets.size(organisation.organisationPriorities) > 3}">...</span>
+            </div>
+
+            <p class="label">Мисия</p>
+            <textarea class="description" readonly
+                      th:text="${#strings.abbreviate(organisation.organisationPurpose, 160)}"></textarea>
+            <div th:if="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
+                <a class="btn" target="_blank" th:href="@{/admin/organisation/details/{id}(id=${organisation.orgId})}">Научи
+                    повече</a>
+            </div>
+            <div th:unless="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
+                <a class="btn" target="_blank" th:href="@{/view/organisations/details/{id}(id=${organisation.orgId})}">Научи
+                    повече</a>
+            </div>
+
         </div>
     </div>
 </div>
-
 
 
 <script src="/js/jquery-3.3.1.min.js"></script>
@@ -87,18 +104,16 @@
 </html>
 <style>
     :root {
-        --clr-primary: #651fff;
-        --clr-gray: #37474f;
-        --clr-gray-light: #b0bec5;
+        --clr-primary: #651FFF;
+        --clr-gray: #37474F;
+        --clr-gray-light: #B0BEC5;
     }
-
     .wrapper-flex {
         margin-top: 0px;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
     }
-
     .container-2 {
         overflow: hidden;
         box-shadow: 0px 2px 8px 0px var(--clr-gray-light);
@@ -106,29 +121,32 @@
         text-align: center;
         border-radius: 1rem;
         position: relative;
-        width: 280px;
+        width: 420px;
         margin-bottom: 1rem;
         margin-left: 3rem;
         margin-top: 3rem;
     }
-
     .logo-img {
         background-color: #ccc;
-        border-radius: 50%;
+        border-radius: 80%;
         margin-right: 10px;
-        width: 6rem;
-        height: 6rem;
-        clip-path: circle(60px at center);
+        width: 9rem;
+        height: 9rem;
+        clip-path: circle(80px at center);
         margin-top: 1.5rem;
     }
-
     .logo-img:hover {
         transform: scale(1.1);
     }
-
     .name {
         font-weight: bold;
         font-size: 1.5rem;
+    }
+
+    .label {
+        font-weight: bold;
+        font-size: 1rem;
+        margin-right: 1rem;
     }
 
     .description {
@@ -141,9 +159,7 @@
         outline: none;
         height: 100px;
         width: 70%;
-
     }
-
     .btn {
         width: 50%;
         border: none;
@@ -154,5 +170,7 @@
         background-color: #656598;
         margin-bottom: 10px;
     }
+
+
 
 </style>
