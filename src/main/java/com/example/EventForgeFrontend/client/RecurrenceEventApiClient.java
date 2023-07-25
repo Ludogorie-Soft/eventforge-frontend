@@ -1,20 +1,25 @@
 package com.example.EventForgeFrontend.client;
 
-import com.example.EventForgeFrontend.dto.RecurrenceEventResponse;
+import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @FeignClient(name = "recurrence-event-api-client" ,url = "${backend.url}/api/v1/recurrence-events")
 
 public interface RecurrenceEventApiClient {
 
     @GetMapping("/active")
-    public ResponseEntity<List<RecurrenceEventResponse>> showAllActiveRecurrenceEvents(@RequestParam(value = "order" , required = false) String order);
+    public Page<CommonEventResponse> showAllActiveRecurrenceEvents(@RequestParam(value = "pageNo", required = false) Integer pageNo
+            , @RequestParam(value = "pageSize" , required = false) Integer pageSize
+            , @RequestParam(value = "sort" , required = false) Sort.Direction sort
+            , @RequestParam(value = "sortByColumn" ,required = false)String sortByColumn);
 
     @GetMapping("/expired")
-    public ResponseEntity<List<RecurrenceEventResponse>> showAllExpiredRecurrenceEvents(@RequestParam(value = "order" , required = false) String order);
+    public Page<CommonEventResponse> showAllExpiredRecurrenceEvents(@RequestParam(value = "pageNo", required = false) Integer pageNo
+            , @RequestParam(value = "pageSize" , required = false) Integer pageSize
+            , @RequestParam(value = "sort" , required = false) Sort.Direction sort
+            , @RequestParam(value = "sortByColumn" ,required = false)String sortByColumn);
 }

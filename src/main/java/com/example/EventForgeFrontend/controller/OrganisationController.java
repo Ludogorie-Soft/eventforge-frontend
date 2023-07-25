@@ -1,7 +1,7 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.UnauthorizeApiClient;
-import com.example.EventForgeFrontend.dto.*;
+import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.example.EventForgeFrontend.image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,9 +39,9 @@ public class OrganisationController { //this controller is to list organisations
         if (orgDetails.getBody() != null) {
             orgDetails.getBody().setLogo(ImageService.encodeImage(orgDetails.getBody().getLogo()));
             orgDetails.getBody().setBackground(ImageService.encodeImage(orgDetails.getBody().getBackground()));
-            ImageService.encodeCommonEventResponseImages(orgDetails.getBody().getActiveEvents());
-            ImageService.encodeCommonEventResponseImages(orgDetails.getBody().getExpiredEvents());
-            ImageService.encodeCommonEventResponseImages(orgDetails.getBody().getUpcomingEvents());
+            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getActiveEvents());
+            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getExpiredEvents());
+            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getUpcomingEvents());
             model.addAttribute("organisationDetails", orgDetails.getBody());
         } else {
             model.addAttribute("result", "Няма намерена организация с идентификационен номер: " + id);

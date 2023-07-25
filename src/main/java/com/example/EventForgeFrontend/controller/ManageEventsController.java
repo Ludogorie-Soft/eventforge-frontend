@@ -32,11 +32,9 @@ public class ManageEventsController {
     private final ImageService imageService;
 
     @GetMapping
-    public String showMyEvents(HttpServletRequest request, Model model
-            , @RequestParam(value = "findByName", required = false) String findByName
-    ) {
+    public String showMyEvents(HttpServletRequest request, Model model) {
         String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<List<CommonEventResponse>> getAllEventsForOrganisation = organisationApiClient.showAllOrganisationEvents(token, findByName);
+        ResponseEntity<List<CommonEventResponse>> getAllEventsForOrganisation = organisationApiClient.showAllOrganisationEvents(token);
 
         model.addAttribute("events", getAllEventsForOrganisation.getBody());
 

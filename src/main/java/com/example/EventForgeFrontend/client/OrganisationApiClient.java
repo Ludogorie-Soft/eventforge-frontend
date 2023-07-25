@@ -26,8 +26,7 @@ public interface OrganisationApiClient {
      ResponseEntity<String> changePassword(@RequestHeader("Authorization") String token, @Validated @RequestBody ChangePasswordRequest request);
 
     @GetMapping("/show-my-events")
-     ResponseEntity<List<CommonEventResponse>> showAllOrganisationEvents(@RequestHeader("Authorization") String authHeader,
-                                                                               @RequestParam(value = "findByName" ,required = false)String findByName);
+    ResponseEntity<List<CommonEventResponse>> showAllOrganisationEvents(@RequestHeader("Authorization") String authHeader);
 
     @GetMapping("/create-event")
      ResponseEntity<EventRequest> getEventRequest(@RequestHeader("Authorization")String authHeader);
