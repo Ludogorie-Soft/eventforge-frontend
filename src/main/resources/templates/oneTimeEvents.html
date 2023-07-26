@@ -19,6 +19,7 @@
     <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/aos.css}">
 
+
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -53,14 +54,28 @@
         <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="profile image" class="logo-img">
         <div class="card-content">
             <p class="name" th:text="${event.name}"></p>
+
+            <p>
+                <strong>Организатор:</strong>
+                <a target="_blank" th:href="@{/view/organisations/details/{id}(id=${event.orgId})}"
+                   style="color: black;" th:text="'&quot;' + ${event.organisationName} + '&quot;'">
+                </a>
+            </p>
+
+
             <p class="address">Адрес/линк: <span th:text="${event.address}"></span></p>
             <p>Ключови думи: <span th:text="${event.eventCategories}"></span></p>
-            <textarea class="description" readonly th:text="${#strings.abbreviate(event.description, 100)}"></textarea>
-            <button class="btn">Виж повече детайли</button>
+            <!--            <textarea class="description" readonly th:text="${#strings.abbreviate(event.description, 100)}"></textarea>-->
+            <p><strong>Начало: </strong><span
+                    th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+            </p>
+            <p><strong>Край: </strong><span
+                    th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+            </p>
+            <button class="button">Виж още</button>
         </div>
     </div>
 </div>
-
 
 
 <script src="/js/jquery-3.3.1.min.js"></script>
@@ -106,6 +121,9 @@
         margin-bottom: 1rem;
         margin-left: 3rem;
         margin-top: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
  .logo-img {
@@ -125,28 +143,40 @@
         font-size: 1.5rem;
     }
 
-    .description {
-        margin: 1rem 2rem;
-        font-size: 0.9rem;
-        border: none;
-        resize: none;
-        background-color: transparent;
-        overflow: hidden;
+<!--    .description {-->
+<!--        margin: 1rem 2rem;-->
+<!--        font-size: 0.9rem;-->
+<!--        border: none;-->
+<!--        resize: none;-->
+<!--        background-color: transparent;-->
+<!--        overflow: hidden;-->
+<!--        outline: none;-->
+<!--        height: 100px;-->
+<!--        width: 70%;-->
+
+<!--    }-->
+
+ .button {
+   padding: 15px 25px;
+        font-size: 24px;
+        text-align: center;
+        cursor: pointer;
         outline: none;
-        height: 100px;
-        width: 70%;
-
-    }
-
-    .btn {
-        width: 20%;
+        color: #fff;
+        background-color: #04AA6D;
         border: none;
-        font-size: 1rem;
-        font-weight: bold;
-        color: white;
-        padding: 1rem;
-        background-color: #656598;
-        margin-bottom: 10px;
-    }
+        border-radius: 15px;
+        box-shadow: 0 9px #999;
+
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
 
 </style>

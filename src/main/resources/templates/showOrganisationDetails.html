@@ -18,6 +18,7 @@
     <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
     <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/aos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -67,6 +68,15 @@
                 <div class="stats row"
                      th:text="${#strings.listJoin(organisationDetails.organisationPriorities, ', ')}">
                 </div>
+                <div id="icons">
+                    <div th:if="${organisationDetails.website != null and organisationDetails.website != ''}">
+                        <a th:href="${organisationDetails.website}" target="_blank" class="fa fa-globe"  th:title="'Сайт на организация: '+${organisationDetails.website}"></a>
+                    </div>
+                    <div>
+                        <a th:href="${organisationDetails.facebookLink}" target="_blank" class="fa fa-facebook" th:title="'Фейсбук страница: '+${organisationDetails.facebookLink}"></a>
+                    </div>
+                </div>
+
                 <div class="stats row">
                     <div class="stat col-xs-4" style="padding-right: 50px;">
                         <p class="number-stat" th:text="${#lists.size(organisationDetails.expiredEvents)}"></p>
@@ -174,7 +184,7 @@
                                         <p th:text="${event.address}"></p>
                                     </div>
 
-                                    <button class="button" >Научи повече</button>
+                                    <button class="button">Научи повече</button>
                                 </div>
                             </div>
 
@@ -233,7 +243,6 @@
         </div>
     </main>
 </div>
-
 
 
 <script src="/js/jquery-3.3.1.min.js"></script>
@@ -302,6 +311,10 @@
         }
 
     }
+
+
+
+
 </script>
 <script>
     new Swiper(".slide-content", {
@@ -333,6 +346,10 @@
             // },
         },
     });
+
+
+
+
 
 </script>
 </body>
@@ -557,4 +574,33 @@
 
     }
 
+    .fa {
+padding: 20px;
+font-size: 30px;
+width: 70px;
+border-radius: 50%;
+text-decoration: none;
+margin: 5px 2px;
+text-align: center;
+}
+
+.fa-facebook{
+background: #3B5998;
+  color: white;
+}
+
+.fa-globe {
+background: #55ACEE;
+color: white;
+}
+
+#icons {
+display: flex;
+}
+
+
+
+
+
 </style>
+
