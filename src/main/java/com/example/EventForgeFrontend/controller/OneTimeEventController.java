@@ -28,9 +28,9 @@ public class OneTimeEventController {
 
     private final SessionManager sessionManager;
 
-    @GetMapping
-    public String showAllActiveOneTimeEvents(@RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
-            , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize
+    @GetMapping("/{pageNo}")
+    public String showAllActiveOneTimeEvents(@PathVariable("pageNo") Integer pageNo
+            , @RequestParam(value = "pageSize",defaultValue = "10", required = false) Integer pageSize
             , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
             , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
             , Model model) {
@@ -38,6 +38,11 @@ public class OneTimeEventController {
         Page<CommonEventResponse> events = oneTimeEventApiClient.showAllActiveOneTimeEvents(pageNo , pageSize , sort1 , sortByColumn);
         if(events!=null && !events.isEmpty()){
             ImageService.encodeCommonEventResponsePageImages(events);
+            model.addAttribute("currentPage" ,events.getNumber());
+            model.addAttribute("totalPages" ,events.getTotalPages());
+            model.addAttribute("totalItems" , events.getTotalElements());
+            model.addAttribute("sort" , sort1);
+            model.addAttribute("sortByColumn" , sortByColumn);
         }
         model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
@@ -47,15 +52,17 @@ public class OneTimeEventController {
 
     @GetMapping("/expired")
     public String showAllExpiredOneTimeEvents(@RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
-            , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize
+            , @RequestParam(value = "pageSize",defaultValue = "10", required = false) Integer pageSize
             , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
             , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
             , Model model) {
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
-
+        pageNo = Math.max(0, pageNo);
         Page<CommonEventResponse> events = oneTimeEventApiClient.showAllExpiredOneTimeEvents(pageNo , pageSize , sort1 , sortByColumn);
         if(events!=null && !events.isEmpty()){
             ImageService.encodeCommonEventResponsePageImages(events);
+            model.addAttribute("currentPage", events.getNumber());
+            model.addAttribute("totalPages", events.getTotalPages());
         }
         model.addAttribute("events", events);
         model.addAttribute("isExpired", true);

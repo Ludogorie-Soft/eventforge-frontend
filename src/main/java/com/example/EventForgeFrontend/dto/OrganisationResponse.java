@@ -19,6 +19,8 @@ public class OrganisationResponse {
     private String background;
     private String name;
     private String address;
+    private String website;
+    private String facebookLink;
     private String charityOption;
     private String organisationPurpose;
     private Set<String> organisationPriorities;
