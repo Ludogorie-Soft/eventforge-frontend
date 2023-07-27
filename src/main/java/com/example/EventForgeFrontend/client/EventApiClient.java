@@ -4,11 +4,12 @@ import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @FeignClient(name = "event-api-client" ,url = "${backend.url}")
 
