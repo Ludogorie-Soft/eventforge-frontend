@@ -77,6 +77,20 @@
     </div>
 </div>
 
+<div>
+    <!-- Previous Page Button -->
+    <a th:if="${currentPage > 0}" th:href="@{/one-time-events(pageNo=${currentPage - 1})}">Previous</a>
+
+    <!-- Current Page Number -->
+    <span th:text="${currentPage} + 1">1</span>
+
+    <!-- Total Pages -->
+    <span th:text="${totalPages}">1</span>
+
+    <!-- Next Page Button -->
+    <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${currentPage + 1})}">Next</a>
+</div>
+
 
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/jquery-migrate-3.0.0.js"></script>
