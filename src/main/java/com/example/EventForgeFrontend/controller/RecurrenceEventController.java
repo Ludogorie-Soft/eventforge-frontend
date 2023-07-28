@@ -87,7 +87,7 @@ public class RecurrenceEventController {
         Page<CommonEventResponse> recurrenceEvents = eventApiClient.getEventsByCriteria(pageNo , pageSize , sort1 , sortByColumn,request);
         if (recurrenceEvents != null && !recurrenceEvents.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(recurrenceEvents);
-            model.addAttribute("items", recurrenceEvents);
+            model.addAttribute("events", recurrenceEvents);
         }
         model.addAttribute("isExpired", isExpired);
         return "recurrenceEvents";
