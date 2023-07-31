@@ -32,6 +32,7 @@ public class MenuController {
             for (OrganisationResponse org : threeRandomOrganisations.getBody()) {
                 org.setLogo(ImageService.encodeImage(org.getLogo()));
             }
+            model.addAttribute("organisations" , threeRandomOrganisations.getBody());
             model.addAttribute("organisation1", threeRandomOrganisations.getBody().get(0));
             if (threeRandomOrganisations.getBody().size() > 1) {
                 model.addAttribute("organisation2", threeRandomOrganisations.getBody().get(1));

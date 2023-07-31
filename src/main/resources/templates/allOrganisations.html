@@ -60,14 +60,13 @@
 
             <p class="label">Приоритети</p>
             <div>
-                <span th:each="priority, iterStat : ${organisation.organisationPriorities}" th:if="${iterStat.index < 3}">
-                    <span th:text="${priority}"></span>
-                    <span th:unless="${iterStat.last}" th:if="${iterStat.index < 2}">, </span>
-                </span>
-                <span th:if="${#sets.size(organisation.organisationPriorities) > 3}">...</span>
+            <span th:each="priority, iterStat : ${organisation.organisationPriorities}" th:if="${iterStat.index < 3}">
+                <span th:text="${priority}"></span>
+                <span th:if="${!iterStat.last}">,</span>
+            </span>
+                <span th:if="${#lists.size(organisation.organisationPriorities) > 3}">...</span>
             </div>
 
-            <p class="label">Мисия</p>
             <textarea class="description" readonly
                       th:text="${#strings.abbreviate(organisation.organisationPurpose, 160)}"></textarea>
             <div th:if="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
@@ -170,6 +169,7 @@
         background-color: #656598;
         margin-bottom: 10px;
     }
+
 
 
 

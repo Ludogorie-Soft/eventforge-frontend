@@ -26,7 +26,7 @@
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
-<div class="popup" th:data-result="${result}">
+<div class="popup" th:data-result="${result}"></div>
 
     <div class="site-wrap" id="home-section">
 
@@ -116,7 +116,7 @@
             </div>
         </div>
 
-
+        <th:block th:if="${organisations != null and organisations.size() == 3}">
         <div class="site-section bg-info">
             <div class="container">
                 <div class="row mb-5">
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div th:if="${organisation1 != null}">
+
                         <div class="col-lg-4 mb-4 mb-lg-0">
                             <div class="package text-center bg-white">
                                 <img th:src="@{'data:image/jpeg;base64,' + ${organisation1.logo}}" class="logo-img">
@@ -135,8 +135,8 @@
                                       target="_blank" class="btn btn-primary btn-custom-1 mt-4">Научи повече</a></p>
                             </div>
                         </div>
-                    </div>
-                    <div th:if="${organisation2 != null}">
+
+
                         <div class="col-lg-4 mb-4 mb-lg-0">
                             <div class="package text-center bg-white">
                                 <img th:src="@{'data:image/jpeg;base64,' + ${organisation2.logo}}" class="logo-img">
@@ -146,8 +146,8 @@
                                       target="_blank" class="btn btn-primary btn-custom-1 mt-4">Научи повече</a></p>
                             </div>
                         </div>
-                    </div>
-                    <div th:if="${organisation3 != null}">
+
+
                         <div class="col-lg-4 mb-4 mb-lg-0">
                             <div class="package text-center bg-white">
                                 <img th:src="@{'data:image/jpeg;base64,' + ${organisation3.logo}}" class="logo-img">
@@ -157,10 +157,11 @@
                                       target="_blank" class="btn btn-primary btn-custom-1 mt-4">Научи повече</a></p>
                             </div>
                         </div>
-                    </div>
+
                 </div>
             </div>
         </div>
+        </th:block>
 
         <footer class="site-footer">
             <div class="container">
@@ -186,6 +187,7 @@
 <!--                                    <li><a href="#">Privacy</a></li>-->
 <!--                                    <li><a href="#">Contact Us</a></li>-->
                                 </ul>
+
                             </div>
 
                         </div>

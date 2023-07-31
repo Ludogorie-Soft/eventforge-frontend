@@ -1,26 +1,30 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
-    <link rel="stylesheet"  th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet"  th:href="@{/css/bootstrap-datepicker.css}">
-    <link rel="stylesheet"  th:href="@{/css/jquery.fancybox.min.css}">
-    <link rel="stylesheet"  th:href="@{css/owl.carousel.min.css}">
-    <link rel="stylesheet"  th:href="@{css/owl.theme.default.min.css}">
-    <link rel="stylesheet"  th:href="@{fonts/flaticon/font/flaticon.css}">
-    <link rel="stylesheet"  th:href="@{css/aos.css}">
+    <title>Eventforge</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower">
+
+    <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/css/aos.css}">
+
+
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" th:href="@{css/displayStyle.css}">
-    <title>Продължителни активности</title>
 </head>
-<body >
+
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
 
 <div class="site-wrap" id="home-section">
@@ -34,7 +38,6 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
-
     <th:block th:include="~{fragments/header}"></th:block>
 
     <div class="ftco-blocks-cover-1">
@@ -46,71 +49,148 @@
         </div>
     </div>
 </div>
+<div class="wrapper-flex">
+    <div th:each="event : ${events.content}" class="container-2">
+        <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="profile image" class="logo-img">
+        <div class="card-content">
+            <p class="name" th:text="${event.name}"></p>
 
-<div class="search-bar">
-    <div class="inputGroup">
-        <input type="text" onkeyup="searchCards()" name="text" class="input" id="search" placeholder="🔍Търсене">
-    </div>
-</div>
-<div class="container2">
-    <div class="cards-container" id="cards-container">
-        <div class="myCard" th:each="item : ${events}">
-            <div class="innerCard">
-                <div class="frontSide">
-                    <div class="bannerCard">
-                        <img src="img/bg.png" alt="Banner Image"/>
-                    </div>
-                    <div class="logo">
-                        <img src="item.imageUrl" alt="Logo">
-                        <span class="line"></span>
-                        <span class="line"></span>
-                    </div>
-                    <div class="info">
-                        <div class="notVisible">
-                            <h1 class="notVisibleTitle"><i class="fa fa-info-circle"></i> Детайли</h1>
-                            <p class="notVisibleElement" th:text="'Име: ' + ${item.name}"></p>
-                            <p class="notVisibleElement" th:text="'Организация: ' + ${item.organisationName}"></p>
-                            <p class="notVisibleElement" th:text="'Местоположение: ' + ${item.address}"></p>
-                            <p class="notVisibleElement" th:text="'Категории: ' + ${item.eventCategories}"></p>
-                            <p class="notVisibleElement" th:text="'Възрастово ограничение: ' + ${item.ageBoundary}"></p>
-                            <p class="notVisibleElement" th:text="'Цена: ' + ${item.price} + '$'"></p>
-                            <p class="notVisibleElement" th:text="'За събитието: ' + ${item.description}"></p>
-                            <p class="notVisibleElement" th:text="'Начало: ' + ${item.startsAt}"></p>
-                            <p class="notVisibleElement" th:text="'Край: ' + ${item.endsAt}"></p>
-                            <p class="notVisibleElement" th:text="'Детайли за продължителността: ' + ${item.recurrenceDetails}"></p>
-                        </div>
-                        <h2 id="SearchTitle" th:text="${item.name}"></h2>
-                        <p th:text="'Организация: ' + ${item.organisationName}"></p>
-                        <p th:text="'Адрес: ' + ${item.address}"></p>
-                        <p th:text="'Цена: ' + ${item.price}"></p>
-                        <button class="cta" onclick="showPopup(this)"><span>Научи повече</span><svg viewBox="0 0 13 10" height="10px" width="15px"><path d="M1,5 L11,5"></path><polyline points="8 1 12 5 8 9"></polyline></svg></button>
-                    </div>
-                </div>
-            </div>
+            <p>
+                <strong>Организатор:</strong>
+                <a target="_blank" th:href="@{/view/organisations/details/{id}(id=${event.orgId})}"
+                   style="color: black;" th:text="'&quot;' + ${event.organisationName} + '&quot;'">
+                </a>
+            </p>
+
+
+            <p class="address">Адрес/линк: <span th:text="${event.address}"></span></p>
+            <p>Ключови думи: <span th:text="${event.eventCategories}"></span></p>
+            <!--            <textarea class="description" readonly th:text="${#strings.abbreviate(event.description, 100)}"></textarea>-->
+            <p><strong>Начало: </strong><span
+                    th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+            </p>
+            <p><strong>Край: </strong><span
+                    th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+            </p>
+            <button class="button">Виж още</button>
         </div>
-
     </div>
 </div>
 
-<div class="popup" id="popup">
-    <button id="popupCloseButton"class="popupCloseButton" onclick="hidePopup()"><i class="fa fa-close"></i></button>
+<div>
+    <!-- Previous Page Button -->
+    <a th:if="${currentPage > 0}" th:href="@{/one-time-events(pageNo=${currentPage - 1})}">Previous</a>
+
+    <!-- Current Page Number -->
+    <span th:text="${currentPage} + 1">1</span>
+
+    <!-- Total Pages -->
+    <span th:text="${totalPages}">1</span>
+
+    <!-- Next Page Button -->
+    <a th:if="${currentPage + 1 < totalPages}" th:href="@{/recurrence-events(pageNo=${currentPage + 1})}">Next</a>
 </div>
 
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/jquery-migrate-3.0.0.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/jquery.sticky.js"></script>
-<script src="js/jquery.waypoints.min.js"></script>
-<script src="js/jquery.animateNumber.min.js"></script>
-<script src="js/jquery.fancybox.min.js"></script>
-<script src="js/jquery.stellar.min.js"></script>
-<script src="js/jquery.easing.1.3.js"></script>
-<script src="js/bootstrap-datepicker.min.js"></script>
-<script src="js/aos.js"></script>
 
-<script th:src="@{js/main.js}"></script>
-<script th:src="@{/js/displayScript.js}" ></script>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/jquery-migrate-3.0.0.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.sticky.js"></script>
+<script src="/js/jquery.waypoints.min.js"></script>
+<script src="/js/jquery.animateNumber.min.js"></script>
+<script src="/js/jquery.fancybox.min.js"></script>
+<script src="/js/jquery.stellar.min.js"></script>
+<script src="/js/jquery.easing.1.3.js"></script>
+<script src="/js/bootstrap-datepicker.min.js"></script>
+<script src="/js/aos.js"></script>
+
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/displayScript.js}"></script>
 </body>
 </html>
+<style>
+    :root {
+        --clr-primary: #651fff;
+        --clr-gray: #37474f;
+        --clr-gray-light: #b0bec5;
+    }
+
+    .wrapper-flex {
+        margin-top: 0px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .container-2 {
+        overflow: hidden;
+        box-shadow: 0px 2px 8px 0px var(--clr-gray-light);
+        background-color: white;
+        text-align: center;
+        border-radius: 1rem;
+        position: relative;
+        width: 280px;
+        margin-bottom: 1rem;
+        margin-left: 3rem;
+        margin-top: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+ .logo-img {
+    background-color: #ccc;
+    width: 100%;
+    height: 180px; /* Adjust the height as needed */
+    object-fit: cover;
+    border-radius: 1rem 1rem 0 0; /* Rounded corners at the top of the image */
+}
+
+.logo-img:hover {
+    transform: scale(1.1); /* Increase the size on hover */
+}
+
+    .name {
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+<!--    .description {-->
+<!--        margin: 1rem 2rem;-->
+<!--        font-size: 0.9rem;-->
+<!--        border: none;-->
+<!--        resize: none;-->
+<!--        background-color: transparent;-->
+<!--        overflow: hidden;-->
+<!--        outline: none;-->
+<!--        height: 100px;-->
+<!--        width: 70%;-->
+
+<!--    }-->
+
+ .button {
+   padding: 15px 25px;
+        font-size: 24px;
+        text-align: center;
+        cursor: pointer;
+        outline: none;
+        color: #fff;
+        background-color: #04AA6D;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 9px #999;
+
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+
+</style>
