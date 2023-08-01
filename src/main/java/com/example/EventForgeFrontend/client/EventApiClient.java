@@ -6,7 +6,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,6 +20,4 @@ public interface EventApiClient {
             , @RequestParam(value = "sort" , required = false) Sort.Direction sort
             , @RequestParam(value = "sortByColumn" ,required = false)String sortByColumn, @RequestBody CriteriaFilterRequest filterRequest);
 
-    @DeleteMapping("/delete-event/{id}")
-    public ResponseEntity<String> deleteEventById(@RequestHeader("Authorization") String authHeader , @PathVariable("id")Long id);
 }

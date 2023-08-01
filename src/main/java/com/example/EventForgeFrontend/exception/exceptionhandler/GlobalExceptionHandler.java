@@ -154,13 +154,6 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(DateTimeException.class)
-    public ModelAndView handleDateTimeException(DateTimeException ex, HttpServletRequest request , RedirectAttributes redirectAttributes) {
-        ModelAndView mav = assembleModelAndView(request);
-        redirectAttributes.addFlashAttribute("dateTimeException" , ex.getMessage());
-        return mav;
-    }
-
     @ExceptionHandler(EventRequestException.class)
     public ModelAndView handleEventRequestException(EventRequestException e ,RedirectAttributes redirectAttributes , HttpServletRequest request){
         ModelAndView mav = assembleModelAndView(request);

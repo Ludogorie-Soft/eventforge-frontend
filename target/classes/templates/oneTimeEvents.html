@@ -18,6 +18,7 @@
     <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
     <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/aos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 
     <!-- MAIN CSS -->
@@ -26,6 +27,7 @@
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
+<div class="popup" th:data-result="${result}"></div>
 
 <div class="site-wrap" id="home-section">
 
@@ -49,39 +51,98 @@
         </div>
     </div>
 </div>
-<form th:action="@{/one-time-events/expired}" method="get" style="text-align: center; margin-top: 1rem;">
-    <button type="submit" class="button">Покажи отминали събития</button>
+
+<th:block th:if="${isExpired == false}">
+    <form th:action="@{/one-time-events/expired}" method="get" style="text-align: center; margin-top: 1rem;">
+        <button type="submit" class="button">Покажи отминали събития</button>
+    </form>
+</th:block>
+
+<th:block th:unless="${isExpired == false}">
+    <form th:action="@{/one-time-events}" method="get" style="text-align: center; margin-top: 1rem;">
+        <button type="submit" class="button">Покажи активни/предстоящи събития</button>
+    </form>
+</th:block>
+
+<form th:action="@{/one-time-events/advanced-search/{isExpired}(isExpired=${isExpired})}" method="get">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:value="${name}">
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" th:value="${description}">
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" th:value="${address}">
+
+    <label for="organisationName">Organisation Name:</label>
+    <input type="text" id="organisationName" name="organisationName" th:value="${organisationName}">
+
+    <label for="minAge">Minimum Age:</label>
+    <input type="number" id="minAge" name="minAge" th:value="${minAge}">
+
+    <label for="maxAge">Maximum Age:</label>
+    <input type="number" id="maxAge" name="maxAge" th:value="${maxAge}">
+
+    <label for="isOnline">Is Online:</label>
+    <input type="checkbox" id="isOnline" name="isOnline" th:checked="${isOnline}" th:value="${isOnline}">
+
+    <label for="eventCategories">Event Categories:</label>
+    <input type="text" id="eventCategories" name="eventCategories" th:value="${eventCategories}">
+
+    <label for="startsAt">Starts At:</label>
+    <input type="datetime-local" id="startsAt" name="startsAt" th:value="${startsAt}">
+
+    <label for="endsAt">Ends At:</label>
+    <input type="datetime-local" id="endsAt" name="endsAt" th:value="${endsAt}">
+
+    <!-- Add more input fields for other parameters as needed -->
+
+    <button type="submit">Filter Events</button>
 </form>
+
+
 <div th:if="${events.content != null and events.content.size() > 0}">
-)<div class="wrapper-flex">
-    <div th:each="event : ${events.content}" class="container-2">
-        <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="profile image" class="logo-img">
-        <div class="card-content">
-            <p class="name" th:text="${event.name}"></p>
 
-            <p>
-                <strong>Организатор:</strong>
-                <a target="_blank" th:href="@{/view/organisations/details/{id}(id=${event.orgId})}"
-                   style="color: black;" th:text="'&quot;' + ${event.organisationName} + '&quot;'">
-                </a>
-            </p>
+    <div class="wrapper-flex">
+        <div th:each="event : ${events.content}" class="container-2">
+            <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="profile image" class="logo-img">
+            <div class="card-content">
+                <p class="name" th:text="${event.name}"></p>
+
+                <p>
+                    <strong>Организатор:</strong>
+                    <a target="_blank" th:href="@{/view/organisations/details/{id}(id=${event.orgId})}"
+                       style="color: black;" th:text="'&quot;' + ${event.organisationName} + '&quot;'">
+                    </a>
+                </p>
 
 
-            <p class="address">Адрес/линк: <span th:text="${event.address}"></span></p>
-            <p>Ключови думи: <span th:text="${event.eventCategories}"></span></p>
-            <!--            <textarea class="description" readonly th:text="${#strings.abbreviate(event.description, 100)}"></textarea>-->
-            <p><strong>Начало: </strong><span
-                    th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
-            </p>
-            <p><strong>Край: </strong><span
-                    th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
-            </p>
-            <button class="button">Виж още</button>
+                <p class="address">Адрес/линк: <span th:text="${event.address}"></span></p>
+                <p>Ключови думи: <span th:text="${event.eventCategories}"></span></p>
+                <!--            <textarea class="description" readonly th:text="${#strings.abbreviate(event.description, 100)}"></textarea>-->
+                <p><strong>Начало: </strong><span
+                        th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                </p>
+                <p><strong>Край: </strong><span
+                        th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                </p>
+                <button class="button">Виж още</button>
+                <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
+                     class="delete-container">
+                    <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
+                          onsubmit="return confirmDelete(event)">
+                        <button type="submit" class="delete-button">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
         </div>
     </div>
-</div>
 
-    <div>
+
+    <div th:if="${pagination == 1}">
         <!-- First Page Button -->
         <a th:if="${currentPage > 0}" th:href="@{/one-time-events(pageNo=0)}">&lt;&lt;</a>
 
@@ -91,11 +152,14 @@
         <!-- Page Numbers with Ellipses -->
         <span th:if="${currentPage - 2 > 0}">1</span>
         <span th:if="${currentPage - 2 > 1}">...</span>
-        <span th:if="${currentPage - 1 > 0}" th:href="@{/one-time-events(pageNo=${currentPage - 1})}" th:text="${currentPage} - 1"></span>
+        <span th:if="${currentPage - 1 > 0}" th:href="@{/one-time-events(pageNo=${currentPage - 1})}"
+              th:text="${currentPage} - 1"></span>
         <span th:text="${currentPage + 1}"></span>
-        <span th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${currentPage + 1})}" th:text="${currentPage} + 1"></span>
+        <span th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${currentPage + 1})}"
+              th:text="${currentPage} + 1"></span>
         <span th:if="${currentPage + 2 < totalPages}">...</span>
-        <span th:if="${currentPage + 2 < totalPages}" th:href="@{/one-time-events(pageNo=${totalPages - 1})}" th:text="${totalPages}"></span>
+        <span th:if="${currentPage + 2 < totalPages}" th:href="@{/one-time-events(pageNo=${totalPages - 1})}"
+              th:text="${totalPages}"></span>
 
         <!-- Next Page Button -->
         <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${currentPage + 1})}">&gt;</a>
@@ -104,11 +168,97 @@
         <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${totalPages - 1})}">&gt;&gt;</a>
     </div>
 
+    <div th:if="${pagination == 2}">
+        <!-- First Page Button -->
+        <a th:if="${currentPage > 0}" th:href="@{/one-time-events/expired(pageNo=0)}">&lt;&lt;</a>
+
+        <!-- Previous Page Button -->
+        <a th:if="${currentPage > 0}" th:href="@{/one-time-events/expired(pageNo=${currentPage - 1})}">&lt;</a>
+
+        <!-- Page Numbers with Ellipses -->
+        <span th:if="${currentPage - 2 > 0}">1</span>
+        <span th:if="${currentPage - 2 > 1}">...</span>
+        <span th:if="${currentPage - 1 > 0}" th:href="@{/one-time-events/expired(pageNo=${currentPage - 1})}"
+              th:text="${currentPage} - 1"></span>
+        <span th:text="${currentPage + 1}"></span>
+        <span th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/expired(pageNo=${currentPage + 1})}"
+              th:text="${currentPage} + 1"></span>
+        <span th:if="${currentPage + 2 < totalPages}">...</span>
+        <span th:if="${currentPage + 2 < totalPages}" th:href="@{/one-time-events/expired(pageNo=${totalPages - 1})}"
+              th:text="${totalPages}"></span>
+
+        <!-- Next Page Button -->
+        <a th:if="${currentPage + 1 < totalPages}"
+           th:href="@{/one-time-events/expired(pageNo=${currentPage + 1})}">&gt;</a>
+
+        <!-- Last Page Button -->
+        <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/expired(pageNo=${totalPages - 1})}">&gt;&gt;</a>
+    </div>
+
+        <div th:if="${pagination == 3}">
+            <a th:if="${currentPage > 0}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">
+                Previous
+                <span th:if="${currentPage - 1 > 0}" th:text="${currentPage - 1}"></span>
+            </a>
+
+            <!-- Page Numbers with Ellipses -->
+            <span th:if="${currentPage - 2 > 0}">1</span>
+            <span th:if="${currentPage - 2 > 1}">...</span>
+            <a th:if="${currentPage - 1 > 0}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}" th:text="${currentPage - 1}"></a>
+            <span th:text="${currentPage + 1}"></span>
+            <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}" th:text="${currentPage + 1}"></a>
+            <span th:if="${currentPage + 2 < totalPages}">...</span>
+            <a th:if="${currentPage + 2 < totalPages}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}" th:text="${totalPages}"></a>
+
+            <!-- Next Page Link -->
+            <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">
+                Next
+                <span th:if="${currentPage + 1 < totalPages}" th:text="${currentPage + 1}"></span>
+            </a>
+
+<!--            &lt;!&ndash; First Page Button &ndash;&gt;-->
+<!--            <a th:if="${currentPage > 0}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=0)}">&lt;&lt;</a>-->
+
+<!--            <a th:if="${currentPage > 0}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1})__(name=${name})__(description=${description})-->
+<!--            __(address=${address})__(organisationName=${organisationName})__(minAge=${minAge})__(maxAge=${maxAge})__(isOnline=${isOnline})__(eventCategories=${eventCategories})-->
+<!--            __(startsAt=${startsAt})__(endsAt=${endsAt})}" >&lt;</a>-->
+
+
+<!--            <a th:if="${currentPage - 2 > 0}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=0)__(name=${name})__(description=${description})-->
+<!--            __(address=${address})__(organisationName=${organisationName})__(minAge=${minAge})__(maxAge=${maxAge})__(isOnline=${isOnline})__(eventCategories=${eventCategories})-->
+<!--            __(startsAt=${startsAt})__(endsAt=${endsAt})}">1</a>-->
+<!--            <span th:if="${currentPage - 2 > 1}">...</span>-->
+<!--            <a th:if="${currentPage - 1 > 0}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1})__(name=${name})__(description=${description})-->
+<!--            __(address=${address})__(organisationName=${organisationName})__(minAge=${minAge})__(maxAge=${maxAge})__(isOnline=${isOnline})__(eventCategories=${eventCategories})-->
+<!--            __(startsAt=${startsAt})__(endsAt=${endsAt})}" th:text="${currentPage - 1}"></a>-->
+<!--            <span th:text="${currentPage + 1}"></span>-->
+<!--            <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1})__(name=${name})__(description=${description})-->
+<!--            __(address=${address})__(organisationName=${organisationName})__(minAge=${minAge})__(maxAge=${maxAge})__(isOnline=${isOnline})__(eventCategories=${eventCategories})-->
+<!--            __(startsAt=${startsAt})__(endsAt=${endsAt})}" th:text="${currentPage + 1}"></a>-->
+<!--            <span th:if="${currentPage + 2 < totalPages}">...</span>-->
+<!--            <a th:if="${currentPage + 2 < totalPages}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1})__(name=${name})__(description=${description})-->
+<!--            __(address=${address})__(organisationName=${organisationName})__(minAge=${minAge})__(maxAge=${maxAge})__(isOnline=${isOnline})__(eventCategories=${eventCategories})-->
+<!--            __(startsAt=${startsAt})__(endsAt=${endsAt})}" th:text="${totalPages}"></a>-->
+
+<!--            &lt;!&ndash; Next Page Button &ndash;&gt;-->
+<!--            <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1})__(name=${name})__(description=${description})-->
+<!--            __(address=${address})__(organisationName=${organisationName})__(minAge=${minAge})__(maxAge=${maxAge})__(isOnline=${isOnline})__(eventCategories=${eventCategories})-->
+<!--            __(startsAt=${startsAt})__(endsAt=${endsAt})}">&gt;</a>-->
+
+<!--            &lt;!&ndash; Last Page Button &ndash;&gt;-->
+<!--            <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1})__(name=${name})__(description=${description})-->
+<!--            __(address=${address})__(organisationName=${organisationName})__(minAge=${minAge})__(maxAge=${maxAge})__(isOnline=${isOnline})__(eventCategories=${eventCategories})-->
+<!--            __(startsAt=${startsAt})__(endsAt=${endsAt})}">&gt;&gt;</a>-->
+        </div>
+
+
+</div>
+
 
 </div>
 <div th:unless="${events.content != null and events.content.size() > 0}">
     <p>Няма намерени събития.</p>
-    </div>
+</div>
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/jquery-migrate-3.0.0.js"></script>
 <script src="/js/popper.min.js"></script>
@@ -123,11 +273,109 @@
 <script src="/js/bootstrap-datepicker.min.js"></script>
 <script src="/js/aos.js"></script>
 
+
 <script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/displayScript.js}"></script>
+
+
+<script>
+  var popup = document.querySelector(".popup");
+  var result = popup.dataset.result;
+
+  if (result && result.trim() !== '') {
+    var popupElement = document.createElement("div");
+    popupElement.innerHTML = result;
+    popupElement.style.position = "fixed";
+    popupElement.style.top = "50%";
+    popupElement.style.left = "50%";
+    popupElement.style.transform = "translate(-50%, -50%)";
+    popupElement.style.backgroundColor = "lightgray";
+    popupElement.style.padding = "20px";
+    popupElement.style.border = "1px solid gray";
+    popupElement.style.borderRadius = "5px";
+    popupElement.style.opacity = "1";
+    popupElement.style.transition = "opacity 2s";
+
+    var closeButton = document.createElement("button");
+    closeButton.innerHTML = "X";
+    closeButton.style.position = "absolute";
+    closeButton.style.top = "5px";
+    closeButton.style.right = "5px";
+    closeButton.style.border = "none";
+    closeButton.style.backgroundColor = "red";
+    closeButton.style.color = "white";
+    closeButton.style.fontSize = "12px";
+    closeButton.style.width = "20px";
+    closeButton.style.height = "20px";
+    closeButton.style.borderRadius = "50%";
+    closeButton.style.cursor = "pointer";
+
+    popupElement.appendChild(closeButton);
+    document.body.appendChild(popupElement);
+
+    function closePopup() {
+      popupElement.style.opacity = "0";
+      setTimeout(function() {
+        document.body.removeChild(popupElement);
+      }, 2000);
+    }
+
+    closeButton.addEventListener("click", closePopup);
+    setTimeout(closePopup, 5000);
+  }
+
+</script>
+
+<script>
+    function confirmDelete(event) {
+        // Show the confirmation dialog
+        const isConfirmed = confirm("Сигурни ли сте, че искате да извършите това действие?");
+
+        // If the user clicks "OK," proceed with the form submission (delete action)
+        // Otherwise, cancel the form submission
+        return isConfirmed;
+    }
+
+</script>
+
 </body>
 </html>
 <style>
+
+      .event-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .delete-container {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+
+    .delete-button {
+        padding: 5px;
+        font-size: 16px;
+        color: white;
+        background-color: red;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .delete-button:hover {
+        background-color: darkred;
+    }
+
     :root {
         --clr-primary: #651fff;
         --clr-gray: #37474f;
@@ -174,18 +422,6 @@
         font-size: 1.5rem;
     }
 
-<!--    .description {-->
-<!--        margin: 1rem 2rem;-->
-<!--        font-size: 0.9rem;-->
-<!--        border: none;-->
-<!--        resize: none;-->
-<!--        background-color: transparent;-->
-<!--        overflow: hidden;-->
-<!--        outline: none;-->
-<!--        height: 100px;-->
-<!--        width: 70%;-->
-
-<!--    }-->
 
  .button {
    padding: 15px 25px;
@@ -208,6 +444,7 @@
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
+
 
 
 </style>

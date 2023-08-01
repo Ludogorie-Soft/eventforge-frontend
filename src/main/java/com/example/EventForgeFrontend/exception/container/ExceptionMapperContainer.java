@@ -12,7 +12,6 @@ public class ExceptionMapperContainer {
 
     public static final Map<Class<? extends RuntimeException>, Integer> exceptionResponse = Map.ofEntries(
             entry(AccessDeniedException.class, HttpServletResponse.SC_FORBIDDEN),
-            entry(DateTimeException.class, HttpServletResponse.SC_SEE_OTHER),
             entry(EmailConfirmationNotSentException.class, HttpServletResponse.SC_EXPECTATION_FAILED),
             entry(EventRequestException.class, HttpServletResponse.SC_NO_CONTENT),
             entry(ImageException.class, HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE),

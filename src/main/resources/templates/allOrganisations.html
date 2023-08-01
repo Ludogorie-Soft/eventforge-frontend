@@ -59,12 +59,8 @@
             </div>
 
             <p class="label">Приоритети</p>
-            <div>
-            <span th:each="priority, iterStat : ${organisation.organisationPriorities}" th:if="${iterStat.index < 3}">
-                <span th:text="${priority}"></span>
-                <span th:if="${!iterStat.last}">,</span>
-            </span>
-                <span th:if="${#lists.size(organisation.organisationPriorities) > 3}">...</span>
+            <div class="priority" >
+           <p th:text="${#strings.listJoin(organisation.organisationPriorities, ', ')}"></p>
             </div>
 
             <textarea class="description" readonly
@@ -102,6 +98,15 @@
 </body>
 </html>
 <style>
+
+    .priority {
+    overflow: hidden;
+    width:100px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
     :root {
         --clr-primary: #651FFF;
         --clr-gray: #37474F;
