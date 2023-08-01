@@ -2,7 +2,6 @@ package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
-import com.example.EventForgeFrontend.client.ProbaClient;
 import com.example.EventForgeFrontend.dto.*;
 import com.example.EventForgeFrontend.image.ImageService;
 import com.example.EventForgeFrontend.image.ImageType;

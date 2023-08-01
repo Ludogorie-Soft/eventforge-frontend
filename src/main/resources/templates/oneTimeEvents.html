@@ -49,7 +49,11 @@
         </div>
     </div>
 </div>
-<div class="wrapper-flex">
+<form th:action="@{/one-time-events/expired}" method="get" style="text-align: center; margin-top: 1rem;">
+    <button type="submit" class="button">Покажи отминали събития</button>
+</form>
+<div th:if="${events.content != null and events.content.size() > 0}">
+)<div class="wrapper-flex">
     <div th:each="event : ${events.content}" class="container-2">
         <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="profile image" class="logo-img">
         <div class="card-content">
@@ -77,7 +81,34 @@
     </div>
 </div>
 
+    <div>
+        <!-- First Page Button -->
+        <a th:if="${currentPage > 0}" th:href="@{/one-time-events(pageNo=0)}">&lt;&lt;</a>
 
+        <!-- Previous Page Button -->
+        <a th:if="${currentPage > 0}" th:href="@{/one-time-events(pageNo=${currentPage - 1})}">&lt;</a>
+
+        <!-- Page Numbers with Ellipses -->
+        <span th:if="${currentPage - 2 > 0}">1</span>
+        <span th:if="${currentPage - 2 > 1}">...</span>
+        <span th:if="${currentPage - 1 > 0}" th:href="@{/one-time-events(pageNo=${currentPage - 1})}" th:text="${currentPage} - 1"></span>
+        <span th:text="${currentPage + 1}"></span>
+        <span th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${currentPage + 1})}" th:text="${currentPage} + 1"></span>
+        <span th:if="${currentPage + 2 < totalPages}">...</span>
+        <span th:if="${currentPage + 2 < totalPages}" th:href="@{/one-time-events(pageNo=${totalPages - 1})}" th:text="${totalPages}"></span>
+
+        <!-- Next Page Button -->
+        <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${currentPage + 1})}">&gt;</a>
+
+        <!-- Last Page Button -->
+        <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${totalPages - 1})}">&gt;&gt;</a>
+    </div>
+
+
+</div>
+<div th:unless="${events.content != null and events.content.size() > 0}">
+    <p>Няма намерени събития.</p>
+    </div>
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/jquery-migrate-3.0.0.js"></script>
 <script src="/js/popper.min.js"></script>

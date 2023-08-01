@@ -64,7 +64,7 @@
                             <div class="card-body">
                                 <div class="e-profile">
                                     <div class="row">
-                                        <h3 style="color:#ee4557;">Промени информация за организацията си</h3>
+                                        <h3 style="color:#ee4557;">Промени личните си данни</h3>
                                     </div>
                                     <ul class="nav nav-tabs d-flex">
                                         <li class="nav-item">
@@ -191,11 +191,11 @@
                                                         <div class="row">
                                                             <div class="col">
                                                                 <div class="form-group">
-                                                                    <label>Опция за благотворителност</label>
+                                                                    <label>Възможност за дарение. (Линк към страница с информация за дарения)</label>
                                                                     <input class="form-control" type="text"
                                                                            th:field="*{charityOption}"
                                                                            th:value="${updateRequest.charityOption}"
-                                                                           placeholder="Опция за благотворителност">
+                                                                           placeholder="Възможност за дарение. (Линк към страница с информация за дарения)">
                                                                 </div>
                                                                 <div th:if="${charityOption}" id="charityOptionError">
                                                                     <p th:text="${charityOption}"

@@ -31,7 +31,7 @@ public class RecurrenceEventController {
 
     @GetMapping
     public String showAllActiveRecurrenceEvents(@RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
-            , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize
+            , @RequestParam(value = "pageSize",defaultValue = "10", required = false) Integer pageSize
             , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
             , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
             , Model model) {
@@ -40,6 +40,11 @@ public class RecurrenceEventController {
         Page<CommonEventResponse> events = recurrenceEventApiClient.showAllActiveRecurrenceEvents(pageNo ,pageSize , sort1 ,sortByColumn);
         if (events != null && !events.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(events);
+            model.addAttribute("currentPage" ,events.getNumber());
+            model.addAttribute("totalPages" ,events.getTotalPages());
+            model.addAttribute("totalItems" , events.getTotalElements());
+            model.addAttribute("sort" , sort1);
+            model.addAttribute("sortByColumn" , sortByColumn);
         }
         model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
@@ -56,6 +61,11 @@ public class RecurrenceEventController {
         Page<CommonEventResponse> events = recurrenceEventApiClient.showAllExpiredRecurrenceEvents(pageNo , pageSize , sort1 , sortByColumn);
         if (events != null && !events.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(events);
+            model.addAttribute("currentPage" ,events.getNumber());
+            model.addAttribute("totalPages" ,events.getTotalPages());
+            model.addAttribute("totalItems" , events.getTotalElements());
+            model.addAttribute("sort" , sort1);
+            model.addAttribute("sortByColumn" , sortByColumn);
         }
         model.addAttribute("events", events);
         model.addAttribute("isExpired", true);
@@ -87,7 +97,7 @@ public class RecurrenceEventController {
         Page<CommonEventResponse> recurrenceEvents = eventApiClient.getEventsByCriteria(pageNo , pageSize , sort1 , sortByColumn,request);
         if (recurrenceEvents != null && !recurrenceEvents.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(recurrenceEvents);
-            model.addAttribute("items", recurrenceEvents);
+            model.addAttribute("events", recurrenceEvents);
         }
         model.addAttribute("isExpired", isExpired);
         return "recurrenceEvents";
