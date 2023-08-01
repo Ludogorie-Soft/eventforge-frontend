@@ -59,8 +59,8 @@
                         <li class="active"><a th:if="${session.sessionToken == null}" th:href="@{/registration}"
                                               class="nav-link">Регистрирай се</a></li>
                         <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
-                        <li><a th:href="@{/one-time-events}" class="nav-link">Еднократни събития</a></li>
-                        <li><a th:href="@{/recurrence-events}" class="nav-link">Продължителни събития</a></li>
+                        <li><a th:href="@{/one-time-events}" class="nav-link">Събития</a></li>
+                        <li><a th:href="@{/recurrence-events}" class="nav-link">Инициативи</a></li>
                         <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
                     </ul>
                 </nav>

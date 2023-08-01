@@ -191,11 +191,11 @@
                                                         <div class="row">
                                                             <div class="col">
                                                                 <div class="form-group">
-                                                                    <label>Опция за благотворителност</label>
+                                                                    <label>Възможност за дарение. (Линк към страница с информация за дарения)</label>
                                                                     <input class="form-control" type="text"
                                                                            th:field="*{charityOption}"
                                                                            th:value="${updateRequest.charityOption}"
-                                                                           placeholder="Опция за благотворителност">
+                                                                           placeholder="Възможност за дарение. (Линк към страница с информация за дарения)">
                                                                 </div>
                                                                 <div th:if="${charityOption}" id="charityOptionError">
                                                                     <p th:text="${charityOption}"

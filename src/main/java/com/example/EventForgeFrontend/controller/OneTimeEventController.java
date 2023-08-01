@@ -30,7 +30,7 @@ public class OneTimeEventController {
 
     @GetMapping
     public String showAllActiveOneTimeEvents(@RequestParam(value = "pageNo" , required = false , defaultValue = "0") Integer pageNo
-            , @RequestParam(value = "pageSize",defaultValue = "10", required = false) Integer pageSize
+            , @RequestParam(value = "pageSize",defaultValue = "1", required = false) Integer pageSize
             , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
             , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
             , Model model) {

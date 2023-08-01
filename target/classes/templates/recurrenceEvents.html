@@ -49,6 +49,8 @@
         </div>
     </div>
 </div>
+<div th:if="${events.content != null and events.content.size() > 0}">
+
 <div class="wrapper-flex">
     <div th:each="event : ${events.content}" class="container-2">
         <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="profile image" class="logo-img">
@@ -89,6 +91,10 @@
 
     <!-- Next Page Button -->
     <a th:if="${currentPage + 1 < totalPages}" th:href="@{/recurrence-events(pageNo=${currentPage + 1})}">Next</a>
+</div>
+</div>
+<div th:unless="${events.content != null and events.content.size() > 0}">
+    <p>Няма намерени събития.</p>
 </div>
 
 
