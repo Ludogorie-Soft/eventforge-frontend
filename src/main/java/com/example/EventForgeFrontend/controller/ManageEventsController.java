@@ -54,7 +54,7 @@ public class ManageEventsController {
     }
 
     @PostMapping("create-event")
-    public String saveCreatedEvent(@RequestParam("image") MultipartFile image, EventRequest eventRequest, HttpServletRequest request,RedirectAttributes redirectAttributes) {
+    public String saveCreatedEvent(@RequestParam("image") MultipartFile image, EventRequest eventRequest, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
         request.setAttribute("event", eventRequest);
 
@@ -69,13 +69,13 @@ public class ManageEventsController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, RedirectAttributes redirectAttributes,Model model ,@ModelAttribute("event") EventRequest newEventRequest) {
+    public String updateEvent(HttpServletRequest request, @PathVariable("id") Long id, RedirectAttributes redirectAttributes, Model model, @ModelAttribute("event") EventRequest newEventRequest) {
 
         String token = (String) request.getSession().getAttribute("sessionToken");
 
         ResponseEntity<EventRequest> getEventToUpdate = organisationApiClient.getEventToUpdateByIdAndByOrganisation(token, id);
-        if(getEventToUpdate.getBody()==null){
-            redirectAttributes.addFlashAttribute("result" ,"Търсеното от вас събитие с идентификационен номер:" + id+ " ,не съществува или не принаджели на вашият акаунт!");
+        if (getEventToUpdate.getBody() == null) {
+            redirectAttributes.addFlashAttribute("result", "Търсеното от вас събитие с идентификационен номер:" + id + " ,не съществува или не принаджели на вашият акаунт!");
             return "redirect:/manage-events";
         }
         String currentEventPictureUrl = ImageService.encodeImage((getEventToUpdate.getBody()).getImageUrl());
@@ -104,14 +104,13 @@ public class ManageEventsController {
     }
 
     @PostMapping("delete/{id}")
-    public String deleteEventById(HttpServletRequest request, @PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteEventById(HttpServletRequest request, @PathVariable("id") Long id, RedirectAttributes redirectAttributes ) {
 
         String token = (String) request.getSession().getAttribute("sessionToken");
-        if (sessionManager.getStoreSessionUserRole().equals("ORGANISATION")) {
-            ResponseEntity<String> deleteEventResult = eventApiClient.deleteEventById(token, id);
-            redirectAttributes.addFlashAttribute("result", deleteEventResult.getBody());
-        }
-        return "redirect:/manage-events";
-    }
 
+        ResponseEntity<String> deleteEventResult = organisationApiClient.deleteEventById(token, id);
+        redirectAttributes.addFlashAttribute("result", deleteEventResult.getBody());
+
+        return "redirect:" + request.getHeader("Referer");
+    }
 }

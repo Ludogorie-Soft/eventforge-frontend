@@ -44,4 +44,6 @@ public interface OrganisationApiClient {
     @PostMapping("/change-picture")
      ResponseEntity<String> updateLogo(@RequestHeader("Authorization")String authHeader,@RequestParam("logo") String logo , @RequestParam("cover")String cover);
 
+    @DeleteMapping("delete-event/{id}")
+   ResponseEntity<String> deleteEventById(@RequestHeader("Authorization") String authHeader , @PathVariable("id")Long id);
 }

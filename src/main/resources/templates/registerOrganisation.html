@@ -128,7 +128,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" th:field="*{bullstat}" class="form-control" placeholder="Булстат ">
+                            <input type="text" th:field="*{bullstat}" class="form-control" placeholder="Булстат(Видимо само за администратора на сайта)">
                         </div>
                         <div th:if="${bullstat}" id="bullstatError">
                             <p th:text="${bullstat}" style="color: red;"></p>
@@ -137,7 +137,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{website}"
-                                   placeholder="Уеб сайт на организацията">
+                                   placeholder="Уебсайт на организацията">
                         </div>
                         <div th:if="${website}" id="websiteError">
                             <p th:text="${website}" style="color: red;"></p>
@@ -157,7 +157,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{fullName}"
-                                   placeholder="Лице за контакт - име и фамилия*" id="fullname" required>
+                                   placeholder="Лице за контакт - име и фамилия(Видимо само за администратора на сайта)*" id="fullname" required>
                         </div>
                         <div th:if="${fullName}" id="fullNameError">
                             <p th:text="${fullName}" style="color: red;"></p>
@@ -179,7 +179,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control" th:field="*{phoneNumber}"
-                                   placeholder="Лице за контакт - телефон*" id="phone" required>
+                                   placeholder="Лице за контакт - телефон(Видимо само за администратора на сайта)*" id="phone" required>
                         </div>
                         <div th:if="${phoneNumber}" id="phoneNumberError">
                             <p th:text="${phoneNumber}" style="color: red;"></p>

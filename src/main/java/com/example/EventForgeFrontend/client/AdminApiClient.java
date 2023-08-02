@@ -37,4 +37,7 @@ public interface AdminApiClient {
     @GetMapping("/event/details/{id}")
     ResponseEntity<CommonEventResponse>showEventDetailsForAdmin(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long eventId);
 
+    @DeleteMapping("delete-event/{id}")
+    ResponseEntity<String> deleteEventById(@RequestHeader("Authorization")String authHeader ,@PathVariable("id")Long eventId);
+
 }

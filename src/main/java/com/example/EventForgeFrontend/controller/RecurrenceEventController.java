@@ -103,14 +103,4 @@ public class RecurrenceEventController {
         return "recurrenceEvents";
     }
 
-    @PostMapping("delete/{id}")
-    public String deleteEventById(HttpServletRequest request, @PathVariable("id") Long id, Model model) {
-
-        String token = (String) request.getSession().getAttribute("sessionToken");
-        if (sessionManager.getStoreSessionUserRole().equals("ADMIN")) {
-            ResponseEntity<String> deleteEventResult = eventApiClient.deleteEventById(token, id);
-            model.addAttribute("deleteEventResult", deleteEventResult.getBody());
-        }
-        return "recurrenceEvents";
-    }
 }

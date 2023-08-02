@@ -5,12 +5,9 @@ import com.example.EventForgeFrontend.client.OneTimeEventApiClient;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
 import com.example.EventForgeFrontend.image.ImageService;
-import com.example.EventForgeFrontend.session.SessionManager;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,40 +23,41 @@ public class OneTimeEventController {
 
     private final EventApiClient eventApiClient;
 
-    private final SessionManager sessionManager;
 
     @GetMapping
-    public String showAllActiveOneTimeEvents(@RequestParam(value = "pageNo" , required = false , defaultValue = "0") Integer pageNo
-            , @RequestParam(value = "pageSize",defaultValue = "1", required = false) Integer pageSize
-            , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
-            , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
+    public String showAllActiveOneTimeEvents(@RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo
+            , @RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize
+            , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
+            , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             , Model model) {
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Page<CommonEventResponse> events = oneTimeEventApiClient.showAllActiveOneTimeEvents(pageNo , pageSize , sort1 , sortByColumn);
-        if(events!=null && !events.isEmpty()){
+        Page<CommonEventResponse> events = oneTimeEventApiClient.showAllActiveOneTimeEvents(pageNo, pageSize, sort1, sortByColumn);
+        if (events != null && !events.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(events);
-            model.addAttribute("currentPage" ,events.getNumber());
-            model.addAttribute("totalPages" ,events.getTotalPages());
-            model.addAttribute("totalItems" , events.getTotalElements());
-            model.addAttribute("sort" , sort1);
-            model.addAttribute("sortByColumn" , sortByColumn);
+            model.addAttribute("currentPage", events.getNumber());
+            model.addAttribute("totalPages", events.getTotalPages());
+            model.addAttribute("totalItems", events.getTotalElements());
+            model.addAttribute("sort", sort1);
+            model.addAttribute("sortByColumn", sortByColumn);
         }
         model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
 
+        //this model attribute is to recognized which pagination we have to switch on
+        model.addAttribute("pagination" , 1);
         return "oneTimeEvents";
     }
 
     @GetMapping("/expired")
-    public String showAllExpiredOneTimeEvents(@RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
-            , @RequestParam(value = "pageSize",defaultValue = "10", required = false) Integer pageSize
-            , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
-            , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
+    public String showAllExpiredOneTimeEvents(@RequestParam(value = "pageNo", defaultValue = "0", required = false) Integer pageNo
+            , @RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize
+            , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
+            , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             , Model model) {
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
         pageNo = Math.max(0, pageNo);
-        Page<CommonEventResponse> events = oneTimeEventApiClient.showAllExpiredOneTimeEvents(pageNo , pageSize , sort1 , sortByColumn);
-        if(events!=null && !events.isEmpty()){
+        Page<CommonEventResponse> events = oneTimeEventApiClient.showAllExpiredOneTimeEvents(pageNo, pageSize, sort1, sortByColumn);
+        if (events != null && !events.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(events);
             model.addAttribute("currentPage", events.getNumber());
             model.addAttribute("totalPages", events.getTotalPages());
@@ -67,13 +65,14 @@ public class OneTimeEventController {
         model.addAttribute("events", events);
         model.addAttribute("isExpired", true);
 
+        model.addAttribute("pagination" ,2);
 
         return "oneTimeEvents";
     }
 
 
-    @PostMapping("/advanced-search/{isExpired}")
-    public String filterOneTimeEventsByCriteria(@RequestParam(value = "name", required = false) String name,
+    @GetMapping("/advanced-search/{isExpired}")
+    public String filterOneTimeEventsByCriteria(@RequestParam(value = "name", required = false ) String name,
                                                 @RequestParam(value = "description", required = false) String description,
                                                 @RequestParam(value = "address", required = false) String address,
                                                 @RequestParam(value = "organisationName", required = false) String organisationName,
@@ -84,36 +83,66 @@ public class OneTimeEventController {
                                                 @RequestParam(value = "startsAt", required = false) LocalDateTime startsAt,
                                                 @RequestParam(value = "endsAt", required = false) LocalDateTime endsAt,
                                                 @PathVariable("isExpired") boolean isExpired,
-                                                @RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
-            , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize
-            , @RequestParam(value = "sort" ,defaultValue ="ASC" ,required = false) String sort
-            , @RequestParam(value = "sortByColumn",defaultValue = "startsAt",required = false)String sortByColumn
+                                                @RequestParam(value = "pageNo", defaultValue = "0", required = false) Integer pageNo
+            , @RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize
+            , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
+            , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             ,
                                                 Model model) {
 
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
-        CriteriaFilterRequest request = new CriteriaFilterRequest(true , isExpired ,name ,description ,address,organisationName,minAge,maxAge,isOnline,eventCategories,startsAt,endsAt);
+        CriteriaFilterRequest request = new CriteriaFilterRequest(true, isExpired, name, description, address, organisationName, minAge, maxAge, isOnline, eventCategories, startsAt, endsAt);
 
-       Page<CommonEventResponse> oneTimeEvents = eventApiClient.getEventsByCriteria(pageNo , pageSize , sort1 , sortByColumn,request);
-        if(oneTimeEvents!=null && !oneTimeEvents.isEmpty()){
+
+        Page<CommonEventResponse> oneTimeEvents = eventApiClient.getEventsByCriteria(pageNo, pageSize, sort1, sortByColumn, request);
+        if (oneTimeEvents != null && !oneTimeEvents.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(oneTimeEvents);
-            model.addAttribute("events", oneTimeEvents);
-            }
-
-
-        model.addAttribute("isExpired", isExpired);
-        return "oneTimeEvents";
-    }
-
-    @PostMapping("delete/{id}")
-    public String deleteEventById(HttpServletRequest request, @PathVariable("id") Long id, Model model) {
-
-        String token = (String) request.getSession().getAttribute("sessionToken");
-        if(sessionManager.getStoreSessionUserRole().equals("ADMIN")){
-            ResponseEntity<String> deleteEventResult = eventApiClient.deleteEventById(token, id);
-            model.addAttribute("result", deleteEventResult.getBody());
+            model.addAttribute("currentPage", oneTimeEvents.getNumber());
+            model.addAttribute("totalPages", oneTimeEvents.getTotalPages());
+            model.addAttribute("totalItems", oneTimeEvents.getTotalElements());
+            model.addAttribute("sort", sort1);
+            model.addAttribute("sortByColumn", sortByColumn);
+        } else {
+            model.addAttribute("result" , "Няма намерени събития с търсените от вас критерии");
         }
+        if (name != null && !name.isEmpty()) {
+            model.addAttribute("name", name);
+        }
+        if (description != null && !description.isEmpty()) {
+            model.addAttribute("description", description);
+        }
+        if (address != null && !address.isEmpty()) {
+            model.addAttribute("address", address);
+        }
+        if (organisationName != null && !organisationName.isEmpty()) {
+            model.addAttribute("organisationName", organisationName);
+        }
+        if (minAge != null) {
+            model.addAttribute("minAge", minAge);
+        }
+        if (maxAge != null) {
+            model.addAttribute("maxAge", maxAge);
+        }
+        if (isOnline != null) {
+            model.addAttribute("isOnline", isOnline);
+        }
+        if (eventCategories != null && !eventCategories.isEmpty()) {
+            model.addAttribute("eventCategories", eventCategories);
+        }
+        if (startsAt != null) {
+            model.addAttribute("startsAt", startsAt);
+        }
+        if (endsAt != null) {
+            model.addAttribute("endsAt", endsAt);
+        }
+        boolean exp = isExpired;
+        model.addAttribute("events", oneTimeEvents);
+        model.addAttribute("isExpired", isExpired);
+
+        model.addAttribute("pagination" ,3);
         return "oneTimeEvents";
     }
+
+
 }
