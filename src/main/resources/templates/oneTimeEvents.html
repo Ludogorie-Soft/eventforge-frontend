@@ -140,87 +140,73 @@
             </div>
         </div>
     </div>
+</div>
+<div th:if="${pagination == 1}">
+    <!-- First Page Button -->
+    <div class="pagination-container">
+    <div class="pagination">
+        <span th:if="${currentPage > 0}">
+            <a th:href="@{/one-time-events(pageNo=0)}">&laquo;</a>
+            <a th:href="@{/one-time-events(pageNo=${currentPage - 1})}">&lt;</a>
+        </span>
 
+        <!-- Page Numbers -->
+        <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
+            <a th:href="@{/one-time-events(pageNo=${page})}" th:class="${page == currentPage} ? 'active' : ''" th:text="${page + 1}"></a>
+        </span>
 
-    <div th:if="${pagination == 1}">
-        <!-- First Page Button -->
-        <a th:if="${currentPage > 0}" th:href="@{/one-time-events(pageNo=0)}">&lt;&lt;</a>
-
-        <!-- Previous Page Button -->
-        <a th:if="${currentPage > 0}" th:href="@{/one-time-events(pageNo=${currentPage - 1})}">&lt;</a>
-
-        <!-- Page Numbers with Ellipses -->
-        <span th:if="${currentPage - 2 > 0}">1</span>
-        <span th:if="${currentPage - 2 > 1}">...</span>
-        <span th:if="${currentPage - 1 > 0}" th:href="@{/one-time-events(pageNo=${currentPage - 1})}"
-              th:text="${currentPage} - 1"></span>
-        <span th:text="${currentPage + 1}"></span>
-        <span th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${currentPage + 1})}"
-              th:text="${currentPage} + 1"></span>
-        <span th:if="${currentPage + 2 < totalPages}">...</span>
-        <span th:if="${currentPage + 2 < totalPages}" th:href="@{/one-time-events(pageNo=${totalPages - 1})}"
-              th:text="${totalPages}"></span>
-
-        <!-- Next Page Button -->
-        <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${currentPage + 1})}">&gt;</a>
-
-        <!-- Last Page Button -->
-        <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events(pageNo=${totalPages - 1})}">&gt;&gt;</a>
+        <span th:if="${currentPage + 1 < totalPages}">
+            <a th:href="@{/one-time-events(pageNo=${currentPage + 1})}">&gt;</a>
+            <a th:href="@{/one-time-events(pageNo=${totalPages - 1})}">&raquo;</a>
+        </span>
     </div>
-
-    <div th:if="${pagination == 2}">
-        <!-- First Page Button -->
-        <a th:if="${currentPage > 0}" th:href="@{/one-time-events/expired(pageNo=0)}">&lt;&lt;</a>
-
-        <!-- Previous Page Button -->
-        <a th:if="${currentPage > 0}" th:href="@{/one-time-events/expired(pageNo=${currentPage - 1})}">&lt;</a>
-
-        <!-- Page Numbers with Ellipses -->
-        <span th:if="${currentPage - 2 > 0}">1</span>
-        <span th:if="${currentPage - 2 > 1}">...</span>
-        <span th:if="${currentPage - 1 > 0}" th:href="@{/one-time-events/expired(pageNo=${currentPage - 1})}"
-              th:text="${currentPage} - 1"></span>
-        <span th:text="${currentPage + 1}"></span>
-        <span th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/expired(pageNo=${currentPage + 1})}"
-              th:text="${currentPage} + 1"></span>
-        <span th:if="${currentPage + 2 < totalPages}">...</span>
-        <span th:if="${currentPage + 2 < totalPages}" th:href="@{/one-time-events/expired(pageNo=${totalPages - 1})}"
-              th:text="${totalPages}"></span>
-
-        <!-- Next Page Button -->
-        <a th:if="${currentPage + 1 < totalPages}"
-           th:href="@{/one-time-events/expired(pageNo=${currentPage + 1})}">&gt;</a>
-
-        <!-- Last Page Button -->
-        <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/expired(pageNo=${totalPages - 1})}">&gt;&gt;</a>
     </div>
-
-        <div th:if="${pagination == 3}">
-            <a th:if="${currentPage > 0}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">
-                Previous
-                <span th:if="${currentPage - 1 > 0}" th:text="${currentPage - 1}"></span>
-            </a>
-
-            <!-- Page Numbers with Ellipses -->
-            <span th:if="${currentPage - 2 > 0}">1</span>
-            <span th:if="${currentPage - 2 > 1}">...</span>
-            <a th:if="${currentPage - 1 > 0}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}" th:text="${currentPage - 1}"></a>
-            <span th:text="${currentPage + 1}"></span>
-            <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}" th:text="${currentPage + 1}"></a>
-            <span th:if="${currentPage + 2 < totalPages}">...</span>
-            <a th:if="${currentPage + 2 < totalPages}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}" th:text="${totalPages}"></a>
-
-            <!-- Next Page Link -->
-            <a th:if="${currentPage + 1 < totalPages}" th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">
-                Next
-                <span th:if="${currentPage + 1 < totalPages}" th:text="${currentPage + 1}"></span>
-            </a>
-        </div>
-
 </div>
 
 
+<div th:if="${pagination == 2}">
+    <!-- First Page Button -->
+    <div class="pagination-container">
+    <div class="pagination">
+       <span th:if="${currentPage > 0}">
+            <a th:href="@{/one-time-events/expired(pageNo=0)}">&laquo;</a>
+            <a th:href="@{/one-time-events/expired(pageNo=${currentPage - 1})}">&lt;</a>
+        </span>
+
+        <!-- Page Numbers -->
+        <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
+            <a th:href="@{/one-time-events/expired(pageNo=${page})}" th:class="${page == currentPage} ? 'active' : ''" th:text="${page + 1}"></a>
+        </span>
+
+        <span th:if="${currentPage + 1 < totalPages}">
+            <a th:href="@{/one-time-events/expired(pageNo=${currentPage + 1})}">&gt;</a>
+            <a th:href="@{/one-time-events/expired(pageNo=${totalPages - 1})}">&raquo;</a>
+        </span>
+    </div>
+    </div>
 </div>
+
+<div th:if="${pagination == 3}">
+    <div class="pagination-container">
+    <div class="pagination">
+       <span th:if="${currentPage > 0}">
+            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&laquo;</a>
+            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&lt;</a>
+        </span>
+
+        <!-- Page Numbers -->
+        <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
+            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${page}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}" th:class="${page == currentPage} ? 'active' : ''" th:text="${page + 1}"></a>
+        </span>
+
+        <span th:if="${currentPage + 1 < totalPages}">
+            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&gt;</a>
+            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&raquo;</a>
+        </span>
+    </div>
+    </div>
+</div>
+
 <div th:unless="${events.content != null and events.content.size() > 0}">
     <p>Няма намерени събития.</p>
 </div>
@@ -409,7 +395,28 @@
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
+.pagination-container {
+    display: flex;
+    justify-content: center;
+  }
+.pagination {
+  display: inline-block;
+  text-align: center;
+}
 
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
 
 
 </style>

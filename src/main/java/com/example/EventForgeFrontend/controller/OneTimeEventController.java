@@ -32,6 +32,7 @@ public class OneTimeEventController {
             , Model model) {
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
         Page<CommonEventResponse> events = oneTimeEventApiClient.showAllActiveOneTimeEvents(pageNo, pageSize, sort1, sortByColumn);
+
         if (events != null && !events.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(events);
             model.addAttribute("currentPage", events.getNumber());
@@ -39,12 +40,19 @@ public class OneTimeEventController {
             model.addAttribute("totalItems", events.getTotalElements());
             model.addAttribute("sort", sort1);
             model.addAttribute("sortByColumn", sortByColumn);
+            int startPage = Math.max(events.getNumber() - 2, 0);
+            int endPage = Math.min(events.getNumber() + 2, events.getTotalPages() - 1);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("pagination" , 1);
+        } else {
+            model.addAttribute("result" , "Няма налични събития");
         }
         model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
 
         //this model attribute is to recognized which pagination we have to switch on
-        model.addAttribute("pagination" , 1);
+
         return "oneTimeEvents";
     }
 
@@ -61,11 +69,18 @@ public class OneTimeEventController {
             ImageService.encodeCommonEventResponsePageImages(events);
             model.addAttribute("currentPage", events.getNumber());
             model.addAttribute("totalPages", events.getTotalPages());
+            int startPage = Math.max(events.getNumber() - 2, 0);
+            int endPage = Math.min(events.getNumber() + 2, events.getTotalPages() - 1);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("pagination" ,2);
+        } else {
+            model.addAttribute("result" , "Няма налични събития");
+
         }
         model.addAttribute("events", events);
         model.addAttribute("isExpired", true);
 
-        model.addAttribute("pagination" ,2);
 
         return "oneTimeEvents";
     }
@@ -103,6 +118,11 @@ public class OneTimeEventController {
             model.addAttribute("totalItems", oneTimeEvents.getTotalElements());
             model.addAttribute("sort", sort1);
             model.addAttribute("sortByColumn", sortByColumn);
+            int startPage = Math.max(oneTimeEvents.getNumber() - 2, 0);
+            int endPage = Math.min(oneTimeEvents.getNumber() + 2, oneTimeEvents.getTotalPages() - 1);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("pagination" ,3);
         } else {
             model.addAttribute("result" , "Няма намерени събития с търсените от вас критерии");
         }
@@ -136,11 +156,10 @@ public class OneTimeEventController {
         if (endsAt != null) {
             model.addAttribute("endsAt", endsAt);
         }
-        boolean exp = isExpired;
+
         model.addAttribute("events", oneTimeEvents);
         model.addAttribute("isExpired", isExpired);
 
-        model.addAttribute("pagination" ,3);
         return "oneTimeEvents";
     }
 
