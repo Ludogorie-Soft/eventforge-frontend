@@ -65,39 +65,39 @@
 </th:block>
 
 <form th:action="@{/one-time-events/advanced-search/{isExpired}(isExpired=${isExpired})}" method="get">
-    <label for="name">Name:</label>
+    <label for="name">Име на събитие:</label>
     <input type="text" id="name" name="name" th:value="${name}">
 
-    <label for="description">Description:</label>
+    <label for="description">Описание:</label>
     <input type="text" id="description" name="description" th:value="${description}">
 
-    <label for="address">Address:</label>
+    <label for="address">Адрес:</label>
     <input type="text" id="address" name="address" th:value="${address}">
 
-    <label for="organisationName">Organisation Name:</label>
+    <label for="organisationName">Организатор:</label>
     <input type="text" id="organisationName" name="organisationName" th:value="${organisationName}">
 
-    <label for="minAge">Minimum Age:</label>
+    <label for="minAge">Минимална възраст:</label>
     <input type="number" id="minAge" name="minAge" th:value="${minAge}">
 
-    <label for="maxAge">Maximum Age:</label>
+    <label for="maxAge">Максимална възраст:</label>
     <input type="number" id="maxAge" name="maxAge" th:value="${maxAge}">
 
-    <label for="isOnline">Is Online:</label>
+    <label for="isOnline">Онлайн:</label>
     <input type="checkbox" id="isOnline" name="isOnline" th:checked="${isOnline}" th:value="${isOnline}">
 
-    <label for="eventCategories">Event Categories:</label>
+    <label for="eventCategories">Ключови думи:</label>
     <input type="text" id="eventCategories" name="eventCategories" th:value="${eventCategories}">
 
-    <label for="startsAt">Starts At:</label>
+    <label for="startsAt">Начална дата:</label>
     <input type="datetime-local" id="startsAt" name="startsAt" th:value="${startsAt}">
 
-    <label for="endsAt">Ends At:</label>
+    <label for="endsAt">Крайна дата:</label>
     <input type="datetime-local" id="endsAt" name="endsAt" th:value="${endsAt}">
 
     <!-- Add more input fields for other parameters as needed -->
 
-    <button type="submit">Filter Events</button>
+    <button type="submit">Търси</button>
 </form>
 
 
