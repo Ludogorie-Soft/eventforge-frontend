@@ -18,7 +18,7 @@
     <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
     <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/aos.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">-->
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -41,7 +41,9 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
-    <th:block th:include="~{fragments/header}"></th:block>
+    <header>
+        <th:block th:include="~{fragments/header}"></th:block>
+    </header>
 
     <div class="ftco-blocks-cover-1">
         <div class="site-section-cover overlay">
@@ -53,75 +55,78 @@
     </div>
 </div>
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="advanced-search-form">
-                        <form th:action="@{/one-time-events/advanced-search/__${isExpired}__}" method="get">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="name">Име на събитие:</label>
-                                    <input type="text" id="name" name="name" class="form-control" th:value="${name}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="description-input">Описание:</label>
-                                    <textarea name="description" id="description-input" class="form-control description-field" th:value="${description}"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="address">Адрес:</label>
-                                    <input type="text" id="address" name="address" class="form-control" th:value="${address}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="organisationName">Организатор:</label>
-                                    <input type="text" id="organisationName" name="organisationName" class="form-control" th:value="${organisationName}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="minAge">Минимална възраст:</label>
-                                    <input type="number" id="minAge" name="minAge" class="form-control" th:value="${minAge}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="maxAge">Максимална възраст:</label>
-                                    <input type="number" id="maxAge" name="maxAge" class="form-control" th:value="${maxAge}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Тип на събитието: <span class="required">*</span></label>
-                                    <div class="question-answer d-flex">
-                                        <div>
-                                            <input type="checkbox" id="radio_yes1" name="isOnline" th:value="true" th:checked="${isOnline == true}" onclick="handleCheckboxChange(this)" />
-                                            <label class="radio" for="radio_yes1">Онлайн</label>
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" id="radio_no1" name="isOnline" th:value="false" th:checked="${isOnline == false}" onclick="handleCheckboxChange(this)" />
-                                            <label class="radio" for="radio_no1">Присъствено</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="eventCategories">Ключови думи:</label>
-                                    <input type="text" id="eventCategories" name="eventCategories" class="form-control" th:value="${eventCategories}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="startsAt">Начална дата:</label>
-                                    <input type="datetime-local" id="startsAt" name="startsAt" class="form-control" th:value="${startsAt}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="endsAt">Крайна дата:</label>
-                                    <input type="datetime-local" id="endsAt" name="endsAt" class="form-control" th:value="${endsAt}">
-                                </div>
-                            </div>
 
-                            <!-- Add more fields for advanced search options here -->
-                            <!-- For example, add dropdowns, checkboxes, date pickers, etc. -->
+<div style="text-align: center; margin-top: 20px;">
+    <button id="openPopupBtn" class="btn btn-primary">Намери конкретни събития<i class="fas fa-search"></i></button>
+</div>
 
-                            <button type="submit" class="btn btn-primary mt-3">Търси <i class="fas fa-search"></i></button>
-                        </form>
-                    </div>
-                </div>
+<!-- Button to open the advanced search popup -->
+<!-- Responsive popup -->
+<div class="popup-content" id="popup">
+    <!-- Advanced search form fields -->
+    <form th:action="@{/one-time-events/advanced-search/__${isExpired}__}" method="get" id="advancedSearchForm"
+          class="form-inline">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Търси по име на събитие" name="name"
+                   th:value="${name}">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Търси по описание" name="description"
+                   th:value="${description}">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Търси по адрес/линк" name="address"
+                   th:value="${address}">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Търси по име на организатор" name="organisationName"
+                   th:value="${organisationName}">
+        </div>
+        <div class="form-group">
+            <label>"Търси по минимална възраст"</label>
+            <input type="number" class="form-control"  name="minAge"
+                   th:value="${minAge}">
+        </div>
+        <div class="form-group">
+            <label>Търси по максимална възраст</label>
+            <input type="number" class="form-control"  name="maxAge"
+                   th:value="${maxAge}">
+        </div>
+        <label>Тип на събитието: <span></span></label>
+        <div class="question-answer d-flex">
+            <div>
+                <input type="checkbox" name="isOnline" th:value="true" th:checked="${isOnline == true}"
+                       onclick="handleCheckboxChange(this)"/>
+                <label class="radio">Онлайн</label>
+            </div>
+            <div>
+                <input type="checkbox" name="isOnline" th:value="false" th:checked="${isOnline == false}"
+                       onclick="handleCheckboxChange(this)"/>
+                <label class="radio">Присъствено</label>
             </div>
         </div>
-    </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Търси по категории и ключови думи"
+                   name="eventCategories" th:value="${eventCategories}">
+        </div>
+        <div class="form-group">
+            <label>Търси по начална дата</label>
+            <input type="date" class="form-control"  name="startsAt"
+                   th:value="${startsAt}">
+        </div>
+        <div class="form-group">
+            <label>Търси по крайна дата</label>
+            <input type="date" class="form-control"  name="endsAt"
+                   th:value="${endsAt}">
+        </div>
+        <!-- Submit button -->
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            <!-- Button to close the popup -->
+            <button type="button" class="btn btn-secondary" id="closePopupBtn">Затвори</button>
+        </div>
+    </form>
 </div>
 
 
@@ -260,6 +265,35 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  // Function to toggle the visibility of the popup and content overlay
+  function togglePopup() {
+    $('#popup').fadeToggle();
+    $('#contentOverlay').fadeToggle();
+  }
+
+  // Add event listener to open the popup when the button is clicked
+  $('#openPopupBtn').click(function() {
+    togglePopup();
+  });
+
+  // Add event listener to close the popup when the close button is clicked
+  $('#closePopupBtn').click(function() {
+    togglePopup();
+  });
+
+  // No need for event.preventDefault() in the form submission script
+  $('#advancedSearchForm').submit(function() {
+    // You can add your form submission logic here if needed
+    // ...
+    // The form will submit normally without event.preventDefault();
+    // After processing, close the popup
+    togglePopup();
+  });
+</script>
+
 
 <script>
     // Function to handle checkbox state changes
@@ -272,6 +306,7 @@
             }
         });
     }
+
 
 </script>
 
@@ -322,6 +357,7 @@
   }
 
 
+
 </script>
 
 <script>
@@ -335,11 +371,64 @@
     }
 
 
+
 </script>
 
 </body>
 </html>
 <style>
+
+
+    .content-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 997;
+      display: none;
+    }
+    .popup-content {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+<!--      width: 1000px; /* Adjust the width of the popup */-->
+      max-width: 90%; /* Maximum width of the popup */
+      z-index: 999;
+      display: none;
+       overflow-y: auto;
+    }
+
+    @media (max-width: 576px) {
+  /* Adjust the width and padding for phones */
+  .popup-content {
+    width: 90%;
+    max-width: 90%;
+    padding: 10px;
+  }
+}
+
+    /* Custom styles to remove the Bootstrap form-control padding */
+    .popup-content input[type="text"],
+    .popup-content input[type="date"],
+    .popup-content select {
+     padding: 12px;
+     border: 2px solid #ccc;
+     border-radius: 70px;
+     width: 100%;
+    }
+
+    .popup-content input[type="number"] {
+
+  border: 2px solid #ccc;
+  border-radius: 60px;
+  width: 100px;
+}
 
        .advanced-search-form {
         max-width: 380%;
@@ -487,6 +576,7 @@
 }
 
 .pagination a:hover:not(.active) {background-color: #ddd;}
+
 
 
 
