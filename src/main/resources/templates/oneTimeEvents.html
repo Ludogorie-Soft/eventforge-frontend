@@ -216,14 +216,14 @@
                 <span th:if="${currentPage + 1 < totalPages}" th:text="${currentPage + 1}"></span>
             </a>
         </div>
-
-</div>
-
-
 </div>
 <div th:unless="${events.content != null and events.content.size() > 0}">
     <p>Няма намерени събития.</p>
 </div>
+
+<!--FOOTER-->
+<th:block th:include="~{fragments/footer}"></th:block>
+
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/jquery-migrate-3.0.0.js"></script>
 <script src="/js/popper.min.js"></script>

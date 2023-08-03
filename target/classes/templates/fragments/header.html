@@ -53,10 +53,10 @@
                                                           class="text-black site-menu-toggle js-menu-toggle py-5"><span
                         class="icon-menu h3 text-black"></span></a></span>
 
-                <nav class="site-navigation text-left mr-auto d-none d-lg-block" role="navigation">
+                <nav class="site-navigation text-left d-none d-lg-block" role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
                         <li><a th:href="@{/}" class="nav-link">Начало</a></li>
-                        <li class="active"><a th:if="${session.sessionToken == null}" th:href="@{/registration}"
+                        <li><a th:if="${session.sessionToken == null}" th:href="@{/registration}"
                                               class="nav-link">Регистрирай се</a></li>
                         <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
                         <li><a th:href="@{/one-time-events}" class="nav-link">Събития</a></li>
@@ -64,11 +64,6 @@
                         <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a></li>
                     </ul>
                 </nav>
-
-                <div class="top-social ml-auto">
-                    <a href="#"><span class="icon-facebook text-teal"></span></a>
-                    <a href="#"><span class="icon-linkedin text-yellow"></span></a>
-                </div>
             </div>
         </div>
     </header>
@@ -107,6 +102,10 @@
         color: #000;
         text-align: center;
 
+    }
+
+    .menu-wrap{
+        justify-content: center;
     }
 
 </style>

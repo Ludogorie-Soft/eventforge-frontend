@@ -11,7 +11,6 @@
     <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <!--    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>-->
     <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
     <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
     <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
@@ -52,15 +51,17 @@
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container" style="margin-bottom: 30px">
     <div>
-        <img id="cover-photo" th:src="@{'data:image/jpeg;base64,' + ${organisationDetails.background}}" alt="organisation-cover-photo">
+        <img id="cover-photo" th:src="@{'data:image/jpeg;base64,' + ${organisationDetails.background}}"
+             alt="organisation-cover-photo">
     </div>
     <main>
         <div class="row">
             <div class="left col-lg-4">
                 <div class="photo-left">
-                    <img class="photo" th:src="@{'data:image/jpeg;base64,' + ${organisationDetails.logo}}" alt="organisation-logo">
+                    <img class="photo" th:src="@{'data:image/jpeg;base64,' + ${organisationDetails.logo}}"
+                         alt="organisation-logo">
                 </div>
                 <h1 class="name" style="text-align: unset" th:text="${organisationDetails.name}"></h1>
                 <div>
@@ -72,10 +73,12 @@
 
                 <div id="icons">
                     <div th:if="${organisationDetails.website != null and organisationDetails.website != ''}">
-                        <a th:href="${organisationDetails.website}" target="_blank" class="fa fa-globe"  th:title="'Сайт на организация: '+${organisationDetails.website}"></a>
+                        <a th:href="${organisationDetails.website}" target="_blank" class="fa fa-globe"
+                           th:title="'Сайт на организация: '+${organisationDetails.website}"></a>
                     </div>
                     <div>
-                        <a th:href="${organisationDetails.facebookLink}" target="_blank" class="fa fa-facebook" th:title="'Фейсбук страница: '+${organisationDetails.facebookLink}"></a>
+                        <a th:href="${organisationDetails.facebookLink}" target="_blank" class="fa fa-facebook"
+                           th:title="'Фейсбук страница: '+${organisationDetails.facebookLink}"></a>
                     </div>
                 </div>
                 <div class="stats row">
@@ -95,192 +98,227 @@
                 <div>
                     <p class="desc" th:text="${'Мисия: ' + organisationDetails.organisationPurpose}"></p>
                 </div>
-                <div th:if="${organisationDetails.charityOption != null && organisationDetails.charityOption != ''}" style="text-align: center">
-                    <a id="charity_button" target="_blank" th:href="${organisationDetails.charityOption}">Направи дарение</a>
+                <div th:if="${organisationDetails.charityOption != null && organisationDetails.charityOption != ''}"
+                     style="text-align: center">
+                    <a id="charity_button" target="_blank" th:href="${organisationDetails.charityOption}">Направи
+                        дарение</a>
                 </div>
             </div>
             <div class="right col-lg-8">
                 <ul class="nav">
-                    <li id="active-events-btn">Активни събития</li>
+                    <li style="color: #f18f8f" id="active-events-btn">Активни събития</li>
                     <li id="upcoming-events-btn" style="margin-right: 20px;">Предстоящи събития</li>
                     <li id="expired-events-btn">Изминали събития</li>
                 </ul>
 
                 <!-- ACTIVE EVENTS-->
-                <div id="active-events-div" class="slide-container swiper">
-                    <div class="slide-content">
-                        <div class="card-wrapper swiper-wrapper">
-                            <div th:each="event : ${organisationDetails.activeEvents}" class="card swiper-slide">
-                                <div class="image-content">
-                                    <span class="overlay"></span>
-                                    <div class="card-image">
-                                        <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="event-img" class="card-img">
-                                    </div>
-                                </div>
-                                <div class="card-content">
-                                    <h4 th:text="${event.name}"></h4>
-                                    <div>
-                                        <p><strong>Начало: </strong><span th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p><strong>Край: </strong><span
-                                                th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                        </p>
-                                    </div>
-                                    <div th:if="${event.isOnline}">
-                                        <p>онлайн събитие</p>
-                                    </div>
-                                    <div th:unless="${event.isOnline}">
-                                        <p th:text="${event.address}"></p>
-                                    </div>
-                                    <!-- POP UP-->
-                                    <div class="dialog" th:id="${'dialog' + event.id}" th:title="${event.name}">
-                                        <p th:text="${'Цена: ' + event.price}"></p>
-                                        <p th:text="${event.ageBoundary}"></p>
-                                        <p class="event-description" th:text="${event.description}"></p>
-                                        <div th:if="${event.recurrenceDetails != null}">
-                                            <p th:text="${event.recurrenceDetails}"></p>
-                                        </div>
-                                        <div style="text-align: center; background: white" th:if="${event.isOnline}">
-                                            <a class="event-link" th:href="${event.address}" target="_blank"><strong>Линк за събитието
-                                                тук</strong></a>
+                <div id="active-events-div">
+                    <div th:if="${#lists.size(organisationDetails.activeEvents) != 0}" class="slide-container swiper">
+                        <div class="slide-content">
+                            <div class="card-wrapper swiper-wrapper">
+                                <div th:each="event : ${organisationDetails.activeEvents}" class="card swiper-slide">
+                                    <div class="image-content">
+                                        <span class="overlay"></span>
+                                        <div class="card-image">
+                                            <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}"
+                                                 alt="event-img"
+                                                 class="card-img">
                                         </div>
                                     </div>
-                                    <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
-                                    </button>
-                                    <!-- END POP UP-->
+                                    <div class="card-content">
+                                        <h4 th:text="${event.name}"></h4>
+                                        <div>
+                                            <p><strong>Начало: </strong><span
+                                                    th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p><strong>Край: </strong><span
+                                                    th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                            </p>
+                                        </div>
+                                        <div th:if="${event.isOnline}">
+                                            <p>онлайн събитие</p>
+                                        </div>
+                                        <div th:unless="${event.isOnline}">
+                                            <p th:text="${event.address}"></p>
+                                        </div>
+                                        <!-- POP UP-->
+                                        <div class="dialog" th:id="${'dialog' + event.id}" th:title="${event.name}">
+                                            <p th:text="${'Цена: ' + event.price}"></p>
+                                            <p th:text="${event.ageBoundary}"></p>
+                                            <p class="event-description" th:text="${event.description}"></p>
+                                            <div th:if="${event.recurrenceDetails != null}">
+                                                <p th:text="${event.recurrenceDetails}"></p>
+                                            </div>
+                                            <div style="text-align: center; background: white"
+                                                 th:if="${event.isOnline}">
+                                                <a class="event-link" th:href="${event.address}"
+                                                   target="_blank"><strong>Линк
+                                                    за събитието
+                                                    тук</strong></a>
+                                            </div>
+                                        </div>
+                                        <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
+                                        </button>
+                                        <!-- END POP UP-->
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="swiper-button-next swiper-navBtn"></div>
-                    <div class="swiper-button-prev swiper-navBtn"></div>
+                        <div class="swiper-button-next swiper-navBtn"></div>
+                        <div class="swiper-button-prev swiper-navBtn"></div>
+                    </div>
+                    <div class="no-found-events"
+                         th:unless="${#lists.size(organisationDetails.activeEvents) != 0}">
+                        <p>Няма намерени активни събития</p>
+                    </div>
                 </div>
 
                 <!--UPCOMING EVENTS-->
-                <div style="display: none" id="upcoming-events-div" class="slide-container swiper">
-                    <div class="slide-content">
-                        <div class="card-wrapper swiper-wrapper">
-                            <div th:each="event : ${organisationDetails.upcomingEvents}" class="card swiper-slide">
-                                <div class="image-content">
-                                    <span class="overlay"></span>
+                <div id="upcoming-events-div" style="display: none">
+                    <div th:if="${#lists.size(organisationDetails.upcomingEvents) != 0}" class="slide-container swiper">
+                        <div class="slide-content">
+                            <div class="card-wrapper swiper-wrapper">
+                                <div th:each="event : ${organisationDetails.upcomingEvents}" class="card swiper-slide">
+                                    <div class="image-content">
+                                        <span class="overlay"></span>
 
-                                    <div class="card-image">
-                                        <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt=""
-                                             class="card-img">
+                                        <div class="card-image">
+                                            <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt=""
+                                                 class="card-img">
+                                        </div>
+                                    </div>
+
+                                    <div class="card-content">
+                                        <h4 th:text="${event.name}"></h4>
+                                        <div>
+                                            <p><strong>Начало: </strong><span
+                                                    th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p><strong>Край: </strong><span
+                                                    th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                            </p>
+                                        </div>
+                                        <div th:if="${event.isOnline}">
+                                            <p>онлайн събитие</p>
+                                        </div>
+                                        <div th:unless="${event.isOnline}">
+                                            <p th:text="${event.address}"></p>
+                                        </div>
+
+                                        <!-- POP UP-->
+                                        <div class="dialog" th:id="${'dialog' + event.id}" th:title="${event.name}">
+                                            <p th:text="${'Цена: ' + event.price}"></p>
+                                            <p th:text="${event.ageBoundary}"></p>
+                                            <p class="event-description" th:text="${event.description}"></p>
+                                            <div th:if="${event.recurrenceDetails != null}">
+                                                <p th:text="${event.recurrenceDetails}"></p>
+                                            </div>
+                                            <div style="text-align: center; background: white"
+                                                 th:if="${event.isOnline}">
+                                                <a class="event-link" th:href="${event.address}"
+                                                   target="_blank"><strong>Линк
+                                                    за събитието
+                                                    тук</strong></a>
+                                            </div>
+
+                                        </div>
+                                        <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
+                                        </button>
+                                        <!-- END POP UP-->
                                     </div>
                                 </div>
 
-                                <div class="card-content">
-                                    <h4 th:text="${event.name}"></h4>
-                                    <div>
-                                        <p><strong>Начало: </strong><span
-                                                th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p><strong>Край: </strong><span
-                                                th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                        </p>
-                                    </div>
-                                    <div th:if="${event.isOnline}">
-                                        <p>онлайн събитие</p>
-                                    </div>
-                                    <div th:unless="${event.isOnline}">
-                                        <p th:text="${event.address}"></p>
-                                    </div>
-
-                                    <!-- POP UP-->
-                                    <div class="dialog" th:id="${'dialog' + event.id}" th:title="${event.name}">
-                                        <p th:text="${'Цена: ' + event.price}"></p>
-                                        <p th:text="${event.ageBoundary}"></p>
-                                        <p class="event-description" th:text="${event.description}"></p>
-                                        <div th:if="${event.recurrenceDetails != null}">
-                                            <p th:text="${event.recurrenceDetails}"></p>
-                                        </div>
-                                        <div style="text-align: center; background: white" th:if="${event.isOnline}">
-                                            <a class="event-link" th:href="${event.address}" target="_blank"><strong>Линк за събитието
-                                                тук</strong></a>
-                                        </div>
-
-                                    </div>
-                                    <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
-                                    </button>
-                                    <!-- END POP UP-->
-                                </div>
                             </div>
-
                         </div>
-                    </div>
 
-                    <div class="swiper-button-next swiper-navBtn"></div>
-                    <div class="swiper-button-prev swiper-navBtn"></div>
+                        <div class="swiper-button-next swiper-navBtn"></div>
+                        <div class="swiper-button-prev swiper-navBtn"></div>
+                    </div>
+                    <div class="no-found-events"
+                         th:unless="${#lists.size(organisationDetails.upcomingEvents) != 0}">
+                        <p>Няма намерени предстоящи събития</p>
+                    </div>
                 </div>
 
                 <!-- EXPIRED EVENTS-->
-                <div style="display: none" id="expired-events-div" class="slide-container swiper">
-                    <div class="slide-content">
-                        <div class="card-wrapper swiper-wrapper">
-                            <div th:each="event : ${organisationDetails.expiredEvents}" class="card swiper-slide">
-                                <div class="image-content">
-                                    <span class="overlay"></span>
+                <div id="expired-events-div" style="display: none">
+                    <div th:if="${#lists.size(organisationDetails.expiredEvents) != 0}" class="slide-container swiper">
+                        <div class="slide-content">
+                            <div class="card-wrapper swiper-wrapper">
+                                <div th:each="event : ${organisationDetails.expiredEvents}" class="card swiper-slide">
+                                    <div class="image-content">
+                                        <span class="overlay"></span>
 
-                                    <div class="card-image">
-                                        <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="eventLogo"
-                                             class="card-img">
-                                    </div>
-                                </div>
-
-                                <div class="card-content">
-                                    <h4 th:text="${event.name}"></h4>
-                                    <div>
-                                        <p><strong>Начало: </strong><span
-                                                th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p><strong>Край: </strong><span
-                                                th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                        </p>
-                                    </div>
-                                    <div th:if="${event.isOnline}">
-                                        <p>онлайн събитие</p>
-                                    </div>
-                                    <div th:unless="${event.isOnline}">
-                                        <p th:text="${event.address}"></p>
-                                    </div>
-                                    <!-- POP UP-->
-                                    <div class="dialog" th:id="${'dialog' + event.id}" th:title="${event.name}">
-                                        <p th:text="${'Цена: ' + event.price}"></p>
-                                        <p th:text="${event.ageBoundary}"></p>
-                                        <p class="event-description" th:text="${event.description}"></p>
-                                        <div th:if="${event.recurrenceDetails != null}">
-                                            <p th:text="${event.recurrenceDetails}"></p>
+                                        <div class="card-image">
+                                            <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}"
+                                                 alt="eventLogo"
+                                                 class="card-img">
                                         </div>
-                                        <div style="text-align: center; background: white" th:if="${event.isOnline}">
-                                            <a class="event-link" th:href="${event.address}" target="_blank"><strong>Линк за събитието
-                                                тук</strong></a>
-                                        </div>
-
                                     </div>
-                                    <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
-                                    </button>
-                                    <!-- END POP UP-->
+
+                                    <div class="card-content">
+                                        <h4 th:text="${event.name}"></h4>
+                                        <div>
+                                            <p><strong>Начало: </strong><span
+                                                    th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p><strong>Край: </strong><span
+                                                    th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                            </p>
+                                        </div>
+                                        <div th:if="${event.isOnline}">
+                                            <p>онлайн събитие</p>
+                                        </div>
+                                        <div th:unless="${event.isOnline}">
+                                            <p th:text="${event.address}"></p>
+                                        </div>
+                                        <!-- POP UP-->
+                                        <div class="dialog" th:id="${'dialog' + event.id}" th:title="${event.name}">
+                                            <p th:text="${'Цена: ' + event.price}"></p>
+                                            <p th:text="${event.ageBoundary}"></p>
+                                            <p class="event-description" th:text="${event.description}"></p>
+                                            <div th:if="${event.recurrenceDetails != null}">
+                                                <p th:text="${event.recurrenceDetails}"></p>
+                                            </div>
+                                            <div style="text-align: center; background: white"
+                                                 th:if="${event.isOnline}">
+                                                <a class="event-link" th:href="${event.address}"
+                                                   target="_blank"><strong>Линк
+                                                    за събитието
+                                                    тук</strong></a>
+                                            </div>
+
+                                        </div>
+                                        <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
+                                        </button>
+                                        <!-- END POP UP-->
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="swiper-button-next swiper-navBtn"></div>
-                    <div class="swiper-button-prev swiper-navBtn"></div>
+                        <div class="swiper-button-next swiper-navBtn"></div>
+                        <div class="swiper-button-prev swiper-navBtn"></div>
+                    </div>
+                    <div class="no-found-events"
+                         th:unless="${#lists.size(organisationDetails.expiredEvents) != 0}">
+                        <p>Няма намерени изминали събития</p>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 </div>
 
+<!--FOOTER-->
+<th:block th:include="~{fragments/footer}"></th:block>
 
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/jquery-migrate-3.0.0.js"></script>
@@ -324,7 +362,7 @@
             upcomingEventsButton.style.color = "#888888";
             expiredEventsButton.style.color = "#888888";
 
-            activeEvents.style.display = 'flex'
+            activeEvents.style.display = 'block'
             upcomingEvents.style.display = 'none';
             expiredEvents.style.display = 'none';
         }
@@ -334,7 +372,7 @@
             activeEventsButton.style.color = "#888888";
             expiredEventsButton.style.color = "#888888";
 
-            upcomingEvents.style.display = 'flex'
+            upcomingEvents.style.display = 'block'
             activeEvents.style.display = 'none';
             expiredEvents.style.display = 'none';
 
@@ -345,7 +383,7 @@
             upcomingEventsButton.style.color = "#888888";
             activeEventsButton.style.color = "#888888";
 
-            expiredEvents.style.display = 'flex';
+            expiredEvents.style.display = 'block';
             upcomingEvents.style.display = 'none';
             activeEvents.style.display = 'none'
         }
@@ -402,6 +440,12 @@
 </html>
 
 <style>
+
+    .no-found-events {
+        font-size: 25px;
+        margin-top: 150px;
+        text-align: center;
+    }
 
     #charity_button {
         display: block;
@@ -506,6 +550,7 @@
         max-width: 1120px;
         width: 100%;
         padding: 40px 0;
+
     }
 
     .slide-content {
@@ -620,29 +665,29 @@
 
     }
 
-        .fa {
-padding: 20px;
-font-size: 20px;
-width: 60px;
-border-radius: 100%;
-text-decoration: none;
-margin: 15px;
-text-align: center;
-}
+    .fa {
+        padding: 20px;
+        font-size: 20px;
+        width: 60px;
+        border-radius: 100%;
+        text-decoration: none;
+        margin: 15px;
+        text-align: center;
+    }
 
-.fa-facebook{
-background: #3B5998;
-  color: white;
-}
+    .fa-facebook {
+        background: #3B5998;
+        color: white;
+    }
 
-.fa-globe {
-background: #55ACEE;
-color: white;
-}
+    .fa-globe {
+        background: #55ACEE;
+        color: white;
+    }
 
-#icons {
-    display: flex;
-}
+    #icons {
+        display: flex;
+    }
 
     /*POP UP MORE INFO STYLES*/
     .event-link {
