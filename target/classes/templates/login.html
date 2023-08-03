@@ -139,8 +139,9 @@
     </div>
 </div>
 </div>
+<th:block th:include="~{fragments/footer}"></th:block>
 
-    <script>
+<script>
     function toggleResendConfirmationForm(event) {
         event.preventDefault();
         var form = document.getElementById('resendConfirmationForm');
