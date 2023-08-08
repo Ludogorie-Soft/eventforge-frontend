@@ -18,7 +18,6 @@
     <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
     <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/aos.css}">
-    <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">-->
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -55,15 +54,6 @@
     </div>
 </div>
 
-<!--<div class="button-container">-->
-<!--    <th:block th:if="isExpired == false">-->
-<!--        <button id="activeBtn" class="btn btn-primary active-button" onclick="changeState('active')">Покажи активни/предстоящи</button>-->
-<!--    </th:block>-->
-<!--    <th:block th:unless="isExpired == false">-->
-<!--    <button id="expiredBtn" class="btn btn-primary" onclick="changeState('expired')">Покажи отминали</button>-->
-<!--    </th:block>-->
-<!--    <button id="openPopupBtn" class="btn btn-primary">Разширено търсене <i class="fas fa-search"></i></button>-->
-<!--</div>-->
 
 <div class="button-container">
     <button id="activeBtn" class="btn btn-primary active-button"  th:if="${isExpired}" onclick="changeState('active')">Покажи Активни/предстоящи</button>
@@ -385,7 +375,7 @@
 <script>
     function confirmDelete(event) {
         // Show the confirmation dialog
-        const isConfirmed = confirm("Сигурни ли сте, че искате да извършите това действие?");
+        const isConfirmed = confirm("Сигурни ли сте, че искате да изтриете елемента?");
 
         // If the user clicks "OK," proceed with the form submission (delete action)
         // Otherwise, cancel the form submission

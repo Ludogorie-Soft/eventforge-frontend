@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface RecurrenceEventApiClient {
 
     @GetMapping("/active")
-    public Page<CommonEventResponse> showAllActiveRecurrenceEvents(@RequestParam(value = "pageNo", required = false) Integer pageNo
+     Page<CommonEventResponse> showAllActiveRecurrenceEvents(@RequestParam(value = "pageNo", required = false) Integer pageNo
             , @RequestParam(value = "pageSize" , required = false) Integer pageSize
             , @RequestParam(value = "sort" , required = false) Sort.Direction sort
             , @RequestParam(value = "sortByColumn" ,required = false)String sortByColumn);
 
     @GetMapping("/expired")
-    public Page<CommonEventResponse> showAllExpiredRecurrenceEvents(@RequestParam(value = "pageNo", required = false) Integer pageNo
+     Page<CommonEventResponse> showAllExpiredRecurrenceEvents(@RequestParam(value = "pageNo", required = false) Integer pageNo
             , @RequestParam(value = "pageSize" , required = false) Integer pageSize
             , @RequestParam(value = "sort" , required = false) Sort.Direction sort
             , @RequestParam(value = "sortByColumn" ,required = false)String sortByColumn);
