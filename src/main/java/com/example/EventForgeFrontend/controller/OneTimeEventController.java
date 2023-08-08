@@ -10,9 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/one-time-events")
@@ -23,15 +26,18 @@ public class OneTimeEventController {
 
     private final EventApiClient eventApiClient;
 
+    private final static String NO_AVAILABLE_EVENTS ="Няма налични събития";
+
 
     @GetMapping
     public String showAllActiveOneTimeEvents(@RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo
-            , @RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize
+            , @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize
             , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
             , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             , Model model) {
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
         Page<CommonEventResponse> events = oneTimeEventApiClient.showAllActiveOneTimeEvents(pageNo, pageSize, sort1, sortByColumn);
+
         if (events != null && !events.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(events);
             model.addAttribute("currentPage", events.getNumber());
@@ -39,18 +45,26 @@ public class OneTimeEventController {
             model.addAttribute("totalItems", events.getTotalElements());
             model.addAttribute("sort", sort1);
             model.addAttribute("sortByColumn", sortByColumn);
+            int startPage = Math.max(events.getNumber() - 2, 0);
+            int endPage = Math.min(events.getNumber() + 2, events.getTotalPages() - 1);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            //this model attribute is to recognized which pagination we have to switch on
+
+            model.addAttribute("pagination" , 1);
+        } else {
+            model.addAttribute("result" , NO_AVAILABLE_EVENTS);
         }
         model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
 
-        //this model attribute is to recognized which pagination we have to switch on
-        model.addAttribute("pagination" , 1);
+
         return "oneTimeEvents";
     }
 
     @GetMapping("/expired")
     public String showAllExpiredOneTimeEvents(@RequestParam(value = "pageNo", defaultValue = "0", required = false) Integer pageNo
-            , @RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize
+            , @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize
             , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
             , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             , Model model) {
@@ -61,11 +75,18 @@ public class OneTimeEventController {
             ImageService.encodeCommonEventResponsePageImages(events);
             model.addAttribute("currentPage", events.getNumber());
             model.addAttribute("totalPages", events.getTotalPages());
+            model.addAttribute("totalItems", events.getTotalElements());
+            int startPage = Math.max(events.getNumber() - 2, 0);
+            int endPage = Math.min(events.getNumber() + 2, events.getTotalPages() - 1);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("pagination" ,2);
+        } else {
+            model.addAttribute("result" , NO_AVAILABLE_EVENTS);
+
         }
         model.addAttribute("events", events);
         model.addAttribute("isExpired", true);
-
-        model.addAttribute("pagination" ,2);
 
         return "oneTimeEvents";
     }
@@ -80,11 +101,11 @@ public class OneTimeEventController {
                                                 @RequestParam(value = "maxAge", required = false) Integer maxAge,
                                                 @RequestParam(value = "isOnline", required = false) Boolean isOnline,
                                                 @RequestParam(value = "eventCategories", required = false) String eventCategories,
-                                                @RequestParam(value = "startsAt", required = false) LocalDateTime startsAt,
-                                                @RequestParam(value = "endsAt", required = false) LocalDateTime endsAt,
+                                                @RequestParam(value = "startsAt", required = false) LocalDate startsAt,
+                                                @RequestParam(value = "endsAt", required = false) LocalDate endsAt,
                                                 @PathVariable("isExpired") boolean isExpired,
                                                 @RequestParam(value = "pageNo", defaultValue = "0", required = false) Integer pageNo
-            , @RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize
+            , @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize
             , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
             , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             ,
@@ -103,8 +124,13 @@ public class OneTimeEventController {
             model.addAttribute("totalItems", oneTimeEvents.getTotalElements());
             model.addAttribute("sort", sort1);
             model.addAttribute("sortByColumn", sortByColumn);
+            int startPage = Math.max(oneTimeEvents.getNumber() - 2, 0);
+            int endPage = Math.min(oneTimeEvents.getNumber() + 2, oneTimeEvents.getTotalPages() - 1);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("pagination" ,3);
         } else {
-            model.addAttribute("result" , "Няма намерени събития с търсените от вас критерии");
+            model.addAttribute("result" , "Няма намерени резултати за въведените параметри.");
         }
         if (name != null && !name.isEmpty()) {
             model.addAttribute("name", name);
@@ -136,11 +162,10 @@ public class OneTimeEventController {
         if (endsAt != null) {
             model.addAttribute("endsAt", endsAt);
         }
-        boolean exp = isExpired;
+
         model.addAttribute("events", oneTimeEvents);
         model.addAttribute("isExpired", isExpired);
 
-        model.addAttribute("pagination" ,3);
         return "oneTimeEvents";
     }
 

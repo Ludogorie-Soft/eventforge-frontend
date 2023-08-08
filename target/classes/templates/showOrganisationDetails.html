@@ -18,6 +18,8 @@
     <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/aos.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <!--    SWIPER-->
@@ -161,6 +163,15 @@
                                         </div>
                                         <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
                                         </button>
+                                        <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
+                                             class="delete-container">
+                                            <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
+                                                  onsubmit="return confirmDelete(event)">
+                                                <button type="submit" class="delete-button">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                         <!-- END POP UP-->
                                     </div>
                                 </div>
@@ -229,6 +240,15 @@
                                         </div>
                                         <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
                                         </button>
+                                        <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
+                                             class="delete-container">
+                                            <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
+                                                  onsubmit="return confirmDelete(event)">
+                                                <button type="submit" class="delete-button">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                         <!-- END POP UP-->
                                     </div>
                                 </div>
@@ -298,6 +318,15 @@
                                         </div>
                                         <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
                                         </button>
+                                        <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
+                                             class="delete-container">
+                                            <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
+                                                  onsubmit="return confirmDelete(event)">
+                                                <button type="submit" class="delete-button">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                         <!-- END POP UP-->
                                     </div>
                                 </div>
@@ -340,6 +369,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/7.4.1/swiper-bundle.min.js"></script>
 <!--POP  UP-->
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<script>
+    function confirmDelete(event) {
+        // Show the confirmation dialog
+        const isConfirmed = confirm("Сигурни ли сте, че искате да извършите това действие?");
+
+        // If the user clicks "OK," proceed with the form submission (delete action)
+        // Otherwise, cancel the form submission
+        return isConfirmed;
+    }
+
+
+
+</script>
 
 <script>
     function showEvents(e) {
@@ -445,6 +488,32 @@
         font-size: 25px;
         margin-top: 150px;
         text-align: center;
+    }
+
+ .delete-container {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+
+    .delete-button {
+        padding: 5px;
+        font-size: 16px;
+        color: white;
+        background-color: red;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .delete-button:hover {
+        background-color: darkred;
     }
 
     #charity_button {

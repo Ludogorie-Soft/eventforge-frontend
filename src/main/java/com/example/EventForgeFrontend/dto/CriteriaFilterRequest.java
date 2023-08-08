@@ -4,6 +4,7 @@ package com.example.EventForgeFrontend.dto;
 import jakarta.annotation.Nullable;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -30,7 +31,7 @@ public class CriteriaFilterRequest {
     @Nullable
     private String eventCategories;
     @Nullable
-    private LocalDateTime startsAt;
+    private LocalDate startsAt;
     @Nullable
-    private LocalDateTime endsAt;
+    private LocalDate endsAt;
 }

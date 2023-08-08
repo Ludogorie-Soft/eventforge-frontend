@@ -19,13 +19,15 @@
     <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
     <link rel="stylesheet" th:href="@{/css/aos.css}">
 
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
+<div class="popup" th:data-result="${result}"></div>
 
 <div class="site-wrap" id="home-section">
 
@@ -38,7 +40,9 @@
         <div class="site-mobile-menu-body"></div>
     </div>
 
-    <th:block th:include="~{fragments/header}"></th:block>
+    <header>
+        <th:block th:include="~{fragments/header}"></th:block>
+    </header>
 
     <div class="ftco-blocks-cover-1">
         <div class="site-section-cover overlay">
@@ -49,52 +53,206 @@
         </div>
     </div>
 </div>
+
+
+<div class="button-container">
+    <button id="activeBtn" class="btn btn-primary active-button"  th:if="${isExpired}" onclick="changeState('active')">Покажи Активни/предстоящи</button>
+    <button id="expiredBtn" class="btn btn-primary" th:if="${!isExpired}" onclick="changeState('expired')">Покажи Отминали</button>
+    <button id="openPopupBtn" class="btn btn-primary">Разширено търсене <i class="fas fa-search"></i></button>
+</div>
+
+
+
+
+<!-- Button to open the advanced search popup -->
+<!-- Responsive popup -->
+<div class="popup-content" id="popup">
+    <!-- Advanced search form fields -->
+    <form th:action="@{/recurrence-events/advanced-search/__${isExpired}__}" method="get" id="advancedSearchForm"
+          class="form-inline">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Търси по име на събитие" name="name"
+                   th:value="${name}">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Търси по описание" name="description"
+                   th:value="${description}">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Търси по адрес/линк" name="address"
+                   th:value="${address}">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Търси по име на организатор" name="organisationName"
+                   th:value="${organisationName}">
+        </div>
+        <div class="form-group">
+            <label>"Търси по минимална възраст"</label>
+            <input type="number" class="form-control"  name="minAge" min="0" title="Без отрицателни числа"
+                   th:value="${minAge}">
+        </div>
+        <div class="form-group">
+            <label>Търси по максимална възраст</label>
+            <input type="number" class="form-control"  name="maxAge" min="0" title="Без отрицателни числа"
+                   th:value="${maxAge}">
+        </div>
+        <!--        <label>Тип на събитието: <span></span></label>-->
+        <div class="question-answer d-flex">
+            <div>
+                <input type="checkbox" name="isOnline" th:value="true" th:checked="${isOnline == true}"
+                       onclick="handleCheckboxChange(this)"/>
+                <label class="radio">Онлайн</label>
+            </div>
+            <div>
+                <input type="checkbox" name="isOnline" th:value="false" th:checked="${isOnline == false}"
+                       onclick="handleCheckboxChange(this)"/>
+                <label class="radio">Присъствено</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Търси по категории и ключови думи"
+                   name="eventCategories" th:value="${eventCategories}">
+        </div>
+        <div class="form-group">
+            <label>Търси по начална дата</label>
+            <input type="date" class="form-control"  name="startsAt"
+                   th:value="${startsAt}"
+            >
+        </div>
+        <div class="form-group">
+            <label>Търси по крайна дата</label>
+            <input type="date" class="form-control" name="endsAt"
+                   th:value="${endsAt}">
+        </div>
+
+        <!-- Submit button -->
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            <!-- Button to close the popup -->
+            <button type="button" class="btn btn-secondary" id="closePopupBtn">Затвори</button>
+        </div>
+    </form>
+</div>
+
+
 <div th:if="${events.content != null and events.content.size() > 0}">
 
-<div class="wrapper-flex">
-    <div th:each="event : ${events.content}" class="container-2">
-        <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="profile image" class="logo-img">
-        <div class="card-content">
-            <p class="name" th:text="${event.name}"></p>
+    <div class="wrapper-flex">
+        <div th:each="event : ${events.content}" class="container-2">
+            <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="profile image" class="logo-img">
+            <div class="card-content">
+                <p class="name" th:text="${event.name}"></p>
 
-            <p>
-                <strong>Организатор:</strong>
-                <a target="_blank" th:href="@{/view/organisations/details/{id}(id=${event.orgId})}"
-                   style="color: black;" th:text="'&quot;' + ${event.organisationName} + '&quot;'">
-                </a>
-            </p>
+                <p>
+                    <strong>Организатор:</strong>
+                    <a target="_blank" th:href="@{/view/organisations/details/{id}(id=${event.orgId})}"
+                       style="color: black;" th:text="'&quot;' + ${event.organisationName} + '&quot;'">
+                    </a>
+                </p>
 
 
-            <p class="address">Адрес/линк: <span th:text="${event.address}"></span></p>
-            <p>Ключови думи: <span th:text="${event.eventCategories}"></span></p>
-            <!--            <textarea class="description" readonly th:text="${#strings.abbreviate(event.description, 100)}"></textarea>-->
-            <p><strong>Начало: </strong><span
-                    th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
-            </p>
-            <p><strong>Край: </strong><span
-                    th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
-            </p>
-            <button class="button">Виж още</button>
+                <p class="address">Адрес/линк: <span th:text="${event.address}"></span></p>
+                <p>Ключови думи: <span th:text="${event.eventCategories}"></span></p>
+                <!--            <textarea class="description" readonly th:text="${#strings.abbreviate(event.description, 100)}"></textarea>-->
+                <p><strong>Начало: </strong><span
+                        th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                </p>
+                <p><strong>Край: </strong><span
+                        th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                </p>
+                <button class="button">Виж още</button>
+                <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
+                     class="delete-container">
+                    <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
+                          onsubmit="return confirmDelete(event)">
+                        <button type="submit" class="delete-button">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
+<div th:if="${pagination == 1}">
+    <!-- First Page Button -->
+    <div class="pagination-container">
+        <div class="pagination">
+        <span th:if="${currentPage > 0}">
+            <a th:href="@{/recurrence-events(pageNo=0)}">&laquo;</a>
+            <a th:href="@{/recurrence-events(pageNo=${currentPage - 1})}">&lt;</a>
+        </span>
 
-<div>
-    <!-- Previous Page Button -->
-    <a th:if="${currentPage > 0}" th:href="@{/one-time-events(pageNo=${currentPage - 1})}">Previous</a>
+            <!-- Page Numbers -->
+            <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
+            <a th:href="@{/recurrence-events(pageNo=${page})}" th:class="${page == currentPage} ? 'active' : ''"
+               th:text="${page + 1}"></a>
+        </span>
 
-    <!-- Current Page Number -->
-    <span th:text="${currentPage} + 1">1</span>
-
-    <!-- Total Pages -->
-    <span th:text="${totalPages}">1</span>
-
-    <!-- Next Page Button -->
-    <a th:if="${currentPage + 1 < totalPages}" th:href="@{/recurrence-events(pageNo=${currentPage + 1})}">Next</a>
+            <span th:if="${currentPage + 1 < totalPages}">
+            <a th:href="@{/recurrence-events(pageNo=${currentPage + 1})}">&gt;</a>
+            <a th:href="@{/recurrence-events(pageNo=${totalPages - 1})}">&raquo;</a>
+        </span>
+        </div>
+        <h6>Общ резултат:</h6>
+        <p th:text="${totalItems}"></p>
+    </div>
 </div>
+
+
+<div th:if="${pagination == 2}">
+    <!-- First Page Button -->
+    <div class="pagination-container">
+        <div class="pagination">
+       <span th:if="${currentPage > 0}">
+            <a th:href="@{/recurrence-events/expired(pageNo=0)}">&laquo;</a>
+            <a th:href="@{/recurrence-events/expired(pageNo=${currentPage - 1})}">&lt;</a>
+        </span>
+
+            <!-- Page Numbers -->
+            <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
+            <a th:href="@{/recurrence-events/expired(pageNo=${page})}" th:class="${page == currentPage} ? 'active' : ''"
+               th:text="${page + 1}"></a>
+        </span>
+
+            <span th:if="${currentPage + 1 < totalPages}">
+            <a th:href="@{/recurrence-events/expired(pageNo=${currentPage + 1})}">&gt;</a>
+            <a th:href="@{/recurrence-events/expired(pageNo=${totalPages - 1})}">&raquo;</a>
+        </span>
+        </div>
+        <h6>Общ резултат:</h6>
+        <p th:text="${totalItems}"></p>
+    </div>
 </div>
+
+<div th:if="${pagination == 3}">
+    <div class="pagination-container">
+        <div class="pagination">
+       <span th:if="${currentPage > 0}">
+            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&laquo;</a>
+            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&lt;</a>
+        </span>
+
+            <!-- Page Numbers -->
+            <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
+            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${page}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}"
+               th:class="${page == currentPage} ? 'active' : ''" th:text="${page + 1}"></a>
+        </span>
+
+            <span th:if="${currentPage + 1 < totalPages}">
+            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&gt;</a>
+            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&raquo;</a>
+        </span>
+        </div>
+        <h6>Общ резултат:</h6>
+        <p th:text="${totalItems}"></p>
+    </div>
+</div>
+
 <div th:unless="${events.content != null and events.content.size() > 0}">
-    <p>Няма намерени събития.</p>
+    <h2 style="text-align: center;">Няма налични събития.</h2>
 </div>
 <!--FOOTER-->
 <th:block th:include="~{fragments/footer}"></th:block>
@@ -113,11 +271,266 @@
 <script src="/js/bootstrap-datepicker.min.js"></script>
 <script src="/js/aos.js"></script>
 
+
 <script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/displayScript.js}"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  // Function to toggle the visibility of the popup and content overlay
+  function togglePopup() {
+    $('#popup').fadeToggle();
+    $('#contentOverlay').fadeToggle();
+  }
+
+  // Add event listener to open the popup when the button is clicked
+  $('#openPopupBtn').click(function() {
+    togglePopup();
+  });
+
+  // Add event listener to close the popup when the close button is clicked
+  $('#closePopupBtn').click(function() {
+    togglePopup();
+  });
+
+  // No need for event.preventDefault() in the form submission script
+  $('#advancedSearchForm').submit(function() {
+    // You can add your form submission logic here if needed
+    // ...
+    // The form will submit normally without event.preventDefault();
+    // After processing, close the popup
+    togglePopup();
+  });
+</script>
+
+
+<script>
+    // Function to handle checkbox state changes
+    function handleCheckboxChange(checkbox) {
+        const checkboxes = document.getElementsByName('isOnline');
+
+        checkboxes.forEach((item) => {
+            if (item !== checkbox) {
+                item.checked = false; // Uncheck other checkboxes
+            }
+        });
+    }
+
+
+</script>
+
+<script>
+  var popup = document.querySelector(".popup");
+  var result = popup.dataset.result;
+
+  if (result && result.trim() !== '') {
+    var popupElement = document.createElement("div");
+    popupElement.innerHTML = result;
+    popupElement.style.position = "fixed";
+    popupElement.style.top = "50%";
+    popupElement.style.left = "50%";
+    popupElement.style.transform = "translate(-50%, -50%)";
+    popupElement.style.backgroundColor = "lightgray";
+    popupElement.style.padding = "20px";
+    popupElement.style.border = "1px solid gray";
+    popupElement.style.borderRadius = "5px";
+    popupElement.style.opacity = "1";
+    popupElement.style.transition = "opacity 2s";
+
+    var closeButton = document.createElement("button");
+    closeButton.innerHTML = "X";
+    closeButton.style.position = "absolute";
+    closeButton.style.top = "5px";
+    closeButton.style.right = "5px";
+    closeButton.style.border = "none";
+    closeButton.style.backgroundColor = "red";
+    closeButton.style.color = "white";
+    closeButton.style.fontSize = "12px";
+    closeButton.style.width = "20px";
+    closeButton.style.height = "20px";
+    closeButton.style.borderRadius = "50%";
+    closeButton.style.cursor = "pointer";
+
+    popupElement.appendChild(closeButton);
+    document.body.appendChild(popupElement);
+
+    function closePopup() {
+      popupElement.style.opacity = "0";
+      setTimeout(function() {
+        document.body.removeChild(popupElement);
+      }, 2000);
+    }
+
+    closeButton.addEventListener("click", closePopup);
+    setTimeout(closePopup, 5000);
+  }
+
+
+
+</script>
+
+<script>
+    function confirmDelete(event) {
+        // Show the confirmation dialog
+        const isConfirmed = confirm("Сигурни ли сте, че искате да извършите това действие?");
+
+        // If the user clicks "OK," proceed with the form submission (delete action)
+        // Otherwise, cancel the form submission
+        return isConfirmed;
+    }
+
+
+
+</script>
+<script>
+    function changeState(state) {
+    if (state === 'active') {
+        window.location.href = '/recurrence-events';
+    } else if (state === 'expired') {
+        window.location.href = '/recurrence-events/expired';
+    }
+}
+
+</script>
+
 </body>
 </html>
 <style>
+
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.button-container button {
+    margin: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    .button-container {
+        flex-direction: column;
+    }
+}
+
+
+
+    .content-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 997;
+      display: none;
+    }
+    .popup-content {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      width: 1000px; /* Adjust the width of the popup */
+      max-width: 90%; /* Maximum width of the popup */
+      z-index: 999;
+      display: none;
+       overflow-y: auto;
+    }
+
+    @media (max-width: 576px) {
+  /* Adjust the width and padding for phones */
+  .popup-content {
+    width: 90%;
+    max-width: 90%;
+    padding: 10px;
+  }
+}
+
+    /* Custom styles to remove the Bootstrap form-control padding */
+    .popup-content input[type="text"],
+    .popup-content input[type="date"],
+    .popup-content select {
+     padding: 12px;
+     border: 2px solid #ccc;
+     border-radius: 70px;
+     width: 100%;
+    }
+
+    .popup-content input[type="number"] {
+
+  border: 2px solid #ccc;
+  border-radius: 60px;
+  width: 100px;
+}
+
+       .advanced-search-form {
+        max-width: 380%;
+        margin: 0 auto; /* This will center the form horizontally */
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -10px; /* Adjust the margin as needed for spacing */
+    }
+
+    .form-group {
+        flex: 0 0 10%; /* Set each form-group to occupy 20% width (5 fields per row) */
+        padding: 25px; /* Adjust the padding as needed for spacing */
+    }
+
+    @media (max-width: 768px) {
+        .form-group {
+            flex: 0 0 100%; /* Set each form-group to occupy 50% width (2 fields per row on smaller screens) */
+        }
+    }
+
+      .event-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .delete-container {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+
+    .delete-button {
+        padding: 5px;
+        font-size: 16px;
+        color: white;
+        background-color: red;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .delete-button:hover {
+        background-color: darkred;
+    }
+
     :root {
         --clr-primary: #651fff;
         --clr-gray: #37474f;
@@ -164,18 +577,6 @@
         font-size: 1.5rem;
     }
 
-<!--    .description {-->
-<!--        margin: 1rem 2rem;-->
-<!--        font-size: 0.9rem;-->
-<!--        border: none;-->
-<!--        resize: none;-->
-<!--        background-color: transparent;-->
-<!--        overflow: hidden;-->
-<!--        outline: none;-->
-<!--        height: 100px;-->
-<!--        width: 70%;-->
-
-<!--    }-->
 
  .button {
    padding: 15px 25px;
@@ -198,6 +599,30 @@
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
+.pagination-container {
+    display: flex;
+    justify-content: center;
+  }
+.pagination {
+  display: inline-block;
+  text-align: center;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+
 
 
 </style>
