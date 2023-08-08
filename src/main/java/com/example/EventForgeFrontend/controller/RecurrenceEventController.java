@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Controller
@@ -81,8 +82,8 @@ public class RecurrenceEventController {
                                                    @RequestParam(value = "maxAge", required = false) Integer maxAge,
                                                    @RequestParam(value = "isOnline", required = false) Boolean isOnline,
                                                    @RequestParam(value = "eventCategories", required = false) String eventCategories,
-                                                   @RequestParam(value = "startsAt", required = false) LocalDateTime startsAt,
-                                                   @RequestParam(value = "endsAt", required = false) LocalDateTime endsAt,
+                                                   @RequestParam(value = "startsAt", required = false) LocalDate startsAt,
+                                                   @RequestParam(value = "endsAt", required = false) LocalDate endsAt,
                                                    @PathVariable("isExpired") boolean isExpired,
                                                    @RequestParam(value = "pageNo" , defaultValue = "0", required = false) Integer pageNo
             , @RequestParam(value = "pageSize",defaultValue = "12", required = false) Integer pageSize

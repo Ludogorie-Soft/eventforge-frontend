@@ -55,10 +55,24 @@
     </div>
 </div>
 
+<!--<div class="button-container">-->
+<!--    <th:block th:if="isExpired == false">-->
+<!--        <button id="activeBtn" class="btn btn-primary active-button" onclick="changeState('active')">Покажи активни/предстоящи</button>-->
+<!--    </th:block>-->
+<!--    <th:block th:unless="isExpired == false">-->
+<!--    <button id="expiredBtn" class="btn btn-primary" onclick="changeState('expired')">Покажи отминали</button>-->
+<!--    </th:block>-->
+<!--    <button id="openPopupBtn" class="btn btn-primary">Разширено търсене <i class="fas fa-search"></i></button>-->
+<!--</div>-->
 
-<div style="text-align: center; margin-top: 20px;">
-    <button id="openPopupBtn" class="btn btn-primary">Намери конкретни събития<i class="fas fa-search"></i></button>
+<div class="button-container">
+    <button id="activeBtn" class="btn btn-primary active-button"  th:if="${isExpired}" onclick="changeState('active')">Покажи Активни/предстоящи</button>
+    <button id="expiredBtn" class="btn btn-primary" th:if="${!isExpired}" onclick="changeState('expired')">Покажи Отминали</button>
+    <button id="openPopupBtn" class="btn btn-primary">Разширено търсене <i class="fas fa-search"></i></button>
 </div>
+
+
+
 
 <!-- Button to open the advanced search popup -->
 <!-- Responsive popup -->
@@ -84,15 +98,15 @@
         </div>
         <div class="form-group">
             <label>"Търси по минимална възраст"</label>
-            <input type="number" class="form-control"  name="minAge"
+            <input type="number" class="form-control"  name="minAge" min="0" title="Без отрицателни числа"
                    th:value="${minAge}">
         </div>
         <div class="form-group">
             <label>Търси по максимална възраст</label>
-            <input type="number" class="form-control"  name="maxAge"
+            <input type="number" class="form-control"  name="maxAge" min="0" title="Без отрицателни числа"
                    th:value="${maxAge}">
         </div>
-        <label>Тип на събитието: <span></span></label>
+<!--        <label>Тип на събитието: <span></span></label>-->
         <div class="question-answer d-flex">
             <div>
                 <input type="checkbox" name="isOnline" th:value="true" th:checked="${isOnline == true}"
@@ -113,13 +127,15 @@
         <div class="form-group">
             <label>Търси по начална дата</label>
             <input type="date" class="form-control"  name="startsAt"
-                   th:value="${startsAt}">
+                   th:value="${startsAt}"
+                 >
         </div>
         <div class="form-group">
             <label>Търси по крайна дата</label>
-            <input type="date" class="form-control"  name="endsAt"
+            <input type="date" class="form-control" name="endsAt"
                    th:value="${endsAt}">
         </div>
+
         <!-- Submit button -->
         <div class="btn-group">
             <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
@@ -190,6 +206,8 @@
             <a th:href="@{/one-time-events(pageNo=${totalPages - 1})}">&raquo;</a>
         </span>
         </div>
+        <h6>Общ резултат:</h6>
+        <p th:text="${totalItems}"></p>
     </div>
 </div>
 
@@ -214,6 +232,8 @@
             <a th:href="@{/one-time-events/expired(pageNo=${totalPages - 1})}">&raquo;</a>
         </span>
         </div>
+        <h6>Общ резултат:</h6>
+        <p th:text="${totalItems}"></p>
     </div>
 </div>
 
@@ -236,11 +256,13 @@
             <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&raquo;</a>
         </span>
         </div>
+        <h6>Общ резултат:</h6>
+        <p th:text="${totalItems}"></p>
     </div>
 </div>
 
 <div th:unless="${events.content != null and events.content.size() > 0}">
-    <p>Няма намерени събития.</p>
+    <h2 style="text-align: center;">Няма налични събития.</h2>
 </div>
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/jquery-migrate-3.0.0.js"></script>
@@ -373,10 +395,40 @@
 
 
 </script>
+<script>
+    function changeState(state) {
+    if (state === 'active') {
+        window.location.href = '/one-time-events';
+    } else if (state === 'expired') {
+        window.location.href = '/one-time-events/expired';
+    }
+}
+
+</script>
 
 </body>
 </html>
 <style>
+
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.button-container button {
+    margin: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    .button-container {
+        flex-direction: column;
+    }
+}
+
 
 
     .content-overlay {
