@@ -237,21 +237,21 @@
                                                     тук</strong></a>
                                             </div>
 
-                                        </div>
-                                        <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
-                                        </button>
-                                        <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
-                                             class="delete-container">
-                                            <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
-                                                  onsubmit="return confirmDelete(event)">
-                                                <button type="submit" class="delete-button">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                        <!-- END POP UP-->
                                     </div>
+                                    <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
+                                    </button>
+                                    <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
+                                         class="delete-container">
+                                        <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
+                                              onsubmit="return confirmDelete(event)">
+                                            <button type="submit" class="delete-button">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <!-- END POP UP-->
                                 </div>
+                            </div>
 
                             </div>
                         </div>
@@ -373,7 +373,7 @@
 <script>
     function confirmDelete(event) {
         // Show the confirmation dialog
-        const isConfirmed = confirm("Сигурни ли сте, че искате да извършите това действие?");
+        const isConfirmed = confirm("Сигурни ли сте, че искате да изтриете елемента?");
 
         // If the user clicks "OK," proceed with the form submission (delete action)
         // Otherwise, cancel the form submission
