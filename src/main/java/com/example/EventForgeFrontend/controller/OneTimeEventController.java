@@ -116,13 +116,12 @@ public class OneTimeEventController {
             , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
             , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             ,
-                                                Model model, HttpServletRequest httpRequest) {
+                                                Model model) {
 
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
         CriteriaFilterRequest request = new CriteriaFilterRequest(true, isExpired, name, description, address, organisationName, minAge, maxAge, isOnline, eventCategories, startsAt, endsAt);
 
-        pageNo = Math.max(0, pageNo);
         Page<CommonEventResponse> oneTimeEvents = eventApiClient.getEventsByCriteria(pageNo, pageSize, sort1, sortByColumn, request);
         if (oneTimeEvents != null && !oneTimeEvents.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(oneTimeEvents);
@@ -172,7 +171,7 @@ public class OneTimeEventController {
         model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", oneTimeEvents);
         model.addAttribute("isExpired", isExpired);
-        model.addAttribute("currentUrl" ,"/one-time-events/advanced-search/"+isExpired);
+        model.addAttribute("currentUrl" ,null);
 
         return "oneTimeEvents";
     }

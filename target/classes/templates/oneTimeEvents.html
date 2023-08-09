@@ -59,6 +59,7 @@
     <button id="expiredBtn" class="btn btn-primary" th:if="${!isExpired}" onclick="changeState('expired')">Покажи Отминали</button>
     <button id="openPopupBtn" class="btn btn-primary">Разширено търсене <i class="fas fa-search"></i></button>
 </div>
+    <div th:if="${currentUrl != null}">
     <form th:action="@{${currentUrl}}" method="get" class="filters-container">
         <label for="pageSize">Размер на страницата:</label>
         <select id="pageSize" name="pageSize">
@@ -82,6 +83,55 @@
         </select>
         <button type="submit">Приложи</button>
     </form>
+    </div>
+
+    <div th:if="${currentUrl == null}">
+        <form th:action="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}" method="get" class="filters-container">
+            <label for="pageSize">Размер на страницата:</label>
+            <select  name="pageSize">
+                <option value="5" th:selected="${pageSize == 5}">5</option>
+                <option value="10" th:selected="${pageSize == 10}">10</option>
+                <option value="15" th:selected="${pageSize == 15}">15</option>
+                <option value="20" th:selected="${pageSize == 20}">20</option>
+            </select>
+
+            <label for="sortDirection">Сортиране:</label>
+            <select  name="sort">
+                <option value="asc" th:selected="${sort == 'asc'}">Възходящо</option>
+                <option value="desc" th:selected="${sort == 'desc'}">Низходящо</option>
+            </select>
+
+            <label for="sortBy">Подреди по:</label>
+            <select name="sortByColumn">
+                <option value="name" th:selected="${sortByColumn == 'name'}">Име</option>
+                <option value="startsAt" th:selected="${sortByColumn == 'startsAt'}">Начална дата</option>
+                <option value="endsAt" th:selected="${sortByColumn == 'endsAt'}">Крайна дата</option>
+                <option value="price" th:selected="${sortByColumn == 'price'}">Цена</option>
+                <option value="minAge" th:selected="${sortByColumn == 'mingAge'}">Минимална възраст</option>
+                <option value="maxAge" th:selected="${sortByColumn == 'maxAge'}">Максимална възраст</option>
+                <option value="isOnline" th:selected="${sortByColumn == 'isOnline'}">Онлайн</option>
+                <option value="createdAt" th:selected="${sortByColumn == 'createdAt'}">Най-скоро добавени</option>
+
+            </select>
+            <input type="hidden"  name="name"
+                   th:value="${name}">
+            <input type="hidden" name="description"
+                   th:value="${description}">
+            <input type="hidden" name="address"
+                   th:value="${address}">
+            <input type="hidden"  name="organisationName"
+                   th:value="${organisationName}">
+            <input type="hidden"   name="minAge"
+                   th:value="${minAge}">
+            <input type="hidden"   name="maxAge"
+                   th:value="${maxAge}">
+            <input type="hidden" name="isOnline" th:value="${isOnline}"/>
+            <input type="hidden" name="eventCategories" th:value="${eventCategories}">
+            <input type="hidden"  name="startsAt" th:value="${startsAt}">
+            <input type="hidden"  name="endsAt" th:value="${endsAt}">
+            <button type="submit">Приложи</button>
+        </form>
+    </div>
 </div>
 
 

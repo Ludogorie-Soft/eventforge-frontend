@@ -108,9 +108,8 @@ public class RecurrenceEventController {
             , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
             , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             ,
-                                                   Model model, HttpServletRequest httpRequest) {
+                                                   Model model) {
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
-
 
         CriteriaFilterRequest request = new CriteriaFilterRequest(false, isExpired, name, description, address, organisationName, minAge, maxAge, isOnline, eventCategories, startsAt, endsAt);
         Page<CommonEventResponse> recurrenceEvents = eventApiClient.getEventsByCriteria(pageNo, pageSize, sort1, sortByColumn, request);
