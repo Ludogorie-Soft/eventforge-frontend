@@ -160,28 +160,7 @@ public class RecurrenceEventController {
         if (endsAt != null) {
             model.addAttribute("endsAt", endsAt);
         }
-        URI currentUri = URI.create(ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .replaceQueryParam("name", name)
-                .replaceQueryParam("address", address)
-                .replaceQueryParam("description", description)
-                .replaceQueryParam("organisationName", organisationName)
-                .replaceQueryParam("minAge",minAge)
-                .replaceQueryParam("maxAge",maxAge)
-                .replaceQueryParam("isOnline",isOnline)
-                .replaceQueryParam("eventCategories" ,eventCategories)
-                .replaceQueryParam("startsAt",startsAt)
-                .replaceQueryParam("endsAt",endsAt)
-                .build(true).toUriString());
-//        model.addAttribute("name",name);
-//        model.addAttribute("address",address);
-//        model.addAttribute("description",description);
-//        model.addAttribute("organisationName" ,organisationName);
-//        model.addAttribute("minAge" ,minAge);
-//        model.addAttribute("maxAge" ,maxAge);
-//        model.addAttribute("isOnline" ,isOnline);
-//        model.addAttribute("eventCategories",eventCategories);
-//        model.addAttribute("startsAt" ,startsAt);
-//        model.addAttribute("endsAt",endsAt);
+
         model.addAttribute("pageSize" , pageSize);
         model.addAttribute("sort", sort);
         model.addAttribute("sortByColumn", sortByColumn);
