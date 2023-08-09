@@ -23,13 +23,19 @@ public class OrganisationController { //this controller is to list organisations
     private final UnauthorizeApiClient unauthorizeApiClient;
 
     @GetMapping
-    public String showAllOrganisationForUnauthorized(@RequestParam(value = "name", required = false) String name, Model model) {
-        ResponseEntity<List<OrganisationResponse>> result = unauthorizeApiClient.showAllOrganisationsForUnauthorizedUser(name);
+    public String showAllOrganisationForUnauthorized(@RequestParam(value = "search", required = false) String search, Model model) {
+        ResponseEntity<List<OrganisationResponse>> result = unauthorizeApiClient.showAllOrganisationsForUnauthorizedUser(search);
         for (OrganisationResponse org : Objects.requireNonNull(result.getBody())) {
             org.setLogo(ImageService.encodeImage(org.getLogo()));
             org.setBackground(ImageService.encodeImage(org.getBackground()));
         }
         model.addAttribute("organisations", result.getBody());
+        if(result.getBody()==null || result.getBody().size()<1){
+            model.addAttribute("result" , "Няма намерени резултати");
+        }
+        if(search!= null && !search.isEmpty()){
+            model.addAttribute("search" ,search);
+        }
         return "allOrganisations";
     }
 

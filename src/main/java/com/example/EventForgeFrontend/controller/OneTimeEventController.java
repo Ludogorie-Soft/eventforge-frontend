@@ -43,7 +43,8 @@ public class OneTimeEventController {
             model.addAttribute("currentPage", events.getNumber());
             model.addAttribute("totalPages", events.getTotalPages());
             model.addAttribute("totalItems", events.getTotalElements());
-            model.addAttribute("sort", sort1);
+            model.addAttribute("pageSize" , pageSize);
+            model.addAttribute("sort", sort);
             model.addAttribute("sortByColumn", sortByColumn);
             int startPage = Math.max(events.getNumber() - 2, 0);
             int endPage = Math.min(events.getNumber() + 2, events.getTotalPages() - 1);

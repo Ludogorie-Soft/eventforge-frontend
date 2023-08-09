@@ -86,7 +86,7 @@
             </div>
         </div>
         <div class="question">
-            <p>Онлайн ли е събитието?  <span class="required">*</span></p>
+            <p>Онлайн ли е?  <span class="required">*</span></p>
             <div class="question-answer">
                 <div>
                     <input type="radio" th:value="true" id="radio_yes" th:field="*{isOnline}" required/>
@@ -153,12 +153,12 @@
                 </div>
                 <div>
                     <input type="radio" th:value="false" id="radio_no1" th:field="*{isOneTime}" required/>
-                    <label class="radio"><span>Повтарящо се</span></label>
+                    <label class="radio"><span>Инициатива</span></label>
                 </div>
             </div>
         </div>
         <div class="item">
-            <p>Детайли относно повторяемостта на събитието: (моля попълнете полето , само ако събитието е повтарящо се) </p>
+            <p>Детайли относно повторяемостта на събитието: (моля попълнете полето, само ако сте маркирали с 'Инициатива') </p>
             <input type="text" th:field="*{recurrenceDetails}"
                    placeholder="Детайли относно повторяемостта на събитието">
             <div th:if="${recurrenceDetails}" id="recurrenceDetailsError">
@@ -167,7 +167,7 @@
         </div>
         <div class="contact-item">
             <div class="item">
-                <p>Начало на събитието: </p>
+                <p>Начална дата: </p>
                 <input type="datetime-local" th:value="${event.startsAt}" name="startsAt" required
                        oninvalid="this.setCustomValidity('Моля, въведете начална дата и час на събитието.')"
                        oninput="this.setCustomValidity('')">
@@ -176,7 +176,7 @@
                 </div>
             </div>
             <div class="item">
-                <p>Край на събитието: </p>
+                <p>Крайна дата: </p>
                 <input type="datetime-local" th:value="${event.endsAt}" name="endsAt" required
                        oninvalid="this.setCustomValidity('Моля, въведете крайна дата и час на събитието.')"
                        oninput="this.setCustomValidity('')">
