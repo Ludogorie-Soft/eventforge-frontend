@@ -53,14 +53,13 @@
         </div>
     </div>
 </div>
-
 <div class="search-form">
 <div class="button-container">
     <button id="activeBtn" class="btn btn-primary active-button"  th:if="${isExpired}" onclick="changeState('active')">Покажи Активни/предстоящи</button>
     <button id="expiredBtn" class="btn btn-primary" th:if="${!isExpired}" onclick="changeState('expired')">Покажи Отминали</button>
     <button id="openPopupBtn" class="btn btn-primary">Разширено търсене <i class="fas fa-search"></i></button>
 </div>
-    <form th:action="@{/one-time-events}" method="get" class="filters-container">
+    <form th:action="@{${currentUrl}}" method="get" class="filters-container">
         <label for="pageSize">Размер на страницата:</label>
         <select id="pageSize" name="pageSize">
             <option value="5" th:selected="${pageSize == 5}">5</option>
@@ -244,7 +243,7 @@
     <div class="pagination-container">
         <div class="pagination">
        <span th:if="${currentPage > 0}">
-            <a th:href="@{/one-time-events/expired(pageNo=0 , pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})">&laquo;</a>
+            <a th:href="@{/one-time-events/expired(pageNo=0 , pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
             <a th:href="@{/one-time-events/expired(pageNo=${currentPage - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&lt;</a>
         </span>
 
@@ -267,19 +266,19 @@
     <div class="pagination-container">
         <div class="pagination">
        <span th:if="${currentPage > 0}">
-            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&laquo;</a>
-            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&lt;</a>
+            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
+            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&lt;</a>
         </span>
 
             <!-- Page Numbers -->
             <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
-            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${page}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}"
+            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${page}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}"
                th:class="${page == currentPage} ? 'active' : ''" th:text="${page + 1}"></a>
         </span>
 
             <span th:if="${currentPage + 1 < totalPages}">
-            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&gt;</a>
-            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&raquo;</a>
+            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&gt;</a>
+            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&raquo;</a>
         </span>
             <p th:text="'Общ брой елементи: ' + ${totalItems}"></p>
         </div>

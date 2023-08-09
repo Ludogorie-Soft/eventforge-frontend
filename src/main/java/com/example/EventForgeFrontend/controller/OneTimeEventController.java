@@ -5,6 +5,7 @@ import com.example.EventForgeFrontend.client.OneTimeEventApiClient;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
 import com.example.EventForgeFrontend.image.ImageService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -43,9 +44,6 @@ public class OneTimeEventController {
             model.addAttribute("currentPage", events.getNumber());
             model.addAttribute("totalPages", events.getTotalPages());
             model.addAttribute("totalItems", events.getTotalElements());
-            model.addAttribute("pageSize" , pageSize);
-            model.addAttribute("sort", sort);
-            model.addAttribute("sortByColumn", sortByColumn);
             int startPage = Math.max(events.getNumber() - 2, 0);
             int endPage = Math.min(events.getNumber() + 2, events.getTotalPages() - 1);
             model.addAttribute("startPage", startPage);
@@ -56,8 +54,12 @@ public class OneTimeEventController {
         } else {
             model.addAttribute("result" , NO_AVAILABLE_EVENTS);
         }
+        model.addAttribute("pageSize" , pageSize);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
+        model.addAttribute("currentUrl" ,"/one-time-events");
 
 
         return "oneTimeEvents";
@@ -86,8 +88,12 @@ public class OneTimeEventController {
             model.addAttribute("result" , NO_AVAILABLE_EVENTS);
 
         }
+        model.addAttribute("pageSize" , pageSize);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", events);
         model.addAttribute("isExpired", true);
+        model.addAttribute("currentUrl" ,"/one-time-events/expired");
 
         return "oneTimeEvents";
     }
@@ -110,21 +116,19 @@ public class OneTimeEventController {
             , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
             , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             ,
-                                                Model model) {
+                                                Model model, HttpServletRequest httpRequest) {
 
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
         CriteriaFilterRequest request = new CriteriaFilterRequest(true, isExpired, name, description, address, organisationName, minAge, maxAge, isOnline, eventCategories, startsAt, endsAt);
 
-
+        pageNo = Math.max(0, pageNo);
         Page<CommonEventResponse> oneTimeEvents = eventApiClient.getEventsByCriteria(pageNo, pageSize, sort1, sortByColumn, request);
         if (oneTimeEvents != null && !oneTimeEvents.isEmpty()) {
             ImageService.encodeCommonEventResponsePageImages(oneTimeEvents);
             model.addAttribute("currentPage", oneTimeEvents.getNumber());
             model.addAttribute("totalPages", oneTimeEvents.getTotalPages());
             model.addAttribute("totalItems", oneTimeEvents.getTotalElements());
-            model.addAttribute("sort", sort1);
-            model.addAttribute("sortByColumn", sortByColumn);
             int startPage = Math.max(oneTimeEvents.getNumber() - 2, 0);
             int endPage = Math.min(oneTimeEvents.getNumber() + 2, oneTimeEvents.getTotalPages() - 1);
             model.addAttribute("startPage", startPage);
@@ -163,9 +167,12 @@ public class OneTimeEventController {
         if (endsAt != null) {
             model.addAttribute("endsAt", endsAt);
         }
-
+        model.addAttribute("pageSize" , pageSize);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", oneTimeEvents);
         model.addAttribute("isExpired", isExpired);
+        model.addAttribute("currentUrl" ,"/one-time-events/advanced-search/"+isExpired);
 
         return "oneTimeEvents";
     }

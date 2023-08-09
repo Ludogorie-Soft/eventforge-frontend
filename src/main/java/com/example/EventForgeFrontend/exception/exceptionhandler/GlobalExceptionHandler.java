@@ -28,16 +28,16 @@ public class GlobalExceptionHandler {
     @Autowired
     private AuthenticationApiClient authenticationApiClient;
 
-    @ExceptionHandler(CustomValidationErrorException.class)
-    public ModelAndView handleCustomValidationErrorException(CustomValidationErrorException e, HttpServletRequest request, RedirectAttributes redirectAttributes ) {
+    @ExceptionHandler(CustomValidationErrorException.class )
+    public ModelAndView handleCustomValidationErrorException(CustomValidationErrorException validationEx ,HttpServletRequest request, RedirectAttributes redirectAttributes ) {
         ModelAndView mav = assembleModelAndView(request);
 
-        Map<String, String> errors = e.getErrors();
-        for (Map.Entry<String, String> error : errors.entrySet()) {
-            redirectAttributes.addFlashAttribute(error.getKey(), error.getValue());
-            log.info("field name: " + error.getKey());
-            log.info("error message: " + error.getValue());
-        }
+            Map<String, String> errors = validationEx.getErrors();
+            for (Map.Entry<String, String> error : errors.entrySet()) {
+                redirectAttributes.addFlashAttribute(error.getKey(), error.getValue());
+                log.info("field name: " + error.getKey());
+                log.info("error message: " + error.getValue());
+            }
         RegistrationRequest newRegistrationRequest = getAttributeAsType(request, "newRegistrationRequest", RegistrationRequest.class);
         UpdateAccountRequest newUpdateRequest = getAttributeAsType(request, "updateRequest", UpdateAccountRequest.class);
         Object allPriorities = getAttributeAsType(request, "allPriorities", Set.class);
@@ -101,16 +101,7 @@ public class GlobalExceptionHandler {
         mav.setViewName("redirect:" + request.getHeader("Referer"));
         return mav;
     }
-
-    @ExceptionHandler(FileSizeLimitExceededException.class)
-    public ModelAndView handleMaxUploadSizeExceededException(FileSizeLimitExceededException e, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        ModelAndView mav = new ModelAndView();
-        redirectAttributes.addFlashAttribute("fileError", "Файлът не може да надвишава 5МБ!");
-        redirectAttributes.addFlashAttribute("result" ,"Неуспешен опит.Моля уверете се , че покривате изискванията на всички полета.");
-        mav.setViewName("redirect:" + request.getHeader("Referer"));
-        return mav;
-
-    }
+    
 
     @ExceptionHandler(AccessDeniedException.class)
     public ModelAndView handleForbiddenException(AccessDeniedException ex, HttpServletRequest request, RedirectAttributes redirectAttributes) {

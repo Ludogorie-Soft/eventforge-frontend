@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
@@ -89,7 +90,7 @@ public class ManageEventsController {
     }
 
     @PostMapping("update-event/{id}")
-    public String submitUpdateEvent(@RequestParam("image") MultipartFile image, HttpServletRequest request, @PathVariable("id") Long id, EventRequest eventRequest, RedirectAttributes redirectAttributes) {
+    public String submitUpdateEvent(@RequestParam(value = "image" ,required = false) MultipartFile image, HttpServletRequest request, @PathVariable("id") Long id, EventRequest eventRequest, RedirectAttributes redirectAttributes) {
 
         String token = (String) request.getSession().getAttribute("sessionToken");
         request.setAttribute("event", eventRequest);
@@ -97,6 +98,7 @@ public class ManageEventsController {
         if (eventPicture != null) {
             eventRequest.setImageUrl(eventPicture);
         }
+        String sa = eventRequest.getImageUrl();
         ResponseEntity<String> updateEventResult = organisationApiClient.updateEventByOrganisation(token, id, eventRequest);
         redirectAttributes.addFlashAttribute("result", updateEventResult.getBody());
         request.removeAttribute("event");
