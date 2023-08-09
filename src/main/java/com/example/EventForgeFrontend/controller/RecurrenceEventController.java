@@ -5,7 +5,6 @@ import com.example.EventForgeFrontend.client.RecurrenceEventApiClient;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
 import com.example.EventForgeFrontend.image.ImageService;
-import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,9 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.time.LocalDate;
 
 @Controller
@@ -53,12 +50,12 @@ public class RecurrenceEventController {
         } else {
             model.addAttribute("result", NO_AVAILABLE_EVENTS);
         }
-        model.addAttribute("pageSize" , pageSize);
+        model.addAttribute("pageSize", pageSize);
         model.addAttribute("sort", sort);
         model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
-        model.addAttribute("currentUrl" ,"/recurrence-events");
+        model.addAttribute("currentUrl", "/recurrence-events");
         return "recurrenceEvents";
     }
 
@@ -85,20 +82,20 @@ public class RecurrenceEventController {
             model.addAttribute("result", NO_AVAILABLE_EVENTS);
 
         }
-        model.addAttribute("pageSize" , pageSize);
+        model.addAttribute("pageSize", pageSize);
         model.addAttribute("sort", sort);
         model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", events);
         model.addAttribute("isExpired", true);
-        model.addAttribute("currentUrl" ,"/recurrence-events/expired");
+        model.addAttribute("currentUrl", "/recurrence-events/expired");
         return "recurrenceEvents";
     }
 
-    @GetMapping ("/advanced-search/{isExpired}")
+    @GetMapping("/advanced-search/{isExpired}")
     public String filterRecurrenceEventsByCriteria(@RequestParam(value = "name", required = false) String name,
                                                    @RequestParam(value = "description", required = false) String description,
                                                    @RequestParam(value = "address", required = false) String address,
-                                                  @ModelAttribute("organisationName") @RequestParam(value = "organisationName", required = false) String organisationName,
+                                                   @ModelAttribute("organisationName") @RequestParam(value = "organisationName", required = false) String organisationName,
                                                    @RequestParam(value = "minAge", required = false) Integer minAge,
                                                    @RequestParam(value = "maxAge", required = false) Integer maxAge,
                                                    @RequestParam(value = "isOnline", required = false) Boolean isOnline,
@@ -111,7 +108,7 @@ public class RecurrenceEventController {
             , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
             , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             ,
-                                                   Model model , HttpServletRequest httpRequest) {
+                                                   Model model, HttpServletRequest httpRequest) {
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
 
@@ -161,12 +158,12 @@ public class RecurrenceEventController {
             model.addAttribute("endsAt", endsAt);
         }
 
-        model.addAttribute("pageSize" , pageSize);
+        model.addAttribute("pageSize", pageSize);
         model.addAttribute("sort", sort);
         model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", recurrenceEvents);
         model.addAttribute("isExpired", isExpired);
-        model.addAttribute("currentUrl" ,null);
+        model.addAttribute("currentUrl", null);
         return "recurrenceEvents";
     }
 
