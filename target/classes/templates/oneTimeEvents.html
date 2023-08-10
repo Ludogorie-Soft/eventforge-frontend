@@ -80,6 +80,11 @@
             <option value="name" th:selected="${sortByColumn == 'name'}">Име</option>
             <option value="startsAt" th:selected="${sortByColumn == 'startsAt'}">Начална дата</option>
             <option value="endsAt" th:selected="${sortByColumn == 'endsAt'}">Крайна дата</option>
+            <option value="price" th:selected="${sortByColumn == 'price'}">Цена</option>
+            <option value="minAge" th:selected="${sortByColumn == 'mingAge'}">Минимална възраст</option>
+            <option value="maxAge" th:selected="${sortByColumn == 'maxAge'}">Максимална възраст</option>
+            <option value="isOnline" th:selected="${sortByColumn == 'isOnline'}">Присъствени/онлайн</option>
+            <option value="createdAt" th:selected="${sortByColumn == 'createdAt'}">Най-скоро добавени</option>
         </select>
         <button type="submit">Приложи</button>
     </form>

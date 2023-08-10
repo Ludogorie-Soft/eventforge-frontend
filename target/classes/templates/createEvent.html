@@ -101,24 +101,30 @@
                 </div>
             </div>
         </div>
+        <div class="item">
+            <p>Адрес на събитието (ако е онлайн посочете линк)  <span class="required">*</span></p>
+            <input type="text" th:field="*{address}" oninvalid="this.setCustomValidity('Полето трява да съдържа поне 5 символа!')" oninput="this.setCustomValidity('')" minlength="5" placeholder="Адрес/линк на събитието" required title ="Трябва да въведете минимум 5 символа">
+            <div th:if="${address}" id="addressError">
+                <p th:text="${address}" placeholder="Адрес/линк на събитието" style="color: red;"></p>
+            </div>
+        </div>
+        <div class="item">
+            <p>Фейсбук линк (по желание) </p>
+            <input type="text" th:field="*{facebookLink}"  placeholder="Фейсбук линк на събитието">
+            <div th:if="${facebookLink}" id="facebookLink">
+                <p th:text="${facebookLink}" style="color: red;"></p>
+            </div>
+        </div>
+        <div class="item">
+            <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
+            <input type="text" th:field="*{eventCategories}" oninvalid="this.setCustomValidity('Моля веведете поне една ключова дума с минимум 3 букви!')" oninput="this.setCustomValidity('')" minlength="3" required
+                   title="Моля, използвайте само букви (латиница и кирилица) и запетаи." >
+            <div th:if="${eventCategories}" id="eventCategoriesError">
+                <p th:text="${eventCategories}" style="color: red;"></p>
+            </div>
+            <p style="font-size: 15px; color: #999;">Моля отделяйте всяка ключова дума със запетая</p>
+        </div>
         <div class="contact-item">
-            <div class="item">
-                <p>Адрес на събитието (ако е онлайн посочете линк)  <span class="required">*</span></p>
-                <input type="text" th:field="*{address}" oninvalid="this.setCustomValidity('Полето трява да съдържа поне 5 символа!')" oninput="this.setCustomValidity('')" minlength="5" placeholder="Адрес/линк на събитието" required title ="Трябва да въведете минимум 5 символа">
-                <div th:if="${address}" id="addressError">
-                    <p th:text="${address}" placeholder="Адрес/линк на събитието" style="color: red;"></p>
-                </div>
-            </div>
-            <div class="item">
-                <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
-                <input type="text" th:field="*{eventCategories}" oninvalid="this.setCustomValidity('Моля веведете поне една ключова дума с минимум 3 букви!')" oninput="this.setCustomValidity('')" minlength="3" required
-                       title="Моля, използвайте само букви (латиница и кирилица) и запетаи." >
-
-                <div th:if="${eventCategories}" id="eventCategoriesError">
-                    <p th:text="${eventCategories}" style="color: red;"></p>
-                </div>
-                <p style="font-size: 15px; color: #999;">Моля отделяйте всяка ключова дума със запетая</p>
-            </div>
             <div class="item">
                 <p>Минимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
                 <input type="number" th:field="*{minAge}" min="0" oninvalid="this.setCustomValidity('Позволени са само цифри (цели и положителни)')" oninput="this.setCustomValidity('')" placeholder="Минимална възраст за участие" required title="Моля въведете стойност по-голяма или равна на 0"/>
