@@ -28,4 +28,13 @@ public class ImageValidator {
             }
         }
     }
+
+    public static void isSizeLessThan5mb(MultipartFile image){
+        if(image!=null){
+            long maxSizeBytes = 5 * 1024 * 1024;
+            if(image.getSize() > maxSizeBytes){
+                throw new ImageException("Файлът не може да надвишава 5мб!");
+            }
+        }
+    }
 }

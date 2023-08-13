@@ -54,11 +54,89 @@
     </div>
 </div>
 
-
+<div class="search-form">
 <div class="button-container">
     <button id="activeBtn" class="btn btn-primary active-button"  th:if="${isExpired}" onclick="changeState('active')">Покажи Активни/предстоящи</button>
     <button id="expiredBtn" class="btn btn-primary" th:if="${!isExpired}" onclick="changeState('expired')">Покажи Отминали</button>
     <button id="openPopupBtn" class="btn btn-primary">Разширено търсене <i class="fas fa-search"></i></button>
+</div>
+    <div th:if="${currentUrl != null}">
+    <form th:action="@{${currentUrl}}" method="get" class="filters-container">
+        <label for="pageSize">Размер на страницата:</label>
+        <select id="pageSize" name="pageSize">
+            <option value="5" th:selected="${pageSize == 5}">5</option>
+            <option value="10" th:selected="${pageSize == 10}">10</option>
+            <option value="15" th:selected="${pageSize == 15}">15</option>
+            <option value="20" th:selected="${pageSize == 20}">20</option>
+        </select>
+
+        <label for="sortDirection">Сортиране:</label>
+        <select id="sortDirection" name="sort">
+            <option value="asc" th:selected="${sort == 'asc'}">Възходящо</option>
+            <option value="desc" th:selected="${sort == 'desc'}">Низходящо</option>
+        </select>
+
+        <label for="sortBy">Подреди по:</label>
+        <select id="sortBy" name="sortByColumn">
+            <option value="name" th:selected="${sortByColumn == 'name'}">Име</option>
+            <option value="startsAt" th:selected="${sortByColumn == 'startsAt'}">Начална дата</option>
+            <option value="endsAt" th:selected="${sortByColumn == 'endsAt'}">Крайна дата</option>
+            <option value="price" th:selected="${sortByColumn == 'price'}">Цена</option>
+            <option value="minAge" th:selected="${sortByColumn == 'mingAge'}">Минимална възраст</option>
+            <option value="maxAge" th:selected="${sortByColumn == 'maxAge'}">Максимална възраст</option>
+            <option value="isOnline" th:selected="${sortByColumn == 'isOnline'}">Присъствени/онлайн</option>
+            <option value="createdAt" th:selected="${sortByColumn == 'createdAt'}">Най-скоро добавени</option>
+        </select>
+        <button type="submit">Приложи</button>
+    </form>
+    </div>
+    <div th:if="${currentUrl == null}">
+        <form th:action="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}" method="get" class="filters-container">
+            <label for="pageSize">Размер на страницата:</label>
+            <select  name="pageSize">
+                <option value="5" th:selected="${pageSize == 5}">5</option>
+                <option value="10" th:selected="${pageSize == 10}">10</option>
+                <option value="15" th:selected="${pageSize == 15}">15</option>
+                <option value="20" th:selected="${pageSize == 20}">20</option>
+            </select>
+
+            <label for="sortDirection">Сортиране:</label>
+            <select  name="sort">
+                <option value="asc" th:selected="${sort == 'asc'}">Възходящо</option>
+                <option value="desc" th:selected="${sort == 'desc'}">Низходящо</option>
+            </select>
+
+            <label for="sortBy">Подреди по:</label>
+            <select name="sortByColumn">
+                <option value="name" th:selected="${sortByColumn == 'name'}">Име</option>
+                <option value="startsAt" th:selected="${sortByColumn == 'startsAt'}">Начална дата</option>
+                <option value="endsAt" th:selected="${sortByColumn == 'endsAt'}">Крайна дата</option>
+                <option value="price" th:selected="${sortByColumn == 'price'}">Цена</option>
+                <option value="minAge" th:selected="${sortByColumn == 'mingAge'}">Минимална възраст</option>
+                <option value="maxAge" th:selected="${sortByColumn == 'maxAge'}">Максимална възраст</option>
+                <option value="isOnline" th:selected="${sortByColumn == 'isOnline'}">Онлайн</option>
+                <option value="createdAt" th:selected="${sortByColumn == 'createdAt'}">Най-скоро добавени</option>
+
+            </select>
+            <input type="hidden"  name="name"
+                   th:value="${name}">
+            <input type="hidden" name="description"
+                   th:value="${description}">
+            <input type="hidden" name="address"
+                   th:value="${address}">
+            <input type="hidden"  name="organisationName"
+                   th:value="${organisationName}">
+            <input type="hidden"   name="minAge"
+                   th:value="${minAge}">
+            <input type="hidden"   name="maxAge"
+                   th:value="${maxAge}">
+            <input type="hidden" name="isOnline" th:value="${isOnline}"/>
+            <input type="hidden" name="eventCategories" th:value="${eventCategories}">
+            <input type="hidden"  name="startsAt" th:value="${startsAt}">
+            <input type="hidden"  name="endsAt" th:value="${endsAt}">
+            <button type="submit">Приложи</button>
+        </form>
+    </div>
 </div>
 
 
@@ -151,8 +229,20 @@
                     </a>
                 </p>
 
+                <p th:text="${event.isOnline} ? 'Онлайн' : 'Присъствено'"></p>
+                <div th:if="${event.address}">
+                    <p th:if="${event.address.startsWith('http://') or event.address.startsWith('https://') or event.address.startsWith('www.')}">
+                        <!-- It's a link -->
+                        <a th:href="${event.address}" target="_blank" rel="noopener noreferrer">
+                            Линк: <span th:text="${event.address}"></span>
+                        </a>
+                    </p>
+                    <p th:unless="${event.address.startsWith('http://') or event.address.startsWith('https://')}">
+                        <!-- It's a physical address -->
+                        Адрес: <span th:text="${event.address}"></span>
+                    </p>
+                </div>
 
-                <p class="address">Адрес/линк: <span th:text="${event.address}"></span></p>
                 <p>Ключови думи: <span th:text="${event.eventCategories}"></span></p>
                 <!--            <textarea class="description" readonly th:text="${#strings.abbreviate(event.description, 100)}"></textarea>-->
                 <p><strong>Начало: </strong><span
@@ -176,28 +266,28 @@
         </div>
     </div>
 </div>
+<div class="search-form">
 <div th:if="${pagination == 1}">
     <!-- First Page Button -->
     <div class="pagination-container">
         <div class="pagination">
         <span th:if="${currentPage > 0}">
-            <a th:href="@{/recurrence-events(pageNo=0)}">&laquo;</a>
-            <a th:href="@{/recurrence-events(pageNo=${currentPage - 1})}">&lt;</a>
+            <a th:href="@{/recurrence-events(pageNo=0, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
+            <a th:href="@{/recurrence-events(pageNo=${currentPage - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&lt;</a>
         </span>
 
             <!-- Page Numbers -->
             <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
-            <a th:href="@{/recurrence-events(pageNo=${page})}" th:class="${page == currentPage} ? 'active' : ''"
+            <a th:href="@{/recurrence-events(pageNo=${page}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}" th:class="${page == currentPage} ? 'active' : ''"
                th:text="${page + 1}"></a>
         </span>
 
             <span th:if="${currentPage + 1 < totalPages}">
-            <a th:href="@{/recurrence-events(pageNo=${currentPage + 1})}">&gt;</a>
-            <a th:href="@{/recurrence-events(pageNo=${totalPages - 1})}">&raquo;</a>
+            <a th:href="@{/recurrence-events(pageNo=${currentPage + 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&gt;</a>
+            <a th:href="@{/recurrence-events(pageNo=${totalPages - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&raquo;</a>
         </span>
+            <p th:text="'Общ брой елементи: ' + ${totalItems}"></p>
         </div>
-        <h6>Общ резултат:</h6>
-        <p th:text="${totalItems}"></p>
     </div>
 </div>
 
@@ -207,23 +297,22 @@
     <div class="pagination-container">
         <div class="pagination">
        <span th:if="${currentPage > 0}">
-            <a th:href="@{/recurrence-events/expired(pageNo=0)}">&laquo;</a>
+            <a th:href="@{/recurrence-events/expired(pageNo=0, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
             <a th:href="@{/recurrence-events/expired(pageNo=${currentPage - 1})}">&lt;</a>
         </span>
 
             <!-- Page Numbers -->
             <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
-            <a th:href="@{/recurrence-events/expired(pageNo=${page})}" th:class="${page == currentPage} ? 'active' : ''"
+            <a th:href="@{/recurrence-events/expired(pageNo=${page}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}" th:class="${page == currentPage} ? 'active' : ''"
                th:text="${page + 1}"></a>
         </span>
 
             <span th:if="${currentPage + 1 < totalPages}">
-            <a th:href="@{/recurrence-events/expired(pageNo=${currentPage + 1})}">&gt;</a>
-            <a th:href="@{/recurrence-events/expired(pageNo=${totalPages - 1})}">&raquo;</a>
+            <a th:href="@{/recurrence-events/expired(pageNo=${currentPage + 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&gt;</a>
+            <a th:href="@{/recurrence-events/expired(pageNo=${totalPages - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&raquo;</a>
         </span>
+            <p th:text="'Общ брой елементи: ' + ${totalItems}"></p>
         </div>
-        <h6>Общ резултат:</h6>
-        <p th:text="${totalItems}"></p>
     </div>
 </div>
 
@@ -231,24 +320,24 @@
     <div class="pagination-container">
         <div class="pagination">
        <span th:if="${currentPage > 0}">
-            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&laquo;</a>
-            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&lt;</a>
+            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
+            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&lt;</a>
         </span>
 
             <!-- Page Numbers -->
             <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
-            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${page}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}"
+            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${page}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}"
                th:class="${page == currentPage} ? 'active' : ''" th:text="${page + 1}"></a>
         </span>
 
             <span th:if="${currentPage + 1 < totalPages}">
-            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&gt;</a>
-            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt})}">&raquo;</a>
+            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&gt;</a>
+            <a th:href="@{/recurrence-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&raquo;</a>
         </span>
+            <p th:text="'Общ брой елементи: ' + ${totalItems}"></p>
         </div>
-        <h6>Общ резултат:</h6>
-        <p th:text="${totalItems}"></p>
     </div>
+</div>
 </div>
 
 <div th:unless="${events.content != null and events.content.size() > 0}">
@@ -564,7 +653,7 @@
     background-color: #ccc;
     width: 100%;
     height: 180px; /* Adjust the height as needed */
-    object-fit: cover;
+    object-fit: logo;
     border-radius: 1rem 1rem 0 0; /* Rounded corners at the top of the image */
 }
 

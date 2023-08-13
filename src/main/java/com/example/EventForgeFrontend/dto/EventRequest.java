@@ -25,6 +25,8 @@ public class EventRequest {
 
     private String address;
 
+    private String facebookLink;
+
     private String eventCategories;
 
     private Double price;

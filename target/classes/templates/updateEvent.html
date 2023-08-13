@@ -49,7 +49,6 @@
     </div>
   </div>
 </div>
-
 <div class="testbox">
   <form action="#" th:action="@{/manage-events/update-event/{id}(id=${id})}" th:object="${event}" method="post"
         enctype="multipart/form-data">
@@ -68,29 +67,27 @@
       <div th:if="${name}" id="nameError">
         <p th:text="${name}" style="color: red;"></p>
       </div>
+      <p>Снимка на събитието:</p>
+      
+        <img style='display:block; width:100px; height:100px;' id='base64image'
+             th:src="@{'data:image/jpeg;base64,' + ${eventPictureUrl}}" />
       <div class="item">
-        <p>Снимка на събитието: <span class="required">*</span></p>
-        <td>
-          <img style='display:block; width:100px; height:100px;' id='base64image'
-               th:src="@{'data:image/jpeg;base64,' + ${eventPictureUrl}}" />
-        </td>
-        <input type="hidden" name="eventPictureUrl" th:value="${eventPictureUrl}" />
-        <input type="file" name="image" placeholder="прикачи нова снимка" >
+        <input type="file" name="image"  placeholder="прикачи нова снимка" >
       </div>
       <div th:if="${fileError}" id="fileError">
         <p th:text="${fileError}" style="color: red;"></p>
       </div>
       <p>Описание на събитието: <span class="required">*</span></p>
       <div class="item">
-               <textarea  th:field="*{description}" oninvalid="this.setCustomValidity('Описанието трява да е между 100 и 500 символа!')" oninput="this.setCustomValidity('')" placeholder="Описание на събитието" minlength="100"
-                          maxlength="500" id="description" required title="Моля веъведете между 100 и 500 симбова."></textarea>
+                <textarea  th:field="*{description}" oninvalid="this.setCustomValidity('Описанието трява да е между 20 и 500 символа!')" oninput="this.setCustomValidity('')" placeholder="Описание на събитието" minlength="20"
+                           maxlength="500" id="description" required title="Моля въведете между 20 и 500 симбова."></textarea>
       </div>
       <div th:if="${description}" id="descriptionError">
         <p th:text="${description}" style="color: red;"></p>
       </div>
     </div>
     <div class="question">
-      <p>Онлайн ли е събитието?  <span class="required">*</span> </p>
+      <p>Онлайн ли е?  <span class="required">*</span> </p>
       <div class="question-answer">
         <div>
           <input type="radio" th:value="true" id="radio_yes" th:field="*{isOnline}" required/>
@@ -105,23 +102,30 @@
         </div>
       </div>
     </div>
+    <div class="item">
+      <p>Адрес на събитието (ако е онлайн посочете линк)  <span class="required">*</span></p>
+      <input type="text" th:field="*{address}" oninvalid="this.setCustomValidity('Полето трява да съдържа поне 5 символа!')" oninput="this.setCustomValidity('')" minlength="5" placeholder="Адрес/линк на събитието" required title ="Трябва да въведете минимум 5 символа">
+      <div th:if="${address}" id="addressError">
+        <p th:text="${address}" placeholder="Адрес/линк на събитието" style="color: red;"></p>
+      </div>
+    </div>
+    <div class="item">
+      <p>Фейсбук линк (по желание) </p>
+      <input type="text" th:field="*{facebookLink}"  placeholder="Фейсбук линк на събитието">
+      <div th:if="${facebookLink}" id="facebookLink">
+        <p th:text="${facebookLink}" style="color: red;"></p>
+      </div>
+    </div>
+    <div class="item">
+      <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
+      <input type="text" th:field="*{eventCategories}" oninvalid="this.setCustomValidity('Моля веведете поне една ключова дума с минимум 3 букви!')" oninput="this.setCustomValidity('')" minlength="3" required
+             title="Моля, използвайте само букви (латиница и кирилица) и запетаи." >
+      <div th:if="${eventCategories}" id="eventCategoriesError">
+        <p th:text="${eventCategories}" style="color: red;"></p>
+      </div>
+      <p style="font-size: 15px; color: #999;">Моля отделяйте всяка ключова дума със запетая</p>
+    </div>
     <div class="contact-item">
-      <div class="item">
-        <p>Адрес на събитието (ако е онлайн посочете линк)</p>
-        <input type="text" th:field="*{address}" oninvalid="this.setCustomValidity('Полето трява да съдържа поне 5 символа!')" oninput="this.setCustomValidity('')" minlength="5" placeholder="Адрес/линк на събитието" required title ="Трябва да въведете минимум 5 символа">
-        <div th:if="${address}" id="addressError">
-          <p th:text="${address}" placeholder="Адрес/линк на събитието" style="color: red;"></p>
-        </div>
-      </div>
-      <div class="item">
-        <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
-        <input type="text" th:field="*{eventCategories}" oninvalid="this.setCustomValidity('Моля веведете поне една ключова дума с минимум 3 букви!')" oninput="this.setCustomValidity('')" minlength="3" required
-               title="Моля, използвайте само букви (латиница и кирилица) и запетаи." >
-        <div th:if="${eventCategories}" id="eventCategoriesError">
-          <p th:text="${eventCategories}" style="color: red;"></p>
-        </div>
-        <p style="font-size: 15px; color: #999;">Моля отделяйте всяка ключова дума със запетая</p>
-      </div>
       <div class="item">
         <p>Минимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
         <input type="number" th:field="*{minAge}" min="0" oninvalid="this.setCustomValidity('Позволени са само цифри (цели и положителни)')" oninput="this.setCustomValidity('')" placeholder="Минимална възраст за участие" required title="Моля въведете стойност по-голяма или равна на 0"/>
@@ -156,12 +160,12 @@
         </div>
         <div>
           <input type="radio" th:value="false" id="radio_no1" th:field="*{isOneTime}" required/>
-          <label class="radio"><span>Повтарящо се</span></label>
+          <label class="radio"><span>Инициатива</span></label>
         </div>
       </div>
     </div>
     <div class="item">
-      <p>Детайли относно повторяемостта на събитието: (моля попълнете полето , само ако събитието е повтарящо се) </p>
+      <p>Детайли относно повторяемостта на събитието: (моля попълнете полето, само ако сте маркирали с 'Инициатива') </p>
       <input type="text" th:field="*{recurrenceDetails}"
              placeholder="Детайли относно повторяемостта на събитието">
       <div th:if="${recurrenceDetails}" id="recurrenceDetailsError">
@@ -170,7 +174,7 @@
     </div>
     <div class="contact-item">
       <div class="item">
-        <p>Начало на събитието:   <span class="required">*</span></p>
+        <p>Начална дата:   <span class="required">*</span></p>
         <input type="datetime-local" th:value="${event.startsAt}" name="startsAt" required
                oninvalid="this.setCustomValidity('Моля, въведете начална дата и час на събитието.')"
                oninput="this.setCustomValidity('')">        <div th:if="${startsAt}" id="startsAtError">
@@ -178,7 +182,7 @@
         </div>
       </div>
       <div class="item">
-        <p>Край на събитието:  <span class="required">*</span> </p>
+        <p>Крайна дата:  <span class="required">*</span> </p>
         <input type="datetime-local" th:value="${event.endsAt}" name="endsAt" required
                oninvalid="this.setCustomValidity('Моля, въведете крайна дата и час на събитието.')"
                oninput="this.setCustomValidity('')">        <div th:if="${endsAt}" id="endsAtError">

@@ -122,7 +122,7 @@ public class AuthenticationController {
 
         // Set the session token in the current session
         sessionManager.setSessionToken(request, token, userRole);
-        redirectAttributes.addFlashAttribute("result" ,"Успешно се вписахте в профилът си");
+        redirectAttributes.addFlashAttribute("result" ,"Успешно се вписахте.");
         return "redirect:/";
     }
 
@@ -131,7 +131,7 @@ public class AuthenticationController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         authenticationApiClient.logout(token);
         sessionManager.invalidateSession(request);
-        redirectAttributes.addFlashAttribute("result" ,"Успешно излязохте от профилът си");
+        redirectAttributes.addFlashAttribute("result" ,"Успешно се отписахте.");
         return "redirect:/";
     }
 }

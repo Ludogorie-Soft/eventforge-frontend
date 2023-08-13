@@ -63,11 +63,13 @@ public class ImageService {
             return null;
         }
             ImageValidator.isImageValid(file);
+            ImageValidator.isSizeLessThan5mb(file);
         return uploadImageToFileSystem(file, type);
     }
     public String uploadPicture(MultipartFile file, ImageType type) {
         ImageValidator.isImageEmpty(file , type);
         ImageValidator.isImageValid(file);
+        ImageValidator.isSizeLessThan5mb(file);
         return uploadImageToFileSystem(file, type);
     }
 

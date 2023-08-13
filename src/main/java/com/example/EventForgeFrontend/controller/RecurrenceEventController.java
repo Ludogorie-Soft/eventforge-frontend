@@ -5,7 +5,7 @@ import com.example.EventForgeFrontend.client.RecurrenceEventApiClient;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
 import com.example.EventForgeFrontend.image.ImageService;
-import com.example.EventForgeFrontend.session.SessionManager;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -41,8 +41,6 @@ public class RecurrenceEventController {
             model.addAttribute("currentPage", events.getNumber());
             model.addAttribute("totalPages", events.getTotalPages());
             model.addAttribute("totalItems", events.getTotalElements());
-            model.addAttribute("sort", sort1);
-            model.addAttribute("sortByColumn", sortByColumn);
             int startPage = Math.max(events.getNumber() - 2, 0);
             int endPage = Math.min(events.getNumber() + 2, events.getTotalPages() - 1);
             model.addAttribute("startPage", startPage);
@@ -52,8 +50,12 @@ public class RecurrenceEventController {
         } else {
             model.addAttribute("result", NO_AVAILABLE_EVENTS);
         }
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
+        model.addAttribute("currentUrl", "/recurrence-events");
         return "recurrenceEvents";
     }
 
@@ -80,16 +82,20 @@ public class RecurrenceEventController {
             model.addAttribute("result", NO_AVAILABLE_EVENTS);
 
         }
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", events);
         model.addAttribute("isExpired", true);
+        model.addAttribute("currentUrl", "/recurrence-events/expired");
         return "recurrenceEvents";
     }
 
-    @GetMapping ("/advanced-search/{isExpired}")
+    @GetMapping("/advanced-search/{isExpired}")
     public String filterRecurrenceEventsByCriteria(@RequestParam(value = "name", required = false) String name,
                                                    @RequestParam(value = "description", required = false) String description,
                                                    @RequestParam(value = "address", required = false) String address,
-                                                   @RequestParam(value = "organisationName", required = false) String organisationName,
+                                                   @ModelAttribute("organisationName") @RequestParam(value = "organisationName", required = false) String organisationName,
                                                    @RequestParam(value = "minAge", required = false) Integer minAge,
                                                    @RequestParam(value = "maxAge", required = false) Integer maxAge,
                                                    @RequestParam(value = "isOnline", required = false) Boolean isOnline,
@@ -105,7 +111,6 @@ public class RecurrenceEventController {
                                                    Model model) {
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
-
         CriteriaFilterRequest request = new CriteriaFilterRequest(false, isExpired, name, description, address, organisationName, minAge, maxAge, isOnline, eventCategories, startsAt, endsAt);
         Page<CommonEventResponse> recurrenceEvents = eventApiClient.getEventsByCriteria(pageNo, pageSize, sort1, sortByColumn, request);
         if (recurrenceEvents != null && !recurrenceEvents.isEmpty()) {
@@ -113,8 +118,6 @@ public class RecurrenceEventController {
             model.addAttribute("currentPage", recurrenceEvents.getNumber());
             model.addAttribute("totalPages", recurrenceEvents.getTotalPages());
             model.addAttribute("totalItems", recurrenceEvents.getTotalElements());
-            model.addAttribute("sort", sort1);
-            model.addAttribute("sortByColumn", sortByColumn);
             int startPage = Math.max(recurrenceEvents.getNumber() - 2, 0);
             int endPage = Math.min(recurrenceEvents.getNumber() + 2, recurrenceEvents.getTotalPages() - 1);
             model.addAttribute("startPage", startPage);
@@ -153,8 +156,13 @@ public class RecurrenceEventController {
         if (endsAt != null) {
             model.addAttribute("endsAt", endsAt);
         }
+
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", recurrenceEvents);
         model.addAttribute("isExpired", isExpired);
+        model.addAttribute("currentUrl", null);
         return "recurrenceEvents";
     }
 
