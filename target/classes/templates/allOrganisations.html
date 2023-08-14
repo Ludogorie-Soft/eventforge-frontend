@@ -55,7 +55,8 @@
 <div class="search-form">
     <div class="flex-container">
         <form action="#" method="get" class="flex-form">
-            <input class="larger-input" type="text" name="search" th:value="${search}" placeholder="Търси организации по име, адрес, уебсайт, фейсбук, приоритети или електронна поща">
+            <input class="larger-input" type="text" name="search" th:value="${search}"
+                   placeholder="Търси организации по име, адрес, уебсайт, фейсбук, приоритети или електронна поща">
             <button type="submit" class="search-button">
                 <i class="fas fa-search"></i>
             </button>
@@ -83,45 +84,47 @@
             <option value="registeredAt" th:selected="${sortByColumn == 'registeredAt'}">Дата на регистриране</option>
         </select>
 
-        <input type="hidden"  name="search"
+        <input type="hidden" name="search"
                th:value="${search}">
         <button type="submit" class="apply-button">Приложи</button>
     </form>
 </div>
 <div th:if="${organisations.content != null and organisations.content.size() > 0}">
 
-<div class="wrapper-flex">
-    <div th:each="organisation : ${organisations.content}" class="container-2">
-        <img th:src="@{'data:image/jpeg;base64,' + ${organisation.logo}}" alt="profile image" class="logo-img">
-        <div class="card-content">
-            <p class="name" th:text="${organisation.name}"></p>
-            <div th:if="${organisation.address != null and organisation.address != ''}">
-                <p class="label">Адрес</p>
-                <P th:text="${organisation.address}"></P>
-            </div>
-            <div th:unless="${organisation.address != null and organisation.address != ''}">
-                <p class="label">Адрес</p>
-                <P>Няма посочен адрес</P>
-            </div>
-                        <p class="label">Приоритети</p>
-            <div class="priority" >
-           <p th:text="${#strings.listJoin(organisation.organisationPriorities, ', ')}"></p>
-            </div>
+    <div class="wrapper-flex">
+        <div th:each="organisation : ${organisations.content}" class="container-2">
+            <img th:src="@{'data:image/jpeg;base64,' + ${organisation.logo}}" alt="profile image" class="logo-img">
+            <div class="card-content">
+                <p class="name" th:text="${organisation.name}"></p>
+                <div th:if="${organisation.address != null and organisation.address != ''}">
+                    <p class="label">Адрес</p>
+                    <P th:text="${organisation.address}"></P>
+                </div>
+                <div th:unless="${organisation.address != null and organisation.address != ''}">
+                    <p class="label">Адрес</p>
+                    <P>Няма посочен адрес</P>
+                </div>
+                <p class="label">Приоритети</p>
+                <div class="priority">
+                    <p th:text="${#strings.listJoin(organisation.organisationPriorities, ', ')}"></p>
+                </div>
 
-            <textarea class="description" readonly
-                      th:text="${#strings.abbreviate(organisation.organisationPurpose, 160)}"></textarea>
-            <div th:if="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
-                <a class="btn" target="_blank" th:href="@{/admin/organisation/details/{id}(id=${organisation.orgId})}">Научи
-                    повече</a>
-            </div>
-            <div th:unless="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
-                <a class="btn" target="_blank" th:href="@{/view/organisations/details/{id}(id=${organisation.orgId})}">Научи
-                    повече</a>
-            </div>
+                <textarea class="description" readonly
+                          th:text="${#strings.abbreviate(organisation.organisationPurpose, 160)}"></textarea>
+                <div th:if="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
+                    <a class="btn" target="_blank"
+                       th:href="@{/admin/organisation/details/{id}(id=${organisation.orgId})}">Научи
+                        повече</a>
+                </div>
+                <div th:unless="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
+                    <a class="btn" target="_blank"
+                       th:href="@{/view/organisations/details/{id}(id=${organisation.orgId})}">Научи
+                        повече</a>
+                </div>
 
+            </div>
         </div>
     </div>
-</div>
     <div class="search-form">
         <!-- First Page Button -->
         <div class="pagination-container">
@@ -133,7 +136,8 @@
 
                 <!-- Page Numbers -->
                 <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
-            <a th:href="@{/view/organisations(pageNo=${page}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn}, search=${search})}" th:class="${page == currentPage} ? 'active' : ''"
+            <a th:href="@{/view/organisations(pageNo=${page}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn}, search=${search})}"
+               th:class="${page == currentPage} ? 'active' : ''"
                th:text="${page + 1}"></a>
         </span>
 
@@ -174,130 +178,139 @@
 <script th:src="@{/js/displayScript.js}"></script>
 
 <script>
-  var popup = document.querySelector(".popup");
-  var result = popup.dataset.result;
+    var popup = document.querySelector(".popup");
+    var result = popup.dataset.result;
 
-  if (result && result.trim() !== '') {
-    var popupElement = document.createElement("div");
-    popupElement.innerHTML = result;
-    popupElement.style.position = "fixed";
-    popupElement.style.top = "50%";
-    popupElement.style.left = "50%";
-    popupElement.style.transform = "translate(-50%, -50%)";
-    popupElement.style.backgroundColor = "lightgray";
-    popupElement.style.padding = "20px";
-    popupElement.style.border = "1px solid gray";
-    popupElement.style.borderRadius = "5px";
-    popupElement.style.opacity = "1";
-    popupElement.style.transition = "opacity 2s";
+    if (result && result.trim() !== '') {
+        var popupElement = document.createElement("div");
+        popupElement.innerHTML = result;
+        popupElement.style.position = "fixed";
+        popupElement.style.top = "50%";
+        popupElement.style.left = "50%";
+        popupElement.style.transform = "translate(-50%, -50%)";
+        popupElement.style.backgroundColor = "lightgray";
+        popupElement.style.padding = "20px";
+        popupElement.style.border = "1px solid gray";
+        popupElement.style.borderRadius = "5px";
+        popupElement.style.opacity = "1";
+        popupElement.style.transition = "opacity 2s";
 
-    var closeButton = document.createElement("button");
-    closeButton.innerHTML = "X";
-    closeButton.style.position = "absolute";
-    closeButton.style.top = "5px";
-    closeButton.style.right = "5px";
-    closeButton.style.border = "none";
-    closeButton.style.backgroundColor = "red";
-    closeButton.style.color = "white";
-    closeButton.style.fontSize = "12px";
-    closeButton.style.width = "20px";
-    closeButton.style.height = "20px";
-    closeButton.style.borderRadius = "50%";
-    closeButton.style.cursor = "pointer";
+        var closeButton = document.createElement("button");
+        closeButton.innerHTML = "X";
+        closeButton.style.position = "absolute";
+        closeButton.style.top = "5px";
+        closeButton.style.right = "5px";
+        closeButton.style.border = "none";
+        closeButton.style.backgroundColor = "red";
+        closeButton.style.color = "white";
+        closeButton.style.fontSize = "12px";
+        closeButton.style.width = "20px";
+        closeButton.style.height = "20px";
+        closeButton.style.borderRadius = "50%";
+        closeButton.style.cursor = "pointer";
 
-    popupElement.appendChild(closeButton);
-    document.body.appendChild(popupElement);
+        popupElement.appendChild(closeButton);
+        document.body.appendChild(popupElement);
 
-    function closePopup() {
-      popupElement.style.opacity = "0";
-      setTimeout(function() {
-        document.body.removeChild(popupElement);
-      }, 2000);
+        function closePopup() {
+            popupElement.style.opacity = "0";
+            setTimeout(function () {
+                document.body.removeChild(popupElement);
+            }, 2000);
+        }
+
+        closeButton.addEventListener("click", closePopup);
+        setTimeout(closePopup, 5000);
     }
-
-    closeButton.addEventListener("click", closePopup);
-    setTimeout(closePopup, 5000);
-  }
 
 </script>
 
 </body>
 </html>
 <style>
+    .filters-container {
+        margin-top: 15px;
+        text-align: center;
+    }
 
-.search-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 13vh;
-}
+    .search-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 13vh;
+        margin-top: 40px;
+        margin-bottom: 10px;
+    }
 
-.flex-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 1000px; /* Limit the maximum width of the content */
-    width: 100%;
-}
+    .flex-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 1000px; /* Limit the maximum width of the content */
+        width: 100%;
+    }
 
-.flex-form {
-    display: flex;
-    align-items: center;
-    flex: 1; /* Allow the form to take up remaining space */
-}
+    .flex-form {
+        display: flex;
+        align-items: center;
+        flex: 1; /* Allow the form to take up remaining space */
+    }
 
-.larger-input {
-    flex: 1;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%; /* Take up all available space in the form */
-    box-sizing: border-box;
-}
+    .larger-input {
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%; /* Take up all available space in the form */
+        box-sizing: border-box;
+    }
 
-.search-button {
-    background-color: blue;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    color: white;
-    font-size: 18px;
-    border-radius: 5px;
-}
+    .search-button {
+        background-color: blue;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        color: white;
+        font-size: 18px;
+        border-radius: 5px;
+    }
 
-.search-button i {
-    color: white;
-}
+    .search-button i {
+        color: white;
+    }
 
 
-.button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
 
     .priority {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
 
-}
+    }
 
     :root {
         --clr-primary: #651FFF;
         --clr-gray: #37474F;
         --clr-gray-light: #B0BEC5;
     }
+
     .wrapper-flex {
         margin-top: 0px;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
     }
+
     .container-2 {
         overflow: hidden;
         box-shadow: 0px 2px 8px 0px var(--clr-gray-light);
@@ -310,6 +323,7 @@
         margin-left: 3rem;
         margin-top: 3rem;
     }
+
     .logo-img {
         background-color: #ccc;
         border-radius: 80%;
@@ -319,9 +333,11 @@
         clip-path: circle(80px at center);
         margin-top: 1.5rem;
     }
+
     .logo-img:hover {
         transform: scale(1.1);
     }
+
     .name {
         font-weight: bold;
         font-size: 1.5rem;
@@ -345,6 +361,7 @@
         height: 100px;
         width: 70%;
     }
+
     .btn {
         width: 50%;
         border: none;
@@ -357,29 +374,34 @@
     }
 
     .pagination-container {
-    display: flex;
-    justify-content: center;
-  }
-.pagination {
-  display: inline-block;
-  text-align: center;
-}
+        display: flex;
+        justify-content: center;
+    }
 
-.pagination a {
-  color: black;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
-}
+    .pagination {
+        display: inline-block;
+        text-align: center;
+    }
 
-.pagination a.active {
-  background-color: #4CAF50;
-  color: white;
-}
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
 
-.pagination a:hover:not(.active) {background-color: #ddd;}
+    .pagination a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
 
-
-
+    .pagination a:hover:not(.active) {
+        background-color: #ddd;
+    }
+    @media screen and (max-width: 768px) {
+        .container-2 {
+            margin-left: 0;
+        }
+    }
 
 </style>
