@@ -5,7 +5,7 @@
             <div class="d-flex align-items-center">
                 <div class="site-logo mr-auto">
                     <img src="/images/img_1.png" alt="Image" style="max-width: 16%" class="img-fluid">
-                    <a th:href="@{/}">Eventforge<span class="text-primary"></span></a>
+                    <a th:href="@{/}">Активна Варна<span class="text-primary"></span></a>
                 </div>
                 <div th:if="${session.sessionToken}" class="profile-icon">
                     <div class="profile-img">
@@ -84,6 +84,11 @@
 </script>
 
 <style>
+
+    header{
+        background: linear-gradient(110deg, #f66978 20%, #f2e562ed 60%)
+    }
+
     h6 {
         line-height: 1.7;
     }
