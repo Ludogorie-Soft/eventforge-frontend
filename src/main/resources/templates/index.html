@@ -126,34 +126,48 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 mb-4 mb-lg-0">
-                        <div class="package text-center bg-white">
-                            <img th:src="@{'data:image/jpeg;base64,' + ${organisation1.logo}}" class="logo-img">
-                            <h3 class="text-teal" th:text="${organisation1.name}"></h3>
-                            <p class="content" th:text="${organisation1.organisationPurpose}"></p>
-                            <p><a th:href="@{/view/organisations/details/{id}(id=${organisation1.orgId})}"
-                                  target="_blank" class="btn btn-primary btn-custom-1 mt-4">Научи повече</a></p>
+                        <div class="package text-center bg-white h-100 d-flex flex-column">
+                            <div class="flex-grow-1">
+                                <img th:src="@{'data:image/jpeg;base64,' + ${organisation3.logo}}" class="logo-img">
+                                <h3 class="text-teal" th:text="${organisation1.name}"></h3>
+                                <p class="content" th:text="${organisation1.organisationPurpose}"></p>
+                            </div>
+                            <div class="mt-auto">
+                                <p><a th:href="@{/view/organisations/details/{id}(id=${organisation1.orgId})}"
+                                      target="_blank" class="btn btn-primary btn-custom-1">Научи повече</a></p>
+                            </div>
                         </div>
                     </div>
 
 
+
                     <div class="col-lg-4 mb-4 mb-lg-0">
-                        <div class="package text-center bg-white">
-                            <img th:src="@{'data:image/jpeg;base64,' + ${organisation2.logo}}" class="logo-img">
-                            <h3 class="text-teal" th:text="${organisation2.name}"></h3>
-                            <p class="content" th:text="${organisation2.organisationPurpose}"></p>
-                            <p><a th:href="@{/view/organisations/details/{id}(id=${organisation2.orgId})}"
-                                  target="_blank" class="btn btn-primary btn-custom-1 mt-4">Научи повече</a></p>
+                        <div class="package text-center bg-white h-100 d-flex flex-column">
+                            <div class="flex-grow-1">
+                                <img th:src="@{'data:image/jpeg;base64,' + ${organisation2.logo}}" class="logo-img">
+                                <h3 class="text-teal" th:text="${organisation2.name}"></h3>
+                                <p class="content" th:text="${organisation2.organisationPurpose}"></p>
+                            </div>
+                            <div class="mt-auto">
+                                <p><a th:href="@{/view/organisations/details/{id}(id=${organisation2.orgId})}"
+                                      target="_blank" class="btn btn-primary btn-custom-1">Научи повече</a></p>
+                            </div>
                         </div>
                     </div>
 
 
+
                     <div class="col-lg-4 mb-4 mb-lg-0">
-                        <div class="package text-center bg-white">
-                            <img th:src="@{'data:image/jpeg;base64,' + ${organisation3.logo}}" class="logo-img">
-                            <h3 class="text-teal" th:text="${organisation3.name}"></h3>
-                            <p class="content" th:text="${organisation3.organisationPurpose}"></p>
-                            <p><a th:href="@{/view/organisations/details/{id}(id=${organisation3.orgId})}"
-                                  target="_blank" class="btn btn-primary btn-custom-1 mt-4">Научи повече</a></p>
+                        <div class="package text-center bg-white h-100 d-flex flex-column">
+                            <div class="flex-grow-1">
+                                <img th:src="@{'data:image/jpeg;base64,' + ${organisation3.logo}}" class="logo-img">
+                                <h3 class="text-teal" th:text="${organisation3.name}"></h3>
+                                <p class="content" th:text="${organisation3.organisationPurpose}"></p>
+                            </div>
+                            <div class="mt-auto">
+                                <p><a th:href="@{/view/organisations/details/{id}(id=${organisation3.orgId})}"
+                                      target="_blank" class="btn btn-primary btn-custom-1">Научи повече</a></p>
+                            </div>
                         </div>
                     </div>
 
@@ -203,11 +217,6 @@
 
     .site-section {
         text-align: justify;
-    }
-
-    .site-footer {
-        text-align: justify;
-        padding: 3em 0;
     }
 
     .centered {
