@@ -1,5 +1,7 @@
 package com.example.EventForgeFrontend.deserializer;
 
+import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,11 +16,8 @@ import java.util.List;
 
 public class PageDeserializer<T> extends StdDeserializer<Page<T>> {
 
-    private final Class<T> elementClass;
-
-    public PageDeserializer(Class<T> elementClass) {
+    public PageDeserializer() {
         super(Page.class);
-        this.elementClass = elementClass;
     }
 
     @Override
@@ -28,7 +27,14 @@ public class PageDeserializer<T> extends StdDeserializer<Page<T>> {
         List<T> content = new ArrayList<>();
         if (contentNode != null) {
             for (JsonNode elementNode : contentNode) {
-                content.add(p.getCodec().treeToValue(elementNode, elementClass));
+                // Check if the JSON structure indicates CommonEventResponse or OrganisationResponse
+                if (elementNode.has("organisationName")) {
+                    CommonEventResponse commonEventResponse = p.getCodec().treeToValue(elementNode, CommonEventResponse.class);
+                    content.add((T) commonEventResponse);
+                } else if (elementNode.has("email")) {
+                    OrganisationResponse organisationResponse = p.getCodec().treeToValue(elementNode, OrganisationResponse.class);
+                    content.add((T) organisationResponse);
+                }
             }
         }
         JsonNode pageableNode = node.get("pageable");

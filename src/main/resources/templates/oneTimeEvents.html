@@ -68,13 +68,11 @@
             <option value="15" th:selected="${pageSize == 15}">15</option>
             <option value="20" th:selected="${pageSize == 20}">20</option>
         </select>
-
         <label for="sortDirection">Сортиране:</label>
         <select id="sortDirection" name="sort">
             <option value="asc" th:selected="${sort == 'asc'}">Възходящо</option>
             <option value="desc" th:selected="${sort == 'desc'}">Низходящо</option>
         </select>
-
         <label for="sortBy">Подреди по:</label>
         <select id="sortBy" name="sortByColumn">
             <option value="name" th:selected="${sortByColumn == 'name'}">Име</option>
@@ -86,7 +84,7 @@
             <option value="isOnline" th:selected="${sortByColumn == 'isOnline'}">Присъствени/онлайн</option>
             <option value="createdAt" th:selected="${sortByColumn == 'createdAt'}">Най-скоро добавени</option>
         </select>
-        <button type="submit">Приложи</button>
+        <button type="submit" class="apply-button">Приложи</button>
     </form>
     </div>
 
