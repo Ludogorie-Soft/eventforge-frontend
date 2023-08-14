@@ -61,11 +61,37 @@
             </button>
         </form>
     </div>
-</div>
+    <form th:action="@{${url}}" method="get" class="filters-container">
+        <label for="pageSize">Размер на страницата:</label>
+        <select id="pageSize" name="pageSize">
+            <option value="4" th:selected="${pageSize == 4}">4</option>
+            <option value="8" th:selected="${pageSize == 8}">8</option>
+            <option value="12" th:selected="${pageSize == 12}">12</option>
+            <option value="16" th:selected="${pageSize == 16}">16</option>
+            <option value="20" th:selected="${pageSize == 20}">20</option>
+        </select>
+        <label for="sortDirection">Сортиране:</label>
+        <select id="sortDirection" name="sort">
+            <option value="asc" th:selected="${sort == 'asc'}">Възходящо</option>
+            <option value="desc" th:selected="${sort == 'desc'}">Низходящо</option>
+        </select>
+        <label for="sortBy">Подреди по:</label>
+        <select id="sortBy" name="sortByColumn">
+            <option value="name" th:selected="${sortByColumn == 'name'}">Име</option>
+            <option value="user.username" th:selected="${sortByColumn == 'user.username'}">Електронна поща</option>
+            <option value="address" th:selected="${sortByColumn == 'address'}">Адрес</option>
+            <option value="registeredAt" th:selected="${sortByColumn == 'registeredAt'}">Дата на регистриране</option>
+        </select>
 
+        <input type="hidden"  name="search"
+               th:value="${search}">
+        <button type="submit" class="apply-button">Приложи</button>
+    </form>
+</div>
+<div th:if="${organisations.content != null and organisations.content.size() > 0}">
 
 <div class="wrapper-flex">
-    <div th:each="organisation : ${organisations}" class="container-2">
+    <div th:each="organisation : ${organisations.content}" class="container-2">
         <img th:src="@{'data:image/jpeg;base64,' + ${organisation.logo}}" alt="profile image" class="logo-img">
         <div class="card-content">
             <p class="name" th:text="${organisation.name}"></p>
@@ -96,9 +122,37 @@
         </div>
     </div>
 </div>
-<div th:if="${organisations == null or organisations.size() < 1}">
+    <div class="search-form">
+        <!-- First Page Button -->
+        <div class="pagination-container">
+            <div class="pagination">
+        <span th:if="${currentPage > 0}">
+            <a th:href="@{/view/organisations(pageNo=0, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn} , search=${search})}">&laquo;</a>
+            <a th:href="@{/view/organisations(pageNo=${currentPage - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn}, search=${search})}">&lt;</a>
+        </span>
+
+                <!-- Page Numbers -->
+                <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
+            <a th:href="@{/view/organisations(pageNo=${page}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn}, search=${search})}" th:class="${page == currentPage} ? 'active' : ''"
+               th:text="${page + 1}"></a>
+        </span>
+
+                <span th:if="${currentPage + 1 < totalPages}">
+            <a th:href="@{/view/organisations(pageNo=${currentPage + 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn}, search=${search})}">&gt;</a>
+            <a th:href="@{/view/organisations(pageNo=${totalPages - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn}, search=${search})}">&raquo;</a>
+        </span>
+                <p th:text="'Общ брой елементи: ' + ${totalItems}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:if="${organisations.content == null or organisations.content.size() < 1}">
     <h2 style="text-align: center;">Няма налични организации.</h2>
 </div>
+
+
 <!--FOOTER-->
 <th:block th:include="~{fragments/footer}"></th:block>
 
@@ -301,6 +355,29 @@
         background-color: #656598;
         margin-bottom: 10px;
     }
+
+    .pagination-container {
+    display: flex;
+    justify-content: center;
+  }
+.pagination {
+  display: inline-block;
+  text-align: center;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
 
 
 

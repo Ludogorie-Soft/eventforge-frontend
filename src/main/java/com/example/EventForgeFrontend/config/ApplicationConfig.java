@@ -1,6 +1,7 @@
 package com.example.EventForgeFrontend.config;
 
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.example.EventForgeFrontend.exception.decoder.CustomErrorDecoder;
 import com.example.EventForgeFrontend.deserializer.PageDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,8 +26,13 @@ public class ApplicationConfig {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.registerModule(new SimpleModule().addDeserializer(Page.class, new PageDeserializer<>(CommonEventResponse.class)));
+        objectMapper.registerModule(new SimpleModule()
+                .addDeserializer(Page.class, new PageDeserializer<>())
+        );
+
         return objectMapper;
     }
+
+
 
 }
