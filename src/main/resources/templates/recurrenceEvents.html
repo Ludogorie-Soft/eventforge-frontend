@@ -56,11 +56,11 @@
 
 <div class="search-form">
 <div class="button-container">
-    <button id="activeBtn" class="btn btn-primary active-button"  th:if="${isExpired}" onclick="changeState('active')">Покажи Активни/предстоящи</button>
-    <button id="expiredBtn" class="btn btn-primary" th:if="${!isExpired}" onclick="changeState('expired')">Покажи Отминали</button>
-    <button id="openPopupBtn" class="btn btn-primary">Разширено търсене <i class="fas fa-search"></i></button>
+    <button id="activeBtn" class="btn btn-primary btn-custom-1 active-button"  th:if="${isExpired}" onclick="changeState('active')">Покажи Активни/предстоящи</button>
+    <button id="expiredBtn" class="btn btn-primary btn-custom-1" th:if="${!isExpired}" onclick="changeState('expired')">Покажи Отминали</button>
+    <button id="openPopupBtn" class="btn btn-primary btn-custom-1">Разширено търсене <i class="fas fa-search"></i></button>
 </div>
-    <div th:if="${currentUrl != null}">
+    <div style="text-align: center" th:if="${currentUrl != null}">
     <form th:action="@{${currentUrl}}" method="get" class="filters-container">
         <label for="pageSize">Размер на страницата:</label>
         <select id="pageSize" name="pageSize">
@@ -491,7 +491,23 @@
 </body>
 </html>
 <style>
+    #openPopupBtn {
+        background-color: #a8c9db;
+    }
 
+    #expiredBtn {
+        background-color: #f2b45a;
+        border-color: #C29E6A;
+    }
+
+    #activeBtn {
+        background-color: #f2b45a;
+        border-color: #C29E6A;
+    }
+
+    .filters-container {
+        margin-top: 30px;
+    }
 
 .button-container {
     display: flex;
