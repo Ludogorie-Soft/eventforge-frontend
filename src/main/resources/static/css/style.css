@@ -795,7 +795,7 @@ h1, h2, h3, h4, h5,
           .site-section-cover,
           .site-section-cover .container > .row {
             height: calc(50vh - 300px); /* Adjust the height as needed */
-            min-height: 270px; /* Adjust the min-height as needed */
+            min-height: 300px; /* Adjust the min-height as needed */
           }
         }
   .site-section-cover.overlay {
