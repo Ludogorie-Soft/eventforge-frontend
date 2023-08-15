@@ -72,8 +72,21 @@
                                 </a>
                             </p>
 
+                            <p th:text="${event.isOnline} ? 'Онлайн' : 'Присъствено'"></p>
 
-                            <p class="address">Адрес/линк: <span th:text="${event.address}"></span></p>
+                            <div th:if="${event.address}">
+                                <p th:if="${event.address.startsWith('http://') or event.address.startsWith('https://') or event.address.startsWith('www.')}">
+                                    <!-- It's a link -->
+                                    <a th:href="${event.address}" target="_blank" rel="noopener noreferrer">
+                                        Линк: <span th:text="${event.address}"></span>
+                                    </a>
+                                </p>
+                                <p th:unless="${event.address.startsWith('http://') or event.address.startsWith('https://')}">
+                                    <!-- It's a physical address -->
+                                    Адрес: <span th:text="${event.address}"></span>
+                                </p>
+                            </div>
+
                             <p>Ключови думи: <span th:text="${event.eventCategories}"></span></p>
                             <!--            <textarea class="description" readonly th:text="${#strings.abbreviate(event.description, 100)}"></textarea>-->
                             <p><strong>Начало: </strong><span

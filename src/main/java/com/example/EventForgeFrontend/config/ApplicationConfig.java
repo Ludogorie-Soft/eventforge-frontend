@@ -1,9 +1,7 @@
 package com.example.EventForgeFrontend.config;
 
-import com.example.EventForgeFrontend.dto.CommonEventResponse;
-import com.example.EventForgeFrontend.dto.OrganisationResponse;
-import com.example.EventForgeFrontend.exception.decoder.CustomErrorDecoder;
 import com.example.EventForgeFrontend.deserializer.PageDeserializer;
+import com.example.EventForgeFrontend.exception.decoder.CustomErrorDecoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
