@@ -76,12 +76,12 @@ public class AdminController {
         ResponseEntity<CommonEventResponse> eventDetails = adminApiClient.showEventDetailsForAdmin(token, eventId);
         if (eventDetails.getBody() != null) {
             eventDetails.getBody().setImageUrl(ImageService.encodeImage(eventDetails.getBody().getImageUrl()));
-            model.addAttribute("eventDetails", eventDetails.getBody());
+            model.addAttribute("event", eventDetails.getBody());
         } else {
             redirectAttributes.addFlashAttribute("result", "Търсеното от вас събитие не съществува с идентификационен номер: " + eventId);
             return "redirect:" + request.getHeader("Referer");
         }
-        return "";
+        return "eventDetails";
     }
 
     @PostMapping("/approve/account/{id}")

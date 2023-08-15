@@ -21,10 +21,10 @@ public class EventDetailsController {
         ResponseEntity<CommonEventResponse> eventDetails = unauthorizeApiClient.showEventDetailsWithCondition(eventId);
         if(eventDetails.getBody()!=null){
             eventDetails.getBody().setImageUrl(ImageService.encodeImage(eventDetails.getBody().getImageUrl()));
-            model.addAttribute("eventDetails" ,eventDetails.getBody());
+            model.addAttribute("event" ,eventDetails.getBody());
         } else {
             model.addAttribute("result" , "Търсеното от вас събитие не е намерено");
         }
-        return "";
+        return "eventDetails";
     }
 }

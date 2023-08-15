@@ -255,7 +255,14 @@
                 <p><strong>Край: </strong><span
                         th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
                 </p>
-                <button class="button">Виж още</button>
+                <th:block th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                    <button class="button"> <a target="_blank"
+                                               th:href="@{/admin/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
+                </th:block>
+                <th:block th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                    <button class="button"> <a target="_blank"
+                                               th:href="@{/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
+                </th:block>
                 <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
                      class="delete-container">
                     <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
