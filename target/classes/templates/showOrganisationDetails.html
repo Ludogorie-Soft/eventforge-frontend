@@ -43,7 +43,7 @@
     <th:block th:include="~{fragments/header}"></th:block>
 
     <div class="ftco-blocks-cover-1">
-        <div class="site-section-cover overlay">
+        <div class="site-section-cover">
             <div class="container">
                 <div class="row align-items-center ">
                 </div>
@@ -162,8 +162,14 @@
                                                     тук</strong></a>
                                             </div>
                                         </div>
-                                        <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
-                                        </button>
+                                        <th:block th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                            <button class="button"> <a target="_blank"
+                                                                       th:href="@{/admin/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
+                                        </th:block>
+                                        <th:block th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                            <button class="button"> <a target="_blank"
+                                                                       th:href="@{/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
+                                        </th:block>
                                         <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
                                              class="delete-container">
                                             <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
@@ -239,8 +245,14 @@
                                             </div>
 
                                     </div>
-                                    <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
-                                    </button>
+                                        <th:block th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                            <button class="button"> <a target="_blank"
+                                                                       th:href="@{/admin/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
+                                        </th:block>
+                                        <th:block th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                            <button class="button"> <a target="_blank"
+                                                                       th:href="@{/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
+                                        </th:block>
                                     <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
                                          class="delete-container">
                                         <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
@@ -317,8 +329,14 @@
                                             </div>
 
                                         </div>
-                                        <button class="button opener" th:data-id="${'#dialog' + event.id}">Още детайли
-                                        </button>
+                                        <th:block th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                            <button class="button"> <a target="_blank"
+                                                                       th:href="@{/admin/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
+                                        </th:block>
+                                        <th:block th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                            <button class="button"> <a target="_blank"
+                                                                       th:href="@{/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
+                                        </th:block>
                                         <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
                                              class="delete-container">
                                             <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
@@ -538,6 +556,18 @@
         height: 350px;
         width: 100%;
     }
+    @media (max-width: 768px) {
+    #cover-photo {
+        height: 250px; /* Adjust the height for tablets */
+    }
+}
+
+/* Media query for phones */
+@media (max-width: 480px) {
+    #cover-photo {
+        height: 150px; /* Adjust the height for phones */
+    }
+}
 
     #cover-photo {
         right: -96%;
