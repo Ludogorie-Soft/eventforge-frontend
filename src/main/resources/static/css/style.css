@@ -791,6 +791,13 @@ h1, h2, h3, h4, h5,
       .site-section-cover .container > .row {
         height: calc(70vh - 550px);
         min-height: 200px; } }
+        @media (max-width: 767.98px) {
+          .site-section-cover,
+          .site-section-cover .container > .row {
+            height: calc(50vh - 300px); /* Adjust the height as needed */
+            min-height: 200px; /* Adjust the min-height as needed */
+          }
+        }
   .site-section-cover.overlay {
     position: relative; }
     .site-section-cover.overlay:before {
