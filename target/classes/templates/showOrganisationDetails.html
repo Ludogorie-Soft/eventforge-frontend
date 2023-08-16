@@ -67,7 +67,7 @@
                 <div>
                     <p class="info" th:text="${organisationDetails.address}"></p>
                 </div>
-                <div class="stats row"
+                <div style="text-align: justify" class="stats row"
                      th:text="${#strings.listJoin(organisationDetails.organisationPriorities, ', ')}">
                 </div>
 
@@ -98,7 +98,7 @@
                         <p class="desc-stat">Предстоящи<br>събития</p>
                     </div>
                 </div>
-                <div>
+                <div style="text-align: justify">
                     <p class="desc" th:text="${'Мисия: ' + organisationDetails.organisationPurpose}"></p>
                 </div>
                 <div th:if="${organisationDetails.charityOption != null && organisationDetails.charityOption != ''}"
@@ -128,7 +128,7 @@
                                                  class="card-img">
                                         </div>
                                     </div>
-                                    <div class="card-content">
+                                    <div class="card-content h-100">
                                         <h4 th:text="${event.name}"></h4>
                                         <div>
                                             <p><strong>Начало: </strong><span
@@ -147,28 +147,17 @@
                                             <p th:text="${event.address}"></p>
                                         </div>
                                         <!-- POP UP-->
-                                        <div class="dialog" th:id="${'dialog' + event.id}" th:title="${event.name}">
-                                            <p th:text="${'Цена: ' + event.price}"></p>
-                                            <p th:text="${event.ageBoundary}"></p>
-                                            <p class="event-description" th:text="${event.description}"></p>
-                                            <div th:if="${event.recurrenceDetails != null}">
-                                                <p th:text="${event.recurrenceDetails}"></p>
-                                            </div>
-                                            <div style="text-align: center; background: white"
-                                                 th:if="${event.isOnline}">
-                                                <a class="event-link" th:href="${event.address}"
-                                                   target="_blank"><strong>Линк
-                                                    за събитието
-                                                    тук</strong></a>
-                                            </div>
-                                        </div>
-                                        <th:block th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                                            <button class="button"> <a target="_blank"
-                                                                       th:href="@{/admin/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
+                                        <th:block
+                                                th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                            <button class="button"><a target="_blank"
+                                                                      th:href="@{/admin/event/details/{id}(id=${event.id})}"
+                                                                      style="color: white;">Виж още</a></button>
                                         </th:block>
-                                        <th:block th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                                            <button class="button"> <a target="_blank"
-                                                                       th:href="@{/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
+                                        <th:block
+                                                th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                            <button class="button"><a target="_blank"
+                                                                      th:href="@{/event/details/{id}(id=${event.id})}"
+                                                                      style="color: white;">Виж още</a></button>
                                         </th:block>
                                         <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
                                              class="delete-container">
@@ -209,7 +198,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="card-content">
+                                    <div class="card-content h-100">
                                         <h4 th:text="${event.name}"></h4>
                                         <div>
                                             <p><strong>Начало: </strong><span
@@ -228,31 +217,21 @@
                                             <p th:text="${event.address}"></p>
                                         </div>
 
-                                        <!-- POP UP-->
-                                        <div class="dialog" th:id="${'dialog' + event.id}" th:title="${event.name}">
-                                            <p th:text="${'Цена: ' + event.price}"></p>
-                                            <p th:text="${event.ageBoundary}"></p>
-                                            <p class="event-description" th:text="${event.description}"></p>
-                                            <div th:if="${event.recurrenceDetails != null}">
-                                                <p th:text="${event.recurrenceDetails}"></p>
-                                            </div>
-                                            <div style="text-align: center; background: white"
-                                                 th:if="${event.isOnline}">
-                                                <a class="event-link" th:href="${event.address}"
-                                                   target="_blank"><strong>Линк
-                                                    за събитието
-                                                    тук</strong></a>
-                                            </div>
 
                                     </div>
-                                        <th:block th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                                            <button class="button"> <a target="_blank"
-                                                                       th:href="@{/admin/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
-                                        </th:block>
-                                        <th:block th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                                            <button class="button"> <a target="_blank"
-                                                                       th:href="@{/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
-                                        </th:block>
+                                    <!-- POP UP-->
+                                    <th:block
+                                            th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                        <button class="button"><a target="_blank"
+                                                                  th:href="@{/admin/event/details/{id}(id=${event.id})}"
+                                                                  style="color: white;">Виж още</a></button>
+                                    </th:block>
+                                    <th:block
+                                            th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                        <button class="button"><a target="_blank"
+                                                                  th:href="@{/event/details/{id}(id=${event.id})}"
+                                                                  style="color: white;">Виж още</a></button>
+                                    </th:block>
                                     <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
                                          class="delete-container">
                                         <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
@@ -264,7 +243,6 @@
                                     </div>
                                     <!-- END POP UP-->
                                 </div>
-                            </div>
 
                             </div>
                         </div>
@@ -294,7 +272,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="card-content">
+                                    <div class="card-content h-100">
                                         <h4 th:text="${event.name}"></h4>
                                         <div>
                                             <p><strong>Начало: </strong><span
@@ -312,42 +290,31 @@
                                         <div th:unless="${event.isOnline}">
                                             <p th:text="${event.address}"></p>
                                         </div>
-                                        <!-- POP UP-->
-                                        <div class="dialog" th:id="${'dialog' + event.id}" th:title="${event.name}">
-                                            <p th:text="${'Цена: ' + event.price}"></p>
-                                            <p th:text="${event.ageBoundary}"></p>
-                                            <p class="event-description" th:text="${event.description}"></p>
-                                            <div th:if="${event.recurrenceDetails != null}">
-                                                <p th:text="${event.recurrenceDetails}"></p>
-                                            </div>
-                                            <div style="text-align: center; background: white"
-                                                 th:if="${event.isOnline}">
-                                                <a class="event-link" th:href="${event.address}"
-                                                   target="_blank"><strong>Линк
-                                                    за събитието
-                                                    тук</strong></a>
-                                            </div>
 
-                                        </div>
-                                        <th:block th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                                            <button class="button"> <a target="_blank"
-                                                                       th:href="@{/admin/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
-                                        </th:block>
-                                        <th:block th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                                            <button class="button"> <a target="_blank"
-                                                                       th:href="@{/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
-                                        </th:block>
-                                        <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
-                                             class="delete-container">
-                                            <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
-                                                  onsubmit="return confirmDelete(event)">
-                                                <button type="submit" class="delete-button">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                        <!-- END POP UP-->
                                     </div>
+                                    <!-- POP UP-->
+                                    <th:block
+                                            th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                        <button class="button"><a target="_blank"
+                                                                  th:href="@{/admin/event/details/{id}(id=${event.id})}"
+                                                                  style="color: white;">Виж още</a></button>
+                                    </th:block>
+                                    <th:block
+                                            th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                        <button class="button"><a target="_blank"
+                                                                  th:href="@{/event/details/{id}(id=${event.id})}"
+                                                                  style="color: white;">Виж още</a></button>
+                                    </th:block>
+                                    <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
+                                         class="delete-container">
+                                        <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
+                                              onsubmit="return confirmDelete(event)">
+                                            <button type="submit" class="delete-button">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <!-- END POP UP-->
                                 </div>
                             </div>
                         </div>
@@ -398,7 +365,6 @@
         // Otherwise, cancel the form submission
         return isConfirmed;
     }
-
 
 
 </script>
@@ -508,7 +474,7 @@
         text-align: center;
     }
 
- .delete-container {
+    .delete-container {
         position: absolute;
         bottom: 5px;
         right: 5px;
@@ -556,18 +522,19 @@
         height: 350px;
         width: 100%;
     }
-    @media (max-width: 768px) {
-    #cover-photo {
-        height: 250px; /* Adjust the height for tablets */
-    }
-}
 
-/* Media query for phones */
-@media (max-width: 480px) {
-    #cover-photo {
-        height: 200px; /* Adjust the height for phones */
+    @media (max-width: 768px) {
+        #cover-photo {
+            height: 250px; /* Adjust the height for tablets */
+        }
     }
-}
+
+    /* Media query for phones */
+    @media (max-width: 480px) {
+        #cover-photo {
+            height: 200px; /* Adjust the height for phones */
+        }
+    }
 
     #cover-photo {
         right: -96%;
@@ -701,9 +668,11 @@
         padding: 8px 16px;
         background-color: #4E9CAF;
         border-radius: 6px;
-        margin: 14px;
         cursor: pointer;
         transition: all 0.3s ease;
+        width: 50%;
+        margin: auto auto 10px;
+
     }
 
     .swiper-navBtn {
@@ -718,6 +687,10 @@
     .swiper-navBtn::before,
     .swiper-navBtn::after {
         font-size: 35px;
+    }
+
+    .swiper-slide {
+        height: initial;
     }
 
     @media (max-width: 990px) {
