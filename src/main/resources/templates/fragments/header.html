@@ -12,7 +12,8 @@
                         <img src="/images/profile.png" alt="profile-icon">
                     </div>
                     <ul class="menu">
-                        <li class="active" th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}">
+                        <li class="active"
+                            th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}">
                             <a href="/organisation/settings" class="nav-link" style="text-align: center">
                                 Настройки
                             </a>
@@ -27,21 +28,23 @@
                                 Управление на организации
                             </a>
                         </li>
-                        <li th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}" class="active">
+                        <li th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}"
+                            class="active">
                             <a th:href="@{/manage-events}">Моите събития</a>
                         </li>
-                        <li th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}" class="active">
+                        <li th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}"
+                            class="active">
                             <a th:href="@{/manage-events/create}">Създай събитие</a>
                         </li>
                         <li class="active">
-                        <form th:action="@{/logout}" method="post" class="nav-link">
-                            <button type="submit"
-                                    style="border: none; background: none; padding: 0; font: inherit; cursor: pointer; color: inherit; text-align: center">
-                                <!--                                    <img src="/images/logout.png" style="width: 30px; height: 30px">-->
-                                Изход
-                            </button>
-                        </form>
-                    </li>
+                            <form th:action="@{/logout}" method="post" class="nav-link">
+                                <button type="submit"
+                                        style="border: none; background: none; padding: 0; font: inherit; cursor: pointer; color: inherit; text-align: center">
+                                    <!--                                    <img src="/images/logout.png" style="width: 30px; height: 30px">-->
+                                    Изход
+                                </button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -57,7 +60,7 @@
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
                         <li><a th:href="@{/}" class="nav-link">Начало</a></li>
                         <li><a th:if="${session.sessionToken == null}" th:href="@{/registration}"
-                                              class="nav-link">Регистрирай се</a></li>
+                               class="nav-link">Регистрирай се</a></li>
                         <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
                         <li><a th:href="@{/one-time-events}" class="nav-link">Събития</a></li>
                         <li><a th:href="@{/recurrence-events}" class="nav-link">Инициативи</a></li>
@@ -85,7 +88,11 @@
 
 <style>
 
-    header{
+    .profile-img {
+        border: 1px solid aliceblue;
+    }
+
+    header {
         background: linear-gradient(110deg, #f66978 20%, #f2e562ed 60%)
     }
 
@@ -96,7 +103,8 @@
     ul {
         border-radius: 35px;
     }
-    .menu{
+
+    .menu {
         width: 150px;
         left: -60%;
     }
@@ -106,10 +114,9 @@
         padding-top: 5px;
         color: #000;
         text-align: center;
-
     }
 
-    .menu-wrap{
+    .menu-wrap {
         justify-content: center;
     }
 

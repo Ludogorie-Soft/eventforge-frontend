@@ -256,11 +256,11 @@
                         th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
                 </p>
                 <th:block th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                    <button class="button"> <a target="_blank"
+                    <button class="button btn-primary btn-custom-1"> <a target="_blank"
                                                th:href="@{/admin/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
                 </th:block>
                 <th:block th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                    <button class="button"> <a target="_blank"
+                    <button class="button btn-primary btn-custom-1"> <a target="_blank"
                                                th:href="@{/event/details/{id}(id=${event.id})}" style="color: white;">Виж още</a></button>
                 </th:block>
                 <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
@@ -620,7 +620,7 @@
         justify-content: center;
         width: 32px;
         height: 32px;
-        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+        margin-bottom: 5px ;
     }
 
     .delete-button:hover {
@@ -675,7 +675,7 @@
 
 
     .button {
-        padding: 15px 25px;
+        padding: 10px 20px;
         font-size: 24px;
         text-align: center;
         cursor: pointer;
@@ -683,9 +683,7 @@
         color: #fff;
         background-color: #04AA6D;
         border: none;
-        border-radius: 15px;
-        box-shadow: 0 9px #999;
-
+        margin-bottom: 15px;
     }
 
     .button:hover {

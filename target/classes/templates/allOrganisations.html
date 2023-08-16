@@ -112,12 +112,12 @@
                 <textarea class="description" readonly
                           th:text="${#strings.abbreviate(organisation.organisationPurpose, 160)}"></textarea>
                 <div th:if="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
-                    <a class="btn" target="_blank"
+                    <a class="btn btn-primary btn-custom-1" target="_blank"
                        th:href="@{/admin/organisation/details/{id}(id=${organisation.orgId})}">Научи
                         повече</a>
                 </div>
                 <div th:unless="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
-                    <a class="btn" target="_blank"
+                    <a class="btn btn-primary btn-custom-1" target="_blank"
                        th:href="@{/view/organisations/details/{id}(id=${organisation.orgId})}">Научи
                         повече</a>
                 </div>
@@ -268,7 +268,7 @@
     }
 
     .search-button {
-        background-color: blue;
+        background-color: #656598;
         border: none;
         padding: 10px 15px;
         cursor: pointer;
