@@ -130,6 +130,13 @@
                                     </div>
                                     <div class="card-content h-100">
                                         <h4 th:text="${event.name}"></h4>
+                                        <p th:text="${event.isOneTime}"></p>
+                                        <div th:if="${event.isOnline}">
+                                            <p>онлайн събитие</p>
+                                        </div>
+                                        <div th:unless="${event.isOnline}">
+                                            <p>присъствено събитие</p>
+                                        </div>
                                         <div>
                                             <p><strong>Начало: </strong><span
                                                     th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
@@ -140,12 +147,7 @@
                                                     th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
                                             </p>
                                         </div>
-                                        <div th:if="${event.isOnline}">
-                                            <p>онлайн събитие</p>
-                                        </div>
-                                        <div th:unless="${event.isOnline}">
-                                            <p th:text="${event.address}"></p>
-                                        </div>
+
                                         <!-- POP UP-->
                                         <th:block
                                                 th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
@@ -200,6 +202,13 @@
 
                                     <div class="card-content h-100">
                                         <h4 th:text="${event.name}"></h4>
+                                        <p th:text="${event.isOneTime}"></p>
+                                        <div th:if="${event.isOnline}">
+                                            <p>онлайн събитие</p>
+                                        </div>
+                                        <div th:unless="${event.isOnline}">
+                                            <p>присъствено събитие</p>
+                                        </div>
                                         <div>
                                             <p><strong>Начало: </strong><span
                                                     th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
@@ -210,13 +219,6 @@
                                                     th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
                                             </p>
                                         </div>
-                                        <div th:if="${event.isOnline}">
-                                            <p>онлайн събитие</p>
-                                        </div>
-                                        <div th:unless="${event.isOnline}">
-                                            <p th:text="${event.address}"></p>
-                                        </div>
-
 
                                     </div>
                                     <!-- POP UP-->
@@ -274,6 +276,13 @@
 
                                     <div class="card-content h-100">
                                         <h4 th:text="${event.name}"></h4>
+                                        <p th:text="${event.isOneTime}"></p>
+                                        <div th:if="${event.isOnline}">
+                                            <p>онлайн събитие</p>
+                                        </div>
+                                        <div th:unless="${event.isOnline}">
+                                            <p>присъствено събитие</p>
+                                        </div>
                                         <div>
                                             <p><strong>Начало: </strong><span
                                                     th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
@@ -283,12 +292,6 @@
                                             <p><strong>Край: </strong><span
                                                     th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
                                             </p>
-                                        </div>
-                                        <div th:if="${event.isOnline}">
-                                            <p>онлайн събитие</p>
-                                        </div>
-                                        <div th:unless="${event.isOnline}">
-                                            <p th:text="${event.address}"></p>
                                         </div>
 
                                     </div>

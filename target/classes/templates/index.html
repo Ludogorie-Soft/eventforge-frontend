@@ -57,34 +57,15 @@
         </div>
         <div class="container centered">
             <div class="row">
-                <div class="wrapper-flex">
+                <div class="wrapper-flex" >
                     <div th:each="event : ${events}" class="container-2">
                         <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt="profile image"
                              class="event-img">
                         <div class="card-content">
                             <p class="name" th:text="${event.name}"></p>
+                            <p th:text="${event.isOneTime.toUpperCase()}"></p>
 
-                            <p>
-                                <strong>Организатор:</strong>
-                                <a target="_blank" th:href="@{/view/organisations/details/{id}(id=${event.orgId})}"
-                                   style="color: black;" th:text="'&quot;' + ${event.organisationName} + '&quot;'">
-                                </a>
-                            </p>
-
-                            <p th:text="${event.isOnline} ? 'Онлайн' : 'Присъствено'"></p>
-
-                            <div th:if="${event.address}">
-                                <p th:if="${event.address.startsWith('http://') or event.address.startsWith('https://') or event.address.startsWith('www.')}">
-                                    <!-- It's a link -->
-                                    <a th:href="${event.address}" target="_blank" rel="noopener noreferrer">
-                                        Линк: <span th:text="${event.address}"></span>
-                                    </a>
-                                </p>
-                                <p th:unless="${event.address.startsWith('http://') or event.address.startsWith('https://')}">
-                                    <!-- It's a physical address -->
-                                    Адрес: <span th:text="${event.address}"></span>
-                                </p>
-                            </div>
+                            <h6 th:text="${event.isOnline} ? 'Онлайн' : 'Присъствено'"></h6>
 
                             <p>Ключови думи: <span th:text="${event.eventCategories}"></span></p>
                             <!--            <textarea class="description" readonly th:text="${#strings.abbreviate(event.description, 100)}"></textarea>-->
@@ -93,6 +74,12 @@
                             </p>
                             <p><strong>Край: </strong><span
                                     th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                            </p>
+                            <p>
+                                <strong>Организатор:</strong>
+                                <a target="_blank" th:href="@{/view/organisations/details/{id}(id=${event.orgId})}"
+                                   style="color: black;" th:text="'&quot;' + ${event.organisationName} + '&quot;'">
+                                </a>
                             </p>
                             <th:block th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
                                 <button class="button btn-primary btn-custom-1"> <a target="_blank"
