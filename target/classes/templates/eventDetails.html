@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap">
+
     <link rel="stylesheet" href="/fonts/icomoon/style.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-datepicker.css">
@@ -86,10 +88,10 @@
                                 <li><strong>Дата на приключване: </strong><span
                                         th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span></li>
                                 <li><strong>Описание: </strong></li>
-                                <p th:text="${event.description}"></p>
+                                <p style="text-align: justify" th:text="${event.description}"></p>
 
                                 <div th:if="${event.recurrenceDetails != null and event.recurrenceDetails.length() > 0}">
-                                    <li><strong>Детайли за повтаряемост на събитието: </strong><span th:text="${event.recurrenceDetails}"></span></li>
+                                    <li><strong>Детайли за повтаряемост на събитието: </strong><span style="text-align: justify" th:text="${event.recurrenceDetails}"></span></li>
                                 </div>
                             </ul>
                         </div>
@@ -125,7 +127,9 @@
 </html>
 
 <style>
-
+    body{
+        font-family: "Open Sans",sans-serif;
+    }
     .label {
         font-weight: bold; /* You can adjust the styling as needed */
     }

@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap">
+
     <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -27,8 +29,6 @@
 
 
 </div>
-
-
 
 
 <div class="site-wrap" id="home-section">
@@ -76,7 +76,8 @@
                                                class="active nav-link">Смяна на парола</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a th:href="@{/organisation/settings/change-pictures}"  class="active nav-link">Смяна на лого и корица</a>
+                                            <a th:href="@{/organisation/settings/change-pictures}"
+                                               class="active nav-link">Смяна на лого и корица</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content pt-3">
@@ -191,7 +192,8 @@
                                                         <div class="row">
                                                             <div class="col">
                                                                 <div class="form-group">
-                                                                    <label>Възможност за дарение. (Линк към страница с информация за дарения)</label>
+                                                                    <label>Възможност за дарение. (Линк към страница с
+                                                                        информация за дарения)</label>
                                                                     <input class="form-control" type="text"
                                                                            th:field="*{charityOption}"
                                                                            th:value="${updateRequest.charityOption}"
@@ -250,7 +252,8 @@
                                                                 </div>
                                                             </div>
                                                             <div th:if="${optionalCategory}" id="optionalCategory">
-                                                                <p th:text="${optionalCategory}" style="color: red;"></p>
+                                                                <p th:text="${optionalCategory}"
+                                                                   style="color: red;"></p>
                                                             </div>
                                                         </div>
 
@@ -295,53 +298,53 @@
 <script src="/js/aos.js"></script>
 
 <script th:src="@{/js/main.js}"></script>
-<script th:src="@{/js/displayScript.js}" ></script>
+<script th:src="@{/js/displayScript.js}"></script>
 
 <script>
-  var popup = document.querySelector(".popup");
-  var result = popup.dataset.result;
+    var popup = document.querySelector(".popup");
+    var result = popup.dataset.result;
 
-  if (result && result.trim() !== '') {
-    var popupElement = document.createElement("div");
-    popupElement.innerHTML = result;
-    popupElement.style.position = "fixed";
-    popupElement.style.top = "50%";
-    popupElement.style.left = "50%";
-    popupElement.style.transform = "translate(-50%, -50%)";
-    popupElement.style.backgroundColor = "lightgray";
-    popupElement.style.padding = "20px";
-    popupElement.style.border = "1px solid gray";
-    popupElement.style.borderRadius = "5px";
-    popupElement.style.opacity = "1";
-    popupElement.style.transition = "opacity 2s";
+    if (result && result.trim() !== '') {
+        var popupElement = document.createElement("div");
+        popupElement.innerHTML = result;
+        popupElement.style.position = "fixed";
+        popupElement.style.top = "50%";
+        popupElement.style.left = "50%";
+        popupElement.style.transform = "translate(-50%, -50%)";
+        popupElement.style.backgroundColor = "lightgray";
+        popupElement.style.padding = "20px";
+        popupElement.style.border = "1px solid gray";
+        popupElement.style.borderRadius = "5px";
+        popupElement.style.opacity = "1";
+        popupElement.style.transition = "opacity 2s";
 
-    var closeButton = document.createElement("button");
-    closeButton.innerHTML = "X";
-    closeButton.style.position = "absolute";
-    closeButton.style.top = "5px";
-    closeButton.style.right = "5px";
-    closeButton.style.border = "none";
-    closeButton.style.backgroundColor = "red";
-    closeButton.style.color = "white";
-    closeButton.style.fontSize = "12px";
-    closeButton.style.width = "20px";
-    closeButton.style.height = "20px";
-    closeButton.style.borderRadius = "50%";
-    closeButton.style.cursor = "pointer";
+        var closeButton = document.createElement("button");
+        closeButton.innerHTML = "X";
+        closeButton.style.position = "absolute";
+        closeButton.style.top = "5px";
+        closeButton.style.right = "5px";
+        closeButton.style.border = "none";
+        closeButton.style.backgroundColor = "red";
+        closeButton.style.color = "white";
+        closeButton.style.fontSize = "12px";
+        closeButton.style.width = "20px";
+        closeButton.style.height = "20px";
+        closeButton.style.borderRadius = "50%";
+        closeButton.style.cursor = "pointer";
 
-    popupElement.appendChild(closeButton);
-    document.body.appendChild(popupElement);
+        popupElement.appendChild(closeButton);
+        document.body.appendChild(popupElement);
 
-    function closePopup() {
-      popupElement.style.opacity = "0";
-      setTimeout(function() {
-        document.body.removeChild(popupElement);
-      }, 2000);
+        function closePopup() {
+            popupElement.style.opacity = "0";
+            setTimeout(function () {
+                document.body.removeChild(popupElement);
+            }, 2000);
+        }
+
+        closeButton.addEventListener("click", closePopup);
+        setTimeout(closePopup, 5000);
     }
-
-    closeButton.addEventListener("click", closePopup);
-    setTimeout(closePopup, 5000);
-  }
 </script>
 
 
@@ -361,6 +364,10 @@
 </script>
 
 <style>
+    body {
+        font-family: "Open Sans", sans-serif;
+    }
+
     h3 {
         margin-left: 10px;
     }
