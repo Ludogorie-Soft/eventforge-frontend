@@ -9,11 +9,8 @@ import org.springframework.stereotype.Component;
 @Getter
 public class SessionManager {
 
-    private   String storeSessionUserRole;
-
     public void setSessionToken(HttpServletRequest request, String sessionToken, String userRole) {
         String token = "Bearer " + sessionToken;
-        storeSessionUserRole = userRole;
 
         HttpSession session = request.getSession(true);
         session.setAttribute("sessionToken", token);

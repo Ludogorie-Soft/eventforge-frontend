@@ -33,8 +33,14 @@ public class AuthenticationController {
     private final ImageService imageService;
 
     @GetMapping("/registration")
-    public String showRegistrationForm(Model model, @ModelAttribute("request") RegistrationRequest request) {
+    public String showRegistrationForm(Model model, @ModelAttribute("request") RegistrationRequest request , HttpServletRequest httpRequest) {
         Set<String> priorityCategories = authenticationApiClient.getAllPriorityCategories().getBody();
+        String isThereLoggedUser = (String) httpRequest.getSession().getAttribute("sessionToken");
+
+        if (isThereLoggedUser != null) {
+            model.addAttribute("result", "За да направите регистрация, моля отпишете се първо");
+            return "index";
+        }
         if (request != null) {
             model.addAttribute("request", request);
         } else {
@@ -74,7 +80,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/resend/confirmation")
-    public String resendEmailConfirmationLink(@RequestParam(value = "email" ,required = false) String email, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public String resendEmailConfirmationLink(@RequestParam(value = "email", required = false) String email, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         String url = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/verifyEmail?verificationToken=";
         String resendResult = authenticationApiClient.resendVerificationToken(email, url);
         redirectAttributes.addFlashAttribute("result", resendResult);
@@ -82,25 +88,31 @@ public class AuthenticationController {
     }
 
     @PostMapping("/forgotten/password")
-    public String forgottenPasswordRequest(@RequestParam(value = "email" ,required = false)String email , HttpServletRequest httpRequest , RedirectAttributes redirectAttributes){
+    public String forgottenPasswordRequest(@RequestParam(value = "email", required = false) String email, HttpServletRequest httpRequest, RedirectAttributes redirectAttributes) {
         String appUrl = "http://" + httpRequest.getServerName() + ":" + httpRequest.getServerPort() + httpRequest.getContextPath() + "/reset/password?verificationToken=";
-        if(email != null && !email.isEmpty()){
+        if (email != null && !email.isEmpty()) {
             ResponseEntity<String> result = authenticationApiClient.forgottenPassword(email, appUrl);
-            redirectAttributes.addFlashAttribute("result" , result.getBody());
+            redirectAttributes.addFlashAttribute("result", result.getBody());
         }
         return "redirect:" + httpRequest.getHeader("Referer");
     }
+
     @GetMapping("/reset/password")
-    public String resetForgottenPassword(@RequestParam("verificationToken")String verificationToken ,RedirectAttributes redirectAttributes){
-         authenticationApiClient.resetPassword(verificationToken);
-         redirectAttributes.addFlashAttribute("result" ,"Проверете пощата си отново. Генерирахме нова парола за вас.");
-         return "redirect:/";
+    public String resetForgottenPassword(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes) {
+        authenticationApiClient.resetPassword(verificationToken);
+        redirectAttributes.addFlashAttribute("result", "Проверете пощата си отново. Генерирахме нова парола за вас.");
+        return "redirect:/";
     }
 
 
     @GetMapping("/login")
-    public String login(Model model, @ModelAttribute("login") JWTAuthenticationRequest login) {
-        if (login!=null && login.getUserName() != null && !login.getUserName().isEmpty()) {
+    public String login(Model model, @ModelAttribute("login") JWTAuthenticationRequest login , HttpServletRequest httpRequest ) {
+        String isThereLoggedUser = (String) httpRequest.getSession().getAttribute("sessionToken");
+        if(isThereLoggedUser != null){
+            model.addAttribute("result" ,"В момента сте вписани. Ако искате да се впишете с друг профил, моля излезте от текущият профил.");
+            return "index";
+        }
+        if (login != null && login.getUserName() != null && !login.getUserName().isEmpty()) {
             model.addAttribute("login", login);
 
         } else {
@@ -122,16 +134,16 @@ public class AuthenticationController {
 
         // Set the session token in the current session
         sessionManager.setSessionToken(request, token, userRole);
-        redirectAttributes.addFlashAttribute("result" ,"Успешно се вписахте.");
+        redirectAttributes.addFlashAttribute("result", "Успешно се вписахте.");
         return "redirect:/";
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request , RedirectAttributes redirectAttributes) {
+    public String logout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String token = (String) request.getSession().getAttribute("sessionToken");
         authenticationApiClient.logout(token);
         sessionManager.invalidateSession(request);
-        redirectAttributes.addFlashAttribute("result" ,"Успешно се отписахте.");
+        redirectAttributes.addFlashAttribute("result", "Успешно се отписахте.");
         return "redirect:/";
     }
 }
