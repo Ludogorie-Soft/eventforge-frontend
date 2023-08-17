@@ -10,6 +10,8 @@ import com.example.EventForgeFrontend.slack.SlackNotifier;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,19 +34,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Throwable.class)
    public void sendSlackNotificationWhenInternalServerErrorOccurs(Throwable throwable){
 
-       LocalDateTime timestamp = LocalDateTime.now();
-       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        if(!(throwable instanceof HttpRequestMethodNotSupportedException)){
+            LocalDateTime timestamp = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
-       // Create a detailed message including timestamp, exception message, and cause
-       String message = String.format(
-               "Exception occurred at %s%nFRONTEND APPLICATION%nMessage: %s%nCause: %s",
-               formatter.format(timestamp),
-               throwable.getMessage(),
-               throwable.getCause()
-       );
-
-       // Send the exception details to Slack
-       slackNotifier.sendNotification(message);
+            // Create a detailed message including timestamp, exception message, and cause
+            String message = String.format(
+                    "Exception occurred at %s%nFRONTEND APPLICATION%nMessage: %s%nCause: %s",
+                    formatter.format(timestamp),
+                    throwable.getMessage(),
+                    throwable.getCause()
+            );
+            slackNotifier.sendNotification(message);
+        }
    }
 
     @ExceptionHandler(CustomValidationErrorException.class )
@@ -172,10 +174,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(OrganisationRequestException.class)
-    public ModelAndView handleOrganisationRequestException(OrganisationRequestException ex , RedirectAttributes redirectAttributes , HttpServletRequest request){
-        ModelAndView mav = assembleModelAndView(request);
-        redirectAttributes.addFlashAttribute("result" , ex.getMessage());
-        return mav;
+    public String handleOrganisationRequestException(OrganisationRequestException ex , Model model){
+        model.addAttribute("result" , ex.getMessage());
+        return "showOrganisationDetails";
     }
 
     @SuppressWarnings("unchecked")

@@ -2,7 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <th:block th:if="${organisationDetails != null}">
     <title th:text="${organisationDetails.name}"></title>
+    </th:block>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -52,6 +54,7 @@
         </div>
     </div>
 </div>
+<th:block th:if="${organisationDetails != null}">
 <div class="container" style="margin-bottom: 30px">
     <div>
         <img id="cover-photo" th:src="@{'data:image/jpeg;base64,' + ${organisationDetails.background}}"
@@ -335,6 +338,12 @@
         </div>
     </main>
 </div>
+</th:block>
+<th:block th:unless="${organisationDetails != null}">
+    <th:block th:unless="${event != null}">
+        <h2 style="text-align: center;" th:text="${result}"></h2>
+    </th:block>
+</th:block>
 
 <!--FOOTER-->
 <th:block th:include="~{fragments/footer}"></th:block>

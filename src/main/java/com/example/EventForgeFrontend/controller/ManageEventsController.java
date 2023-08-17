@@ -1,12 +1,10 @@
 package com.example.EventForgeFrontend.controller;
 
-import com.example.EventForgeFrontend.client.EventApiClient;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.EventRequest;
 import com.example.EventForgeFrontend.image.ImageService;
 import com.example.EventForgeFrontend.image.ImageType;
-import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
@@ -25,10 +22,6 @@ import java.util.List;
 public class ManageEventsController {
 
     private final OrganisationApiClient organisationApiClient;
-
-    private final SessionManager sessionManager;
-
-    private final EventApiClient eventApiClient;
 
     private final ImageService imageService;
 

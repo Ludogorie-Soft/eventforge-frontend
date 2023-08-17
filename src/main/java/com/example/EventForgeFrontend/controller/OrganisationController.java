@@ -73,8 +73,6 @@ public class OrganisationController { //this controller is to list organisations
             ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getExpiredEvents());
             ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getUpcomingEvents());
             model.addAttribute("organisationDetails", orgDetails.getBody());
-        } else {
-            model.addAttribute("result", "Няма намерена организация с идентификационен номер: " + id);
         }
 
         return "showOrganisationDetails";
