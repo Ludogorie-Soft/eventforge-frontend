@@ -6,6 +6,9 @@
     <title>Еднократни активности</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap">
+
+
     <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -61,7 +64,9 @@
         <div class="item">
             <p>Име на събитието: <span class="required">*</span></p>
             <div class="item">
-                <input type="text" th:field="*{name}" placeholder="Име на събитието" oninvalid="this.setCustomValidity('Моля, въведете между 5 и 30 символа.')" oninput="this.setCustomValidity('')" minlength="5" maxlength="30"
+                <input type="text" th:field="*{name}" placeholder="Име на събитието"
+                       oninvalid="this.setCustomValidity('Моля, въведете между 5 и 30 символа.')"
+                       oninput="this.setCustomValidity('')" minlength="5" maxlength="30"
                        id="name" required title="Името на събитието трябва да е между 5 и 30 символа!"/>
             </div>
             <div th:if="${name}" id="nameError">
@@ -78,22 +83,25 @@
             </div>
             <p>Описание на събитието: <span class="required">*</span></p>
             <div class="item">
-                <textarea  th:field="*{description}" oninvalid="this.setCustomValidity('Описанието трява да е между 20 и 500 символа!')" oninput="this.setCustomValidity('')" placeholder="Описание на събитието" minlength="20"
-                       maxlength="500" id="description" required title="Моля въведете между 20 и 500 симбова."></textarea>
+                <textarea th:field="*{description}"
+                          oninvalid="this.setCustomValidity('Описанието трява да е между 20 и 500 символа!')"
+                          oninput="this.setCustomValidity('')" placeholder="Описание на събитието" minlength="20"
+                          maxlength="500" id="description" required
+                          title="Моля въведете между 20 и 500 симбова."></textarea>
             </div>
             <div th:if="${description}" id="descriptionError">
                 <p th:text="${description}" style="color: red;"></p>
             </div>
         </div>
         <div class="question">
-            <p>Онлайн ли е?  <span class="required">*</span></p>
+            <p>Онлайн ли е? <span class="required">*</span></p>
             <div class="question-answer">
                 <div>
                     <input type="radio" th:value="true" id="radio_yes" th:field="*{isOnline}" required/>
                     <label class="radio"><span>Да</span></label>
                 </div>
                 <div>
-                    <input type="radio" th:value="false" id="radio_no" th:field="*{isOnline}"   required/>
+                    <input type="radio" th:value="false" id="radio_no" th:field="*{isOnline}" required/>
                     <label class="radio"><span>Не</span></label>
                 </div>
                 <div th:if="${isOnline}" id="isOnlineError">
@@ -102,23 +110,28 @@
             </div>
         </div>
         <div class="item">
-            <p>Адрес на събитието (ако е онлайн посочете линк)  <span class="required">*</span></p>
-            <input type="text" th:field="*{address}" oninvalid="this.setCustomValidity('Полето трява да съдържа поне 5 символа!')" oninput="this.setCustomValidity('')" minlength="5" placeholder="Адрес/линк на събитието" required title ="Трябва да въведете минимум 5 символа">
+            <p>Адрес на събитието (ако е онлайн посочете линк) <span class="required">*</span></p>
+            <input type="text" th:field="*{address}"
+                   oninvalid="this.setCustomValidity('Полето трява да съдържа поне 5 символа!')"
+                   oninput="this.setCustomValidity('')" minlength="5" placeholder="Адрес/линк на събитието" required
+                   title="Трябва да въведете минимум 5 символа">
             <div th:if="${address}" id="addressError">
                 <p th:text="${address}" placeholder="Адрес/линк на събитието" style="color: red;"></p>
             </div>
         </div>
         <div class="item">
             <p>Фейсбук линк (по желание) </p>
-            <input type="text" th:field="*{facebookLink}"  placeholder="Фейсбук линк на събитието">
+            <input type="text" th:field="*{facebookLink}" placeholder="Фейсбук линк на събитието">
             <div th:if="${facebookLink}" id="facebookLink">
                 <p th:text="${facebookLink}" style="color: red;"></p>
             </div>
         </div>
         <div class="item">
             <p>Категории (ключови думи към събитието): <span class="required">*</span></p>
-            <input type="text" th:field="*{eventCategories}" oninvalid="this.setCustomValidity('Моля веведете поне една ключова дума с минимум 3 букви!')" oninput="this.setCustomValidity('')" minlength="3" required
-                   title="Моля, използвайте само букви (латиница и кирилица) и запетаи." >
+            <input type="text" th:field="*{eventCategories}"
+                   oninvalid="this.setCustomValidity('Моля веведете поне една ключова дума с минимум 3 букви!')"
+                   oninput="this.setCustomValidity('')" minlength="3" required
+                   title="Моля, използвайте само букви (латиница и кирилица) и запетаи.">
             <div th:if="${eventCategories}" id="eventCategoriesError">
                 <p th:text="${eventCategories}" style="color: red;"></p>
             </div>
@@ -126,8 +139,12 @@
         </div>
         <div class="contact-item">
             <div class="item">
-                <p>Минимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
-                <input type="number" th:field="*{minAge}" min="0" oninvalid="this.setCustomValidity('Позволени са само цифри (цели и положителни)')" oninput="this.setCustomValidity('')" placeholder="Минимална възраст за участие" required title="Моля въведете стойност по-голяма или равна на 0"/>
+                <p>Минимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span
+                        class="required">*</span></p>
+                <input type="number" th:field="*{minAge}" min="0"
+                       oninvalid="this.setCustomValidity('Позволени са само цифри (цели и положителни)')"
+                       oninput="this.setCustomValidity('')" placeholder="Минимална възраст за участие" required
+                       title="Моля въведете стойност по-голяма или равна на 0"/>
                 <div th:if="${minAge}" id="minAgeError">
                     <p th:text="${minAge}" style="color: red;"></p>
                 </div>
@@ -136,15 +153,23 @@
                 </div>
             </div>
             <div class="item">
-                <p>Максимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span class="required">*</span></p>
-                <input type="number" th:field="*{maxAge}" min="0" oninvalid="this.setCustomValidity('Позволени са само цифри (цели и положителни)')" oninput="this.setCustomValidity('')" placeholder="Максимална възраст за участие" required title="Моля въведете стойност по-голяма или равна на 0"/>
+                <p>Максимална възраст за участие(ако няма възрастово ограничение,въведете 0): <span
+                        class="required">*</span></p>
+                <input type="number" th:field="*{maxAge}" min="0"
+                       oninvalid="this.setCustomValidity('Позволени са само цифри (цели и положителни)')"
+                       oninput="this.setCustomValidity('')" placeholder="Максимална възраст за участие" required
+                       title="Моля въведете стойност по-голяма или равна на 0"/>
                 <div th:if="${maxAge}" id="maxAgeError">
                     <p th:text="${maxAge}" style="color: red;"></p>
                 </div>
             </div>
             <div class="item">
-                <p>Цена на събитието (ако е безплатно, въведете 0. Ако е десетично число , моля използвайте точка за разделител.): <span class="required">*</span></p>
-                <input type="number" step="any" th:field="*{price}" min="0" oninvalid="this.setCustomValidity('Позволени са само цифри (цели , дробни и положителни)')" oninput="this.setCustomValidity('')" placeholder="Цена на събитието" required title="Моля въведете стойност по-голяма или равна на 0"/>
+                <p>Цена на събитието (ако е безплатно, въведете 0. Ако е десетично число , моля използвайте точка за
+                    разделител.): <span class="required">*</span></p>
+                <input type="number" step="any" th:field="*{price}" min="0"
+                       oninvalid="this.setCustomValidity('Позволени са само цифри (цели , дробни и положителни)')"
+                       oninput="this.setCustomValidity('')" placeholder="Цена на събитието" required
+                       title="Моля въведете стойност по-голяма или равна на 0"/>
                 <div th:if="${price}" id="priceError">
                     <p th:text="${price}" style="color: red;"></p>
                 </div>
@@ -164,7 +189,8 @@
             </div>
         </div>
         <div class="item">
-            <p>Детайли относно повторяемостта на събитието: (моля попълнете полето, само ако сте маркирали с 'Инициатива') </p>
+            <p>Детайли относно повторяемостта на събитието: (моля попълнете полето, само ако сте маркирали с
+                'Инициатива') </p>
             <input type="text" th:field="*{recurrenceDetails}"
                    placeholder="Детайли относно повторяемостта на събитието">
             <div th:if="${recurrenceDetails}" id="recurrenceDetailsError">
@@ -221,50 +247,50 @@
 <script th:src="@{/js/displayScript.js}"></script>
 
 <script>
-  var popup = document.querySelector(".popup");
-  var result = popup.dataset.result;
+    var popup = document.querySelector(".popup");
+    var result = popup.dataset.result;
 
-  if (result && result.trim() !== '') {
-    var popupElement = document.createElement("div");
-    popupElement.innerHTML = result;
-    popupElement.style.position = "fixed";
-    popupElement.style.top = "50%";
-    popupElement.style.left = "50%";
-    popupElement.style.transform = "translate(-50%, -50%)";
-    popupElement.style.backgroundColor = "lightgray";
-    popupElement.style.padding = "20px";
-    popupElement.style.border = "1px solid gray";
-    popupElement.style.borderRadius = "5px";
-    popupElement.style.opacity = "1";
-    popupElement.style.transition = "opacity 2s";
+    if (result && result.trim() !== '') {
+        var popupElement = document.createElement("div");
+        popupElement.innerHTML = result;
+        popupElement.style.position = "fixed";
+        popupElement.style.top = "50%";
+        popupElement.style.left = "50%";
+        popupElement.style.transform = "translate(-50%, -50%)";
+        popupElement.style.backgroundColor = "lightgray";
+        popupElement.style.padding = "20px";
+        popupElement.style.border = "1px solid gray";
+        popupElement.style.borderRadius = "5px";
+        popupElement.style.opacity = "1";
+        popupElement.style.transition = "opacity 2s";
 
-    var closeButton = document.createElement("button");
-    closeButton.innerHTML = "X";
-    closeButton.style.position = "absolute";
-    closeButton.style.top = "5px";
-    closeButton.style.right = "5px";
-    closeButton.style.border = "none";
-    closeButton.style.backgroundColor = "red";
-    closeButton.style.color = "white";
-    closeButton.style.fontSize = "12px";
-    closeButton.style.width = "20px";
-    closeButton.style.height = "20px";
-    closeButton.style.borderRadius = "50%";
-    closeButton.style.cursor = "pointer";
+        var closeButton = document.createElement("button");
+        closeButton.innerHTML = "X";
+        closeButton.style.position = "absolute";
+        closeButton.style.top = "5px";
+        closeButton.style.right = "5px";
+        closeButton.style.border = "none";
+        closeButton.style.backgroundColor = "red";
+        closeButton.style.color = "white";
+        closeButton.style.fontSize = "12px";
+        closeButton.style.width = "20px";
+        closeButton.style.height = "20px";
+        closeButton.style.borderRadius = "50%";
+        closeButton.style.cursor = "pointer";
 
-    popupElement.appendChild(closeButton);
-    document.body.appendChild(popupElement);
+        popupElement.appendChild(closeButton);
+        document.body.appendChild(popupElement);
 
-    function closePopup() {
-      popupElement.style.opacity = "0";
-      setTimeout(function() {
-        document.body.removeChild(popupElement);
-      }, 2000);
+        function closePopup() {
+            popupElement.style.opacity = "0";
+            setTimeout(function () {
+                document.body.removeChild(popupElement);
+            }, 2000);
+        }
+
+        closeButton.addEventListener("click", closePopup);
+        setTimeout(closePopup, 5000);
     }
-
-    closeButton.addEventListener("click", closePopup);
-    setTimeout(closePopup, 5000);
-  }
 </script>
 
 </body>
@@ -274,6 +300,8 @@
 <style>
     html, body {
         min-height: 100%;
+        font-family: "Open Sans", sans-serif;
+
     }
 
     body, div, form, input, select, p {
@@ -286,10 +314,9 @@
         line-height: 22px;
     }
 
-    body{
+    body {
         background-color: #f6f5f5 !important;
     }
-
 
 
     p.top-info {
@@ -438,7 +465,7 @@
         cursor: pointer;
     }
 
-    #description{
+    #description {
         width: 100%;
     }
 
