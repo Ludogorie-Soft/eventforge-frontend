@@ -1,21 +1,22 @@
 package com.example.EventForgeFrontend.exception.exceptionhandler;
 
-import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.dto.EventRequest;
 import com.example.EventForgeFrontend.dto.JWTAuthenticationRequest;
 import com.example.EventForgeFrontend.dto.RegistrationRequest;
 import com.example.EventForgeFrontend.dto.UpdateAccountRequest;
 import com.example.EventForgeFrontend.exception.*;
 import com.example.EventForgeFrontend.session.SessionManager;
+import com.example.EventForgeFrontend.slack.SlackNotifier;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,8 +26,28 @@ public class GlobalExceptionHandler {
     @Autowired
     private SessionManager sessionManager;
 
-    @Autowired
-    private AuthenticationApiClient authenticationApiClient;
+   @Autowired
+   private SlackNotifier slackNotifier;
+
+    @ExceptionHandler(Throwable.class)
+   public void sendSlackNotificationWhenInternalServerErrorOccurs(Throwable throwable){
+
+       LocalDateTime timestamp = LocalDateTime.now();
+       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+       // Create a detailed message including timestamp, exception message, and cause
+       String message = String.format(
+               "Exception occurred at %s%nFRONTEND APPLICATION%nMessage: %s%nCause: %s",
+               formatter.format(timestamp),
+               throwable.getMessage(),
+               throwable.getCause()
+       );
+       // Log the exception (optional)
+       throwable.printStackTrace();
+
+       // Send the exception details to Slack
+       slackNotifier.sendNotification(message);
+   }
 
     @ExceptionHandler(CustomValidationErrorException.class )
     public ModelAndView handleCustomValidationErrorException(CustomValidationErrorException validationEx ,HttpServletRequest request, RedirectAttributes redirectAttributes ) {
