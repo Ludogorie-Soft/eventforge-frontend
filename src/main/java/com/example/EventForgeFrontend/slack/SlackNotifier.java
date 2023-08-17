@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @Component
 public class SlackNotifier {
-    private static final String WEBHOOK_URL = "https://hooks.slack.com/services/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";
+    private static final String WEBHOOK_URL = "https://hooks.slack.com/services/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";
 
     public void sendNotification(String message) {
         Payload payload = Payload.builder()
@@ -18,7 +18,7 @@ public class SlackNotifier {
 
         try {
             Slack slack = Slack.getInstance();
-            WebhookResponse response = slack.send(WEBHOOK_URL, payload);
+            slack.send(WEBHOOK_URL, payload);
             // You can handle the response if needed
         } catch (IOException ignored) {
 
