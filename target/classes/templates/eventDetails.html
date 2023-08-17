@@ -2,7 +2,9 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
+    <th:block th:if="${event != null}">
     <title th:text="${event.name}"></title>
+    </th:block>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
@@ -43,7 +45,7 @@
         </div>
     </div>
 </div>
-
+<th:block th:if="${event != null}">
 <div class="container" style="margin-bottom: 30px">
     <h1 id="event-name" th:text="${#strings.toUpperCase(event.name)}"></h1>
     <div class="row">
@@ -101,6 +103,10 @@
         </div>
     </div>
 </div>
+</th:block>
+<th:block th:unless="${event != null}">
+    <h2 style="text-align: center;" th:text="${result}"></h2>
+</th:block>
 
 
 <!--FOOTER-->
