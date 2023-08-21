@@ -33,13 +33,13 @@ public class AuthenticationController {
     private final ImageService imageService;
 
     @GetMapping("/registration")
-    public String showRegistrationForm(Model model, @ModelAttribute("request") RegistrationRequest request , HttpServletRequest httpRequest) {
+    public String showRegistrationForm(Model model, RedirectAttributes redirectAttributes,  @ModelAttribute("request") RegistrationRequest request , HttpServletRequest httpRequest) {
         Set<String> priorityCategories = authenticationApiClient.getAllPriorityCategories().getBody();
         String isThereLoggedUser = (String) httpRequest.getSession().getAttribute("sessionToken");
 
         if (isThereLoggedUser != null) {
-            model.addAttribute("result", "За да направите регистрация, моля отпишете се първо");
-            return "index";
+            redirectAttributes.addFlashAttribute("result", "За да направите регистрация, моля отпишете се първо");
+            return "redirect:/";
         }
         if (request != null) {
             model.addAttribute("request", request);
@@ -106,11 +106,11 @@ public class AuthenticationController {
 
 
     @GetMapping("/login")
-    public String login(Model model, @ModelAttribute("login") JWTAuthenticationRequest login , HttpServletRequest httpRequest ) {
+    public String login(Model model, RedirectAttributes redirectAttributes, @ModelAttribute("login") JWTAuthenticationRequest login , HttpServletRequest httpRequest ) {
         String isThereLoggedUser = (String) httpRequest.getSession().getAttribute("sessionToken");
         if(isThereLoggedUser != null){
-            model.addAttribute("result" ,"В момента сте вписани. Ако искате да се впишете с друг профил, моля излезте от текущият профил.");
-            return "index";
+            redirectAttributes.addFlashAttribute("result" ,"В момента сте вписани. Ако искате да се впишете с друг профил, моля излезте от текущият профил.");
+            return "redirect:/";
         }
         if (login != null && login.getUserName() != null && !login.getUserName().isEmpty()) {
             model.addAttribute("login", login);

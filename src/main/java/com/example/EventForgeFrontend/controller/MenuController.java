@@ -46,4 +46,10 @@ public class MenuController {
         return "index";
     }
 
+    @GetMapping(value = {"/en"})
+    public String indexEN(Model model) {
+
+        return "indexEN";
+    }
+
 }
