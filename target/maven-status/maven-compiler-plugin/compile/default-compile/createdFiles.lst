@@ -8,6 +8,7 @@ com\example\EventForgeFrontend\client\RecurrenceEventApiClient.class
 com\example\EventForgeFrontend\exception\TokenExpiredException.class
 com\example\EventForgeFrontend\controller\UserController.class
 com\example\EventForgeFrontend\session\SessionListenerConfig.class
+com\example\EventForgeFrontend\controller\LegalPagesController.class
 com\example\EventForgeFrontend\client\OneTimeEventApiClient.class
 com\example\EventForgeFrontend\dto\OrganisationResponseForAdmin$OrganisationResponseForAdminBuilder.class
 com\example\EventForgeFrontend\client\MainMenuClient.class
