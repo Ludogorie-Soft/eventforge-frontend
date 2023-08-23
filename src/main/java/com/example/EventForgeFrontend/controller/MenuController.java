@@ -10,17 +10,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("")
 public class MenuController {
 
     private final MainMenuClient mainMenuClient;
 
-    @GetMapping(value = {"/", ""})
+    @GetMapping
     public String index(Model model) {
         ResponseEntity<List<CommonEventResponse>> threeUpcomingEvents = mainMenuClient.showThreeUpcomingEvents();
         ResponseEntity<List<OrganisationResponse>> threeRandomOrganisations = mainMenuClient.showThreeRandomOrganisations();
@@ -47,7 +49,7 @@ public class MenuController {
     }
 
     @GetMapping(value = {"/en"})
-    public String indexEN(Model model) {
+    public String indexEN() {
 
         return "indexEN";
     }

@@ -39,7 +39,7 @@ public class AuthenticationController {
 
         if (isThereLoggedUser != null) {
             redirectAttributes.addFlashAttribute("result", "За да направите регистрация, моля отпишете се първо");
-            return "redirect:/";
+            return "redirect:";
         }
         if (request != null) {
             model.addAttribute("request", request);
@@ -101,7 +101,7 @@ public class AuthenticationController {
     public String resetForgottenPassword(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes) {
         authenticationApiClient.resetPassword(verificationToken);
         redirectAttributes.addFlashAttribute("result", "Проверете пощата си отново. Генерирахме нова парола за вас.");
-        return "redirect:/";
+        return "redirect:";
     }
 
 
@@ -110,7 +110,7 @@ public class AuthenticationController {
         String isThereLoggedUser = (String) httpRequest.getSession().getAttribute("sessionToken");
         if(isThereLoggedUser != null){
             redirectAttributes.addFlashAttribute("result" ,"В момента сте вписани. Ако искате да се впишете с друг профил, моля излезте от текущият профил.");
-            return "redirect:/";
+            return "redirect:";
         }
         if (login != null && login.getUserName() != null && !login.getUserName().isEmpty()) {
             model.addAttribute("login", login);
@@ -135,7 +135,7 @@ public class AuthenticationController {
         // Set the session token in the current session
         sessionManager.setSessionToken(request, token, userRole);
         redirectAttributes.addFlashAttribute("result", "Успешно се вписахте.");
-        return "redirect:/";
+        return "redirect:";
     }
 
     @PostMapping("/logout")
@@ -144,6 +144,6 @@ public class AuthenticationController {
         authenticationApiClient.logout(token);
         sessionManager.invalidateSession(request);
         redirectAttributes.addFlashAttribute("result", "Успешно се отписахте.");
-        return "redirect:/";
+        return "redirect:";
     }
 }
