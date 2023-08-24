@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Запитвания</title>
+    <title>Списък със спамери</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -70,64 +70,18 @@
             <thead>
             <tr>
                 <th></th>
-                <th> Име</th>
                 <th> Имейл </th>
-                <th> Тема </th>
-                <th> Обратна връзка </th>
-                <th> Отговорено ли е </th>
-                <th> Запитване: </th>
-                <th> Изпратено на: </th>
-                <th> Маркирай спамер</th>
-                <th> Изтрий </th>
+                <th> Премахни от системата със спамери </th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="contact : ${contacts}">
+            <tr th:each="spammer : ${spammers}">
                 <td class="dt-control"></td>
-                <td th:text="${contact.name}"></td>
-                <td th:text="${contact.email}"></td>
-                <td th:text="${contact.subject}"></td>
-                <td>
-                    <button class="open-button" onclick="openForm('emailForm-${contact.id}')">
-                        <i class="fas fa-envelope"></i> <!-- Email icon -->
-                    </button>
-
-                    <div id="emailForm-${contact.id}" class="email-form-popup">
-                        <button class="close-button" onclick="closeForm('emailForm-${contact.id}')">
-                            <span class="close-icon">&times;</span>
-                        </button>
-                        <form th:action="@{/admin/contact/send-email-to/{email}/{id}(email=${contact.email}, id=${contact.id})}" method="post">
-                            <!-- Use <textarea> instead of <input> -->
-                            <textarea class="text-area-style" name="answer" th:attr="placeholder='Ще изпратите отговор до имейл с адрес: ' + ${contact.email}" rows="4" required></textarea>
-                            <button type="submit" class="send-button" >
-                                Изпрати
-                            </button>
-
-                        </form>
-                    </div>
-
-                </td>
-                <td>
-                    <i th:if="${contact.isAnswered}" class="fas fa-check-circle" style="color: green;"></i>
-                    <i th:unless="${contact.isAnswered}" class="fas fa-times-circle" style="color: red;"></i>
-                </td>
-                <td class="td-textarea">
-                    <textarea class="textarea-content" th:text="${contact.text}" readonly></textarea>
-                </td>
-
-                <td th:text="${#temporals.format(contact.createdAt, 'dd-MM-yyyy HH:mm')}">></td>
-                <td>
-                    <form th:action="@{/admin/mark/spammer/{email}(email=${contact.email})}" method="post"
-                          onsubmit="return confirmSpam(event)">
-                        <button type="submit">
-                            <i class='far fa-bell-slash' style='font-size:24px'></i>
-                        </button>
-                    </form>
-                </td>
+                <td th:text="${spammer}"></td>
 
                 <td>
-                    <form th:action="@{/admin/delete-contact/{id}(id=${contact.id})}" method="post"
+                    <form th:action="@{/admin/unmark/spammer/{email}(email=${spammer})}" method="post"
                           onsubmit="return confirmDelete(event)">
                         <button type="submit" class="delete-button">
                             <i class="fas fa-trash"></i>
@@ -162,8 +116,6 @@
 <script src="js/bootstrap-datepicker.min.js"></script>
 <script src="js/aos.js"></script>
 
-<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-
 <script src="js/main.js"></script>
 
 
@@ -172,8 +124,8 @@
     new DataTable('#table_id', {
         responsive: true,
         columnDefs: [
-            { responsivePriority: 1, targets: -1 },
-            { responsivePriority: 1, targets: -1 }
+            { responsivePriority: 1, targets: 0 },
+
 
         ],
         language: {
@@ -233,127 +185,17 @@
 <script>
     function confirmDelete(event) {
         // Show the confirmation dialog
-        const isConfirmed = confirm("Сигурни ли сте, че искате да извършите това действие?");
+        const isConfirmed = confirm("Премахването на избраният от вас имейл от системата със спамери ще може да праща отново запитвания. Сигурни ли сте, че искате да изпълните това действие?");
 
         // If the user clicks "OK," proceed with the form submission (delete action)
         // Otherwise, cancel the form submission
         return isConfirmed;
-    }
-</script>
-
-<script>
-    function confirmSpam(event) {
-        // Show the confirmation dialog
-        const isConfirmed = confirm("Избраният от вас имейл няма да може повече да прави запитвания към системата, сигурни ли сте, че искате да го маркирате като спамер в системата?");
-
-        // If the user clicks "OK," proceed with the form submission (delete action)
-        // Otherwise, cancel the form submission
-        return isConfirmed;
-    }
-</script>
-<script>
- function openForm(formId) {
-        var form = document.getElementById(formId);
-        form.style.display = "block";
-    }
- function closeForm(formId) {
-        var form = document.getElementById(formId);
-        form.style.display = "none";
     }
 </script>
 
 </body>
 </html>
 <style>
-.td-textarea {
-    border: 1px solid #ccc;
-    padding: 5px;
-    position: relative; /* Ensure positioning context for textarea */
-}
-
-.textarea-content {
-    width: 100%;
-    height: 100px; /* Set the desired height */
-    resize: none; /* Prevent textarea resizing by the user */
-    border: none;
-    background: none;
-    overflow: auto; /* Allow content to be scrollable */
-}
-
-.email-form-popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #e8e4c6;
-    border: 1px solid #ccc;
-    padding: 30px; /* Increased padding */
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    width: 35%; /* Responsive width */
-
-    height: auto; /* Let the content dictate the height */
-    max-height: 80%; /* Limit the maximum height */
-    overflow-y: auto; /* Enable vertical scrolling if needed */
-}
-.email-form-popup input[type="text"] {
-    width: 300%; /* Make the input field span the entire width */
-    padding: 50px; /* Adjust padding as needed */
-    margin-bottom: 15px; /* Add some spacing between input and other elements */
-    border: 1px solid #ccc; /* Add a border */
-    border-radius: 4px; /* Rounded corners */
-    box-sizing: border-box; /* Include padding in the element's total width */
-    font-size: 16px; /* Adjust font size as needed */
-}
-
-.text-area-style{
-height: 300px;
-width: 500px;
-}
-@media (max-width: 768px) {
-    .email-form-popup {
-        width: 80%; /* Adjust the width for smaller screens */
-    }
-
-    .email-form-popup input[type="text"] {
-        width: 100%; /* Make the input field span the full width */
-        padding: 15px; /* Adjust padding for smaller screens */
-    }
-
-    .text-area-style {
-        width: 100%; /* Make the textarea span the full width */
-    }
-}
-
-
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.close-icon {
-    color: red;
-    font-size: 24px;
-}
-
-.send-button {
-  background-color: #f4511e;
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  font-size: 16px;
-  margin: 4px 2px;
-  opacity: 0.6;
-  transition: 0.3s;
-}
-
-.send-button:hover {opacity: 1}
  .delete-button {
         padding: 5px;
         font-size: 16px;

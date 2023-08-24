@@ -44,5 +44,13 @@ public interface AdminApiClient {
     ResponseEntity<Void> deleteContact(@RequestHeader("Authorization")String authHeader ,@PathVariable("id")Long contactId);
     @PostMapping("/contact/send-email/{id}")
     ResponseEntity<String> sendEmail(@RequestHeader("Authorization")String authHeader,@PathVariable("id")Long id ,@RequestParam("answer")String answer);
+    @GetMapping("/spammer-list")
+    ResponseEntity<List<String>> listSpammers(@RequestHeader("Authorization")String authHeader);
+
+    @PostMapping("/spammer/{email}")
+    ResponseEntity<Void> markSpammer(@RequestHeader("Authorization")String authHeader , @PathVariable("email")String email);
+
+    @DeleteMapping("/delete/spammer/{email}")
+    ResponseEntity<Void> removeSpammerFromBlackList(@RequestHeader("Authorization")String authHeader,@PathVariable("email")String email);
 
 }

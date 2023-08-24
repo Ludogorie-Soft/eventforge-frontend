@@ -77,7 +77,8 @@
                 <th> Отговорено ли е </th>
                 <th> Запитване: </th>
                 <th> Изпратено на: </th>
-                <th> </th>
+                <th> Маркирай като спамер</th>
+                <th> Изтрий </th>
             </tr>
             </thead>
 
@@ -116,7 +117,14 @@
                 </td>
 
                 <td th:text="${#temporals.format(contact.createdAt, 'dd-MM-yyyy HH:mm')}">></td>
-
+                <td>
+                    <form th:action="@{/admin/mark/spammer/{email}(email=${contact.email})}" method="post"
+                          onsubmit="return confirmSpam(event)">
+                        <button type="submit">
+                            <i class='far fa-bell-slash' style='font-size:24px'></i>
+                        </button>
+                    </form>
+                </td>
 
                 <td>
                     <form th:action="@{/admin/delete-contact/{id}(id=${contact.id})}" method="post"
@@ -153,6 +161,8 @@
 <script src="js/jquery.easing.1.3.js"></script>
 <script src="js/bootstrap-datepicker.min.js"></script>
 <script src="js/aos.js"></script>
+
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
 <script src="js/main.js"></script>
 
@@ -224,6 +234,17 @@
     function confirmDelete(event) {
         // Show the confirmation dialog
         const isConfirmed = confirm("Сигурни ли сте, че искате да извършите това действие?");
+
+        // If the user clicks "OK," proceed with the form submission (delete action)
+        // Otherwise, cancel the form submission
+        return isConfirmed;
+    }
+</script>
+
+<script>
+    function confirmSpam(event) {
+        // Show the confirmation dialog
+        const isConfirmed = confirm("Избраният от вас имейл няма да може повече да прави запитвания към системата, сигурни ли сте, че искате да го маркирате като спамер в системата?");
 
         // If the user clicks "OK," proceed with the form submission (delete action)
         // Otherwise, cancel the form submission
