@@ -28,6 +28,11 @@
                                 Управление на организации
                             </a>
                         </li>
+                        <li class="active" th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
+                            <a th:href="@{/admin/contacts}" class="nav-link" style="text-align: center">
+                                Запитвания
+                            </a>
+                        </li>
                         <li th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}"
                             class="active">
                             <a th:href="@{/manage-events}">Моите събития</a>

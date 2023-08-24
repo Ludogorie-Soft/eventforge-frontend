@@ -1,10 +1,7 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.AdminApiClient;
-import com.example.EventForgeFrontend.dto.ChangePasswordRequest;
-import com.example.EventForgeFrontend.dto.CommonEventResponse;
-import com.example.EventForgeFrontend.dto.OrganisationResponse;
-import com.example.EventForgeFrontend.dto.OrganisationResponseForAdmin;
+import com.example.EventForgeFrontend.dto.*;
 import com.example.EventForgeFrontend.image.ImageService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -119,4 +116,33 @@ public class AdminController {
 
         return "redirect:" + request.getHeader("Referer");
     }
+
+    @GetMapping("/contacts")
+    public String contacts(Model model , HttpServletRequest httpRequest){
+        String token = (String) httpRequest.getSession().getAttribute("sessionToken");
+        ResponseEntity<List<Contact>> contacts = adminApiClient.contacts(token);
+        if(contacts.getBody()!=null && !contacts.getBody().isEmpty()){
+            model.addAttribute("contacts" , contacts.getBody());
+        }
+        return "showContactForms";
+    }
+
+    @PostMapping("/contact/send-email-to/{email}/{id}")
+    public String sendEmailToContract(HttpServletRequest httpRequest , @PathVariable("id")Long id ,@PathVariable("email")String email, @RequestParam("answer")String answer , RedirectAttributes redirectAttributes){
+        String token = (String) httpRequest.getSession().getAttribute("sessionToken");
+        ResponseEntity<String> result = adminApiClient.sendEmail(token ,id , answer);
+        if(result.getBody()!=null && !result.getBody().isEmpty()){
+            redirectAttributes.addFlashAttribute("result" , result.getBody());
+        } else {
+            redirectAttributes.addFlashAttribute("result" ,"Неуспешен опит да изпратите имейл към " + email);
+        }
+        return "redirect:" + httpRequest.getHeader("Referer");
+    }
+    @PostMapping("/delete-contact/{id}")
+    public String deleteContact(@PathVariable("id")Long id , HttpServletRequest httpRequest){
+        String token = (String) httpRequest.getSession().getAttribute("sessionToken");
+        adminApiClient.deleteContact(token ,id);
+        return "redirect:" + httpRequest.getHeader("Referer");
+    }
+
 }
