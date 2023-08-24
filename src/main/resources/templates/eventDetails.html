@@ -3,7 +3,8 @@
 
 <head>
     <th:block th:if="${event != null}">
-    <title th:text="${event.name}"></title>
+        <title th:text="${event.name}"></title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
     </th:block>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -46,63 +47,71 @@
     </div>
 </div>
 <th:block th:if="${event != null}">
-<div class="container" style="margin-bottom: 30px">
-    <h1 id="event-name" th:text="${#strings.toUpperCase(event.name)}"></h1>
-    <div class="row">
-        <div class="container col-md-6">
-            <img id="cover-photo" th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}"
-                 alt="event-cover-photo">
-        </div>
-        <div class="container col-md-6">
+    <div class="container" style="margin-bottom: 30px">
+        <h1 id="event-name" th:text="${#strings.toUpperCase(event.name)}"></h1>
+        <div class="row">
+            <div class="container col-md-6">
+                <img id="cover-photo" th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}"
+                     alt="event-cover-photo">
+            </div>
+            <div class="container col-md-6">
 
-            <div class="event-details-box container">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <ul>
-                                <li><strong>Организатор: </strong><a target="_blank"
-                                                                     th:href="@{/view/organisations/details/{id}(id=${event.orgId})}"
-                                                                     style="color: black;"
-                                                                     th:text="'&quot;' + ${event.organisationName.toUpperCase()} + '&quot;'"></a>
-                                </li>
-                                <li><strong>Тип: <span th:text="${event.isOneTime}"></span></strong></li>
-                                <li><strong>Цена: </strong><span th:text="${event.price}"></span></li>
-                                <li><strong th:text="${event.ageBoundary}"></strong></li>
-                                <li><strong th:text="${event.isOnline} ? 'Онлайн' : 'Присъствено'"></strong></li>
-                                <div th:if="${event.address.startsWith('http://') or event.address.startsWith('https://') or event.address.startsWith('www.')}">
-                                    <li><strong>Линк към събитието: </strong><a th:href="${event.address}" target="_blank" rel="noopener noreferrer"
-                                                                                style="color: blue;">
-                                        <span th:text="${event.address}"></span>
-                                    </a></li>
-                                </div>
-                                <div th:unless="${event.address.startsWith('http://') or event.address.startsWith('https://') or event.address.startsWith('www.')}">
-                                    <li><strong>Адрес: </strong><span th:text="${event.address}"></span></li>
-                                </div>
-                                <div th:if="${event.facebookLink != null and event.facebookLink.length() > 0}">
-                                    <li><strong>Фейсбук линк: </strong><a th:href="${event.facebookLink}" target="_blank" rel="noopener noreferrer"
-                                                                          style="color: blue;">
-                                        <span th:text="${event.facebookLink}"></span></a></li>
-                                </div>
-                                <li><strong>Категории: </strong><span th:text="${event.eventCategories}"></span></li>
-                                <li><strong>Дата на започване: </strong><span
-                                        th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span></li>
+                <div class="event-details-box container">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ul>
+                                    <li><strong>Организатор: </strong><a target="_blank"
+                                                                         th:href="@{/view/organisations/details/{id}(id=${event.orgId})}"
+                                                                         style="color: black;"
+                                                                         th:text="'&quot;' + ${event.organisationName.toUpperCase()} + '&quot;'"></a>
+                                    </li>
+                                    <li><strong>Тип: <span th:text="${event.isOneTime}"></span></strong></li>
+                                    <li><strong>Цена: </strong><span th:text="${event.price}"></span></li>
+                                    <li><strong th:text="${event.ageBoundary}"></strong></li>
+                                    <li><strong th:text="${event.isOnline} ? 'Онлайн' : 'Присъствено'"></strong></li>
+                                    <div th:if="${event.address.startsWith('http://') or event.address.startsWith('https://') or event.address.startsWith('www.')}">
+                                        <li><strong>Линк към събитието: </strong><a th:href="${event.address}"
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer"
+                                                                                    style="color: blue;">
+                                            <span th:text="${event.address}"></span>
+                                        </a></li>
+                                    </div>
+                                    <div th:unless="${event.address.startsWith('http://') or event.address.startsWith('https://') or event.address.startsWith('www.')}">
+                                        <li><strong>Адрес: </strong><span th:text="${event.address}"></span></li>
+                                    </div>
+                                    <div th:if="${event.facebookLink != null and event.facebookLink.length() > 0}">
+                                        <li><strong>Фейсбук линк: </strong><a th:href="${event.facebookLink}"
+                                                                              target="_blank" rel="noopener noreferrer"
+                                                                              style="color: blue;">
+                                            <span th:text="${event.facebookLink}"></span></a></li>
+                                    </div>
+                                    <li><strong>Категории: </strong><span th:text="${event.eventCategories}"></span>
+                                    </li>
+                                    <li><strong>Дата на започване: </strong><span
+                                            th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                    </li>
 
-                                <li><strong>Дата на приключване: </strong><span
-                                        th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span></li>
-                                <li><strong>Описание: </strong></li>
-                                <p style="text-align: justify" th:text="${event.description}"></p>
+                                    <li><strong>Дата на приключване: </strong><span
+                                            th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                    </li>
+                                    <li><strong>Описание: </strong></li>
+                                    <p style="text-align: justify" th:text="${event.description}"></p>
 
-                                <div th:if="${event.recurrenceDetails != null and event.recurrenceDetails.length() > 0}">
-                                    <li><strong>Детайли за повтаряемост на събитието: </strong><span style="text-align: justify" th:text="${event.recurrenceDetails}"></span></li>
-                                </div>
-                            </ul>
+                                    <div th:if="${event.recurrenceDetails != null and event.recurrenceDetails.length() > 0}">
+                                        <li><strong>Детайли за повтаряемост на събитието: </strong><span
+                                                style="text-align: justify" th:text="${event.recurrenceDetails}"></span>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </th:block>
 <th:block th:unless="${event != null}">
     <h2 style="text-align: center;" th:text="${result}"></h2>
@@ -133,9 +142,10 @@
 </html>
 
 <style>
-    body{
-        font-family: "Open Sans",sans-serif;
+    body {
+        font-family: "Open Sans", sans-serif;
     }
+
     .label {
         font-weight: bold; /* You can adjust the styling as needed */
     }

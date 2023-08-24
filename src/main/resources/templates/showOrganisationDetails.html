@@ -3,7 +3,8 @@
 
 <head>
     <th:block th:if="${organisationDetails != null}">
-    <title th:text="${organisationDetails.name}"></title>
+        <title th:text="${organisationDetails.name}"></title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
     </th:block>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -55,103 +56,256 @@
     </div>
 </div>
 <th:block th:if="${organisationDetails != null}">
-<div class="container" style="margin-bottom: 30px">
-    <div>
-        <img id="cover-photo" th:src="@{'data:image/jpeg;base64,' + ${organisationDetails.background}}"
-             alt="organisation-cover-photo">
-    </div>
-    <main>
-        <div class="row">
-            <div class="left col-lg-4">
-                <div class="photo-left">
-                    <img class="photo" th:src="@{'data:image/jpeg;base64,' + ${organisationDetails.logo}}"
-                         alt="organisation-logo">
-                </div>
-                <h1 class="name" style="text-align: unset" th:text="${organisationDetails.name}"></h1>
-                <div>
-                    <p class="info" th:text="${organisationDetails.address}"></p>
-                </div>
-                <div style="text-align: justify" class="stats row"
-                     th:text="${#strings.listJoin(organisationDetails.organisationPriorities, ', ')}">
-                </div>
-
-                <div id="icons">
-                    <div th:if="${organisationDetails.website != null and organisationDetails.website != ''}">
-                        <a th:href="${organisationDetails.website}" target="_blank" class="fa fa-globe"
-                           th:title="'Сайт на организация: '+${organisationDetails.website}"></a>
+    <div class="container" style="margin-bottom: 30px">
+        <div>
+            <img id="cover-photo" th:src="@{'data:image/jpeg;base64,' + ${organisationDetails.background}}"
+                 alt="organisation-cover-photo">
+        </div>
+        <main>
+            <div class="row">
+                <div class="left col-lg-4">
+                    <div class="photo-left">
+                        <img class="photo" th:src="@{'data:image/jpeg;base64,' + ${organisationDetails.logo}}"
+                             alt="organisation-logo">
                     </div>
+                    <h1 class="name" style="text-align: unset" th:text="${organisationDetails.name}"></h1>
                     <div>
-                        <a th:href="${organisationDetails.facebookLink}" target="_blank" class="fa fa-facebook"
-                           th:title="'Фейсбук страница: '+${organisationDetails.facebookLink}"></a>
+                        <p class="info" th:text="${organisationDetails.address}"></p>
                     </div>
-                </div>
-                <a href="mailto:${organisationDetails.email}" class="email-link">
-                    <i class="fa fa-envelope" th:text="${organisationDetails.email}"></i>
-                </a>
-                <div class="stats row">
-                    <div class="stat col-xs-4" style="padding-right: 50px;">
-                        <p class="number-stat" th:text="${#lists.size(organisationDetails.expiredEvents)}"></p>
-                        <p class="desc-stat">Отминали<br>събития</p>
+                    <div style="text-align: justify" class="stats row"
+                         th:text="${#strings.listJoin(organisationDetails.organisationPriorities, ', ')}">
                     </div>
-                    <div class="stat col-xs-4">
-                        <p class="number-stat" th:text="${#lists.size(organisationDetails.activeEvents)}"></p>
-                        <p class="desc-stat">Активни<br>събития</p>
-                    </div>
-                    <div class="stat col-xs-4" style="padding-left: 50px;">
-                        <p class="number-stat" th:text="${#lists.size(organisationDetails.upcomingEvents)}"></p>
-                        <p class="desc-stat">Предстоящи<br>събития</p>
-                    </div>
-                </div>
-                <div style="text-align: justify">
-                    <p class="desc" th:text="${'Мисия: ' + organisationDetails.organisationPurpose}"></p>
-                </div>
-                <div th:if="${organisationDetails.charityOption != null && organisationDetails.charityOption != ''}"
-                     style="text-align: center">
-                    <a id="charity_button" target="_blank" th:href="${organisationDetails.charityOption}">Направи
-                        дарение</a>
-                </div>
-            </div>
-            <div class="right col-lg-8">
-                <ul class="nav">
-                    <li style="color: #f18f8f" id="active-events-btn">Активни</li>
-                    <li id="upcoming-events-btn" style="margin-right: 20px;">Предстоящи</li>
-                    <li id="expired-events-btn">Отминали</li>
-                </ul>
 
-                <!-- ACTIVE EVENTS-->
-                <div id="active-events-div">
-                    <div th:if="${#lists.size(organisationDetails.activeEvents) != 0}" class="slide-container swiper">
-                        <div class="slide-content">
-                            <div class="card-wrapper swiper-wrapper">
-                                <div th:each="event : ${organisationDetails.activeEvents}" class="card swiper-slide">
-                                    <div class="image-content">
-                                        <span class="overlay"></span>
-                                        <div class="card-image">
-                                            <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}"
-                                                 alt="event-img"
-                                                 class="card-img">
+                    <div id="icons">
+                        <div th:if="${organisationDetails.website != null and organisationDetails.website != ''}">
+                            <a th:href="${organisationDetails.website}" target="_blank" class="fa fa-globe"
+                               th:title="'Сайт на организация: '+${organisationDetails.website}"></a>
+                        </div>
+                        <div>
+                            <a th:href="${organisationDetails.facebookLink}" target="_blank" class="fa fa-facebook"
+                               th:title="'Фейсбук страница: '+${organisationDetails.facebookLink}"></a>
+                        </div>
+                    </div>
+                    <a href="mailto:${organisationDetails.email}" class="email-link">
+                        <i class="fa fa-envelope" th:text="${organisationDetails.email}"></i>
+                    </a>
+                    <div class="stats row">
+                        <div class="stat col-xs-4" style="padding-right: 50px;">
+                            <p class="number-stat" th:text="${#lists.size(organisationDetails.expiredEvents)}"></p>
+                            <p class="desc-stat">Отминали<br>събития</p>
+                        </div>
+                        <div class="stat col-xs-4">
+                            <p class="number-stat" th:text="${#lists.size(organisationDetails.activeEvents)}"></p>
+                            <p class="desc-stat">Активни<br>събития</p>
+                        </div>
+                        <div class="stat col-xs-4" style="padding-left: 50px;">
+                            <p class="number-stat" th:text="${#lists.size(organisationDetails.upcomingEvents)}"></p>
+                            <p class="desc-stat">Предстоящи<br>събития</p>
+                        </div>
+                    </div>
+                    <div style="text-align: justify">
+                        <p class="desc" th:text="${'Мисия: ' + organisationDetails.organisationPurpose}"></p>
+                    </div>
+                    <div th:if="${organisationDetails.charityOption != null && organisationDetails.charityOption != ''}"
+                         style="text-align: center">
+                        <a id="charity_button" target="_blank" th:href="${organisationDetails.charityOption}">Направи
+                            дарение</a>
+                    </div>
+                </div>
+                <div class="right col-lg-8">
+                    <ul class="nav">
+                        <li style="color: #f18f8f" id="active-events-btn">Активни</li>
+                        <li id="upcoming-events-btn" style="margin-right: 20px;">Предстоящи</li>
+                        <li id="expired-events-btn">Отминали</li>
+                    </ul>
+
+                    <!-- ACTIVE EVENTS-->
+                    <div id="active-events-div">
+                        <div th:if="${#lists.size(organisationDetails.activeEvents) != 0}"
+                             class="slide-container swiper">
+                            <div class="slide-content">
+                                <div class="card-wrapper swiper-wrapper">
+                                    <div th:each="event : ${organisationDetails.activeEvents}"
+                                         class="card swiper-slide">
+                                        <div class="image-content">
+                                            <span class="overlay"></span>
+                                            <div class="card-image">
+                                                <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}"
+                                                     alt="event-img"
+                                                     class="card-img">
+                                            </div>
+                                        </div>
+                                        <div class="card-content h-100">
+                                            <h4 th:text="${event.name}"></h4>
+                                            <p th:text="${event.isOneTime}"></p>
+                                            <div th:if="${event.isOnline}">
+                                                <p>онлайн събитие</p>
+                                            </div>
+                                            <div th:unless="${event.isOnline}">
+                                                <p>присъствено събитие</p>
+                                            </div>
+                                            <div>
+                                                <p><strong>Начало: </strong><span
+                                                        th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p><strong>Край: </strong><span
+                                                        th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                                </p>
+                                            </div>
+
+                                            <!-- POP UP-->
+                                            <th:block
+                                                    th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                                <button class="button"><a target="_blank"
+                                                                          th:href="@{/admin/event/details/{id}(id=${event.id})}"
+                                                                          style="color: white;">Виж още</a></button>
+                                            </th:block>
+                                            <th:block
+                                                    th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                                <button class="button"><a target="_blank"
+                                                                          th:href="@{/event/details/{id}(id=${event.id})}"
+                                                                          style="color: white;">Виж още</a></button>
+                                            </th:block>
+                                            <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
+                                                 class="delete-container">
+                                                <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
+                                                      onsubmit="return confirmDelete(event)">
+                                                    <button type="submit" class="delete-button">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <!-- END POP UP-->
                                         </div>
                                     </div>
-                                    <div class="card-content h-100">
-                                        <h4 th:text="${event.name}"></h4>
-                                        <p th:text="${event.isOneTime}"></p>
-                                        <div th:if="${event.isOnline}">
-                                            <p>онлайн събитие</p>
-                                        </div>
-                                        <div th:unless="${event.isOnline}">
-                                            <p>присъствено събитие</p>
-                                        </div>
-                                        <div>
-                                            <p><strong>Начало: </strong><span
-                                                    th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p><strong>Край: </strong><span
-                                                    th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                            </p>
+                                </div>
+                            </div>
+
+                            <div class="swiper-button-next swiper-navBtn"></div>
+                            <div class="swiper-button-prev swiper-navBtn"></div>
+                        </div>
+                        <div class="no-found-events"
+                             th:unless="${#lists.size(organisationDetails.activeEvents) != 0}">
+                            <p>Няма намерени активни събития</p>
+                        </div>
+                    </div>
+
+                    <!--UPCOMING EVENTS-->
+                    <div id="upcoming-events-div" style="display: none">
+                        <div th:if="${#lists.size(organisationDetails.upcomingEvents) != 0}"
+                             class="slide-container swiper">
+                            <div class="slide-content">
+                                <div class="card-wrapper swiper-wrapper">
+                                    <div th:each="event : ${organisationDetails.upcomingEvents}"
+                                         class="card swiper-slide">
+                                        <div class="image-content">
+                                            <span class="overlay"></span>
+
+                                            <div class="card-image">
+                                                <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt=""
+                                                     class="card-img">
+                                            </div>
                                         </div>
 
+                                        <div class="card-content h-100">
+                                            <h4 th:text="${event.name}"></h4>
+                                            <p th:text="${event.isOneTime}"></p>
+                                            <div th:if="${event.isOnline}">
+                                                <p>онлайн събитие</p>
+                                            </div>
+                                            <div th:unless="${event.isOnline}">
+                                                <p>присъствено събитие</p>
+                                            </div>
+                                            <div>
+                                                <p><strong>Начало: </strong><span
+                                                        th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p><strong>Край: </strong><span
+                                                        th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                        <!-- POP UP-->
+                                        <th:block
+                                                th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                            <button class="button"><a target="_blank"
+                                                                      th:href="@{/admin/event/details/{id}(id=${event.id})}"
+                                                                      style="color: white;">Виж още</a></button>
+                                        </th:block>
+                                        <th:block
+                                                th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
+                                            <button class="button"><a target="_blank"
+                                                                      th:href="@{/event/details/{id}(id=${event.id})}"
+                                                                      style="color: white;">Виж още</a></button>
+                                        </th:block>
+                                        <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
+                                             class="delete-container">
+                                            <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
+                                                  onsubmit="return confirmDelete(event)">
+                                                <button type="submit" class="delete-button">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <!-- END POP UP-->
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="swiper-button-next swiper-navBtn"></div>
+                            <div class="swiper-button-prev swiper-navBtn"></div>
+                        </div>
+                        <div class="no-found-events"
+                             th:unless="${#lists.size(organisationDetails.upcomingEvents) != 0}">
+                            <p>Няма намерени предстоящи събития</p>
+                        </div>
+                    </div>
+
+                    <!-- EXPIRED EVENTS-->
+                    <div id="expired-events-div" style="display: none">
+                        <div th:if="${#lists.size(organisationDetails.expiredEvents) != 0}"
+                             class="slide-container swiper">
+                            <div class="slide-content">
+                                <div class="card-wrapper swiper-wrapper">
+                                    <div th:each="event : ${organisationDetails.expiredEvents}"
+                                         class="card swiper-slide">
+                                        <div class="image-content">
+                                            <span class="overlay"></span>
+
+                                            <div class="card-image">
+                                                <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}"
+                                                     alt="eventLogo"
+                                                     class="card-img">
+                                            </div>
+                                        </div>
+
+                                        <div class="card-content h-100">
+                                            <h4 th:text="${event.name}"></h4>
+                                            <p th:text="${event.isOneTime}"></p>
+                                            <div th:if="${event.isOnline}">
+                                                <p>онлайн събитие</p>
+                                            </div>
+                                            <div th:unless="${event.isOnline}">
+                                                <p>присъствено събитие</p>
+                                            </div>
+                                            <div>
+                                                <p><strong>Начало: </strong><span
+                                                        th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p><strong>Край: </strong><span
+                                                        th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                                </p>
+                                            </div>
+
+                                        </div>
                                         <!-- POP UP-->
                                         <th:block
                                                 th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
@@ -178,166 +332,19 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="swiper-button-next swiper-navBtn"></div>
+                            <div class="swiper-button-prev swiper-navBtn"></div>
                         </div>
-
-                        <div class="swiper-button-next swiper-navBtn"></div>
-                        <div class="swiper-button-prev swiper-navBtn"></div>
-                    </div>
-                    <div class="no-found-events"
-                         th:unless="${#lists.size(organisationDetails.activeEvents) != 0}">
-                        <p>Няма намерени активни събития</p>
-                    </div>
-                </div>
-
-                <!--UPCOMING EVENTS-->
-                <div id="upcoming-events-div" style="display: none">
-                    <div th:if="${#lists.size(organisationDetails.upcomingEvents) != 0}" class="slide-container swiper">
-                        <div class="slide-content">
-                            <div class="card-wrapper swiper-wrapper">
-                                <div th:each="event : ${organisationDetails.upcomingEvents}" class="card swiper-slide">
-                                    <div class="image-content">
-                                        <span class="overlay"></span>
-
-                                        <div class="card-image">
-                                            <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}" alt=""
-                                                 class="card-img">
-                                        </div>
-                                    </div>
-
-                                    <div class="card-content h-100">
-                                        <h4 th:text="${event.name}"></h4>
-                                        <p th:text="${event.isOneTime}"></p>
-                                        <div th:if="${event.isOnline}">
-                                            <p>онлайн събитие</p>
-                                        </div>
-                                        <div th:unless="${event.isOnline}">
-                                            <p>присъствено събитие</p>
-                                        </div>
-                                        <div>
-                                            <p><strong>Начало: </strong><span
-                                                    th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p><strong>Край: </strong><span
-                                                    th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                    <!-- POP UP-->
-                                    <th:block
-                                            th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                                        <button class="button"><a target="_blank"
-                                                                  th:href="@{/admin/event/details/{id}(id=${event.id})}"
-                                                                  style="color: white;">Виж още</a></button>
-                                    </th:block>
-                                    <th:block
-                                            th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                                        <button class="button"><a target="_blank"
-                                                                  th:href="@{/event/details/{id}(id=${event.id})}"
-                                                                  style="color: white;">Виж още</a></button>
-                                    </th:block>
-                                    <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
-                                         class="delete-container">
-                                        <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
-                                              onsubmit="return confirmDelete(event)">
-                                            <button type="submit" class="delete-button">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <!-- END POP UP-->
-                                </div>
-
-                            </div>
+                        <div class="no-found-events"
+                             th:unless="${#lists.size(organisationDetails.expiredEvents) != 0}">
+                            <p>Няма намерени изминали събития</p>
                         </div>
-
-                        <div class="swiper-button-next swiper-navBtn"></div>
-                        <div class="swiper-button-prev swiper-navBtn"></div>
-                    </div>
-                    <div class="no-found-events"
-                         th:unless="${#lists.size(organisationDetails.upcomingEvents) != 0}">
-                        <p>Няма намерени предстоящи събития</p>
-                    </div>
-                </div>
-
-                <!-- EXPIRED EVENTS-->
-                <div id="expired-events-div" style="display: none">
-                    <div th:if="${#lists.size(organisationDetails.expiredEvents) != 0}" class="slide-container swiper">
-                        <div class="slide-content">
-                            <div class="card-wrapper swiper-wrapper">
-                                <div th:each="event : ${organisationDetails.expiredEvents}" class="card swiper-slide">
-                                    <div class="image-content">
-                                        <span class="overlay"></span>
-
-                                        <div class="card-image">
-                                            <img th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}"
-                                                 alt="eventLogo"
-                                                 class="card-img">
-                                        </div>
-                                    </div>
-
-                                    <div class="card-content h-100">
-                                        <h4 th:text="${event.name}"></h4>
-                                        <p th:text="${event.isOneTime}"></p>
-                                        <div th:if="${event.isOnline}">
-                                            <p>онлайн събитие</p>
-                                        </div>
-                                        <div th:unless="${event.isOnline}">
-                                            <p>присъствено събитие</p>
-                                        </div>
-                                        <div>
-                                            <p><strong>Начало: </strong><span
-                                                    th:text="${#temporals.format(event.startsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p><strong>Край: </strong><span
-                                                    th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                    <!-- POP UP-->
-                                    <th:block
-                                            th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                                        <button class="button"><a target="_blank"
-                                                                  th:href="@{/admin/event/details/{id}(id=${event.id})}"
-                                                                  style="color: white;">Виж още</a></button>
-                                    </th:block>
-                                    <th:block
-                                            th:unless="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}">
-                                        <button class="button"><a target="_blank"
-                                                                  th:href="@{/event/details/{id}(id=${event.id})}"
-                                                                  style="color: white;">Виж още</a></button>
-                                    </th:block>
-                                    <div th:if="${session.sessionToken != null and session.sessionUserRole == 'ADMIN'}"
-                                         class="delete-container">
-                                        <form th:action="@{/admin/delete/{id}(id=${event.id})}" method="post"
-                                              onsubmit="return confirmDelete(event)">
-                                            <button type="submit" class="delete-button">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <!-- END POP UP-->
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="swiper-button-next swiper-navBtn"></div>
-                        <div class="swiper-button-prev swiper-navBtn"></div>
-                    </div>
-                    <div class="no-found-events"
-                         th:unless="${#lists.size(organisationDetails.expiredEvents) != 0}">
-                        <p>Няма намерени изминали събития</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
-</div>
+        </main>
+    </div>
 </th:block>
 <th:block th:unless="${organisationDetails != null}">
     <th:block th:unless="${event != null}">
@@ -758,7 +765,6 @@
     .fa {
         padding: 20px;
         font-size: 20px;
-        width: 60px;
         border-radius: 100%;
         text-decoration: none;
         margin: 15px;
@@ -768,6 +774,7 @@
     .fa-facebook {
         background: #3B5998;
         color: white;
+        width: 60px;
     }
 
     .fa-globe {
