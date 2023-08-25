@@ -101,7 +101,7 @@ public class AuthenticationController {
     public String resetForgottenPassword(@RequestParam("verificationToken") String verificationToken, RedirectAttributes redirectAttributes) {
         authenticationApiClient.resetPassword(verificationToken);
         redirectAttributes.addFlashAttribute("result", "Проверете пощата си отново. Генерирахме нова парола за вас.");
-        return "redirect:";
+        return "redirect:/login";
     }
 
 
