@@ -16,8 +16,6 @@ public class Contact {
 
     private String email;
 
-    private String name;
-
     private String subject;
 
     private String text;
