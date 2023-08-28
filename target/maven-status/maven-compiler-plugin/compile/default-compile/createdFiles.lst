@@ -41,6 +41,7 @@ com\example\EventForgeFrontend\exception\OrganisationRequestException.class
 com\example\EventForgeFrontend\exception\InvalidEmailConfirmationLinkException.class
 com\example\EventForgeFrontend\exception\container\ExceptionMapperContainer.class
 com\example\EventForgeFrontend\dto\OrganisationResponseForAdmin.class
+com\example\EventForgeFrontend\dto\Contact.class
 com\example\EventForgeFrontend\exception\InvalidUserCredentialException.class
 com\example\EventForgeFrontend\client\UserClient.class
 com\example\EventForgeFrontend\session\SessionManager.class
