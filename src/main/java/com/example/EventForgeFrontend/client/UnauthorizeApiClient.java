@@ -1,14 +1,16 @@
 package com.example.EventForgeFrontend.client;
 
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.Contact;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.Set;
 
 @FeignClient(name = "unauthorized-api-client" ,url = "${backend.url}/unauthorized")
 public interface  UnauthorizeApiClient {
@@ -24,4 +26,10 @@ public interface  UnauthorizeApiClient {
 
     @GetMapping("/event/details/{id}")
     ResponseEntity<CommonEventResponse> showEventDetailsWithCondition(@PathVariable("id")Long id );
+
+    @GetMapping("/subjects")
+    ResponseEntity<Set<String>> subjects();
+
+    @PostMapping("send-contact")
+    ResponseEntity<Void> contact(@RequestBody Contact contactForm);
 }

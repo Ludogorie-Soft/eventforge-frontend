@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Контакт</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap">
+
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
+    <link rel="stylesheet" th:href="@{css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{fonts/flaticon/font/flaticon.css}">
+    <link rel="stylesheet" th:href="@{css/aos.css}">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<th:block th:include="~{fragments/google_analytics}"></th:block>
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+<div class="popup" th:data-result="${result}"></div>
+
+
+ <div class="site-wrap" id="home-section">
+
+    <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div>
+
+    <th:block th:include="~{fragments/header}"></th:block>
+
+
+    <div class="ftco-blocks-cover-1">
+        <div class="site-section-cover">
+            <div class="container">
+                <div class="row align-items-center ">
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+
+ <div class="site-section bg-light" id="contact-section">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-7 text-center mb-5">
+                <h2 class="text-cursive 21 text-yellow">Връзка с администратор</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 mb-5">
+
+                <form action="#" th:action="@{send-form}" th:object="${contact}" method="post" id="registerForm">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <label>Причина*:</label>
+                            <div th:each="subject : ${subjects}">
+                                <label>
+                                    <input type="radio" th:value="${subject}" th:field="*{subject}" required/>
+                                    <span th:text="${subject}"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="email" th:field="*{email}" class="form-control"
+                                   placeholder="Електронна поща*" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                           <textarea name="" id="purpose" th:field="*{text}" class="form-control"
+                                     placeholder="Съдържание*"  cols="60"
+                                     rows="5" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    </div>
+                    <div class="col-md-6 offset-md-3">
+                        <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5"
+                               value="Изпрати">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--FOOTER-->
+<th:block th:include="~{fragments/footer}"></th:block>
+
+<script>
+  var popup = document.querySelector(".popup");
+  var result = popup.dataset.result;
+
+  if (result && result.trim() !== '') {
+    var popupElement = document.createElement("div");
+    popupElement.innerHTML = result;
+    popupElement.style.position = "fixed";
+    popupElement.style.top = "50%";
+    popupElement.style.left = "50%";
+    popupElement.style.transform = "translate(-50%, -50%)";
+    popupElement.style.backgroundColor = "lightgray";
+    popupElement.style.padding = "20px";
+    popupElement.style.border = "1px solid gray";
+    popupElement.style.borderRadius = "5px";
+    popupElement.style.opacity = "1";
+    popupElement.style.transition = "opacity 2s";
+
+    var closeButton = document.createElement("button");
+    closeButton.innerHTML = "X";
+    closeButton.style.position = "absolute";
+    closeButton.style.top = "5px";
+    closeButton.style.right = "5px";
+    closeButton.style.border = "none";
+    closeButton.style.backgroundColor = "red";
+    closeButton.style.color = "white";
+    closeButton.style.fontSize = "12px";
+    closeButton.style.width = "20px";
+    closeButton.style.height = "20px";
+    closeButton.style.borderRadius = "50%";
+    closeButton.style.cursor = "pointer";
+
+    popupElement.appendChild(closeButton);
+    document.body.appendChild(popupElement);
+
+    function closePopup() {
+      popupElement.style.opacity = "0";
+      setTimeout(function() {
+        document.body.removeChild(popupElement);
+      }, 2000);
+    }
+
+    closeButton.addEventListener("click", closePopup);
+    setTimeout(closePopup, 5000);
+  }
+
+
+
+
+</script>
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/jquery-migrate-3.0.0.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/jquery.waypoints.min.js"></script>
+<script src="js/jquery.animateNumber.min.js"></script>
+<script src="js/jquery.fancybox.min.js"></script>
+<script src="js/jquery.stellar.min.js"></script>
+<script src="js/jquery.easing.1.3.js"></script>
+<script src="js/bootstrap-datepicker.min.js"></script>
+<script src="js/aos.js"></script>
+
+<script th:src="@{js/main.js}"></script>
+<script th:src="@{/js/validations.js}"></script>
+
+</body>
+
+</html>
+<style>
+    body{
+        font-family: "Open Sans",sans-serif;
+    }
+    .text-yellow {
+        color: #f9a122;
+    }
+
+
+
+
+
+</style>
