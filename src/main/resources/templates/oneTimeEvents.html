@@ -26,23 +26,21 @@
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
-
-        body{
-            font-family: "Open Sans",sans-serif;
-        }
-
         #openPopupBtn {
             background-color: #a8c9db;
+            color: #FFFFFF;
         }
 
         #expiredBtn {
-            background-color: #f2b45a;
-            border-color: #C29E6A;
+            background-color: #a8c9db;
+            color: #FFFFFF;
+
         }
 
         #activeBtn {
-            background-color: #f2b45a;
-            border-color: #C29E6A;
+            background-color: #a8c9db;
+            color: #FFFFFF;
+
         }
 
         .button-container {
@@ -283,7 +281,7 @@
 
 </head>
 <th:block th:include="~{fragments/google_analytics}"></th:block>
-<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300" class="text-cursive">
 
 <div class="popup" th:data-result="${result}"></div>
 
@@ -313,13 +311,13 @@
 </div>
 <div class="search-form">
     <div class="button-container">
-        <button id="activeBtn" class="btn btn-primary btn-custom-1 active-button" th:if="${isExpired}"
+        <button id="activeBtn" class="btn btn-custom-1 active-button" th:if="${isExpired}"
                 onclick="changeState('active')">Покажи Активни/предстоящи
         </button>
-        <button id="expiredBtn" class="btn btn-primary btn-custom-1" th:if="${!isExpired}"
+        <button id="expiredBtn" class="btn btn-custom-1" th:if="${!isExpired}"
                 onclick="changeState('expired')">Покажи Отминали
         </button>
-        <button id="openPopupBtn" class="btn btn-primary btn-custom-1">Разширено търсене <i class="fas fa-search"></i>
+        <button id="openPopupBtn" class="btn btn-custom-1">Разширено търсене <i class="fas fa-search"></i>
         </button>
     </div>
     <div style="text-align: center" th:if="${currentUrl != null}">

@@ -24,12 +24,12 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <th:block th:include="~{fragments/google_analytics}"></th:block>
-<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300" class="text-cursive">
 
 <div class="popup" th:data-result="${result}"></div>
 
 
- <div class="site-wrap" id="home-section">
+<div class="site-wrap" id="home-section">
 
     <div class="site-mobile-menu site-navbar-target">
         <div class="site-mobile-menu-header">
@@ -51,9 +51,9 @@
             </div>
         </div>
     </div>
- </div>
+</div>
 
- <div class="site-section bg-light" id="contact-section">
+<div class="site-section bg-light" id="contact-section">
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-7 text-center mb-5">
@@ -78,14 +78,14 @@
 
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="email" th:field="*{email}" class="form-control"
+                            <input type="email" th:field="*{email}" class="form-control text-cursive"
                                    placeholder="Електронна поща*" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                           <textarea name="" id="purpose" th:field="*{text}" class="form-control"
-                                     placeholder="Съдържание*"  cols="60"
+                           <textarea name="" id="purpose" th:field="*{text}" class="form-control text-cursive"
+                                     placeholder="Съдържание*" cols="60"
                                      rows="5" required></textarea>
                         </div>
                     </div>
@@ -105,52 +105,50 @@
 <th:block th:include="~{fragments/footer}"></th:block>
 
 <script>
-  var popup = document.querySelector(".popup");
-  var result = popup.dataset.result;
+    var popup = document.querySelector(".popup");
+    var result = popup.dataset.result;
 
-  if (result && result.trim() !== '') {
-    var popupElement = document.createElement("div");
-    popupElement.innerHTML = result;
-    popupElement.style.position = "fixed";
-    popupElement.style.top = "50%";
-    popupElement.style.left = "50%";
-    popupElement.style.transform = "translate(-50%, -50%)";
-    popupElement.style.backgroundColor = "lightgray";
-    popupElement.style.padding = "20px";
-    popupElement.style.border = "1px solid gray";
-    popupElement.style.borderRadius = "5px";
-    popupElement.style.opacity = "1";
-    popupElement.style.transition = "opacity 2s";
+    if (result && result.trim() !== '') {
+        var popupElement = document.createElement("div");
+        popupElement.innerHTML = result;
+        popupElement.style.position = "fixed";
+        popupElement.style.top = "50%";
+        popupElement.style.left = "50%";
+        popupElement.style.transform = "translate(-50%, -50%)";
+        popupElement.style.backgroundColor = "lightgray";
+        popupElement.style.padding = "20px";
+        popupElement.style.border = "1px solid gray";
+        popupElement.style.borderRadius = "5px";
+        popupElement.style.opacity = "1";
+        popupElement.style.transition = "opacity 2s";
 
-    var closeButton = document.createElement("button");
-    closeButton.innerHTML = "X";
-    closeButton.style.position = "absolute";
-    closeButton.style.top = "5px";
-    closeButton.style.right = "5px";
-    closeButton.style.border = "none";
-    closeButton.style.backgroundColor = "red";
-    closeButton.style.color = "white";
-    closeButton.style.fontSize = "12px";
-    closeButton.style.width = "20px";
-    closeButton.style.height = "20px";
-    closeButton.style.borderRadius = "50%";
-    closeButton.style.cursor = "pointer";
+        var closeButton = document.createElement("button");
+        closeButton.innerHTML = "X";
+        closeButton.style.position = "absolute";
+        closeButton.style.top = "5px";
+        closeButton.style.right = "5px";
+        closeButton.style.border = "none";
+        closeButton.style.backgroundColor = "red";
+        closeButton.style.color = "white";
+        closeButton.style.fontSize = "12px";
+        closeButton.style.width = "20px";
+        closeButton.style.height = "20px";
+        closeButton.style.borderRadius = "50%";
+        closeButton.style.cursor = "pointer";
 
-    popupElement.appendChild(closeButton);
-    document.body.appendChild(popupElement);
+        popupElement.appendChild(closeButton);
+        document.body.appendChild(popupElement);
 
-    function closePopup() {
-      popupElement.style.opacity = "0";
-      setTimeout(function() {
-        document.body.removeChild(popupElement);
-      }, 2000);
+        function closePopup() {
+            popupElement.style.opacity = "0";
+            setTimeout(function () {
+                document.body.removeChild(popupElement);
+            }, 2000);
+        }
+
+        closeButton.addEventListener("click", closePopup);
+        setTimeout(closePopup, 5000);
     }
-
-    closeButton.addEventListener("click", closePopup);
-    setTimeout(closePopup, 5000);
-  }
-
-
 
 
 </script>
@@ -176,15 +174,9 @@
 
 </html>
 <style>
-    body{
-        font-family: "Open Sans",sans-serif;
-    }
     .text-yellow {
         color: #f9a122;
     }
-
-
-
 
 
 </style>

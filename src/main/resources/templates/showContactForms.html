@@ -25,13 +25,12 @@
     <link rel="stylesheet" th:href="@{/css/aos.css}">
 
 
-
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
 </head>
 <th:block th:include="~{fragments/google_analytics}"></th:block>
-<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300" class="text-cursive">
 
 
 <div class="site-wrap" id="home-section">
@@ -70,14 +69,14 @@
             <thead>
             <tr>
                 <th></th>
-                <th> Имейл </th>
-                <th> Тема </th>
-                <th> Обратна връзка </th>
-                <th> Отговорено ли е </th>
+                <th> Имейл</th>
+                <th> Тема</th>
+                <th> Обратна връзка</th>
+                <th> Отговорено ли е</th>
                 <th> Маркирай като спамер</th>
-                <th> Изтрий </th>
-                <th> Изпратено на: </th>
-                <th> Запитване: </th>
+                <th> Изтрий</th>
+                <th> Изпратено на:</th>
+                <th> Запитване:</th>
 
             </tr>
             </thead>
@@ -88,18 +87,21 @@
                 <td th:text="${contact.email}"></td>
                 <td th:text="${contact.subject}"></td>
                 <td>
-                    <button class="open-button"  onclick="openForm(this)">
+                    <button class="open-button" onclick="openForm(this)">
                         <i class="fas fa-envelope"></i> <!-- Email icon -->
                     </button>
 
-                    <div  class="email-form-popup">
+                    <div class="email-form-popup">
                         <button class="close-button" onclick="closeForm(this)">
                             <span class="close-icon">&times;</span>
                         </button>
-                        <form th:action="@{/admin/contact/send-email-to/{email}/{id}(email=${contact.email}, id=${contact.id})}" method="post">
+                        <form th:action="@{/admin/contact/send-email-to/{email}/{id}(email=${contact.email}, id=${contact.id})}"
+                              method="post">
                             <!-- Use <textarea> instead of <input> -->
-                            <textarea class="text-area-style" name="answer" th:attr="placeholder='Ще изпратите отговор до имейл с адрес: ' + ${contact.email}" rows="4" required></textarea>
-                            <button type="submit" class="send-button" >
+                            <textarea class="text-area-style" name="answer"
+                                      th:attr="placeholder='Ще изпратите отговор до имейл с адрес: ' + ${contact.email}"
+                                      rows="4" required></textarea>
+                            <button type="submit" class="send-button">
                                 Изпрати
                             </button>
                         </form>
@@ -169,7 +171,7 @@
     new DataTable('#table_id', {
         responsive: true,
         columnDefs: [
-            { responsivePriority: 1, targets: 0 }
+            {responsivePriority: 1, targets: 0}
 
         ],
         language: {
@@ -181,50 +183,50 @@
 </script>
 
 <script>
-  var popup = document.querySelector(".popup");
-  var result = popup.dataset.result;
+    var popup = document.querySelector(".popup");
+    var result = popup.dataset.result;
 
-  if (result && result.trim() !== '') {
-    var popupElement = document.createElement("div");
-    popupElement.innerHTML = result;
-    popupElement.style.position = "fixed";
-    popupElement.style.top = "50%";
-    popupElement.style.left = "50%";
-    popupElement.style.transform = "translate(-50%, -50%)";
-    popupElement.style.backgroundColor = "lightgray";
-    popupElement.style.padding = "20px";
-    popupElement.style.border = "1px solid gray";
-    popupElement.style.borderRadius = "5px";
-    popupElement.style.opacity = "1";
-    popupElement.style.transition = "opacity 2s";
+    if (result && result.trim() !== '') {
+        var popupElement = document.createElement("div");
+        popupElement.innerHTML = result;
+        popupElement.style.position = "fixed";
+        popupElement.style.top = "50%";
+        popupElement.style.left = "50%";
+        popupElement.style.transform = "translate(-50%, -50%)";
+        popupElement.style.backgroundColor = "lightgray";
+        popupElement.style.padding = "20px";
+        popupElement.style.border = "1px solid gray";
+        popupElement.style.borderRadius = "5px";
+        popupElement.style.opacity = "1";
+        popupElement.style.transition = "opacity 2s";
 
-    var closeButton = document.createElement("button");
-    closeButton.innerHTML = "X";
-    closeButton.style.position = "absolute";
-    closeButton.style.top = "5px";
-    closeButton.style.right = "5px";
-    closeButton.style.border = "none";
-    closeButton.style.backgroundColor = "red";
-    closeButton.style.color = "white";
-    closeButton.style.fontSize = "12px";
-    closeButton.style.width = "20px";
-    closeButton.style.height = "20px";
-    closeButton.style.borderRadius = "50%";
-    closeButton.style.cursor = "pointer";
+        var closeButton = document.createElement("button");
+        closeButton.innerHTML = "X";
+        closeButton.style.position = "absolute";
+        closeButton.style.top = "5px";
+        closeButton.style.right = "5px";
+        closeButton.style.border = "none";
+        closeButton.style.backgroundColor = "red";
+        closeButton.style.color = "white";
+        closeButton.style.fontSize = "12px";
+        closeButton.style.width = "20px";
+        closeButton.style.height = "20px";
+        closeButton.style.borderRadius = "50%";
+        closeButton.style.cursor = "pointer";
 
-    popupElement.appendChild(closeButton);
-    document.body.appendChild(popupElement);
+        popupElement.appendChild(closeButton);
+        document.body.appendChild(popupElement);
 
-    function closePopup() {
-      popupElement.style.opacity = "0";
-      setTimeout(function() {
-        document.body.removeChild(popupElement);
-      }, 2000);
+        function closePopup() {
+            popupElement.style.opacity = "0";
+            setTimeout(function () {
+                document.body.removeChild(popupElement);
+            }, 2000);
+        }
+
+        closeButton.addEventListener("click", closePopup);
+        setTimeout(closePopup, 5000);
     }
-
-    closeButton.addEventListener("click", closePopup);
-    setTimeout(closePopup, 5000);
-  }
 </script>
 <script>
     function confirmDelete(event) {
@@ -262,109 +264,114 @@
 </body>
 </html>
 <style>
-.td-textarea {
-    border: 1px solid #ccc;
-    padding: 5px;
-    position: relative; /* Ensure positioning context for textarea */
-}
+    .td-textarea {
+        border: 1px solid #ccc;
+        padding: 5px;
+        position: relative; /* Ensure positioning context for textarea */
+    }
 
-.textarea-content {
-    width: 100%;
-    height: 100px; /* Set the desired height */
-    resize: none; /* Prevent textarea resizing by the user */
-    border: none;
-    background: none;
-    overflow: auto; /* Allow content to be scrollable */
-}
+    .textarea-content {
+        width: 100%;
+        height: 100px; /* Set the desired height */
+        resize: none; /* Prevent textarea resizing by the user */
+        border: none;
+        background: none;
+        overflow: auto; /* Allow content to be scrollable */
+    }
 
-.email-form-popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #e8e4c6;
-    border: 1px solid #ccc;
-    padding: 30px; /* Increased padding */
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    width: 36%; /* Responsive width */
-
-    height: auto; /* Let the content dictate the height */
-    max-height: 80%; /* Limit the maximum height */
-    overflow-y: auto; /* Enable vertical scrolling if needed */
-}
-.email-form-popup input[type="text"] {
-    width: 300%; /* Make the input field span the entire width */
-    padding: 50px; /* Adjust padding as needed */
-    margin-bottom: 15px; /* Add some spacing between input and other elements */
-    border: 1px solid #ccc; /* Add a border */
-    border-radius: 4px; /* Rounded corners */
-    box-sizing: border-box; /* Include padding in the element's total width */
-    font-size: 16px; /* Adjust font size as needed */
-}
-
-@media (max-width: 768px) {
     .email-form-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #e8e4c6;
+        border: 1px solid #ccc;
+        padding: 30px; /* Increased padding */
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        width: 36%; /* Responsive width */
 
-       /* Adjust width for smaller screens */
-        padding: 15px; /* Adjust padding for smaller screens */
+        height: auto; /* Let the content dictate the height */
+        max-height: 80%; /* Limit the maximum height */
+        overflow-y: auto; /* Enable vertical scrolling if needed */
     }
 
     .email-form-popup input[type="text"] {
-        width: 100%; /* Make the input field span the entire width on smaller screens */
-        padding: 15px; /* Adjust padding for smaller screens */
-    }
-}
-
-.text-area-style{
-height: 300px;
-width: 500px;
-}
-@media (max-width: 768px) {
-    .email-form-popup {
-        width: 80%; /* Adjust the width for smaller screens */
+        width: 300%; /* Make the input field span the entire width */
+        padding: 50px; /* Adjust padding as needed */
+        margin-bottom: 15px; /* Add some spacing between input and other elements */
+        border: 1px solid #ccc; /* Add a border */
+        border-radius: 4px; /* Rounded corners */
+        box-sizing: border-box; /* Include padding in the element's total width */
+        font-size: 16px; /* Adjust font size as needed */
     }
 
-    .email-form-popup input[type="text"] {
-        width: 100%; /* Make the input field span the full width */
-        padding: 15px; /* Adjust padding for smaller screens */
+    @media (max-width: 768px) {
+        .email-form-popup {
+
+            /* Adjust width for smaller screens */
+            padding: 15px; /* Adjust padding for smaller screens */
+        }
+
+        .email-form-popup input[type="text"] {
+            width: 100%; /* Make the input field span the entire width on smaller screens */
+            padding: 15px; /* Adjust padding for smaller screens */
+        }
     }
 
     .text-area-style {
-        width: 100%; /* Make the textarea span the full width */
+        height: 300px;
+        width: 500px;
     }
-}
+
+    @media (max-width: 768px) {
+        .email-form-popup {
+            width: 80%; /* Adjust the width for smaller screens */
+        }
+
+        .email-form-popup input[type="text"] {
+            width: 100%; /* Make the input field span the full width */
+            padding: 15px; /* Adjust padding for smaller screens */
+        }
+
+        .text-area-style {
+            width: 100%; /* Make the textarea span the full width */
+        }
+    }
 
 
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
 
-.close-icon {
-    color: red;
-    font-size: 24px;
-}
+    .close-icon {
+        color: red;
+        font-size: 24px;
+    }
 
-.send-button {
-  background-color: #f4511e;
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  font-size: 16px;
-  margin: 4px 2px;
-  opacity: 0.6;
-  transition: 0.3s;
-}
+    .send-button {
+        background-color: #f4511e;
+        border: none;
+        color: white;
+        padding: 16px 32px;
+        text-align: center;
+        font-size: 16px;
+        margin: 4px 2px;
+        opacity: 0.6;
+        transition: 0.3s;
+    }
 
-.send-button:hover {opacity: 1}
- .delete-button {
+    .send-button:hover {
+        opacity: 1
+    }
+
+    .delete-button {
         padding: 5px;
         font-size: 16px;
         color: white;
@@ -379,31 +386,28 @@ width: 500px;
         height: 32px;
         box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
     }
+
     @media (max-width: 768px) {
-    .close-button {
-        /* Adjust position for smaller screens */
-        top: 5px;
-        right: 5px;
-    }
+        .close-button {
+            /* Adjust position for smaller screens */
+            top: 5px;
+            right: 5px;
+        }
 
-    .close-icon {
-        font-size: 18px; /* Adjust font size for smaller screens */
-    }
+        .close-icon {
+            font-size: 18px; /* Adjust font size for smaller screens */
+        }
 
-    .send-button {
-        font-size: 14px; /* Adjust font size for smaller screens */
-        padding: 12px 24px; /* Adjust padding for smaller screens */
-    }
+        .send-button {
+            font-size: 14px; /* Adjust font size for smaller screens */
+            padding: 12px 24px; /* Adjust padding for smaller screens */
+        }
 
-    .delete-button {
-        font-size: 14px; /* Adjust font size for smaller screens */
-        width: 24px; /* Adjust width for smaller screens */
-        height: 24px; /* Adjust height for smaller screens */
-        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2); /* Adjust shadow for smaller screens */
-    }
-}
-
-    body{
-        font-family: "Open Sans",sans-serif;
+        .delete-button {
+            font-size: 14px; /* Adjust font size for smaller screens */
+            width: 24px; /* Adjust width for smaller screens */
+            height: 24px; /* Adjust height for smaller screens */
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2); /* Adjust shadow for smaller screens */
+        }
     }
 </style>
