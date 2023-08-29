@@ -28,10 +28,6 @@
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
-        body {
-            font-family: "Open Sans", sans-serif;
-        }
-
         .filters-container {
             margin-top: 15px;
             text-align: center;
@@ -43,7 +39,7 @@
             justify-content: center;
             align-items: center;
             height: 13vh;
-            margin-top: 40px;
+            margin-top: 50px;
             margin-bottom: 10px;
         }
 
@@ -212,7 +208,7 @@
     </style>
 </head>
 <th:block th:include="~{fragments/google_analytics}"></th:block>
-<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300" class="text-cursive">
 
 <div class="popup" th:data-result="${result}"></div>
 

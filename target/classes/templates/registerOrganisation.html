@@ -24,7 +24,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <th:block th:include="~{fragments/google_analytics}"></th:block>
-<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300" class="text-cursive">
 
 <div class="popup" th:data-result="${result}"></div>
 
@@ -53,11 +53,11 @@
     </div>
 </div>
 
-<div class="site-section py-1 bg-warning">
+<div class="site-section py-1" style="background: #a8c9db">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 d-flex">
-                <h2 class="text-white m-0">Вече имаш регистрация?</h2>
+                <h2 class="text-white mr-auto mt-auto mb-auto ml-0">Вече имаш регистрация?</h2>
                 <a href="/login" class="btn btn-primary btn-custom-1 py-3 px-5 ml-auto">Впиши се!</a>
             </div>
         </div>
@@ -67,7 +67,7 @@
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-7 text-center mb-5">
-                <h2 class="text-cursive 21 text-yellow">Регистрирай се</h2>
+                <h2 class="text-cursive 21 text-red">Регистрирай се</h2>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -76,29 +76,29 @@
                 <form action="#" th:action="@{submit}" th:object="${request}" method="post" enctype="multipart/form-data"  id="registerForm">
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" th:field="*{name}" class="form-control"
+                            <input type="text" th:field="*{name}" class="form-control text-cursive"
                                    placeholder="Име на организацията*"  id="name" required>
                         </div>
                         <div th:if="${name}" id="nameError">
-                            <p th:text="${name}" style="color: red;"></p>
+                            <p th:text="${name}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="password" th:field="*{password}" class="form-control" id="password"
+                            <input type="password" th:field="*{password}" class="form-control text-cursive" id="password"
                                    placeholder="Парола*" required title="Паролата трябва да е дълга поне 8 знака и да съдържа поне една цифра, една малка буква, една главна буква, един специален знак и без интервали!">
                         </div>
                         <div th:if="${password}" id="passwordError">
-                            <p th:text="${password}" style="color: red;"></p>
+                            <p th:text="${password}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="password" th:field="*{confirmPassword}" class="form-control"
+                            <input type="password" th:field="*{confirmPassword}" class="form-control text-cursive"
                                    placeholder="Потвърди парола*" required>
                         </div>
                         <div th:if="${confirmPassword}" id="confirmPassword">
-                            <p th:text="${confirmPassword}" style="color: red;"></p>
+                            <p th:text="${confirmPassword}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <label>Лого на организацията:*</label>
@@ -114,94 +114,94 @@
                             <input type="file" name="backgroundCoverFile" class="form-control-file" required>
                         </div>
                         <div th:if="${fileError}" id="fileError">
-                            <p th:text="${fileError}" style="color: red;"></p>
+                            <p th:text="${fileError}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" class="form-control" th:field="*{address}"
+                            <input type="text" class="form-control text-cursive" th:field="*{address}"
                                    placeholder="Адрес">
                         </div>
                         <div th:if="${address}" id="addressError">
-                            <p th:text="${address}" style="color: red;"></p>
+                            <p th:text="${address}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" th:field="*{bullstat}" class="form-control" placeholder="Булстат(Видимо само за администратора на сайта)">
+                            <input type="text" th:field="*{bullstat}" class="form-control text-cursive" placeholder="Булстат(Видимо само за администратора на сайта)">
                         </div>
                         <div th:if="${bullstat}" id="bullstatError">
-                            <p th:text="${bullstat}" style="color: red;"></p>
+                            <p th:text="${bullstat}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" class="form-control" th:field="*{website}"
+                            <input type="text" class="form-control text-cursive" th:field="*{website}"
                                    placeholder="Уебсайт на организацията">
                         </div>
                         <div th:if="${website}" id="websiteError">
-                            <p th:text="${website}" style="color: red;"></p>
+                            <p th:text="${website}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" class="form-control" th:field="*{facebookLink}"
+                            <input type="text" class="form-control text-cursive" th:field="*{facebookLink}"
                                    placeholder="Линк към фейсбук страница*"
 
                                    id="facebook" required>
                         </div>
                         <div th:if="${facebookLink}" id="facebookLinkError">
-                            <p th:text="${facebookLink}" style="color: red;"></p>
+                            <p th:text="${facebookLink}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" class="form-control" th:field="*{fullName}"
+                            <input type="text" class="form-control text-cursive" th:field="*{fullName}"
                                    placeholder="Лице за контакт - име и фамилия(Видимо само за администратора на сайта)*" id="fullname" required>
                         </div>
                         <div th:if="${fullName}" id="fullNameError">
-                            <p th:text="${fullName}" style="color: red;"></p>
+                            <p th:text="${fullName}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" th:field="*{username}" class="form-control"
+                            <input type="text" th:field="*{username}" class="form-control text-cursive"
                                    placeholder="Лице за контакт - електронна поща*" required>
                         </div>
                         <div th:if="${username}" id="usernameError">
-                            <p th:text="${username}" style="color: red;"></p>
+                            <p th:text="${username}" style="color: red;" class="text-cursive"></p>
                         </div>
                         <div th:if="${emailTakenError}" id="emailTakenError">
-                            <p th:text="${emailTakenError}" style="color: red;"></p>
+                            <p th:text="${emailTakenError}" style="color: red;" class="text-cursive"></p>
                         </div>
 
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" class="form-control" th:field="*{phoneNumber}"
+                            <input type="text" class="form-control text-cursive" th:field="*{phoneNumber}"
                                    placeholder="Лице за контакт - телефон(Видимо само за администратора на сайта)*" id="phone" required>
                         </div>
                         <div th:if="${phoneNumber}" id="phoneNumberError">
-                            <p th:text="${phoneNumber}" style="color: red;"></p>
+                            <p th:text="${phoneNumber}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <textarea type="text" class="form-control" th:field="*{charityOption}"
+                            <textarea type="text" class="form-control text-cursive" th:field="*{charityOption}"
                                       placeholder="Възможност за дарение. (Линк към страница с информация за дарения)"></textarea>
                         </div>
                         <div th:if="${charityOption}" id="charityOptionError">
-                            <p th:text="${charityOption}" style="color: red;"></p>
+                            <p th:text="${charityOption}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <textarea name="" id="purpose" th:field="*{organisationPurpose}" class="form-control"
+                            <textarea name="" id="purpose" th:field="*{organisationPurpose}" class="form-control text-cursive"
                                       placeholder="Мисия на организацията*"  cols="60"
                                       rows="5" required></textarea>
                         </div>
                         <div th:if="${organisationPurpose}" id="organisationPurpose">
-                            <p th:text="${organisationPurpose}" style="color: red;"></p>
+                            <p th:text="${organisationPurpose}" style="color: red;" class="text-cursive"></p>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -219,12 +219,12 @@
 
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <input id="priority" th:field="*{optionalCategory}" class="form-control"
+                                    <input id="priority" th:field="*{optionalCategory}" class="form-control text-cursive"
                                            placeholder="Опционален приоритет на организация(в случай ,че показаните отгоре не отговарят на вашите приоритети)" cols="30"
                                            rows="10"></input>
                                 </div>
                                 <div th:if="${optionalCategory}" id="optionalCategory">
-                                    <p th:text="${optionalCategory}" style="color: red;"></p>
+                                    <p th:text="${optionalCategory}" style="color: red;" class="text-cursive"></p>
                                 </div>
                             </div>
 
@@ -315,9 +315,6 @@
 
 </html>
 <style>
-    body{
-        font-family: "Open Sans",sans-serif;
-    }
     .text-yellow {
         color: #f9a122;
     }

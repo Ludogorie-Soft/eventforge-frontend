@@ -24,7 +24,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <th:block th:include="~{fragments/google_analytics}"></th:block>
-<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300" class="text-cursive">
 
 <div class="popup" th:data-result="${result}">
 
@@ -92,13 +92,13 @@
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>Име на организацията</label>
-                                                                    <input class="form-control" type="text"
+                                                                    <input class="form-control text-cursive" type="text"
                                                                            th:field="*{name}"
                                                                            th:value="${updateRequest.name}"
                                                                            placeholder="Име на организацията">
                                                                 </div>
                                                                 <div th:if="${name}" id="nameError">
-                                                                    <p th:text="${name}" style="color: red;"></p>
+                                                                    <p th:text="${name}" style="color: red;" class="text-cursive"></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -107,13 +107,13 @@
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>Име и фамилия</label>
-                                                                    <input class="form-control" type="text"
+                                                                    <input class="form-control text-cursive" type="text"
                                                                            th:field="*{fullName}"
                                                                            th:value="${updateRequest.fullName}"
                                                                            placeholder="Име и фамилия(Видимо само за администратора на сайта)">
                                                                 </div>
                                                                 <div th:if="${fullName}" id="fullNameError">
-                                                                    <p th:text="${fullName}" style="color: red;"></p>
+                                                                    <p th:text="${fullName}" style="color: red;" class="text-cursive"></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -123,13 +123,13 @@
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>Булстат</label>
-                                                                    <input class="form-control" type="text"
+                                                                    <input class="form-control text-cursive" type="text"
                                                                            th:field="*{bullstat}"
                                                                            th:value="${updateRequest.bullstat}"
                                                                            placeholder="Булстат(Видимо само за администратора на сайта)">
                                                                 </div>
                                                                 <div th:if="${bullstat}" id="bullstatError">
-                                                                    <p th:text="${bullstat}" style="color: red;"></p>
+                                                                    <p th:text="${bullstat}" style="color: red;" class="text-cursive"></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -137,13 +137,13 @@
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>Телефон</label>
-                                                                    <input class="form-control" type="tel"
+                                                                    <input class="form-control text-cursive" type="tel"
                                                                            th:field="*{phoneNumber}"
                                                                            th:value="${updateRequest.phoneNumber}"
                                                                            placeholder="Телефон(Видимо само за администратора на сайта)">
                                                                 </div>
                                                                 <div th:if="${phoneNumber}" id="phoneNumberError">
-                                                                    <p th:text="${phoneNumber}" style="color: red;"></p>
+                                                                    <p th:text="${phoneNumber}" style="color: red;" class="text-cursive"></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -151,13 +151,13 @@
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>Адрес</label>
-                                                                    <input class="form-control" type="text"
+                                                                    <input class="form-control text-cursive" type="text"
                                                                            th:field="*{address}"
                                                                            th:value="${updateRequest.address}"
                                                                            placeholder="Адрес">
                                                                 </div>
                                                                 <div th:if="${address}" id="addressError">
-                                                                    <p th:text="${address}" style="color: red;"></p>
+                                                                    <p th:text="${address}" style="color: red;" class="text-cursive"></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -165,13 +165,13 @@
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>Уебсайт</label>
-                                                                    <input class="form-control" type="text"
+                                                                    <input class="form-control text-cursive" type="text"
                                                                            th:field="*{website}"
                                                                            th:value="${updateRequest.website}"
                                                                            placeholder="Уебсайт">
                                                                 </div>
                                                                 <div th:if="${website}" id="websiteError">
-                                                                    <p th:text="${website}" style="color: red;"></p>
+                                                                    <p th:text="${website}" style="color: red;" class="text-cursive"></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -179,14 +179,14 @@
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>Фейсбук</label>
-                                                                    <input class="form-control" type="text"
+                                                                    <input class="form-control text-cursive" type="text"
                                                                            th:field="*{facebookLink}"
                                                                            th:value="${updateRequest.facebookLink}"
                                                                            placeholder="Фeйсбук">
                                                                 </div>
                                                                 <div th:if="${facebookLink}" id="facebookLinkError">
                                                                     <p th:text="${facebookLink}"
-                                                                       style="color: red;"></p>
+                                                                       style="color: red;" class="text-cursive"></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -195,14 +195,14 @@
                                                                 <div class="form-group">
                                                                     <label>Възможност за дарение. (Линк към страница с
                                                                         информация за дарения)</label>
-                                                                    <input class="form-control" type="text"
+                                                                    <input class="form-control text-cursive" type="text"
                                                                            th:field="*{charityOption}"
                                                                            th:value="${updateRequest.charityOption}"
                                                                            placeholder="Възможност за дарение. (Линк към страница с информация за дарения)">
                                                                 </div>
                                                                 <div th:if="${charityOption}" id="charityOptionError">
                                                                     <p th:text="${charityOption}"
-                                                                       style="color: red;"></p>
+                                                                       style="color: red;" class="text-cursive"></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -210,7 +210,7 @@
                                                             <div class="col mb-3">
                                                                 <div class="form-group">
                                                                     <label>За организацията</label>
-                                                                    <textarea class="form-control" rows="5"
+                                                                    <textarea class="form-control text-cursive" rows="5"
                                                                               th:field="*{organisationPurpose}"
                                                                               th:value="${updateRequest.organisationPurpose}"
                                                                               placeholder="За организацията"></textarea>
@@ -218,7 +218,7 @@
                                                                 <div th:if="${organisationPurpose}"
                                                                      id="organisationPurpose">
                                                                     <p th:text="${organisationPurpose}"
-                                                                       style="color: red;"></p>
+                                                                       style="color: red;" class="text-cursive"></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -240,13 +240,13 @@
                                                         </div>
                                                         <div th:if="${updateAccountRequest}" id="registrationRequest">
                                                             <p th:text="${updateAccountRequest}"
-                                                               style="color: red;"></p>
+                                                               style="color: red;" class="text-cursive"></p>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>Категория</label>
-                                                                    <input class="form-control" type="text"
+                                                                    <input class="form-control text-cursive" type="text"
                                                                            th:field="*{optionalCategory}"
                                                                            th:value="${updateRequest.optionalCategory}"
                                                                            placeholder="Категория">
@@ -254,7 +254,7 @@
                                                             </div>
                                                             <div th:if="${optionalCategory}" id="optionalCategory">
                                                                 <p th:text="${optionalCategory}"
-                                                                   style="color: red;"></p>
+                                                                   style="color: red;" class="text-cursive"></p>
                                                             </div>
                                                         </div>
 
@@ -365,11 +365,7 @@
 </script>
 
 <style>
-    body {
-        font-family: "Open Sans", sans-serif;
-    }
-
-    h3 {
+     h3 {
         margin-left: 10px;
     }
 </style>

@@ -31,7 +31,7 @@
           rel="stylesheet">
 </head>
 <th:block th:include="~{fragments/google_analytics}"></th:block>
-<body data-target=".site-navbar-target" data-offset="300">
+<body data-target=".site-navbar-target" data-offset="300" class="text-cursive">
 <div class="site-wrap" id="home-section">
 
     <div class="site-mobile-menu site-navbar-target">
@@ -68,11 +68,11 @@
                         <img class="photo" th:src="@{'data:image/jpeg;base64,' + ${organisationDetails.logo}}"
                              alt="organisation-logo">
                     </div>
-                    <h1 class="name" style="text-align: unset" th:text="${organisationDetails.name}"></h1>
+                    <h1 class="name text-cursive" style="text-align: unset" th:text="${organisationDetails.name}"></h1>
                     <div>
-                        <p class="info" th:text="${organisationDetails.address}"></p>
+                        <p class="info text-cursive" th:text="${organisationDetails.address}"></p>
                     </div>
-                    <div style="text-align: justify" class="stats row"
+                    <div style="text-align: justify" class="stats row text-cursive"
                          th:text="${#strings.listJoin(organisationDetails.organisationPriorities, ', ')}">
                     </div>
 
@@ -92,15 +92,15 @@
                     <div class="stats row">
                         <div class="stat col-xs-4" style="padding-right: 50px;">
                             <p class="number-stat" th:text="${#lists.size(organisationDetails.expiredEvents)}"></p>
-                            <p class="desc-stat">Отминали<br>събития</p>
+                            <p class="desc-stat text-cursive">Отминали<br>събития</p>
                         </div>
                         <div class="stat col-xs-4">
                             <p class="number-stat" th:text="${#lists.size(organisationDetails.activeEvents)}"></p>
-                            <p class="desc-stat">Активни<br>събития</p>
+                            <p class="desc-stat text-cursive">Активни<br>събития</p>
                         </div>
                         <div class="stat col-xs-4" style="padding-left: 50px;">
                             <p class="number-stat" th:text="${#lists.size(organisationDetails.upcomingEvents)}"></p>
-                            <p class="desc-stat">Предстоящи<br>събития</p>
+                            <p class="desc-stat text-cursive">Предстоящи<br>събития</p>
                         </div>
                     </div>
                     <div style="text-align: justify">
@@ -108,15 +108,15 @@
                     </div>
                     <div th:if="${organisationDetails.charityOption != null && organisationDetails.charityOption != ''}"
                          style="text-align: center">
-                        <a id="charity_button" target="_blank" th:href="${organisationDetails.charityOption}">Направи
+                        <a id="charity_button" class="text-cursive" target="_blank" th:href="${organisationDetails.charityOption}">Направи
                             дарение</a>
                     </div>
                 </div>
                 <div class="right col-lg-8">
                     <ul class="nav">
-                        <li style="color: #f18f8f" id="active-events-btn">Активни</li>
-                        <li id="upcoming-events-btn" style="margin-right: 20px;">Предстоящи</li>
-                        <li id="expired-events-btn">Отминали</li>
+                        <li style="color: #f18f8f" id="active-events-btn" class="text-cursive">Активни</li>
+                        <li id="upcoming-events-btn" style="margin-right: 20px;" class="text-cursive">Предстоящи</li>
+                        <li id="expired-events-btn" class="text-cursive">Отминали</li>
                     </ul>
 
                     <!-- ACTIVE EVENTS-->
@@ -488,11 +488,6 @@
 </html>
 
 <style>
-
-    body {
-        font-family: "Open Sans", sans-serif;
-    }
-
     .no-found-events {
         font-size: 25px;
         margin-top: 150px;
