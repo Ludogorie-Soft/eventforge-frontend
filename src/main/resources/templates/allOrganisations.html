@@ -93,7 +93,7 @@
         .priority {
             overflow: hidden;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
 
         }
@@ -294,12 +294,12 @@
                 <textarea class="description" readonly
                           th:text="${#strings.abbreviate(organisation.organisationPurpose, 160)}"></textarea>
                 <div th:if="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
-                    <a class="btn btn-primary btn-custom-1" target="_blank"
+                    <a class="btn btn-custom-1" target="_blank"
                        th:href="@{/admin/organisation/details/{id}(id=${organisation.orgId})}">Научи
                         повече</a>
                 </div>
                 <div th:unless="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
-                    <a class="btn btn-primary btn-custom-1" target="_blank"
+                    <a class="btn btn-custom-1" target="_blank"
                        th:href="@{/view/organisations/details/{id}(id=${organisation.orgId})}">Научи
                         повече</a>
                 </div>
