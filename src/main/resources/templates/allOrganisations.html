@@ -288,10 +288,10 @@
                 </div>
                 <p class="label">Приоритети</p>
                 <div class="priority">
-                    <p th:text="${#strings.listJoin(organisation.organisationPriorities, ', ')}"></p>
+                    <p style="margin-bottom: 0" th:text="${#strings.listJoin(organisation.organisationPriorities, ', ')}"></p>
                 </div>
 
-                <textarea class="description" readonly
+                <textarea style="text-align: justify" class="description" readonly
                           th:text="${#strings.abbreviate(organisation.organisationPurpose, 160)}"></textarea>
                 <div th:if="${session.sessionToken != null and session.sessionUserRole =='ADMIN'}">
                     <a class="btn btn-custom-1" target="_blank"
