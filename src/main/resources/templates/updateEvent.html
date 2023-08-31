@@ -73,7 +73,7 @@
             <div th:if="${name}" id="nameError">
                 <p th:text="${name}" style="color: red;"></p>
             </div>
-            <p>Снимка на събитието:</p>
+            <p>Снимка на събитието(максимален размер - 5MB):</p>
 
             <img style='display:block; width:100px; height:100px;' id='base64image'
                  th:src="@{'data:image/jpeg;base64,' + ${eventPictureUrl}}"/>
