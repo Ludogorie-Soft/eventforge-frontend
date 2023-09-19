@@ -13,13 +13,6 @@
     <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-<!--    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>-->
-<!--    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/aos.css}">-->
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -112,6 +105,7 @@
             </div>
         </div>
         <div class="item">
+            <h6>Линковете трябва да започват с `https://`</h6>
             <p>Адрес на събитието (ако е онлайн посочете линк) <span class="required">*</span></p>
             <input type="text" th:field="*{address}"
                    oninvalid="this.setCustomValidity('Полето трява да съдържа поне 5 символа!')"
@@ -123,7 +117,7 @@
         </div>
         <div class="item">
             <p>Фейсбук линк (по желание) </p>
-            <input type="text" th:field="*{facebookLink}" placeholder="Фейсбук линк на събитието">
+            <input type="url" th:field="*{facebookLink}" placeholder="Фейсбук линк на събитието">
             <div th:if="${facebookLink}" id="facebookLink">
                 <p th:text="${facebookLink}" style="color: red;"></p>
             </div>

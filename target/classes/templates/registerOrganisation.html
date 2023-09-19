@@ -9,16 +9,9 @@
     <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700|Indie+Flower" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap">
 
-
     <link rel="stylesheet" href="fonts/icomoon/style.css">
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-<!--    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">-->
-<!--    <link rel="stylesheet" th:href="@{css/owl.carousel.min.css}">-->
-<!--    <link rel="stylesheet" th:href="@{css/owl.theme.default.min.css}">-->
-<!--    <link rel="stylesheet" th:href="@{fonts/flaticon/font/flaticon.css}">-->
-<!--    <link rel="stylesheet" th:href="@{css/aos.css}">-->
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -137,8 +130,9 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" class="form-control text-cursive" th:field="*{website}"
-                                   placeholder="Уебсайт на организацията">
+                            <h6>Линковете трябва да започват с `https://`</h6>
+                            <input type="url" class="form-control text-cursive" th:field="*{website}"
+                                   placeholder="Уебсайт на организацията" >
                         </div>
                         <div th:if="${website}" id="websiteError">
                             <p th:text="${website}" style="color: red;" class="text-cursive"></p>
@@ -146,7 +140,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" class="form-control text-cursive" th:field="*{facebookLink}"
+                            <input type="url" class="form-control text-cursive" th:field="*{facebookLink}"
                                    placeholder="Линк към фейсбук страница*"
 
                                    id="facebook" required>
@@ -189,7 +183,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                    <textarea type="text" class="form-control text-cursive" th:field="*{charityOption}"
+                    <textarea type="url" class="form-control text-cursive" th:field="*{charityOption}"
                               placeholder="Възможност за дарение. (Линк към страница с информация за дарения)"></textarea>
                         </div>
                         <div th:if="${charityOption}" id="charityOptionError">
@@ -233,7 +227,7 @@
 
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row" style="margin-left: 20px">
                             <div class="col-md-12">
                                 <label class="form-check-label">
                                     <input type="checkbox" name="agreeTermsAndPrivacy" class="form-check-input" required>
