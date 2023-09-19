@@ -1,15 +1,12 @@
 package com.example.EventForgeFrontend.image;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.util.IOUtils;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import io.minio.*;
+import io.minio.errors.MinioException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.io.IOUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -17,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Base64;
 import java.util.List;
 
 import static java.util.UUID.randomUUID;
@@ -29,53 +25,67 @@ public class ImageService {
 
     @Value("${digital.ocean.bucket.name}")
     private String digitalOceanBucketName;
-    @Value("${space.bucket.origin.url}")
-    private String spaceBucketOriginUrl;
-    @Autowired
-    private AmazonS3 amazonS3Client;
 
 
-    public String uploadImage(final MultipartFile file ,String randomUuid) {
+    private final MinioClient minioClient;
+
+
+    public String uploadImage(final MultipartFile file, String randomUuid) {
         try {
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(file.getSize());
-            String contentType = file.getContentType();
-            metadata.setContentType(contentType);
-            metadata.setHeader("x-amz-acl", "public-read"); // publicly accessible, comment this to not publicly accessible
-            PutObjectResult result = amazonS3Client.putObject(digitalOceanBucketName,randomUuid , file.getInputStream(), metadata);
-            // Get the file's input stream
-            InputStream inputStream = file.getInputStream();
 
-            // Close the input stream
-            inputStream.close();
+            // Upload the file to DigitalOcean Spaces
+            minioClient.putObject(PutObjectArgs.builder()
+                    .bucket(digitalOceanBucketName)
+                    .object(randomUuid )
+                    .contentType(file.getContentType())
+                    .stream(file.getInputStream(), file.getSize(), -1)
+                    .build());
 
             return randomUuid;
+        } catch (MinioException e) {
+            // Handle Minio-specific exceptions
+            log.warn("Minio error: " + e.getMessage());
         } catch (IOException e) {
-            // Handle any exceptions
-            log.warn(e.getMessage());
+            // Handle general IO exceptions
+            log.warn("Error uploading file: " + e.getMessage());
+        } catch (Exception e) {
+            // Handle other exceptions
+            log.warn("An unexpected error occurred: " + e.getMessage());
         }
         return null;
     }
 
     public String encodeImage(String objectKey) {
         try {
-            // Fetch the image from your cloud storage using the AmazonS3 client
-            S3Object s3Object = amazonS3Client.getObject(digitalOceanBucketName, objectKey);
 
-            // Read the image bytes and encode them as a base64 string
-            byte[] imageBytes = IOUtils.toByteArray(s3Object.getObjectContent());
-            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
-            // Close the S3Object to release resources
-            s3Object.close();
+            // Fetch the image bytes from DigitalOcean Spaces
+            GetObjectResponse objectResponse = minioClient.getObject(GetObjectArgs.builder()
+                    .bucket(digitalOceanBucketName)
+                    .object(objectKey)
+                    .build());
 
-            return base64Image;
-        } catch (IOException e) {
-            // Handle any exceptions
-            e.printStackTrace();
-            return null;
+            // Get the input stream from the object response
+            try (InputStream inputStream = objectResponse) {
+                // Read the image bytes
+                byte[] imageBytes = IOUtils.toByteArray(inputStream);
+
+                // Encode the image bytes as a Base64 string
+                String base64Image = Base64.encodeBase64String(imageBytes);
+
+                return base64Image;
+            }
+        } catch (MinioException e) {
+            // Handle Minio-specific exceptions
+            log.warn("Minio error: " + e.getMessage());
+        } catch (Exception e) {
+            // Handle other exceptions
+            log.warn("An unexpected error occurred: " + e.getMessage());
         }
+        return null;
     }
+
+
 
     public String updatePicture(MultipartFile file ) {
 

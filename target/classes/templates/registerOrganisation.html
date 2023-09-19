@@ -95,8 +95,9 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="password" th:field="*{confirmPassword}" class="form-control text-cursive"
-                                   placeholder="Потвърди парола*" required>
+                                   placeholder="Потвърди парола*" id="confirmPass" required>
                         </div>
+                        <div id="passwordMatchError" style="color: red; margin-left: 20px"></div>
                         <div th:if="${confirmPassword}" id="confirmPassword">
                             <p th:text="${confirmPassword}" style="color: red;" class="text-cursive"></p>
                         </div>
@@ -178,8 +179,9 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" class="form-control text-cursive" th:field="*{phoneNumber}"
-                                   placeholder="Лице за контакт - телефон(Видимо само за администратора на сайта)*" id="phone" required>
+                            <input type="number" class="form-control text-cursive" th:field="*{phoneNumber}"
+                                   placeholder="Лице за контакт - телефон(Видимо само за администратора на сайта)*" id="phone"
+                                   required>
                         </div>
                         <div th:if="${phoneNumber}" id="phoneNumberError">
                             <p th:text="${phoneNumber}" style="color: red;" class="text-cursive"></p>
@@ -187,8 +189,8 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <textarea type="text" class="form-control text-cursive" th:field="*{charityOption}"
-                                      placeholder="Възможност за дарение. (Линк към страница с информация за дарения)"></textarea>
+                    <textarea type="text" class="form-control text-cursive" th:field="*{charityOption}"
+                              placeholder="Възможност за дарение. (Линк към страница с информация за дарения)"></textarea>
                         </div>
                         <div th:if="${charityOption}" id="charityOptionError">
                             <p th:text="${charityOption}" style="color: red;" class="text-cursive"></p>
@@ -196,9 +198,9 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <textarea name="" id="purpose" th:field="*{organisationPurpose}" class="form-control text-cursive"
-                                      placeholder="Мисия на организацията*"  cols="60"
-                                      rows="5" required></textarea>
+                    <textarea name="" id="purpose" th:field="*{organisationPurpose}" class="form-control text-cursive"
+                              placeholder="Мисия на организацията*"  cols="60"
+                              rows="5" required></textarea>
                         </div>
                         <div th:if="${organisationPurpose}" id="organisationPurpose">
                             <p th:text="${organisationPurpose}" style="color: red;" class="text-cursive"></p>
@@ -227,9 +229,11 @@
                                     <p th:text="${optionalCategory}" style="color: red;" class="text-cursive"></p>
                                 </div>
                             </div>
+
+
                         </div>
 
-                        <div class="form-group row" style="margin-left: 20px">
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <label class="form-check-label">
                                     <input type="checkbox" name="agreeTermsAndPrivacy" class="form-check-input" required>
@@ -300,6 +304,26 @@
     closeButton.addEventListener("click", closePopup);
     setTimeout(closePopup, 5000);
   }
+</script>
+
+<script>
+    // Select the password and confirm password input fields
+    const passwordField = document.getElementById("password");
+    const confirmPasswordField = document.getElementById("confirmPass");
+    const passwordMatchError = document.getElementById("passwordMatchError");
+
+    // Add an input event listener to the confirm password field
+    confirmPasswordField.addEventListener("input", function () {
+        const password = passwordField.value;
+        const confirmPassword = confirmPasswordField.value;
+
+        // Check if the passwords match
+        if (password === confirmPassword) {
+            passwordMatchError.textContent = ""; // Clear the error message
+        } else {
+            passwordMatchError.textContent = "Паролите не съвпадат"; // Display an error message
+        }
+    });
 </script>
 
 <script src="js/jquery-3.3.1.min.js"></script>
