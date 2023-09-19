@@ -1,148 +1,107 @@
 package com.example.EventForgeFrontend.image;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.util.IOUtils;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
-import com.example.EventForgeFrontend.exception.ImageException;
-import jakarta.annotation.Nullable;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.*;
+import java.io.InputStream;
+import java.util.Base64;
+import java.util.List;
+
+import static java.util.UUID.randomUUID;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ImageService {
-    private static final String FOLDER_PATH_ORGANISATION = "src/main/resources/static/images/organisation";
-    private static final String FOLDER_PATH_EVENTS = "src/main/resources/static/images/events";
+
+    @Value("${digital.ocean.bucket.name}")
+    private String digitalOceanBucketName;
+    @Value("${space.bucket.origin.url}")
+    private String spaceBucketOriginUrl;
+    @Autowired
+    private AmazonS3 amazonS3Client;
 
 
-    public String uploadImageToFileSystem(MultipartFile file, ImageType imageType) {
+    public String uploadImage(final MultipartFile file ,String randomUuid) {
+        try {
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+            String contentType = file.getContentType();
+            metadata.setContentType(contentType);
+            metadata.setHeader("x-amz-acl", "public-read"); // publicly accessible, comment this to not publicly accessible
+            PutObjectResult result = amazonS3Client.putObject(digitalOceanBucketName,randomUuid , file.getInputStream(), metadata);
+            // Get the file's input stream
+            InputStream inputStream = file.getInputStream();
 
-            String fileName = file.getOriginalFilename();
+            // Close the input stream
+            inputStream.close();
 
-            String sanitizedFileName = null;
-            if (fileName != null) {
-                sanitizedFileName = sanitizeFileName(fileName);
-
-            }
-            Path uploadDirectory = null;
-            if (imageType.equals(ImageType.LOGO) || imageType.equals(ImageType.COVER)) {
-                uploadDirectory = Paths.get(FOLDER_PATH_ORGANISATION);
-            }
-           else {
-                uploadDirectory = Paths.get(FOLDER_PATH_EVENTS);
-            }
-            assert sanitizedFileName != null;
-            Path filePath = uploadDirectory.resolve(sanitizedFileName);
-            String imageUrlAbsolutePath = filePath.toAbsolutePath().toString();
-
-            try {
-                if (!Files.exists(uploadDirectory)) {
-                    Files.createDirectories(uploadDirectory);
-                }
-                if (Files.exists(uploadDirectory)) {
-                    Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-                }
-
-            } catch (IOException e) {
-                throw new ImageException("Грешка със запазването на файла. Моля уверете се , че подавате валиден файл и не е празен.");
-            }
-            return imageUrlAbsolutePath;
-
+            return randomUuid;
+        } catch (IOException e) {
+            // Handle any exceptions
+            log.warn(e.getMessage());
+        }
+        return null;
     }
 
-    public String updatePicture(MultipartFile file , ImageType type ) {
+    public String encodeImage(String objectKey) {
+        try {
+            // Fetch the image from your cloud storage using the AmazonS3 client
+            S3Object s3Object = amazonS3Client.getObject(digitalOceanBucketName, objectKey);
+
+            // Read the image bytes and encode them as a base64 string
+            byte[] imageBytes = IOUtils.toByteArray(s3Object.getObjectContent());
+            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+            // Close the S3Object to release resources
+            s3Object.close();
+
+            return base64Image;
+        } catch (IOException e) {
+            // Handle any exceptions
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String updatePicture(MultipartFile file ) {
+
         if(file == null || file.isEmpty()){
             return null;
         }
             ImageValidator.isImageValid(file);
             ImageValidator.isSizeLessThan5mb(file);
-        return uploadImageToFileSystem(file, type);
+
+        return randomUUID().toString();
     }
     public String uploadPicture(MultipartFile file, ImageType type) {
         ImageValidator.isImageEmpty(file , type);
         ImageValidator.isImageValid(file);
         ImageValidator.isSizeLessThan5mb(file);
-        return uploadImageToFileSystem(file, type);
+        return randomUUID().toString();
     }
 
-    private String sanitizeFileName(String fileName) {
-        String allowedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.";
-
-        String sanitizedFileName = fileName.replace("..", "");
-
-        StringBuilder sb = new StringBuilder();
-        for (char c : sanitizedFileName.toCharArray()) {
-            if (allowedCharacters.indexOf(c) != -1) {
-                sb.append(c);
-            }
-        }
-        sanitizedFileName = sb.toString();
-
-        int maxFileNameLength = 255;
-        if (sanitizedFileName.length() > maxFileNameLength) {
-            throw new ImageException("Името на файла надвишава максималната дължина.");
-        }
-
-        return sanitizedFileName;
-    }
-
-
-    @Nullable
-    String getFileExtension(String fileName) {
-        int dotIndex = fileName.lastIndexOf(".");
-        if (dotIndex >= 0 && dotIndex < fileName.length() - 1) {
-            return fileName.substring(dotIndex + 1).toLowerCase();
-        }
-        return null;
-    }
-
-    protected void deleteImageFile(String filePath) {
-        Path fileToDelete = Paths.get(filePath);
-        try {
-            Files.deleteIfExists(fileToDelete);
-        } catch (IOException e) {
-            throw new ImageException("Грешка при опит за изтриването на файла.");
-        }
-    }
-    public static String encodeImage(String url) {
-        String base64Image = "";
-        File file = new File(url);
-        try (FileInputStream imageInFile = new FileInputStream(file)) {
-            byte[] imageData = new byte[(int) file.length()];
-            int bytesRead;
-            int totalBytesRead = 0;
-
-            while ((bytesRead = imageInFile.read(imageData, totalBytesRead, imageData.length - totalBytesRead)) != -1) {
-                totalBytesRead += bytesRead;
-                if (totalBytesRead == imageData.length) {
-                    break;
-                }
-            }
-            base64Image = Base64.getEncoder().encodeToString(Arrays.copyOf(imageData, totalBytesRead));
-
-        } catch (FileNotFoundException e) {
-            throw new ImageException("Изображението не е намерено");
-        } catch (IOException e) {
-            throw new ImageException("Грешка с прочитането на изображението");
-        }
-        return base64Image;
-    }
-    public static void encodeCommonEventResponseListImages(List<CommonEventResponse> events){
+    public void encodeCommonEventResponseListImages(List<CommonEventResponse> events){
         if(events!=null && !events.isEmpty()){
             for(CommonEventResponse event : events){
                 event.setImageUrl(encodeImage(event.getImageUrl()));
             }
         }
     }
-    public static void encodeCommonEventResponsePageImages(Page<CommonEventResponse> events){
+    public void encodeCommonEventResponsePageImages(Page<CommonEventResponse> events){
         if(events!=null && !events.isEmpty()){
             for(CommonEventResponse event : events){
                 event.setImageUrl(encodeImage(event.getImageUrl()));

@@ -24,6 +24,8 @@ public class RecurrenceEventController {
 
     private final EventApiClient eventApiClient;
 
+    private final ImageService imageService;
+
     private final static String NO_AVAILABLE_EVENTS = "Няма налични събития";
 
 
@@ -37,7 +39,7 @@ public class RecurrenceEventController {
 
         Page<CommonEventResponse> events = recurrenceEventApiClient.showAllActiveRecurrenceEvents(pageNo, pageSize, sort1, sortByColumn);
         if (events != null && !events.isEmpty()) {
-            ImageService.encodeCommonEventResponsePageImages(events);
+            imageService.encodeCommonEventResponsePageImages(events);
             model.addAttribute("currentPage", events.getNumber());
             model.addAttribute("totalPages", events.getTotalPages());
             model.addAttribute("totalItems", events.getTotalElements());
@@ -69,7 +71,7 @@ public class RecurrenceEventController {
         pageNo = Math.max(0, pageNo);
         Page<CommonEventResponse> events = recurrenceEventApiClient.showAllExpiredRecurrenceEvents(pageNo, pageSize, sort1, sortByColumn);
         if (events != null && !events.isEmpty()) {
-            ImageService.encodeCommonEventResponsePageImages(events);
+            imageService.encodeCommonEventResponsePageImages(events);
             model.addAttribute("currentPage", events.getNumber());
             model.addAttribute("totalPages", events.getTotalPages());
             model.addAttribute("totalItems", events.getTotalElements());
@@ -114,7 +116,7 @@ public class RecurrenceEventController {
         CriteriaFilterRequest request = new CriteriaFilterRequest(false, isExpired, name, description, address, organisationName, minAge, maxAge, isOnline, eventCategories, startsAt, endsAt);
         Page<CommonEventResponse> recurrenceEvents = eventApiClient.getEventsByCriteria(pageNo, pageSize, sort1, sortByColumn, request);
         if (recurrenceEvents != null && !recurrenceEvents.isEmpty()) {
-            ImageService.encodeCommonEventResponsePageImages(recurrenceEvents);
+            imageService.encodeCommonEventResponsePageImages(recurrenceEvents);
             model.addAttribute("currentPage", recurrenceEvents.getNumber());
             model.addAttribute("totalPages", recurrenceEvents.getTotalPages());
             model.addAttribute("totalItems", recurrenceEvents.getTotalElements());

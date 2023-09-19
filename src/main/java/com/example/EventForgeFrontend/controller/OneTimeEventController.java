@@ -5,7 +5,6 @@ import com.example.EventForgeFrontend.client.OneTimeEventApiClient;
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
 import com.example.EventForgeFrontend.image.ImageService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -27,6 +26,8 @@ public class OneTimeEventController {
 
     private final EventApiClient eventApiClient;
 
+    private final ImageService imageService;
+
     private final static String NO_AVAILABLE_EVENTS ="Няма налични събития";
 
 
@@ -40,7 +41,7 @@ public class OneTimeEventController {
         Page<CommonEventResponse> events = oneTimeEventApiClient.showAllActiveOneTimeEvents(pageNo, pageSize, sort1, sortByColumn);
 
         if (events != null && !events.isEmpty()) {
-            ImageService.encodeCommonEventResponsePageImages(events);
+            imageService.encodeCommonEventResponsePageImages(events);
             model.addAttribute("currentPage", events.getNumber());
             model.addAttribute("totalPages", events.getTotalPages());
             model.addAttribute("totalItems", events.getTotalElements());
@@ -75,7 +76,7 @@ public class OneTimeEventController {
         pageNo = Math.max(0, pageNo);
         Page<CommonEventResponse> events = oneTimeEventApiClient.showAllExpiredOneTimeEvents(pageNo, pageSize, sort1, sortByColumn);
         if (events != null && !events.isEmpty()) {
-            ImageService.encodeCommonEventResponsePageImages(events);
+            imageService.encodeCommonEventResponsePageImages(events);
             model.addAttribute("currentPage", events.getNumber());
             model.addAttribute("totalPages", events.getTotalPages());
             model.addAttribute("totalItems", events.getTotalElements());
@@ -124,7 +125,7 @@ public class OneTimeEventController {
 
         Page<CommonEventResponse> oneTimeEvents = eventApiClient.getEventsByCriteria(pageNo, pageSize, sort1, sortByColumn, request);
         if (oneTimeEvents != null && !oneTimeEvents.isEmpty()) {
-            ImageService.encodeCommonEventResponsePageImages(oneTimeEvents);
+            imageService.encodeCommonEventResponsePageImages(oneTimeEvents);
             model.addAttribute("currentPage", oneTimeEvents.getNumber());
             model.addAttribute("totalPages", oneTimeEvents.getTotalPages());
             model.addAttribute("totalItems", oneTimeEvents.getTotalElements());

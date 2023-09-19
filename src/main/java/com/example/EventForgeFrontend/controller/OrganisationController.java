@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -23,6 +22,8 @@ import java.util.Objects;
 public class OrganisationController { //this controller is to list organisations for unauthorized users
 
     private final UnauthorizeApiClient unauthorizeApiClient;
+
+    private final ImageService imageService;
 
     @GetMapping
     public String showAllOrganisationForUnauthorized(@RequestParam(value = "search", required = false) String search
@@ -37,8 +38,8 @@ public class OrganisationController { //this controller is to list organisations
 
         if(result!=null && !result.isEmpty()){
             for (OrganisationResponse org : Objects.requireNonNull(result)) {
-                org.setLogo(ImageService.encodeImage(org.getLogo()));
-                org.setBackground(ImageService.encodeImage(org.getBackground()));
+                org.setLogo(imageService.encodeImage(org.getLogo()));
+                org.setBackground(imageService.encodeImage(org.getBackground()));
             }
 
             model.addAttribute("currentPage", result.getNumber());
@@ -67,11 +68,11 @@ public class OrganisationController { //this controller is to list organisations
     public String showOrganisationDetailsWithConditionsById(@PathVariable("id") Long id, Model model) {
         ResponseEntity<OrganisationResponse> orgDetails = unauthorizeApiClient.getOrganisationDetails(id);
         if (orgDetails.getBody() != null) {
-            orgDetails.getBody().setLogo(ImageService.encodeImage(orgDetails.getBody().getLogo()));
-            orgDetails.getBody().setBackground(ImageService.encodeImage(orgDetails.getBody().getBackground()));
-            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getActiveEvents());
-            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getExpiredEvents());
-            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getUpcomingEvents());
+            orgDetails.getBody().setLogo(imageService.encodeImage(orgDetails.getBody().getLogo()));
+            orgDetails.getBody().setBackground(imageService.encodeImage(orgDetails.getBody().getBackground()));
+            imageService.encodeCommonEventResponseListImages(orgDetails.getBody().getActiveEvents());
+            imageService.encodeCommonEventResponseListImages(orgDetails.getBody().getExpiredEvents());
+            imageService.encodeCommonEventResponseListImages(orgDetails.getBody().getUpcomingEvents());
             model.addAttribute("organisationDetails", orgDetails.getBody());
         }
 
