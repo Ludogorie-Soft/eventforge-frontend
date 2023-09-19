@@ -25,6 +25,7 @@ public class ManageEventsController {
 
     private final ImageService imageService;
 
+
     @GetMapping
     public String showMyEvents(HttpServletRequest request, Model model) {
         String token = (String) request.getSession().getAttribute("sessionToken");
@@ -56,6 +57,7 @@ public class ManageEventsController {
         String eventPicture = imageService.uploadPicture(image, ImageType.EVENT_PICTURE);
         eventRequest.setImageUrl(eventPicture);
         ResponseEntity<String> eventRequestResult = organisationApiClient.submitCreatedEvent(eventRequest, token);
+        imageService.uploadImage(image ,eventPicture);
         redirectAttributes.addFlashAttribute("result", eventRequestResult.getBody());
         request.removeAttribute("event");
 
@@ -72,7 +74,7 @@ public class ManageEventsController {
             redirectAttributes.addFlashAttribute("result", "Търсеното от вас събитие с идентификационен номер:" + id + " ,не съществува или не принаджели на вашият акаунт!");
             return "redirect:/manage-events";
         }
-        String currentEventPictureUrl = ImageService.encodeImage((getEventToUpdate.getBody()).getImageUrl());
+        String currentEventPictureUrl = imageService.encodeImage((getEventToUpdate.getBody()).getImageUrl());
         if (newEventRequest != null && newEventRequest.getName() != null) {
             model.addAttribute("event", newEventRequest);
         } else {
@@ -83,16 +85,18 @@ public class ManageEventsController {
     }
 
     @PostMapping("update-event/{id}")
-    public String submitUpdateEvent(@RequestParam(value = "image" ,required = false) MultipartFile image, HttpServletRequest request, @PathVariable("id") Long id, EventRequest eventRequest, RedirectAttributes redirectAttributes) {
+    public String submitUpdateEvent(@RequestParam(value = "image" ,required = false) MultipartFile image, HttpServletRequest request, @PathVariable("id") Long id, EventRequest eventRequest, RedirectAttributes redirectAttributes,@ModelAttribute("eventPictureUrl")String eventPictureUrl) {
 
         String token = (String) request.getSession().getAttribute("sessionToken");
         request.setAttribute("event", eventRequest);
-        String eventPicture = imageService.updatePicture(image, ImageType.EVENT_PICTURE);
+        String eventPicture = imageService.updatePicture(image);
         if (eventPicture != null) {
             eventRequest.setImageUrl(eventPicture);
         }
         String sa = eventRequest.getImageUrl();
         ResponseEntity<String> updateEventResult = organisationApiClient.updateEventByOrganisation(token, id, eventRequest);
+
+        imageService.uploadImage(image ,eventPicture);
         redirectAttributes.addFlashAttribute("result", updateEventResult.getBody());
         request.removeAttribute("event");
         return "redirect:/manage-events";

@@ -2,10 +2,9 @@ package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.AuthenticationApiClient;
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
-import com.example.EventForgeFrontend.dto.*;
+import com.example.EventForgeFrontend.dto.ChangePasswordRequest;
+import com.example.EventForgeFrontend.dto.UpdateAccountRequest;
 import com.example.EventForgeFrontend.image.ImageService;
-import com.example.EventForgeFrontend.image.ImageType;
-import com.example.EventForgeFrontend.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +23,6 @@ import java.util.Set;
 public class OrganisationSettingsController {
     private final OrganisationApiClient organisationApiClient;
     private final AuthenticationApiClient authenticationApiClient;
-
-    private final SessionManager sessionManager;
 
     private final ImageService imageService;
 
@@ -81,8 +78,8 @@ public class OrganisationSettingsController {
 
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<List<String>> getPictures = organisationApiClient.getOrganisationLogoAndCover(token);
-        String logoUrl = ImageService.encodeImage(getPictures.getBody().get(0));
-        String coverUrl = ImageService.encodeImage(getPictures.getBody().get(1));
+        String logoUrl = imageService.encodeImage(getPictures.getBody().get(0));
+        String coverUrl = imageService.encodeImage(getPictures.getBody().get(1));
         model.addAttribute("logoUrl" ,logoUrl);
         model.addAttribute("coverUrl" ,coverUrl);
         return "updateProfilePictures";
@@ -92,9 +89,17 @@ public class OrganisationSettingsController {
     public String updateLogo(HttpServletRequest request , @RequestParam(value = "logo",required = false)MultipartFile logo , @RequestParam(value = "cover",required = false)MultipartFile cover ,RedirectAttributes redirectAttributes){
 
         String token = (String) request.getSession().getAttribute("sessionToken");
-        String logoUrl = imageService.updatePicture(logo , ImageType.LOGO );
-        String coverUrl = imageService.updatePicture(cover, ImageType.COVER);
-        ResponseEntity<String> result = organisationApiClient.updateLogo(token ,logoUrl , coverUrl);
+        String logoUrl = imageService.updatePicture(logo);
+        String coverUrl = imageService.updatePicture(cover);
+        ResponseEntity<String> result = organisationApiClient.updateLogo(token ,logoUrl, coverUrl);
+
+        if(logoUrl!= null && !logoUrl.isEmpty()){
+            imageService.uploadImage(logo ,logoUrl);
+        }
+
+        if(coverUrl != null && !coverUrl.isEmpty()){
+            imageService.uploadImage(cover ,coverUrl);
+        }
 
         redirectAttributes.addFlashAttribute("result" ,result.getBody());
        return  "redirect:/organisation/settings/change-pictures";

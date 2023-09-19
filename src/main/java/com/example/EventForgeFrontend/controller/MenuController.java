@@ -22,17 +22,19 @@ public class MenuController {
 
     private final MainMenuClient mainMenuClient;
 
+    private final ImageService imageService;
+
     @GetMapping
     public String index(Model model) {
         ResponseEntity<List<CommonEventResponse>> threeUpcomingEvents = mainMenuClient.showThreeUpcomingEvents();
         ResponseEntity<List<OrganisationResponse>> threeRandomOrganisations = mainMenuClient.showThreeRandomOrganisations();
         if (threeUpcomingEvents.getBody() != null && !threeUpcomingEvents.getBody().isEmpty()) {
-            ImageService.encodeCommonEventResponseListImages(threeUpcomingEvents.getBody());
+            imageService.encodeCommonEventResponseListImages(threeUpcomingEvents.getBody());
             model.addAttribute("events", threeUpcomingEvents.getBody());
         }
         if (threeRandomOrganisations.getBody() != null && !threeRandomOrganisations.getBody().isEmpty()) {
             for (OrganisationResponse org : threeRandomOrganisations.getBody()) {
-                org.setLogo(ImageService.encodeImage(org.getLogo()));
+                org.setLogo(imageService.encodeImage(org.getLogo()));
             }
             model.addAttribute("organisations" , threeRandomOrganisations.getBody());
             model.addAttribute("organisation1", threeRandomOrganisations.getBody().get(0));

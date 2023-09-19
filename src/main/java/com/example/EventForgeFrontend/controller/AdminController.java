@@ -21,6 +21,8 @@ public class AdminController {
 
     private final AdminApiClient adminApiClient;
 
+    private final ImageService imageService;
+
 
     @GetMapping("/settings")
     public String adminSettings(HttpServletRequest request, Model model) {
@@ -54,11 +56,11 @@ public class AdminController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<OrganisationResponse> orgDetails = adminApiClient.showOrganisationDetailsForAdmin(token, orgId);
         if (orgDetails.getBody() != null) {
-            orgDetails.getBody().setLogo(ImageService.encodeImage(orgDetails.getBody().getLogo()));
-            orgDetails.getBody().setBackground(ImageService.encodeImage(orgDetails.getBody().getBackground()));
-            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getActiveEvents());
-            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getExpiredEvents());
-            ImageService.encodeCommonEventResponseListImages(orgDetails.getBody().getUpcomingEvents());
+            orgDetails.getBody().setLogo(imageService.encodeImage(orgDetails.getBody().getLogo()));
+            orgDetails.getBody().setBackground(imageService.encodeImage(orgDetails.getBody().getBackground()));
+            imageService.encodeCommonEventResponseListImages(orgDetails.getBody().getActiveEvents());
+            imageService.encodeCommonEventResponseListImages(orgDetails.getBody().getExpiredEvents());
+            imageService.encodeCommonEventResponseListImages(orgDetails.getBody().getUpcomingEvents());
             model.addAttribute("organisationDetails", orgDetails.getBody());
 
         } else {
@@ -73,7 +75,7 @@ public class AdminController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         ResponseEntity<CommonEventResponse> eventDetails = adminApiClient.showEventDetailsForAdmin(token, eventId);
         if (eventDetails.getBody() != null) {
-            eventDetails.getBody().setImageUrl(ImageService.encodeImage(eventDetails.getBody().getImageUrl()));
+            eventDetails.getBody().setImageUrl(imageService.encodeImage(eventDetails.getBody().getImageUrl()));
             model.addAttribute("event", eventDetails.getBody());
         } else {
             redirectAttributes.addFlashAttribute("result", "Търсеното от вас събитие не съществува с идентификационен номер: " + eventId);

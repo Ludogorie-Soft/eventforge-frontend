@@ -17,11 +17,13 @@ public class EventDetailsController {
 
     private final UnauthorizeApiClient unauthorizeApiClient;
 
+    private final ImageService imageService;
+
     @GetMapping("/event/details/{id}")
     public String showEventDetailsWithConditionsById(@PathVariable("id")Long eventId , Model model , HttpServletRequest request){
         ResponseEntity<CommonEventResponse> eventDetails = unauthorizeApiClient.showEventDetailsWithCondition(eventId);
         if(eventDetails.getBody()!=null){
-            eventDetails.getBody().setImageUrl(ImageService.encodeImage(eventDetails.getBody().getImageUrl()));
+            eventDetails.getBody().setImageUrl(imageService.encodeImage(eventDetails.getBody().getImageUrl()));
             model.addAttribute("event" ,eventDetails.getBody());
 
         } else {
