@@ -12,13 +12,6 @@
     <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-<!--    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>-->
-<!--    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/css/aos.css}">-->
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -137,7 +130,7 @@
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>Телефон</label>
-                                                                    <input class="form-control text-cursive" type="tel"
+                                                                    <input class="form-control text-cursive" type="number"
                                                                            th:field="*{phoneNumber}"
                                                                            th:value="${updateRequest.phoneNumber}"
                                                                            placeholder="Телефон(Видимо само за администратора на сайта)">
@@ -164,8 +157,9 @@
                                                         <div class="row">
                                                             <div class="col">
                                                                 <div class="form-group">
+                                                                    <h6>Линковете трябва да започват с `https://`</h6>
                                                                     <label>Уебсайт</label>
-                                                                    <input class="form-control text-cursive" type="text"
+                                                                    <input class="form-control text-cursive" type="url"
                                                                            th:field="*{website}"
                                                                            th:value="${updateRequest.website}"
                                                                            placeholder="Уебсайт">
@@ -179,7 +173,7 @@
                                                             <div class="col">
                                                                 <div class="form-group">
                                                                     <label>Фейсбук</label>
-                                                                    <input class="form-control text-cursive" type="text"
+                                                                    <input class="form-control text-cursive" type="url"
                                                                            th:field="*{facebookLink}"
                                                                            th:value="${updateRequest.facebookLink}"
                                                                            placeholder="Фeйсбук">
@@ -195,10 +189,10 @@
                                                                 <div class="form-group">
                                                                     <label>Възможност за дарение. (Линк към страница с
                                                                         информация за дарения)</label>
-                                                                    <input class="form-control text-cursive" type="text"
+                                                                    <input class="form-control text-cursive" type="url"
                                                                            th:field="*{charityOption}"
                                                                            th:value="${updateRequest.charityOption}"
-                                                                           placeholder="Възможност за дарение. (Линк към страница с информация за дарения)">
+                                                                           placeholder="Възможност за дарение">
                                                                 </div>
                                                                 <div th:if="${charityOption}" id="charityOptionError">
                                                                     <p th:text="${charityOption}"
