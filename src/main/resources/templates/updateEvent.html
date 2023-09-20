@@ -79,10 +79,10 @@
             <p>Описание на събитието: <span class="required">*</span></p>
             <div class="item">
                 <textarea th:field="*{description}"
-                          oninvalid="this.setCustomValidity('Описанието трява да е между 20 и 500 символа!')"
+                          oninvalid="this.setCustomValidity('Описанието трява да е между 20 и 2000 символа!')"
                           oninput="this.setCustomValidity('')" placeholder="Описание на събитието" minlength="20"
-                          maxlength="500" id="description" required
-                          title="Моля въведете между 20 и 500 симбова."></textarea>
+                          maxlength="2000" id="description" required
+                          title="Моля въведете между 20 и 2000 символа."></textarea>
             </div>
             <div th:if="${description}" id="descriptionError">
                 <p th:text="${description}" style="color: red;"></p>
