@@ -4,6 +4,7 @@ import com.example.EventForgeFrontend.dto.CommonEventResponse;
 import com.example.EventForgeFrontend.exception.ImageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,11 +30,12 @@ import static java.util.UUID.randomUUID;
 @Slf4j
 public class ImageService {
 
-    private static final String FOLDER_IMAGE_PATH = "C:/Users/Desktop/Desktop/active-varna-snimki";
+    @Value("${image.directory.path}")
+    private String imageDirectoryPath;
 
-    private static final Path uploadDirectory = Paths.get(FOLDER_IMAGE_PATH);
 
     private String getImageAbsolutePath() {
+        Path uploadDirectory = Paths.get(imageDirectoryPath);
         String sanitizedFileName = sanitizeFileName(randomUUID().toString());
 
         Path filePath = uploadDirectory.resolve(sanitizedFileName);
@@ -42,6 +44,7 @@ public class ImageService {
 
 
     public void uploadImage(MultipartFile file , String imageUrl) {
+        Path uploadDirectory = Paths.get(imageDirectoryPath);
 
         Path filePath = uploadDirectory.resolve(imageUrl);
 
