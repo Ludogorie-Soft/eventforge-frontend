@@ -93,13 +93,8 @@ public class OrganisationSettingsController {
         String coverUrl = imageService.updatePicture(cover);
         ResponseEntity<String> result = organisationApiClient.updateLogo(token ,logoUrl, coverUrl);
 
-        if(logoUrl!= null && !logoUrl.isEmpty()){
-            imageService.uploadImage(logo ,logoUrl);
-        }
-
-        if(coverUrl != null && !coverUrl.isEmpty()){
-            imageService.uploadImage(cover ,coverUrl);
-        }
+        imageService.uploadImage(logo , imageService.extractFilenameFromPath(logoUrl));
+        imageService.uploadImage(cover , imageService.extractFilenameFromPath(coverUrl));
 
         redirectAttributes.addFlashAttribute("result" ,result.getBody());
        return  "redirect:/organisation/settings/change-pictures";

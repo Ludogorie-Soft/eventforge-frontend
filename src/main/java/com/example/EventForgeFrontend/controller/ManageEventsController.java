@@ -57,7 +57,8 @@ public class ManageEventsController {
         String eventPicture = imageService.uploadPicture(image, ImageType.EVENT_PICTURE);
         eventRequest.setImageUrl(eventPicture);
         ResponseEntity<String> eventRequestResult = organisationApiClient.submitCreatedEvent(eventRequest, token);
-        imageService.uploadImage(image ,eventPicture);
+
+        imageService.uploadImage(image ,imageService.extractFilenameFromPath(eventPicture));
         redirectAttributes.addFlashAttribute("result", eventRequestResult.getBody());
         request.removeAttribute("event");
 
@@ -96,7 +97,7 @@ public class ManageEventsController {
         String sa = eventRequest.getImageUrl();
         ResponseEntity<String> updateEventResult = organisationApiClient.updateEventByOrganisation(token, id, eventRequest);
 
-        imageService.uploadImage(image ,eventPicture);
+        imageService.uploadImage(image ,imageService.extractFilenameFromPath(eventPicture));
         redirectAttributes.addFlashAttribute("result", updateEventResult.getBody());
         request.removeAttribute("event");
         return "redirect:/manage-events";

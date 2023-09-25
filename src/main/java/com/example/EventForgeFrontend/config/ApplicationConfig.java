@@ -7,8 +7,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import feign.codec.ErrorDecoder;
-import io.minio.MinioClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
@@ -16,12 +14,7 @@ import org.springframework.data.domain.Page;
 @Configuration
 public class ApplicationConfig {
 
-    @Value("${space.bucket.origin.url}")
-    private String spaceBucketOriginUrl;
-    @Value("${digital.ocean.access.key}")
-    private String digitalOceanAccessKey;
-    @Value("${digital.ocean.secret.key}")
-    private String digitalOceanSecretKey;
+
     @Bean
     public ErrorDecoder errorDecoder() {
         return new CustomErrorDecoder();
@@ -38,10 +31,6 @@ public class ApplicationConfig {
 
         return objectMapper;
     }
-    @Bean
-    public MinioClient minioClient (){
-        return MinioClient.builder().endpoint(spaceBucketOriginUrl)
-                .region("fra1")
-                .credentials(digitalOceanAccessKey ,digitalOceanSecretKey).build();
-    }
+
+
 }

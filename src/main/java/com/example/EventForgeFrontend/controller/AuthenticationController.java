@@ -64,8 +64,9 @@ public class AuthenticationController {
         request.setLogo(logoUrl);
         request.setBackgroundCover(coverUrl);
         ResponseEntity<String> register = authenticationApiClient.register(request, appUrl);
-        imageService.uploadImage(logoFile ,logoUrl);
-        imageService.uploadImage(backgroundCoverFile ,coverUrl);
+
+        imageService.uploadImage(logoFile,imageService.extractFilenameFromPath(logoUrl));
+        imageService.uploadImage(backgroundCoverFile,imageService.extractFilenameFromPath(coverUrl));
         httpRequest.removeAttribute("newRegistrationRequest");
         httpRequest.removeAttribute("organisationPriorities");
         redirectAttributes.addFlashAttribute("result", register.getBody());

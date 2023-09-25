@@ -1,20 +1,26 @@
 package com.example.EventForgeFrontend.image;
 
 import com.example.EventForgeFrontend.dto.CommonEventResponse;
-import io.minio.*;
-import io.minio.errors.MinioException;
+import com.example.EventForgeFrontend.exception.ImageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.UUID.randomUUID;
 
@@ -23,99 +29,126 @@ import static java.util.UUID.randomUUID;
 @Slf4j
 public class ImageService {
 
-    @Value("${digital.ocean.bucket.name}")
-    private String digitalOceanBucketName;
+    private static final String FOLDER_IMAGE_PATH = "C:/Users/Desktop/Desktop/active-varna-snimki";
 
+    private static final Path uploadDirectory = Paths.get(FOLDER_IMAGE_PATH);
 
-    private final MinioClient minioClient;
+    private String getImageAbsolutePath() {
+        String sanitizedFileName = sanitizeFileName(randomUUID().toString());
 
-
-    public String uploadImage(final MultipartFile file, String randomUuid) {
-        try {
-
-            // Upload the file to DigitalOcean Spaces
-            minioClient.putObject(PutObjectArgs.builder()
-                    .bucket(digitalOceanBucketName)
-                    .object(randomUuid )
-                    .contentType(file.getContentType())
-                    .stream(file.getInputStream(), file.getSize(), -1)
-                    .build());
-
-            return randomUuid;
-        } catch (MinioException e) {
-            // Handle Minio-specific exceptions
-            log.warn("Minio error: " + e.getMessage());
-        } catch (IOException e) {
-            // Handle general IO exceptions
-            log.warn("Error uploading file: " + e.getMessage());
-        } catch (Exception e) {
-            // Handle other exceptions
-            log.warn("An unexpected error occurred: " + e.getMessage());
-        }
-        return null;
+        Path filePath = uploadDirectory.resolve(sanitizedFileName);
+        return filePath.toAbsolutePath().toString();
     }
 
-    public String encodeImage(String objectKey) {
+
+    public void uploadImage(MultipartFile file , String imageUrl) {
+
+        Path filePath = uploadDirectory.resolve(imageUrl);
+
         try {
-
-
-            // Fetch the image bytes from DigitalOcean Spaces
-            GetObjectResponse objectResponse = minioClient.getObject(GetObjectArgs.builder()
-                    .bucket(digitalOceanBucketName)
-                    .object(objectKey)
-                    .build());
-
-            // Get the input stream from the object response
-            try (InputStream inputStream = objectResponse) {
-                // Read the image bytes
-                byte[] imageBytes = IOUtils.toByteArray(inputStream);
-
-                // Encode the image bytes as a Base64 string
-                String base64Image = Base64.encodeBase64String(imageBytes);
-
-                return base64Image;
+            if (!Files.exists(uploadDirectory)) {
+                Files.createDirectories(uploadDirectory);
             }
-        } catch (MinioException e) {
-            // Handle Minio-specific exceptions
-            log.warn("Minio error: " + e.getMessage());
-        } catch (Exception e) {
-            // Handle other exceptions
-            log.warn("An unexpected error occurred: " + e.getMessage());
+            if (Files.exists(uploadDirectory)) {
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+        } catch (IOException e) {
+            throw new ImageException("Грешка със запазването на файла. Моля уверете се , че подавате валиден файл и не е празен.");
         }
-        return null;
+    }
+
+    public static String encodeImage(String url) {
+        String base64Image = "";
+        File file = new File(url);
+        try (FileInputStream imageInFile = new FileInputStream(file)) {
+            byte[] imageData = new byte[(int) file.length()];
+            int bytesRead;
+            int totalBytesRead = 0;
+
+            while ((bytesRead = imageInFile.read(imageData, totalBytesRead, imageData.length - totalBytesRead)) != -1) {
+                totalBytesRead += bytesRead;
+                if (totalBytesRead == imageData.length) {
+                    break;
+                }
+            }
+            base64Image = Base64.getEncoder().encodeToString(Arrays.copyOf(imageData, totalBytesRead));
+
+        } catch (FileNotFoundException e) {
+            throw new ImageException("Изображението не е намерено");
+        } catch (IOException e) {
+            throw new ImageException("Грешка с прочитането на изображението");
+        }
+        return base64Image;
+    }
+
+    private String sanitizeFileName(String fileName) {
+        String allowedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.";
+
+        String sanitizedFileName = fileName.replace("..", "");
+
+        StringBuilder sb = new StringBuilder();
+        for (char c : sanitizedFileName.toCharArray()) {
+            if (allowedCharacters.indexOf(c) != -1) {
+                sb.append(c);
+            }
+        }
+        sanitizedFileName = sb.toString();
+
+        int maxFileNameLength = 255;
+        if (sanitizedFileName.length() > maxFileNameLength) {
+            throw new ImageException("Името на файла надвишава максималната дължина.");
+        }
+
+        return sanitizedFileName;
     }
 
 
+    public String updatePicture(MultipartFile file) {
 
-    public String updatePicture(MultipartFile file ) {
-
-        if(file == null || file.isEmpty()){
+        if (file == null || file.isEmpty()) {
             return null;
         }
-            ImageValidator.isImageValid(file);
-            ImageValidator.isSizeLessThan5mb(file);
-
-        return randomUUID().toString();
-    }
-    public String uploadPicture(MultipartFile file, ImageType type) {
-        ImageValidator.isImageEmpty(file , type);
         ImageValidator.isImageValid(file);
         ImageValidator.isSizeLessThan5mb(file);
-        return randomUUID().toString();
+
+        return getImageAbsolutePath();
     }
 
-    public void encodeCommonEventResponseListImages(List<CommonEventResponse> events){
-        if(events!=null && !events.isEmpty()){
-            for(CommonEventResponse event : events){
+    public String uploadPicture(MultipartFile file, ImageType type) {
+        ImageValidator.isImageEmpty(file, type);
+        ImageValidator.isImageValid(file);
+        ImageValidator.isSizeLessThan5mb(file);
+        return getImageAbsolutePath();
+    }
+
+    public void encodeCommonEventResponseListImages(List<CommonEventResponse> events) {
+        if (events != null && !events.isEmpty()) {
+            for (CommonEventResponse event : events) {
                 event.setImageUrl(encodeImage(event.getImageUrl()));
             }
         }
     }
-    public void encodeCommonEventResponsePageImages(Page<CommonEventResponse> events){
-        if(events!=null && !events.isEmpty()){
-            for(CommonEventResponse event : events){
+
+    public void encodeCommonEventResponsePageImages(Page<CommonEventResponse> events) {
+        if (events != null && !events.isEmpty()) {
+            for (CommonEventResponse event : events) {
                 event.setImageUrl(encodeImage(event.getImageUrl()));
             }
+        }
+    }
+
+    public String extractFilenameFromPath(String fullPath) {
+        // Define a regex pattern to match the filename
+        Pattern pattern = Pattern.compile("([^\\\\/]+)$"); // This pattern works for Windows and Unix-style paths
+
+        // Use a Matcher to find the filename
+        Matcher matcher = pattern.matcher(fullPath);
+
+        if (matcher.find()) {
+            return matcher.group(1); // The matched filename
+        } else {
+            return null; // No filename found
         }
     }
 }
