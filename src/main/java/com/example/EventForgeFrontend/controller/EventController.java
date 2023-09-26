@@ -1,8 +1,8 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.EventApiClient;
-import com.example.EventForgeFrontend.client.OneTimeEventApiClient;
-import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.client.UnauthorizeApiClient;
+import com.example.EventForgeFrontend.dto.EventResponse;
 import com.example.EventForgeFrontend.dto.CriteriaFilterRequest;
 import com.example.EventForgeFrontend.image.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -18,27 +18,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 
 @Controller
-@RequestMapping("/one-time-events")
+@RequestMapping("/events")
 @RequiredArgsConstructor
-public class OneTimeEventController {
+public class EventController {
 
-    private final OneTimeEventApiClient oneTimeEventApiClient;
 
     private final EventApiClient eventApiClient;
 
     private final ImageService imageService;
 
+    private final UnauthorizeApiClient unauthorizeApiClient;
+
     private final static String NO_AVAILABLE_EVENTS ="Няма налични събития";
 
 
     @GetMapping
-    public String showAllActiveOneTimeEvents(@RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo
+    public String showAllActiveEvents(@RequestParam(value = "pageNo", required = false, defaultValue = "0") Integer pageNo
             , @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize
             , @RequestParam(value = "sort", defaultValue = "ASC", required = false) String sort
             , @RequestParam(value = "sortByColumn", defaultValue = "startsAt", required = false) String sortByColumn
             , Model model) {
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Page<CommonEventResponse> events = oneTimeEventApiClient.showAllActiveOneTimeEvents(pageNo, pageSize, sort1, sortByColumn);
+        Page<EventResponse> events = eventApiClient.showAllActiveEvents(pageNo, pageSize, sort1, sortByColumn);
 
         if (events != null && !events.isEmpty()) {
             imageService.encodeCommonEventResponsePageImages(events);
@@ -60,10 +61,10 @@ public class OneTimeEventController {
         model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", events);
         model.addAttribute("isExpired", false);
-        model.addAttribute("currentUrl" ,"/one-time-events");
+        model.addAttribute("currentUrl" ,"/events");
 
 
-        return "oneTimeEvents";
+        return "events";
     }
 
     @GetMapping("/expired")
@@ -74,7 +75,7 @@ public class OneTimeEventController {
             , Model model) {
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
         pageNo = Math.max(0, pageNo);
-        Page<CommonEventResponse> events = oneTimeEventApiClient.showAllExpiredOneTimeEvents(pageNo, pageSize, sort1, sortByColumn);
+        Page<EventResponse> events = eventApiClient.showAllExpiredEvents(pageNo, pageSize, sort1, sortByColumn);
         if (events != null && !events.isEmpty()) {
             imageService.encodeCommonEventResponsePageImages(events);
             model.addAttribute("currentPage", events.getNumber());
@@ -94,21 +95,14 @@ public class OneTimeEventController {
         model.addAttribute("sortByColumn", sortByColumn);
         model.addAttribute("events", events);
         model.addAttribute("isExpired", true);
-        model.addAttribute("currentUrl" ,"/one-time-events/expired");
+        model.addAttribute("currentUrl" ,"/events/expired");
 
-        return "oneTimeEvents";
+        return "events";
     }
 
 
     @GetMapping("/advanced-search/{isExpired}")
-    public String filterOneTimeEventsByCriteria(@RequestParam(value = "name", required = false ) String name,
-                                                @RequestParam(value = "description", required = false) String description,
-                                                @RequestParam(value = "address", required = false) String address,
-                                                @RequestParam(value = "organisationName", required = false) String organisationName,
-                                                @RequestParam(value = "minAge", required = false) Integer minAge,
-                                                @RequestParam(value = "maxAge", required = false) Integer maxAge,
-                                                @RequestParam(value = "isOnline", required = false) Boolean isOnline,
-                                                @RequestParam(value = "eventCategories", required = false) String eventCategories,
+    public String filterOneTimeEventsByCriteria(@RequestParam(value = "value", required = false ) String value,
                                                 @RequestParam(value = "startsAt", required = false) LocalDate startsAt,
                                                 @RequestParam(value = "endsAt", required = false) LocalDate endsAt,
                                                 @PathVariable("isExpired") boolean isExpired,
@@ -121,9 +115,9 @@ public class OneTimeEventController {
 
         Sort.Direction sort1 = sort == null || sort.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
-        CriteriaFilterRequest request = new CriteriaFilterRequest(true, isExpired, name, description, address, organisationName, minAge, maxAge, isOnline, eventCategories, startsAt, endsAt);
+        CriteriaFilterRequest request = new CriteriaFilterRequest(true, isExpired, value, startsAt, endsAt);
 
-        Page<CommonEventResponse> oneTimeEvents = eventApiClient.getEventsByCriteria(pageNo, pageSize, sort1, sortByColumn, request);
+        Page<EventResponse> oneTimeEvents = unauthorizeApiClient.getEventsByCriteria(pageNo, pageSize, sort1, sortByColumn, request);
         if (oneTimeEvents != null && !oneTimeEvents.isEmpty()) {
             imageService.encodeCommonEventResponsePageImages(oneTimeEvents);
             model.addAttribute("currentPage", oneTimeEvents.getNumber());
@@ -137,30 +131,10 @@ public class OneTimeEventController {
         } else {
             model.addAttribute("result" , "Няма намерени резултати за въведените параметри.");
         }
-        if (name != null && !name.isEmpty()) {
-            model.addAttribute("name", name);
+        if (value != null && !value.isEmpty()) {
+            model.addAttribute("value", value);
         }
-        if (description != null && !description.isEmpty()) {
-            model.addAttribute("description", description);
-        }
-        if (address != null && !address.isEmpty()) {
-            model.addAttribute("address", address);
-        }
-        if (organisationName != null && !organisationName.isEmpty()) {
-            model.addAttribute("organisationName", organisationName);
-        }
-        if (minAge != null) {
-            model.addAttribute("minAge", minAge);
-        }
-        if (maxAge != null) {
-            model.addAttribute("maxAge", maxAge);
-        }
-        if (isOnline != null) {
-            model.addAttribute("isOnline", isOnline);
-        }
-        if (eventCategories != null && !eventCategories.isEmpty()) {
-            model.addAttribute("eventCategories", eventCategories);
-        }
+
         if (startsAt != null) {
             model.addAttribute("startsAt", startsAt);
         }
@@ -174,7 +148,7 @@ public class OneTimeEventController {
         model.addAttribute("isExpired", isExpired);
         model.addAttribute("currentUrl" ,null);
 
-        return "oneTimeEvents";
+        return "events";
     }
 
 

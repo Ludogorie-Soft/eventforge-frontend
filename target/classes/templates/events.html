@@ -310,8 +310,8 @@
         <button id="expiredBtn" class="btn btn-custom-1" th:if="${!isExpired}"
                 onclick="changeState('expired')">Покажи Отминали
         </button>
-        <button id="openPopupBtn" class="btn btn-custom-1">Разширено търсене <i class="fas fa-search"></i>
-        </button>
+<!--        <button id="openPopupBtn" class="btn btn-custom-1">Разширено търсене <i class="fas fa-search"></i>-->
+<!--        </button>-->
     </div>
     <div style="text-align: center" th:if="${currentUrl != null}">
         <form th:action="@{${currentUrl}}" method="get" class="filters-container">
@@ -345,7 +345,7 @@
     </div>
 
     <div style="text-align: center" th:if="${currentUrl == null}">
-        <form th:action="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}"
+        <form th:action="@{/events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, address=${address}, organisationName=${organisationName}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}"
               method="get" class="filters-container">
             <label for="pageSize">Размер на страницата:</label>
             <select name="pageSize">
@@ -397,59 +397,18 @@
 
 <!-- Button to open the advanced search popup -->
 <!-- Responsive popup -->
-<div class="popup-content" id="popup">
+<div >
     <!-- Advanced search form fields -->
-    <form th:action="@{/one-time-events/advanced-search/__${isExpired}__}" method="get" id="advancedSearchForm"
+    <form th:action="@{/events/advanced-search/__${isExpired}__}" method="get" id="advancedSearchForm"
           class="form-inline">
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Търси по име на събитие" name="name"
-                   th:value="${name}">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Търси по описание" name="description"
-                   th:value="${description}">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Търси по адрес/линк" name="address"
-                   th:value="${address}">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Търси по име на организатор" name="organisationName"
-                   th:value="${organisationName}">
-        </div>
-        <div class="form-group">
-            <label>"Търси по минимална възраст"</label>
-            <input type="number" class="form-control" name="minAge" min="0" title="Без отрицателни числа"
-                   th:value="${minAge}">
-        </div>
-        <div class="form-group">
-            <label>Търси по максимална възраст</label>
-            <input type="number" class="form-control" name="maxAge" min="0" title="Без отрицателни числа"
-                   th:value="${maxAge}">
-        </div>
-        <!--        <label>Тип на събитието: <span></span></label>-->
-        <div class="question-answer d-flex">
-            <div>
-                <input type="checkbox" name="isOnline" th:value="true" th:checked="${isOnline == true}"
-                       onclick="handleCheckboxChange(this)"/>
-                <label class="radio">Онлайн</label>
-            </div>
-            <div>
-                <input type="checkbox" name="isOnline" th:value="false" th:checked="${isOnline == false}"
-                       onclick="handleCheckboxChange(this)"/>
-                <label class="radio">Присъствено</label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Търси по категории и ключови думи"
-                   name="eventCategories" th:value="${eventCategories}">
+            <input type="text" class="form-control" placeholder="Търси събития" name="value"
+                   th:value="${value}">
         </div>
         <div class="form-group">
             <label>Търси по начална дата</label>
             <input type="date" class="form-control" name="startsAt"
-                   th:value="${startsAt}"
-            >
+                   th:value="${startsAt}">
         </div>
         <div class="form-group">
             <label>Търси по крайна дата</label>
@@ -533,20 +492,20 @@
         <div class="pagination-container">
             <div class="pagination">
         <span th:if="${currentPage > 0}">
-            <a th:href="@{/one-time-events(pageNo=0, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
-            <a th:href="@{/one-time-events(pageNo=${currentPage - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&lt;</a>
+            <a th:href="@{/events(pageNo=0, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
+            <a th:href="@{/events(pageNo=${currentPage - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&lt;</a>
         </span>
 
                 <!-- Page Numbers -->
                 <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
-            <a th:href="@{/one-time-events(pageNo=${page}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}"
+            <a th:href="@{/events(pageNo=${page}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}"
                th:class="${page == currentPage} ? 'active' : ''"
                th:text="${page + 1}"></a>
         </span>
 
                 <span th:if="${currentPage + 1 < totalPages}">
-            <a th:href="@{/one-time-events(pageNo=${currentPage + 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&gt;</a>
-            <a th:href="@{/one-time-events(pageNo=${totalPages - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&raquo;</a>
+            <a th:href="@{/events(pageNo=${currentPage + 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&gt;</a>
+            <a th:href="@{/events(pageNo=${totalPages - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&raquo;</a>
         </span>
                 <p th:text="'Общ брой елементи: ' + ${totalItems}"></p>
             </div>
@@ -559,20 +518,20 @@
         <div class="pagination-container">
             <div class="pagination">
        <span th:if="${currentPage > 0}">
-            <a th:href="@{/one-time-events/expired(pageNo=0 , pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
-            <a th:href="@{/one-time-events/expired(pageNo=${currentPage - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&lt;</a>
+            <a th:href="@{/events/expired(pageNo=0 , pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
+            <a th:href="@{/events/expired(pageNo=${currentPage - 1}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&lt;</a>
         </span>
 
                 <!-- Page Numbers -->
                 <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
-            <a th:href="@{/one-time-events/expired(pageNo=${page}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}"
+            <a th:href="@{/events/expired(pageNo=${page}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}"
                th:class="${page == currentPage} ? 'active' : ''"
                th:text="${page + 1}"></a>
         </span>
 
                 <span th:if="${currentPage + 1 < totalPages}">
-            <a th:href="@{/one-time-events/expired(pageNo=${currentPage + 1})}">&gt;</a>
-            <a th:href="@{/one-time-events/expired(pageNo=${totalPages - 1})}">&raquo;</a>
+            <a th:href="@{/events/expired(pageNo=${currentPage + 1})}">&gt;</a>
+            <a th:href="@{/events/expired(pageNo=${totalPages - 1})}">&raquo;</a>
         </span>
                 <p th:text="'Общ брой елементи: ' + ${totalItems}"></p>
             </div>
@@ -583,19 +542,19 @@
         <div class="pagination-container">
             <div class="pagination">
        <span th:if="${currentPage > 0}">
-            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=0, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
-            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&lt;</a>
+            <a th:href="@{/events/advanced-search/__${isExpired}__(pageNo=0, name=${name},  address=${address}, organisationName=${organisationName}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&laquo;</a>
+            <a th:href="@{/events/advanced-search/__${isExpired}__(pageNo=${currentPage - 1}, name=${name}, address=${address}, organisationName=${organisationName}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&lt;</a>
         </span>
 
                 <!-- Page Numbers -->
                 <span th:each="page, pageStat : ${#numbers.sequence(startPage, endPage)}">
-            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${page}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}"
+            <a th:href="@{/events/advanced-search/__${isExpired}__(pageNo=${page}, name=${name}, address=${address}, organisationName=${organisationName}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}"
                th:class="${page == currentPage} ? 'active' : ''" th:text="${page + 1}"></a>
         </span>
 
                 <span th:if="${currentPage + 1 < totalPages}">
-            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&gt;</a>
-            <a th:href="@{/one-time-events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, description=${description}, address=${address}, organisationName=${organisationName}, minAge=${minAge}, maxAge=${maxAge}, isOnline=${isOnline}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&raquo;</a>
+            <a th:href="@{/events/advanced-search/__${isExpired}__(pageNo=${currentPage + 1}, name=${name}, address=${address}, organisationName=${organisationName}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&gt;</a>
+            <a th:href="@{/events/advanced-search/__${isExpired}__(pageNo=${totalPages - 1}, name=${name}, address=${address}, organisationName=${organisationName}, eventCategories=${eventCategories}, startsAt=${startsAt}, endsAt=${endsAt}, pageSize=${pageSize} , sort=${sort} , sortByColumn=${sortByColumn})}">&raquo;</a>
         </span>
                 <p th:text="'Общ брой елементи: ' + ${totalItems}"></p>
             </div>
@@ -635,48 +594,33 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    // Function to toggle the visibility of the popup and content overlay
-    function togglePopup() {
-        $('#popup').fadeToggle();
-        $('#contentOverlay').fadeToggle();
-    }
+<!--<script>-->
+<!--    // Function to toggle the visibility of the popup and content overlay-->
+<!--    function togglePopup() {-->
+<!--        $('#popup').fadeToggle();-->
+<!--        $('#contentOverlay').fadeToggle();-->
+<!--    }-->
 
-    // Add event listener to open the popup when the button is clicked
-    $('#openPopupBtn').click(function () {
-        togglePopup();
-    });
+<!--    // Add event listener to open the popup when the button is clicked-->
+<!--    $('#openPopupBtn').click(function () {-->
+<!--        togglePopup();-->
+<!--    });-->
 
-    // Add event listener to close the popup when the close button is clicked
-    $('#closePopupBtn').click(function () {
-        togglePopup();
-    });
+<!--    // Add event listener to close the popup when the close button is clicked-->
+<!--    $('#closePopupBtn').click(function () {-->
+<!--        togglePopup();-->
+<!--    });-->
 
-    // No need for event.preventDefault() in the form submission script
-    $('#advancedSearchForm').submit(function () {
-        // You can add your form submission logic here if needed
-        // ...
-        // The form will submit normally without event.preventDefault();
-        // After processing, close the popup
-        togglePopup();
-    });
-</script>
+<!--    // No need for event.preventDefault() in the form submission script-->
+<!--    $('#advancedSearchForm').submit(function () {-->
+<!--        // You can add your form submission logic here if needed-->
+<!--        // ...-->
+<!--        // The form will submit normally without event.preventDefault();-->
+<!--        // After processing, close the popup-->
+<!--        togglePopup();-->
+<!--    });-->
+<!--</script>-->
 
-
-<script>
-    // Function to handle checkbox state changes
-    function handleCheckboxChange(checkbox) {
-        const checkboxes = document.getElementsByName('isOnline');
-
-        checkboxes.forEach((item) => {
-            if (item !== checkbox) {
-                item.checked = false; // Uncheck other checkboxes
-            }
-        });
-    }
-
-
-</script>
 
 <script>
     var popup = document.querySelector(".popup");
@@ -741,9 +685,9 @@
 <script>
     function changeState(state) {
         if (state === 'active') {
-            window.location.href = '/one-time-events';
+            window.location.href = '/events';
         } else if (state === 'expired') {
-            window.location.href = '/one-time-events/expired';
+            window.location.href = '/events/expired';
         }
     }
 

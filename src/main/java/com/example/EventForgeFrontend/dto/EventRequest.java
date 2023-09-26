@@ -1,6 +1,5 @@
 package com.example.EventForgeFrontend.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,7 @@ public class EventRequest {
     private Integer maxAge;
 
 
-    private Boolean isOneTime;
+    private Boolean isEvent;
 
     private LocalDateTime startsAt;
 

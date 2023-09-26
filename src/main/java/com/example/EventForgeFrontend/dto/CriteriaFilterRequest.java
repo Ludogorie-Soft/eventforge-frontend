@@ -2,34 +2,22 @@ package com.example.EventForgeFrontend.dto;
 
 
 import jakarta.annotation.Nullable;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class CriteriaFilterRequest {
-    private Boolean isOneTime; //// we will hardcore this on the frontend according to which html/template we are.
+    private Boolean isEvent; //// we will hardcore this on the frontend according to which html/template we are.
     private boolean sortByExpired; // we will hardcore this on the frontend according to which html/template we are.
     @Nullable
-    private String name;
-    @Nullable
-    private String description;
-    @Nullable
-    private String address;
-    @Nullable
-    private String organisationName;
-    @Nullable
-    private Integer minAge;
-    @Nullable
-    private Integer maxAge;
-    @Nullable
-    private Boolean isOnline;
-    @Nullable
-    private String eventCategories;
+    private String value;
     @Nullable
     private LocalDate startsAt;
     @Nullable

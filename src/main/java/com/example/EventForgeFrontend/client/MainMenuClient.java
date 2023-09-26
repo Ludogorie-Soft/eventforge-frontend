@@ -1,6 +1,6 @@
 package com.example.EventForgeFrontend.client;
 
-import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.EventResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.List;
 public interface MainMenuClient {
 
     @GetMapping("/events")
-    ResponseEntity<List<CommonEventResponse>> showThreeUpcomingEvents();
+    ResponseEntity<List<EventResponse>> showThreeUpcomingEvents();
 
     @GetMapping("/organisations")
     ResponseEntity<List<OrganisationResponse>> showThreeRandomOrganisations();

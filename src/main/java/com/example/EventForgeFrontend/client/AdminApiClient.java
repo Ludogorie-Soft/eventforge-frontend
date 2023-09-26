@@ -32,7 +32,7 @@ public interface AdminApiClient {
     ResponseEntity<OrganisationResponse> showOrganisationDetailsForAdmin(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long orgId);
 
     @GetMapping("/event/details/{id}")
-    ResponseEntity<CommonEventResponse>showEventDetailsForAdmin(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long eventId);
+    ResponseEntity<EventResponse>showEventDetailsForAdmin(@RequestHeader("Authorization")String authHeader , @PathVariable("id")Long eventId);
 
     @DeleteMapping("delete-event/{id}")
     ResponseEntity<String> deleteEventById(@RequestHeader("Authorization")String authHeader ,@PathVariable("id")Long eventId);

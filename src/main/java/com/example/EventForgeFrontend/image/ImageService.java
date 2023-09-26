@@ -1,6 +1,6 @@
 package com.example.EventForgeFrontend.image;
 
-import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.EventResponse;
 import io.minio.*;
 import io.minio.errors.MinioException;
 import lombok.RequiredArgsConstructor;
@@ -104,16 +104,16 @@ public class ImageService {
         return randomUUID().toString();
     }
 
-    public void encodeCommonEventResponseListImages(List<CommonEventResponse> events){
+    public void encodeCommonEventResponseListImages(List<EventResponse> events){
         if(events!=null && !events.isEmpty()){
-            for(CommonEventResponse event : events){
+            for(EventResponse event : events){
                 event.setImageUrl(encodeImage(event.getImageUrl()));
             }
         }
     }
-    public void encodeCommonEventResponsePageImages(Page<CommonEventResponse> events){
+    public void encodeCommonEventResponsePageImages(Page<EventResponse> events){
         if(events!=null && !events.isEmpty()){
-            for(CommonEventResponse event : events){
+            for(EventResponse event : events){
                 event.setImageUrl(encodeImage(event.getImageUrl()));
             }
         }

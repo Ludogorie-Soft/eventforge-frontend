@@ -1,7 +1,7 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.UnauthorizeApiClient;
-import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.EventResponse;
 import com.example.EventForgeFrontend.image.ImageService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class EventDetailsController {
 
     @GetMapping("/event/details/{id}")
     public String showEventDetailsWithConditionsById(@PathVariable("id")Long eventId , Model model , HttpServletRequest request){
-        ResponseEntity<CommonEventResponse> eventDetails = unauthorizeApiClient.showEventDetailsWithCondition(eventId);
+        ResponseEntity<EventResponse> eventDetails = unauthorizeApiClient.showEventDetailsWithCondition(eventId);
         if(eventDetails.getBody()!=null){
             eventDetails.getBody().setImageUrl(imageService.encodeImage(eventDetails.getBody().getImageUrl()));
             model.addAttribute("event" ,eventDetails.getBody());

@@ -73,7 +73,7 @@ public class AdminController {
     public String showEventDetailsForAdmin(@PathVariable("id") Long eventId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 
         String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<CommonEventResponse> eventDetails = adminApiClient.showEventDetailsForAdmin(token, eventId);
+        ResponseEntity<EventResponse> eventDetails = adminApiClient.showEventDetailsForAdmin(token, eventId);
         if (eventDetails.getBody() != null) {
             eventDetails.getBody().setImageUrl(imageService.encodeImage(eventDetails.getBody().getImageUrl()));
             model.addAttribute("event", eventDetails.getBody());
