@@ -41,7 +41,7 @@
     </div>
 </div>
 <th:block th:if="${event != null}">
-    <div class="container" style="margin-bottom: 30px">
+    <div class="container" style="padding: 3rem">
         <h1 id="event-name" th:text="${#strings.toUpperCase(event.name)}"></h1>
         <div class="row">
             <div class="container col-md-6">
@@ -91,7 +91,7 @@
                                             th:text="${#temporals.format(event.endsAt, 'dd-MM-yyyy HH:mm')}"></span>
                                     </li>
                                     <li><strong>Описание: </strong></li>
-                                    <p style="text-align: justify" th:text="${event.description}"></p>
+                                    <div style="text-align: justify" th:utext="${event.description}"></div>
 
                                     <div th:if="${event.recurrenceDetails != null and event.recurrenceDetails.length() > 0}">
                                         <li><strong>Детайли за повтаряемост на събитието: </strong><span
@@ -160,8 +160,8 @@
     }
 
     #cover-photo {
-        width: 100%;
-        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
         box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4);
     }
 
