@@ -828,7 +828,7 @@ h1, h2, h3, h4, h5,
     color: #fff; }
 
 .site-section {
-  padding: 2rem 0; }
+  padding: 4rem 0; }
   @media (max-width: 991.98px) {
     .site-section {
       padding: 3rem 0; } }
@@ -1149,7 +1149,7 @@ h1, h2, h3, h4, h5,
 
 .search-form {
   background: #f7f7f7;
-  padding: 10px; }
+  padding: 3rem; }
   .search-form .form-group {
     position: relative; }
     .search-form .form-group input {

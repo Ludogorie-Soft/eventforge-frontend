@@ -4,57 +4,80 @@
         <div class="container mb-2">
             <div class="d-flex align-items-center">
                 <div class="site-logo mr-auto">
-                    <img src="/images/img_1.png" alt="Image" style="max-width: 16%" class="img-fluid">
-                    <a th:href="@{/}">Активна Варна<span class="text-primary"></span></a>
+                    <img id="header-img" src="/images/img_1.png" alt="Image" style="max-width: 15%" class="img-fluid">
+                    <a id="title" th:href="@{/}">Активна Варна<span class="text-primary"></span></a>
+                    <p id="sub-title">Тук ще намериш най-готините събития във Варна и района</p>
                 </div>
-                <div th:if="${session.sessionToken}" class="profile-icon">
+                <div class="profile-icon">
                     <div class="profile-img">
                         <img src="/images/profile.png" alt="profile-icon">
                     </div>
-                    <ul class="menu">
-                        <li class="active"
-                            th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}">
-                            <a href="/organisation/settings" class="nav-link" style="text-align: center">
-                                Настройки
-                            </a>
-                        </li>
-                        <li class="active" th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
-                            <a th:href="@{/admin/settings}" class="nav-link" style="text-align: center">
-                                Настройки
-                            </a>
-                        </li>
-                        <li class="active" th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
-                            <a th:href="@{/admin/organisation-management}" class="nav-link" style="text-align: center">
-                                Управление на организации
-                            </a>
-                        </li>
-                        <li class="active" th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
-                            <a th:href="@{/admin/contacts}" class="nav-link" style="text-align: center">
-                                Запитвания
-                            </a>
-                        </li>
-                        <li class="active" th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
-                            <a th:href="@{/admin/spammer-list}" class="nav-link" style="text-align: center">
-                                Списък със спамери
-                            </a>
-                        </li>
-                        <li th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}"
-                            class="active">
-                            <a th:href="@{/manage-events}">Моите събития</a>
-                        </li>
-                        <li th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}"
-                            class="active">
-                            <a th:href="@{/manage-events/create}">Създай събитие</a>
-                        </li>
-                        <li class="active">
-                            <form th:action="@{/logout}" method="post" class="nav-link">
-                                <button type="submit"
-                                        style="border: none; background: none; padding: 0; font: inherit; cursor: pointer; color: inherit; text-align: center">
-                                    Изход
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
+                    <div th:if="${session.sessionToken}">
+                        <ul class="menu">
+                            <li class="active"
+                                th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}">
+                                <a href="/organisation/settings" class="nav-link" style="text-align: center">
+                                    Настройки
+                                </a>
+                            </li>
+                            <li class="active"
+                                th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
+                                <a th:href="@{/admin/settings}" class="nav-link" style="text-align: center">
+                                    Настройки
+                                </a>
+                            </li>
+                            <li class="active"
+                                th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
+                                <a th:href="@{/admin/organisation-management}" class="nav-link"
+                                   style="text-align: center">
+                                    Управление на организации
+                                </a>
+                            </li>
+                            <li class="active"
+                                th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
+                                <a th:href="@{/admin/contacts}" class="nav-link" style="text-align: center">
+                                    Запитвания
+                                </a>
+                            </li>
+                            <li class="active"
+                                th:if="${session.sessionToken!=null && session.sessionUserRole == 'ADMIN'}">
+                                <a th:href="@{/admin/spammer-list}" class="nav-link" style="text-align: center">
+                                    Списък със спамери
+                                </a>
+                            </li>
+                            <li th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}"
+                                class="active">
+                                <a th:href="@{/manage-events}">Моите събития</a>
+                            </li>
+                            <li th:if="${session.sessionToken!=null && session.sessionUserRole == 'ORGANISATION'}"
+                                class="active">
+                                <a th:href="@{/manage-events/create}">Създай събитие</a>
+                            </li>
+                            <li class="active">
+                                <form th:action="@{/logout}" method="post" class="nav-link">
+                                    <button type="submit"
+                                            style="border: none; background: none; padding: 0; font: inherit; cursor: pointer; color: inherit; text-align: center">
+                                        Изход
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <div th:unless="${session.sessionToken}">
+                        <ul class="menu">
+                            <li class="active">
+                                <a th:href="@{/login}" class="nav-link" style="text-align: center">
+                                    Вход
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a th:href="@{/registration}" class="nav-link" style="text-align: center">
+                                    Регистрация
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -68,11 +91,8 @@
                 <nav class="site-navigation text-left d-none d-lg-block" role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mr-auto ">
                         <li><a th:href="@{/}" class="nav-link">Начало</a></li>
-                        <li><a th:if="${session.sessionToken == null}" th:href="@{/registration}"
-                               class="nav-link">Регистрирай се</a></li>
-                        <li><a th:if="${session.sessionToken == null}" href="/login" class="nav-link">Впиши се</a></li>
                         <li><a th:href="@{/one-time-events}" class="nav-link">Събития</a></li>
-                        <li><a th:href="@{/recurrence-events}" class="nav-link">Инициативи</a></li>
+                        <!--                        <li><a th:href="@{/recurrence-events}" class="nav-link">Инициативи</a></li>-->
                         <li><a th:href="@{/view/organisations}" class="nav-link">Организации</a>
                     </ul>
                 </nav>
@@ -96,6 +116,20 @@
 </script>
 
 <style>
+    #header-img {
+        width: fit-content;
+    }
+
+    #sub-title {
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    #title {
+        font-weight: bold;
+    }
+
     .profile-img {
         border: 1px solid aliceblue;
     }
@@ -128,4 +162,10 @@
         justify-content: center;
     }
 
+    @media (max-width: 768px) {
+        #title {
+            font-size: 1.7rem;
+        }
+
+    }
 </style>
