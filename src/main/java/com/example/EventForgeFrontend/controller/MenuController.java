@@ -1,7 +1,7 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.MainMenuClient;
-import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.EventResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.example.EventForgeFrontend.image.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class MenuController {
 
     @GetMapping
     public String index(Model model) {
-        ResponseEntity<List<CommonEventResponse>> threeUpcomingEvents = mainMenuClient.showThreeUpcomingEvents();
+        ResponseEntity<List<EventResponse>> threeUpcomingEvents = mainMenuClient.showThreeUpcomingEvents();
         ResponseEntity<List<OrganisationResponse>> threeRandomOrganisations = mainMenuClient.showThreeRandomOrganisations();
         if (threeUpcomingEvents.getBody() != null && !threeUpcomingEvents.getBody().isEmpty()) {
             imageService.encodeCommonEventResponseListImages(threeUpcomingEvents.getBody());

@@ -60,7 +60,7 @@
                                                                          style="color: black;"
                                                                          th:text="'&quot;' + ${event.organisationName.toUpperCase()} + '&quot;'"></a>
                                     </li>
-                                    <li><strong>Тип: <span th:text="${event.isOneTime}"></span></strong></li>
+                                    <li><strong>Тип: <span th:text="${event.isEvent}"></span></strong></li>
                                     <li><strong>Цена: </strong><span th:text="${event.price}"></span></li>
                                     <li><strong th:text="${event.ageBoundary}"></strong></li>
                                     <li><strong th:text="${event.isOnline} ? 'Онлайн' : 'Присъствено'"></strong></li>

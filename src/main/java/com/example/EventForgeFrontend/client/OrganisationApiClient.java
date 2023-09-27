@@ -1,7 +1,7 @@
 package com.example.EventForgeFrontend.client;
 
 import com.example.EventForgeFrontend.dto.ChangePasswordRequest;
-import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.EventResponse;
 import com.example.EventForgeFrontend.dto.EventRequest;
 import com.example.EventForgeFrontend.dto.UpdateAccountRequest;
 import jakarta.validation.Valid;
@@ -26,7 +26,7 @@ public interface OrganisationApiClient {
      ResponseEntity<String> changePassword(@RequestHeader("Authorization") String token, @Validated @RequestBody ChangePasswordRequest request);
 
     @GetMapping("/show-my-events")
-    ResponseEntity<List<CommonEventResponse>> showAllOrganisationEvents(@RequestHeader("Authorization") String authHeader);
+    ResponseEntity<List<EventResponse>> showAllOrganisationEvents(@RequestHeader("Authorization") String authHeader);
 
     @GetMapping("/create-event")
      ResponseEntity<EventRequest> getEventRequest(@RequestHeader("Authorization")String authHeader);

@@ -67,7 +67,7 @@
                 <th> Заглавие: </th>
                 <th> Начало: </th>
                 <th> Край </th>
-                <th> Тип на събитието: </th>
+                <th> Тип: </th>
                 <th> Редактирай: </th>
                 <th> Изтрий: </th>
             </tr>
@@ -79,7 +79,7 @@
                 <td th:text="${event.name}"></td>
                 <td class = "startsAt" th:text="${event.startsAt}"></td>
                 <td class = "endsAt" th:text="${event.endsAt}"></td>
-                <td th:text="${event.isOneTime}"></td>
+                <td th:text="${event.isEvent}"></td>
                 <td>
                     <a th:href="@{manage-events/update/{id}(id=${event.id})}"><i class='fas fa-pencil-alt'></i></a>
                 </td>

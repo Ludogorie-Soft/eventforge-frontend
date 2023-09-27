@@ -1,7 +1,7 @@
 package com.example.EventForgeFrontend.controller;
 
 import com.example.EventForgeFrontend.client.OrganisationApiClient;
-import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.EventResponse;
 import com.example.EventForgeFrontend.dto.EventRequest;
 import com.example.EventForgeFrontend.image.ImageService;
 import com.example.EventForgeFrontend.image.ImageType;
@@ -29,7 +29,7 @@ public class ManageEventsController {
     @GetMapping
     public String showMyEvents(HttpServletRequest request, Model model) {
         String token = (String) request.getSession().getAttribute("sessionToken");
-        ResponseEntity<List<CommonEventResponse>> getAllEventsForOrganisation = organisationApiClient.showAllOrganisationEvents(token);
+        ResponseEntity<List<EventResponse>> getAllEventsForOrganisation = organisationApiClient.showAllOrganisationEvents(token);
 
         model.addAttribute("events", getAllEventsForOrganisation.getBody());
 
@@ -56,6 +56,7 @@ public class ManageEventsController {
         String token = (String) request.getSession().getAttribute("sessionToken");
         String eventPicture = imageService.uploadPicture(image, ImageType.EVENT_PICTURE);
         eventRequest.setImageUrl(eventPicture);
+        eventRequest.setIsEvent(true);
         ResponseEntity<String> eventRequestResult = organisationApiClient.submitCreatedEvent(eventRequest, token);
         imageService.uploadImage(image ,eventPicture);
         redirectAttributes.addFlashAttribute("result", eventRequestResult.getBody());

@@ -1,6 +1,6 @@
 package com.example.EventForgeFrontend.deserializer;
 
-import com.example.EventForgeFrontend.dto.CommonEventResponse;
+import com.example.EventForgeFrontend.dto.EventResponse;
 import com.example.EventForgeFrontend.dto.OrganisationResponse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -29,8 +29,8 @@ public class PageDeserializer<T> extends StdDeserializer<Page<T>> {
             for (JsonNode elementNode : contentNode) {
                 // Check if the JSON structure indicates CommonEventResponse or OrganisationResponse
                 if (elementNode.has("organisationName")) {
-                    CommonEventResponse commonEventResponse = p.getCodec().treeToValue(elementNode, CommonEventResponse.class);
-                    content.add((T) commonEventResponse);
+                    EventResponse eventResponse = p.getCodec().treeToValue(elementNode, EventResponse.class);
+                    content.add((T) eventResponse);
                 } else if (elementNode.has("email")) {
                     OrganisationResponse organisationResponse = p.getCodec().treeToValue(elementNode, OrganisationResponse.class);
                     content.add((T) organisationResponse);

@@ -131,7 +131,7 @@
                                         </div>
                                         <div class="card-content h-100">
                                             <h4 th:text="${event.name}"></h4>
-                                            <p th:text="${event.isOneTime}"></p>
+                                            <p th:text="${event.getIsEvent}"></p>
                                             <div th:if="${event.isOnline}">
                                                 <p>онлайн събитие</p>
                                             </div>
@@ -205,7 +205,7 @@
 
                                         <div class="card-content h-100">
                                             <h4 th:text="${event.name}"></h4>
-                                            <p th:text="${event.isOneTime}"></p>
+                                            <p th:text="${event.getIsEvent}"></p>
                                             <div th:if="${event.isOnline}">
                                                 <p>онлайн събитие</p>
                                             </div>
@@ -281,7 +281,7 @@
 
                                         <div class="card-content h-100">
                                             <h4 th:text="${event.name}"></h4>
-                                            <p th:text="${event.isOneTime}"></p>
+                                            <p th:text="${event.getIsEvent}"></p>
                                             <div th:if="${event.isOnline}">
                                                 <p>онлайн събитие</p>
                                             </div>
