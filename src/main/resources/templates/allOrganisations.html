@@ -350,7 +350,6 @@
 <script src="/js/aos.js"></script>
 
 <script th:src="@{/js/main.js}"></script>
-<script th:src="@{/js/displayScript.js}"></script>
 
 <script>
     var popup = document.querySelector(".popup");
@@ -360,7 +359,7 @@
         var popupElement = document.createElement("div");
         popupElement.innerHTML = result;
         popupElement.style.position = "fixed";
-        popupElement.style.top = "50%";
+        popupElement.style.top = "70%";
         popupElement.style.left = "50%";
         popupElement.style.transform = "translate(-50%, -50%)";
         popupElement.style.backgroundColor = "lightgray";
@@ -369,6 +368,7 @@
         popupElement.style.borderRadius = "5px";
         popupElement.style.opacity = "1";
         popupElement.style.transition = "opacity 2s";
+        document.documentElement.style.overflow = "hidden";
 
         var closeButton = document.createElement("button");
         closeButton.innerHTML = "X";
@@ -389,6 +389,7 @@
 
         function closePopup() {
             popupElement.style.opacity = "0";
+            document.documentElement.style.overflow = "auto";
             setTimeout(function () {
                 document.body.removeChild(popupElement);
             }, 2000);

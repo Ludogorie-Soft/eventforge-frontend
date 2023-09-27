@@ -70,7 +70,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" th:field="*{name}" class="form-control text-cursive"
-                                   placeholder="Име на организацията*"  id="name" required>
+                                   placeholder="Име на организацията/неформалната група*"  id="name" required>
                         </div>
                         <div th:if="${name}" id="nameError">
                             <p th:text="${name}" style="color: red;" class="text-cursive"></p>
@@ -122,7 +122,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <input type="text" th:field="*{bullstat}" class="form-control text-cursive" placeholder="Булстат(Видимо само за администратора на сайта)">
+                            <input type="text" th:field="*{bullstat}" class="form-control text-cursive" placeholder="Булстат (Видимо само за администратора на сайта)">
                         </div>
                         <div th:if="${bullstat}" id="bullstatError">
                             <p th:text="${bullstat}" style="color: red;" class="text-cursive"></p>
@@ -152,7 +152,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="text" class="form-control text-cursive" th:field="*{fullName}"
-                                   placeholder="Лице за контакт - име и фамилия(Видимо само за администратора на сайта)*" id="fullname" required>
+                                   placeholder="Лице за контакт - име и фамилия (Видимо само за администратора на сайта)*" id="fullname" required>
                         </div>
                         <div th:if="${fullName}" id="fullNameError">
                             <p th:text="${fullName}" style="color: red;" class="text-cursive"></p>
@@ -174,7 +174,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <input type="number" class="form-control text-cursive" th:field="*{phoneNumber}"
-                                   placeholder="Лице за контакт - телефон(Видимо само за администратора на сайта)*" id="phone"
+                                   placeholder="Лице за контакт - телефон (Видимо само за администратора на сайта)*" id="phone"
                                    required>
                         </div>
                         <div th:if="${phoneNumber}" id="phoneNumberError">
@@ -184,7 +184,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                     <textarea type="url" class="form-control text-cursive" th:field="*{charityOption}"
-                              placeholder="Възможност за дарение. (Линк към страница с информация за дарения)"></textarea>
+                              placeholder="Възможност за дарение (Линк към страница с информация за дарения)"></textarea>
                         </div>
                         <div th:if="${charityOption}" id="charityOptionError">
                             <p th:text="${charityOption}" style="color: red;" class="text-cursive"></p>
