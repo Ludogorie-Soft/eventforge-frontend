@@ -94,7 +94,6 @@ public class ManageEventsController {
         if (eventPicture != null) {
             eventRequest.setImageUrl(eventPicture);
         }
-        String sa = eventRequest.getImageUrl();
         ResponseEntity<String> updateEventResult = organisationApiClient.updateEventByOrganisation(token, id, eventRequest);
 
         imageService.uploadImage(image ,eventPicture);
