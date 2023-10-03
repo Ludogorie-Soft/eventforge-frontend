@@ -42,13 +42,13 @@
 </div>
 <th:block th:if="${event != null}">
     <div class="container" style="padding: 3rem">
-        <h1 id="event-name" th:text="${#strings.toUpperCase(event.name)}"></h1>
+        <h2 id="event-name" th:text="${#strings.toUpperCase(event.name)}"></h2>
         <div class="row">
             <div class="container col-md-6">
                 <img id="cover-photo" th:src="@{'data:image/jpeg;base64,' + ${event.imageUrl}}"
                      alt="event-cover-photo">
             </div>
-            <div class="container col-md-6">
+            <div class="container col-md-12">
 
                 <div class="event-details-box container">
                     <div class="container">
