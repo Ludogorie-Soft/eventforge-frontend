@@ -482,6 +482,9 @@
 </html>
 
 <style>
+    #home-section{
+        padding-top: 3rem;
+    }
     .no-found-events {
         font-size: 25px;
         margin-top: 150px;
@@ -533,6 +536,7 @@
     }
 
     #cover-photo {
+        min-height: 60vh;
         height: 350px;
         width: 100%;
     }
@@ -541,12 +545,19 @@
         #cover-photo {
             height: 250px; /* Adjust the height for tablets */
         }
+
+        #home-section{
+            padding-top: 0;
+        }
     }
 
     /* Media query for phones */
     @media (max-width: 480px) {
         #cover-photo {
             height: 200px; /* Adjust the height for phones */
+        }
+        #home-section{
+            padding-top: 0;
         }
     }
 
