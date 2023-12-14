@@ -51,6 +51,7 @@ public class AdController {
         } else {
             model.addAttribute("result", NO_AVAILABLE_EVENTS);
         }
+
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("sort", sort);
         model.addAttribute("sortByColumn", sortByColumn);
